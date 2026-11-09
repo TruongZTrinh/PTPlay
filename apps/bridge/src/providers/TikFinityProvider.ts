@@ -259,7 +259,11 @@ export class TikFinityProvider extends LiveEventProvider {
     const userId = String(data.userId || data.user_id || `anon_${Date.now()}`);
     const uniqueId = String(data.uniqueId || data.username || userId);
     const nickname = String(data.nickname || data.displayName || uniqueId);
-    const profilePictureUrl = data.profilePictureUrl ? String(data.profilePictureUrl) : undefined;
+    const userObj = data.user as Record<string, any> | undefined;
+    const rawAvatar = data.profilePictureUrl || data.profilePicturUrl || data.profile_picture_url ||
+      data.avatarUrl || data.avatar_url || data.profile_image_url ||
+      (userObj && (userObj.profilePictureUrl || userObj.profilePicturUrl || userObj.avatarUrl));
+    const profilePictureUrl = rawAvatar ? String(rawAvatar) : undefined;
     const eventId = `tikfinity_${Date.now()}_${this.idCounter++}`;
 
     switch (msg.event) {

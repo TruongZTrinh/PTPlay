@@ -40,11 +40,12 @@ echo.
 echo Select the game you want to launch with PTPlay:
 echo [1] Mini War Arena (Port 5173 - Red vs Blue Battle)
 echo [2] Cafe Moe (Port 5174 - Interactive Cozy Cat Cafe)
-echo [3] Platform Only (Bridge 8088 + Admin 8080)
+echo [3] English Class LIVE (Port 5175 - Bilingual Classroom & Trivia)
+echo [4] Platform Only (Bridge 8088 + Admin 8080)
 echo.
 
-set /p CHOICE="Enter your choice [1, 2, or 3] (Default: 1): "
-if "%CHOICE%"=="" set CHOICE=1
+set /p CHOICE="Enter your choice [1, 2, 3, or 4] (Default: 3): "
+if "%CHOICE%"=="" set CHOICE=3
 
 if "%CHOICE%"=="1" (
   echo [PTPlay] Starting Platform with Mini War Arena...
@@ -54,6 +55,10 @@ if "%CHOICE%"=="1" (
   echo [PTPlay] Starting Platform with Cafe Moe...
   start "PTPlay Browser" cmd /c "timeout /t 3 /nobreak >nul & start http://localhost:8080 & start http://localhost:5174"
   call npm run start:catcafe
+) else if "%CHOICE%"=="3" (
+  echo [PTPlay] Starting Platform with English Class LIVE...
+  start "PTPlay Browser" cmd /c "timeout /t 3 /nobreak >nul & start http://localhost:8080 & start http://localhost:5175"
+  call npm run start:english
 ) else (
   echo [PTPlay] Starting Platform Infrastructure (Bridge + Admin)...
   start "PTPlay Browser" cmd /c "timeout /t 3 /nobreak >nul & start http://localhost:8080"

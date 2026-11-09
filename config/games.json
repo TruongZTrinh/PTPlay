@@ -44,12 +44,36 @@
       }
     },
     {
+      "id": "english-class-live",
+      "name": "English Class LIVE",
+      "vietnameseName": "Lớp Học Vui",
+      "genre": "2D Interactive Chibi English Quiz Classroom (9:16 portrait)",
+      "version": "1.0.0",
+      "port": 5175,
+      "devCommand": "npm run dev -w @ptplay/english-class-live",
+      "buildCommand": "npm run build -w @ptplay/english-class-live",
+      "workspace": "games/english-class-live",
+      "active": true,
+      "icon": "🎓",
+      "description": "Lớp học tiếng Anh chibi vui nhộn 9:16, cô giáo AI host, khán giả vào lớp có avatar, trả lời câu đố và nhận quà tặng.",
+      "capabilities": {
+        "chatCommands": true,
+        "giftStreaks": true,
+        "quizModes": true,
+        "ttsHost": true,
+        "avatarBadges": true,
+        "teamBattles": true,
+        "survival": true,
+        "leaderboard": true
+      }
+    },
+    {
       "id": "plinko-drop",
       "name": "Plinko Drop Arena",
       "vietnameseName": "Thả Bóng May Mắn",
       "genre": "Physics Arcade Ball Drop",
       "version": "0.1.0",
-      "port": 5175,
+      "port": 5177,
       "devCommand": "npm run dev -w @ptplay/plinko-drop",
       "workspace": "games/plinko-drop",
       "active": false,

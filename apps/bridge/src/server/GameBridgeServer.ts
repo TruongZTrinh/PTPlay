@@ -18,7 +18,7 @@ export class GameBridgeServer {
   private httpServer: http.Server;
   private wss: WebSocketServer;
   private gameClients: Set<WebSocket> = new Set();
-  private clientApps: Map<WebSocket, 'mini-war' | 'cat-cafe'> = new Map();
+  private clientApps: Map<WebSocket, 'mini-war' | 'cat-cafe' | 'english-class-live'> = new Map();
   public activeGame: ActiveGame = 'mini-war';
 
   // Authentication & Security
@@ -126,7 +126,11 @@ export class GameBridgeServer {
 
     this.wss.on('connection', (ws, request) => {
       const reqUrl = new URL(request?.url || '/game', 'http://127.0.0.1');
-      const targetApp = reqUrl.searchParams.get('app') === 'cat-cafe' ? 'cat-cafe' : 'mini-war';
+      const appParam = reqUrl.searchParams.get('app');
+      let targetApp: 'mini-war' | 'cat-cafe' | 'english-class-live' = 'mini-war';
+      if (appParam === 'cat-cafe') targetApp = 'cat-cafe';
+      else if (appParam === 'english-class' || appParam === 'english-class-live') targetApp = 'english-class-live';
+
       this.clientApps.set(ws, targetApp);
       console.log(`[GameBridge] Client connected via WebSocket for: ${targetApp}`);
       this.gameClients.add(ws);
@@ -137,7 +141,10 @@ export class GameBridgeServer {
         try {
           const msg = JSON.parse(data.toString());
           if (msg.type === 'register' && msg.app) {
-            this.clientApps.set(ws, msg.app === 'cat-cafe' ? 'cat-cafe' : 'mini-war');
+            let regApp: 'mini-war' | 'cat-cafe' | 'english-class-live' = 'mini-war';
+            if (msg.app === 'cat-cafe') regApp = 'cat-cafe';
+            else if (msg.app === 'english-class' || msg.app === 'english-class-live') regApp = 'english-class-live';
+            this.clientApps.set(ws, regApp);
             console.log(`[GameBridge] Client registered as: ${this.clientApps.get(ws)}`);
           }
           if (msg.type === 'game_state') {
@@ -246,6 +253,7 @@ export class GameBridgeServer {
 
   public broadcastToGame(cmd: GameCommand): void {
     const isCatCafeCmd = cmd.action.startsWith('cat_cafe.');
+    const isEnglishCmd = cmd.action.startsWith('english_class.');
     const payload = JSON.stringify(cmd);
 
     for (const ws of this.gameClients) {
@@ -253,7 +261,9 @@ export class GameBridgeServer {
         const app = this.clientApps.get(ws) || 'mini-war';
         if (isCatCafeCmd && app === 'cat-cafe') {
           ws.send(payload);
-        } else if (!isCatCafeCmd && app === 'mini-war') {
+        } else if (isEnglishCmd && app === 'english-class-live') {
+          ws.send(payload);
+        } else if (!isCatCafeCmd && !isEnglishCmd && app === 'mini-war') {
           ws.send(payload);
         }
       }
@@ -308,6 +318,84 @@ export class GameBridgeServer {
       metadata: { originalComment: event.comment },
       timestamp: Date.now(),
     };
+  }
+
+  public parseEnglishClassComment(event: NormalizedChatEvent): GameCommand | null {
+    if (!event.comment || typeof event.comment !== 'string') return null;
+    const cleanNoAccent = this.stripVietnameseAccents(event.comment.trim()).toUpperCase();
+
+    // 1. Join commands
+    if (/^(JOIN|VAO|THAM GIA|PLAY|CHOI|DI HOC)$/.test(cleanNoAccent) || cleanNoAccent.includes('XIN VAO') || cleanNoAccent.includes('VAO LOP')) {
+      return {
+        id: `cmd_eng_join_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'english_class.join',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    // 2. Team commands (Red / Blue)
+    if (/^(RED|DO|TEAM RED|TEAM DO)$/.test(cleanNoAccent)) {
+      return {
+        id: `cmd_eng_team_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'english_class.team',
+        team: 'red',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+          team: 'red',
+        },
+        metadata: { team: 'red', comment: event.comment, profilePictureUrl: event.profilePictureUrl },
+        timestamp: Date.now(),
+      };
+    }
+    if (/^(BLUE|XANH|TEAM BLUE|TEAM XANH)$/.test(cleanNoAccent)) {
+      return {
+        id: `cmd_eng_team_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'english_class.team',
+        team: 'blue',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+          team: 'blue',
+        },
+        metadata: { team: 'blue', comment: event.comment, profilePictureUrl: event.profilePictureUrl },
+        timestamp: Date.now(),
+      };
+    }
+
+    // 3. Quiz answers: A, B, C, D (intentional commands only)
+    const answerMatch = cleanNoAccent.match(/^(?:DAP AN|ANSWER|CHON|CAU)?\s*[:.\-]?\s*([ABCD])(?:[.)!])?$/);
+    if (answerMatch) {
+      const choice = answerMatch[1];
+      return {
+        id: `cmd_eng_ans_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'english_class.answer',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          choice,
+          comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    return null;
   }
 
   public processIncomingLiveEvent(event: NormalizedLiveEvent): void {
@@ -434,6 +522,61 @@ export class GameBridgeServer {
         };
         this.eventQueue.push(catLikeCmd);
       }
+    } else if (this.activeGame === 'english-class' || this.activeGame === 'english-class-live') {
+      if (event.type === 'chat') {
+        const engCmd = this.parseEnglishClassComment(event);
+        if (engCmd) {
+          this.eventQueue.push(engCmd);
+        }
+      } else if (event.type === 'gift') {
+        const streakResult = this.streakHandler.processGift(event);
+        if (streakResult.isDuplicate || streakResult.deltaCount <= 0) {
+          return;
+        }
+        const engGiftCmd: GameCommand = {
+          id: `cmd_eng_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'english_class.gift',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: event.nickname,
+          },
+          metadata: {
+            giftId: event.giftId,
+            giftName: event.giftName,
+            count: streakResult.deltaCount,
+            diamondCount: event.diamondCount,
+            profilePictureUrl: event.profilePictureUrl,
+          },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(engGiftCmd);
+      } else if (event.type === 'like') {
+        const engLikeCmd: GameCommand = {
+          id: `cmd_eng_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'english_class.like',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: (event as any).nickname || event.uniqueId || 'Khán Giả',
+          },
+          metadata: { likeCount: (event as any).likeCount || 1 },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(engLikeCmd);
+      } else if (event.type === 'follow') {
+        const engFollowCmd: GameCommand = {
+          id: `cmd_eng_follow_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'english_class.follow',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: event.nickname,
+          },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(engFollowCmd);
+      }
     }
   }
 
@@ -493,6 +636,7 @@ export class GameBridgeServer {
         gameClientsApps: {
           miniWar: Array.from(this.clientApps.values()).filter((a) => a === 'mini-war').length,
           catCafe: Array.from(this.clientApps.values()).filter((a) => a === 'cat-cafe').length,
+          englishClass: Array.from(this.clientApps.values()).filter((a) => a === 'english-class-live').length,
         },
         teamCounts: this.teamManager.getTeamCounts(),
         teamUnits: {
@@ -537,6 +681,7 @@ export class GameBridgeServer {
     if (pathname === '/api/system/games' && req.method === 'GET') {
       const miniWarClients = Array.from(this.clientApps.values()).filter((a) => a === 'mini-war').length;
       const catCafeClients = Array.from(this.clientApps.values()).filter((a) => a === 'cat-cafe').length;
+      const englishClassClients = Array.from(this.clientApps.values()).filter((a) => a === 'english-class-live').length;
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(
         JSON.stringify({
@@ -565,6 +710,18 @@ export class GameBridgeServer {
               clientConnections: catCafeClients,
               status: catCafeClients > 0 ? 'connected' : 'waiting',
             },
+            {
+              id: 'english-class-live',
+              name: 'Lớp Học Vui — English Class LIVE V1.0',
+              vietnameseName: 'Lớp Học Vui (English Class)',
+              genre: '2D Interactive English Quiz Classroom (9:16 portrait)',
+              workspacePath: 'C:\\Workspace\\PTPlay\\games\\english-class-live',
+              port: 5175,
+              url: 'http://localhost:5175',
+              isActiveForLive: this.activeGame === 'english-class' || this.activeGame === 'english-class-live',
+              clientConnections: englishClassClients,
+              status: englishClassClients > 0 ? 'connected' : 'waiting',
+            },
           ],
         })
       );
@@ -572,9 +729,10 @@ export class GameBridgeServer {
     }
 
     if (pathname === '/api/system/ports' && req.method === 'GET') {
-      const [p5173, p5174, p21213] = await Promise.all([
+      const [p5173, p5174, p5175, p21213] = await Promise.all([
         TikFinityProber.checkPort(5173, '127.0.0.1', 800),
         TikFinityProber.checkPort(5174, '127.0.0.1', 800),
+        TikFinityProber.checkPort(5175, '127.0.0.1', 800),
         TikFinityProber.checkPort(21213, '127.0.0.1', 800),
       ]);
       res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -584,6 +742,7 @@ export class GameBridgeServer {
           bridgePort: { port: this.port, open: true },
           miniWarPort: { port: 5173, open: p5173 },
           catCafePort: { port: 5174, open: p5174 },
+          englishClassPort: { port: 5175, open: p5175 },
           tikfinityPort: { port: 21213, open: p21213 },
         })
       );
@@ -706,7 +865,9 @@ export class GameBridgeServer {
         }
 
         if (pathname === '/api/active_game') {
-          const game = json.activeGame === 'cat-cafe' ? 'cat-cafe' : 'mini-war';
+          let game: ActiveGame = 'mini-war';
+          if (json.activeGame === 'cat-cafe') game = 'cat-cafe';
+          else if (json.activeGame === 'english-class' || json.activeGame === 'english-class-live') game = 'english-class-live';
           this.activeGame = game;
           console.log(`[GameBridge] Active game switched to: ${this.activeGame}`);
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -844,6 +1005,60 @@ export class GameBridgeServer {
               userId: String(json.userId || 'admin_test'),
               uniqueId: String(json.uniqueId || '@admin'),
               nickname: String(json.nickname || 'Streamer Mèo'),
+            },
+            metadata: json.metadata || {},
+            timestamp: Date.now(),
+          };
+          this.eventQueue.push(cmd);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/english/mock/chat') {
+          const nick = String(json.nickname || 'Học Sinh Chibi').slice(0, 40);
+          const comm = String(json.comment || 'JOIN').slice(0, 150);
+          const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
+          this.mockProvider.simulateChat(nick, comm, undefined, avatarUrl);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/english/mock/gift') {
+          const nick = String(json.nickname || 'Học Sinh Chibi').slice(0, 40);
+          const gift = String(json.giftName || 'Rose').slice(0, 40);
+          const count = Math.min(100, Math.max(1, Number(json.count) || 1));
+          const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
+          this.mockProvider.simulateGift(nick, gift, count, count, true, undefined, avatarUrl);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/english/command') {
+          const action = String(json.action || '');
+          const allowedEnglish = [
+            'english_class.join',
+            'english_class.answer',
+            'english_class.team',
+            'english_class.gift',
+            'english_class.like',
+            'english_class.follow',
+            'english_class.reset',
+          ];
+          if (!allowedEnglish.includes(action)) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Action not permitted for English Class' }));
+            return;
+          }
+          const cmd: GameCommand = {
+            id: `cmd_eng_manual_${Date.now()}`,
+            action: action as any,
+            user: {
+              userId: String(json.userId || 'admin_test'),
+              uniqueId: String(json.uniqueId || '@admin'),
+              nickname: String(json.nickname || 'Streamer'),
             },
             metadata: json.metadata || {},
             timestamp: Date.now(),

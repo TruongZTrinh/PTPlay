@@ -218,7 +218,7 @@ aside.app-sidebar.collapsed .sidebar-route-switcher {
 
 .route-toggle-group {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
   background: #050a14;
   padding: 3px;
@@ -256,6 +256,11 @@ aside.app-sidebar.collapsed .sidebar-route-switcher {
 .route-toggle-btn.active.cat {
   background: var(--emerald-dark);
   box-shadow: 0 0 10px var(--emerald-glow);
+}
+
+.route-toggle-btn.active.ec {
+  background: #b45309;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
 /* Navigation Links */

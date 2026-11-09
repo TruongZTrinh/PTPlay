@@ -555,6 +555,133 @@ async function runTests() {
     assert.strictEqual(res2.isStreakEnd, true);
   });
 
+  // --- 15. ENGLISH CLASS LIVE GAME ISOLATION & COMMAND PARSING ---
+  await test('15. English Class LIVE: Active game selector, commands & avatar passthrough', async () => {
+    const { GameBridgeServer } = await import('../server/GameBridgeServer.js');
+    const server = new GameBridgeServer(8099);
+
+    // Switch to English Class LIVE
+    server.activeGame = 'english-class-live';
+    server.eventQueue.clear();
+
+    // 1. JOIN command
+    server.processIncomingLiveEvent({
+      id: 'eng_chat_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'student_123',
+      uniqueId: 'student_123',
+      nickname: 'Mai Lan',
+      comment: 'VÀO LỚP ƠI',
+      profilePictureUrl: 'https://p16-sign.tiktokcdn.com/tos-maliva/avatar.jpg',
+    });
+
+    // 2. Answer B
+    server.processIncomingLiveEvent({
+      id: 'eng_chat_2',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'student_123',
+      uniqueId: 'student_123',
+      nickname: 'Mai Lan',
+      comment: 'Đáp án: B',
+      profilePictureUrl: 'https://p16-sign.tiktokcdn.com/tos-maliva/avatar.jpg',
+    });
+
+    // 3. Team Red
+    server.processIncomingLiveEvent({
+      id: 'eng_chat_3',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'student_456',
+      uniqueId: 'student_456',
+      nickname: 'Bảo Nam',
+      comment: 'ĐỎ',
+    });
+
+    // 4. Gift Rose
+    server.processIncomingLiveEvent({
+      id: 'eng_gift_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'gift',
+      userId: 'student_123',
+      uniqueId: 'student_123',
+      nickname: 'Mai Lan',
+      giftId: 'rose',
+      giftName: 'Rose',
+      diamondCount: 1,
+      repeatCount: 1,
+      deltaCount: 1,
+      repeatEnd: true,
+      profilePictureUrl: 'https://p16-sign.tiktokcdn.com/tos-maliva/avatar.jpg',
+    });
+
+    const logs = server.eventQueue.getRecentLogs();
+    const joinCmd = logs.find((l) => l.action === 'english_class.join');
+    const ansCmd = logs.find((l) => l.action === 'english_class.answer');
+    const teamCmd = logs.find((l) => l.action === 'english_class.team');
+    const giftCmd = logs.find((l) => l.action === 'english_class.gift');
+
+    assert(joinCmd, 'Join command must be queued for English Class');
+    assert.strictEqual(joinCmd?.userName, 'Mai Lan');
+
+    assert(ansCmd, 'Answer command must be queued');
+    assert.strictEqual(ansCmd?.userName, 'Mai Lan');
+
+    assert(teamCmd, 'Team command must be queued');
+    assert.strictEqual(teamCmd?.team, 'red');
+
+    assert(giftCmd, 'Gift command must be queued');
+
+    await server.stop();
+  });
+
+  // --- 16. TIKFINITY RAW AVATAR EXTRACTION ---
+  await test('16. TikFinity Provider: Normalizes profile picture across variant field names', async () => {
+    const { TikFinityProvider } = await import('../providers/TikFinityProvider.js');
+    const provider = new TikFinityProvider();
+
+    // Standard profilePictureUrl
+    const ev1 = provider.normalizeEvent({
+      event: 'chat',
+      data: {
+        userId: 'u1',
+        nickname: 'Alice',
+        comment: 'JOIN',
+        profilePictureUrl: 'https://cdn.example.com/a.jpg',
+      },
+    });
+    assert.strictEqual((ev1 as any)?.profilePictureUrl, 'https://cdn.example.com/a.jpg');
+
+    // Misspelled profilePicturUrl (Streamer.bot connector)
+    const ev2 = provider.normalizeEvent({
+      event: 'chat',
+      data: {
+        userId: 'u2',
+        nickname: 'Bob',
+        comment: 'A',
+        profilePicturUrl: 'https://cdn.example.com/b.jpg',
+      },
+    });
+    assert.strictEqual((ev2 as any)?.profilePictureUrl, 'https://cdn.example.com/b.jpg');
+
+    // Nested user object
+    const ev3 = provider.normalizeEvent({
+      event: 'chat',
+      data: {
+        userId: 'u3',
+        nickname: 'Charlie',
+        comment: 'B',
+        user: { avatarUrl: 'https://cdn.example.com/c.jpg' },
+      },
+    });
+    assert.strictEqual((ev3 as any)?.profilePictureUrl, 'https://cdn.example.com/c.jpg');
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

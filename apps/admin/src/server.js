@@ -15,6 +15,7 @@ const PORT = Number(process.env.PORT) || 8080;
 const BRIDGE_PORT = 8088;
 const MINI_WAR_PORT = 5173;
 const CAT_CAFE_PORT = 5174;
+const ENGLISH_CLASS_PORT = 5175;
 const TIKFINITY_PORT = 21213;
 
 const PLATFORM_DIR = path.resolve(__dirname, '../../');
@@ -27,6 +28,10 @@ const miniWarPath = fs.existsSync(path.join(PLATFORM_DIR, 'games', 'mini-war-are
 const catCafePath = fs.existsSync(path.join(PLATFORM_DIR, 'games', 'cat-cafe'))
   ? path.join(PLATFORM_DIR, 'games', 'cat-cafe')
   : path.join(WORKSPACE_DIR, 'PTPlay-Cat-Cafe');
+
+const englishClassPath = fs.existsSync(path.join(PLATFORM_DIR, 'games', 'english-class-live'))
+  ? path.join(PLATFORM_DIR, 'games', 'english-class-live')
+  : path.join(WORKSPACE_DIR, 'PTPlay-English-Class-Live');
 
 const bridgePath = fs.existsSync(path.join(PLATFORM_DIR, 'apps', 'bridge'))
   ? path.join(PLATFORM_DIR, 'apps', 'bridge')
@@ -55,6 +60,17 @@ const GAME_CONFIGS = [
     launcherBat: path.join(catCafePath, 'RUN_CAT_CAFE_WINDOWS.bat'),
     icon: '🐱',
   },
+  {
+    id: 'english-class',
+    name: 'English Class LIVE V1.0',
+    vietnameseName: 'Lớp Học Vui',
+    genre: 'Interactive Live Bilingual Classroom & Trivia',
+    path: englishClassPath,
+    port: ENGLISH_CLASS_PORT,
+    url: `http://localhost:${ENGLISH_CLASS_PORT}`,
+    launcherBat: path.join(englishClassPath, 'RUN_ENGLISH_CLASS_WINDOWS.bat'),
+    icon: '🎓',
+  },
 ];
 
 // In-Memory Managed Child Processes & Logs Buffer
@@ -74,6 +90,15 @@ const managedProcesses = {
     startedAt: null,
     logs: [],
     workDir: catCafePath,
+    cmd: process.platform === 'win32' ? 'npm.cmd' : 'npm',
+    args: ['run', 'dev'],
+  },
+  'english-class': {
+    process: null,
+    pid: null,
+    startedAt: null,
+    logs: [],
+    workDir: englishClassPath,
     cmd: process.platform === 'win32' ? 'npm.cmd' : 'npm',
     args: ['run', 'dev'],
   },
@@ -209,7 +234,13 @@ function startManagedProcess(serviceKey) {
 // Stop Managed Child Process (including tree kill on Windows & clearing port)
 function stopManagedProcess(serviceKey) {
   const item = managedProcesses[serviceKey];
-  const port = serviceKey === 'mini-war' ? MINI_WAR_PORT : (serviceKey === 'cat-cafe' ? CAT_CAFE_PORT : BRIDGE_PORT);
+  const port = serviceKey === 'mini-war' 
+    ? MINI_WAR_PORT 
+    : (serviceKey === 'cat-cafe' 
+      ? CAT_CAFE_PORT 
+      : (serviceKey === 'english-class' 
+        ? ENGLISH_CLASS_PORT 
+        : BRIDGE_PORT));
 
   try {
     if (item && item.pid) {
@@ -294,9 +325,10 @@ const server = http.createServer(async (req, res) => {
 
   // 1. Process Status & Health
   if (pathname === '/api/process/status' && req.method === 'GET') {
-    const [pMini, pCat, pBridge] = await Promise.all([
+    const [pMini, pCat, pEnglish, pBridge] = await Promise.all([
       checkPort(MINI_WAR_PORT),
       checkPort(CAT_CAFE_PORT),
+      checkPort(ENGLISH_CLASS_PORT),
       checkPort(BRIDGE_PORT),
     ]);
 
@@ -318,6 +350,14 @@ const server = http.createServer(async (req, res) => {
           pid: managedProcesses['cat-cafe'].pid,
           startedAt: managedProcesses['cat-cafe'].startedAt,
           recentLogs: managedProcesses['cat-cafe'].logs.slice(-30),
+        },
+        'english-class': {
+          running: pEnglish || !!managedProcesses['english-class'].process,
+          portOpen: pEnglish,
+          port: ENGLISH_CLASS_PORT,
+          pid: managedProcesses['english-class'].pid,
+          startedAt: managedProcesses['english-class'].startedAt,
+          recentLogs: managedProcesses['english-class'].logs.slice(-30),
         },
         bridge: {
           running: pBridge || !!managedProcesses.bridge.process,
@@ -367,14 +407,16 @@ const server = http.createServer(async (req, res) => {
     const rBridge = startManagedProcess('bridge');
     const rMini = startManagedProcess('mini-war');
     const rCat = startManagedProcess('cat-cafe');
+    const rEnglish = startManagedProcess('english-class');
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ success: true, bridge: rBridge, miniWar: rMini, catCafe: rCat }));
+    res.end(JSON.stringify({ success: true, bridge: rBridge, miniWar: rMini, catCafe: rCat, englishClass: rEnglish }));
     return;
   }
 
   if (pathname === '/api/process/stop_all' && req.method === 'POST') {
     stopManagedProcess('mini-war');
     stopManagedProcess('cat-cafe');
+    stopManagedProcess('english-class');
     stopManagedProcess('bridge');
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ success: true }));
@@ -407,16 +449,17 @@ const server = http.createServer(async (req, res) => {
 
   // 4. API: Games directory & local paths
   if (pathname === '/api/games' && req.method === 'GET') {
-    const [pMini, pCat, pBridge, pTikFinity] = await Promise.all([
+    const [pMini, pCat, pEnglish, pBridge, pTikFinity] = await Promise.all([
       checkPort(MINI_WAR_PORT),
       checkPort(CAT_CAFE_PORT),
+      checkPort(ENGLISH_CLASS_PORT),
       checkPort(BRIDGE_PORT),
       checkPort(TIKFINITY_PORT),
     ]);
 
     const result = GAME_CONFIGS.map((g) => ({
       ...g,
-      isRunning: g.id === 'mini-war' ? pMini : pCat,
+      isRunning: g.id === 'mini-war' ? pMini : (g.id === 'cat-cafe' ? pCat : pEnglish),
       pathExists: fs.existsSync(g.path),
     }));
 
@@ -436,9 +479,10 @@ const server = http.createServer(async (req, res) => {
 
   // 5. API: System ports health scan
   if (pathname === '/api/ports' && req.method === 'GET') {
-    const [p5173, p5174, p8088, p21213] = await Promise.all([
+    const [p5173, p5174, p5175, p8088, p21213] = await Promise.all([
       checkPort(MINI_WAR_PORT),
       checkPort(CAT_CAFE_PORT),
+      checkPort(ENGLISH_CLASS_PORT),
       checkPort(BRIDGE_PORT),
       checkPort(TIKFINITY_PORT),
     ]);
@@ -451,6 +495,7 @@ const server = http.createServer(async (req, res) => {
         bridgePort: { port: BRIDGE_PORT, open: p8088 },
         miniWarPort: { port: MINI_WAR_PORT, open: p5173 },
         catCafePort: { port: CAT_CAFE_PORT, open: p5174 },
+        englishClassPort: { port: ENGLISH_CLASS_PORT, open: p5175 },
         tikfinityPort: { port: TIKFINITY_PORT, open: p21213 },
       })
     );
@@ -494,6 +539,7 @@ server.listen(PORT, '127.0.0.1', () => {
   console.log(`[PTPLAY ADMIN WEB] Running at http://127.0.0.1:${PORT}`);
   console.log(`[Mini War Arena] http://127.0.0.1:${MINI_WAR_PORT}`);
   console.log(`[Cat Café LIVE]  http://127.0.0.1:${CAT_CAFE_PORT}`);
+  console.log(`[English Class]  http://127.0.0.1:${ENGLISH_CLASS_PORT}`);
   console.log(`[LIVE Bridge]    http://127.0.0.1:${BRIDGE_PORT}`);
   console.log('====================================================');
 });

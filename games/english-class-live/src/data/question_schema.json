@@ -1,0 +1,26 @@
+{
+  "required": [
+    "id",
+    "topic",
+    "difficulty",
+    "mode",
+    "prompt",
+    "choices",
+    "correct",
+    "explanation"
+  ],
+  "answerChoices": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "difficultyValues": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "contentNote": "Sample content only; expand to 500 manually reviewed questions before public full release."
+}

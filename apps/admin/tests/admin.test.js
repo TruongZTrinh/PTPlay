@@ -57,3 +57,16 @@ test('4. UI contains 1-click launch controls for both games', () => {
   assert.ok(html.includes("stopAllServices()"));
 });
 
+test('5. English Class LIVE: Admin console, port 5175 and controls integrated', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('panel-englishclass'));
+  assert.ok(html.includes("startService('english-class')"));
+  assert.ok(html.includes("switchActiveGame('english-class')"));
+  assert.ok(html.includes('English Class LIVE V1.0'));
+  assert.ok(html.includes('5175'));
+
+  const serverCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'server.js'), 'utf-8');
+  assert.ok(serverCode.includes('ENGLISH_CLASS_PORT = 5175'));
+  assert.ok(serverCode.includes("'english-class'"));
+});
+

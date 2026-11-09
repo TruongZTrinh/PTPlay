@@ -1,7 +1,7 @@
 export type Team = 'red' | 'blue';
 export type UnitType = 'warrior' | 'archer' | 'tank' | 'mage' | 'boss';
 export type OverflowPolicy = 'wait' | 'convert_heal' | 'convert_buff' | 'drop';
-export type ActiveGame = 'mini-war' | 'cat-cafe';
+export type ActiveGame = 'mini-war' | 'cat-cafe' | 'english-class' | 'english-class-live';
 
 export type LiveRoomStatus =
   | 'disconnected'      // TikFinity app not connected or explicitly sent disconnected
@@ -106,7 +106,15 @@ export interface GameCommand {
     | 'cat_cafe.clear_cats'
     | 'cat_cafe.gift_effect'
     | 'cat_cafe.reset'
-    | 'cat_cafe.demo_spawn';
+    | 'cat_cafe.demo_spawn'
+    | 'english_class.join'
+    | 'english_class.answer'
+    | 'english_class.team'
+    | 'english_class.gift'
+    | 'english_class.like'
+    | 'english_class.follow'
+    | 'english_class.reset'
+    | (string & {});
   team?: Team;
   unitType?: UnitType;
   count?: number;

@@ -3,6 +3,7 @@ export const PORTS = {
   ADMIN: 8080,
   MINI_WAR: 5173,
   CAT_CAFE: 5174,
+  ENGLISH_CLASS: 5175,
   TIKFINITY: 21213,
 } as const;
 

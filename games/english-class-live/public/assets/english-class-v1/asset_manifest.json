@@ -1,0 +1,866 @@
+{
+  "project": "PTPlay English Class LIVE",
+  "asset_count": 86,
+  "assets": [
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_idle.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_point.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose point",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_talk.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose talk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_happy.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose happy",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_think.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose think",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_surprise.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose surprise",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_sad.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose sad",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_cheer.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_clap.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose clap",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/teacher/teacher_explain.png",
+      "width": 512,
+      "height": 720,
+      "category": "teacher",
+      "description": "Cô giáo pose explain",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/blue/blue_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh blue: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/blue/blue_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh blue: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/blue/blue_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh blue: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/blue/blue_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh blue: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/pink/pink_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh pink: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/pink/pink_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh pink: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/pink/pink_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh pink: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/pink/pink_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh pink: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/green/green_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh green: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/green/green_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh green: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/green/green_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh green: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/green/green_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh green: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/purple/purple_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh purple: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/purple/purple_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh purple: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/purple/purple_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh purple: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/purple/purple_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh purple: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/yellow/yellow_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh yellow: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/yellow/yellow_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh yellow: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/yellow/yellow_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh yellow: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/yellow/yellow_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh yellow: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/orange/orange_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh orange: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/orange/orange_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh orange: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/orange/orange_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh orange: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/orange/orange_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh orange: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/navy/navy_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh navy: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/navy/navy_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh navy: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/navy/navy_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh navy: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/navy/navy_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh navy: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/coral/coral_idle.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh coral: idle",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/coral/coral_walk.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh coral: walk",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/coral/coral_cheer.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh coral: cheer",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/students/coral/coral_wrong.png",
+      "width": 320,
+      "height": 380,
+      "category": "students",
+      "description": "Học sinh coral: wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "key pose; not sprite-frame animation"
+    },
+    {
+      "path": "public/assets/english-class-v1/backgrounds/classroom_day.png",
+      "width": 540,
+      "height": 960,
+      "category": "backgrounds",
+      "description": "Classroom background day",
+      "alpha": false,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/backgrounds/classroom_evening.png",
+      "width": 540,
+      "height": 960,
+      "category": "backgrounds",
+      "description": "Classroom background evening",
+      "alpha": false,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/backgrounds/classroom_party.png",
+      "width": 540,
+      "height": 960,
+      "category": "backgrounds",
+      "description": "Classroom background party",
+      "alpha": false,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/props/chalkboard.png",
+      "width": 480,
+      "height": 330,
+      "category": "props",
+      "description": "Doubled border question board; place Phaser Text separately",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/props/student_desk.png",
+      "width": 270,
+      "height": 190,
+      "category": "props",
+      "description": "Individual student desk",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/props/teacher_podium.png",
+      "width": 230,
+      "height": 300,
+      "category": "props",
+      "description": "Teacher podium",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/hud_top.png",
+      "width": 520,
+      "height": 104,
+      "category": "ui",
+      "description": "Frame background hud_top, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/question_banner.png",
+      "width": 440,
+      "height": 85,
+      "category": "ui",
+      "description": "Frame background question_banner, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/answer_a.png",
+      "width": 198,
+      "height": 90,
+      "category": "ui",
+      "description": "Frame background answer_a, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/answer_b.png",
+      "width": 198,
+      "height": 90,
+      "category": "ui",
+      "description": "Frame background answer_b, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/answer_c.png",
+      "width": 198,
+      "height": 90,
+      "category": "ui",
+      "description": "Frame background answer_c, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/answer_d.png",
+      "width": 198,
+      "height": 90,
+      "category": "ui",
+      "description": "Frame background answer_d, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/nameplate.png",
+      "width": 240,
+      "height": 62,
+      "category": "ui",
+      "description": "Frame background nameplate, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/toast_success.png",
+      "width": 430,
+      "height": 100,
+      "category": "ui",
+      "description": "Frame background toast_success, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/toast_wrong.png",
+      "width": 430,
+      "height": 100,
+      "category": "ui",
+      "description": "Frame background toast_wrong, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/compact_help.png",
+      "width": 510,
+      "height": 60,
+      "category": "ui",
+      "description": "Frame background compact_help, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/results_banner.png",
+      "width": 470,
+      "height": 126,
+      "category": "ui",
+      "description": "Frame background results_banner, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/scoreboard.png",
+      "width": 440,
+      "height": 280,
+      "category": "ui",
+      "description": "Frame background scoreboard, place text dynamically",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/avatar_frame_neutral.png",
+      "width": 128,
+      "height": 128,
+      "category": "ui",
+      "description": "Avatar ring transparent center neutral",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/avatar_frame_red.png",
+      "width": 128,
+      "height": 128,
+      "category": "ui",
+      "description": "Avatar ring transparent center red",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/avatar_frame_blue.png",
+      "width": 128,
+      "height": 128,
+      "category": "ui",
+      "description": "Avatar ring transparent center blue",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/avatar_frame_gold.png",
+      "width": 128,
+      "height": 128,
+      "category": "ui",
+      "description": "Avatar ring transparent center gold",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/star.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon star",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/heart.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon heart",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/check.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon check",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/wrong.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon wrong",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/crown.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon crown",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/timer.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon timer",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/sparkle.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon sparkle",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/speech.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon speech",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/lightning.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon lightning",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/fire.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon fire",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/confetti.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon confetti",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/effects/music.png",
+      "width": 256,
+      "height": 256,
+      "category": "effects",
+      "description": "VFX icon music",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/rose.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: rose; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/heart.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: heart; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/giftbox.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: giftbox; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/fish.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: fish; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/crown.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: crown; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/universe.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: universe; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/cup.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: cup; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/gifts/magic.png",
+      "width": 256,
+      "height": 256,
+      "category": "gifts",
+      "description": "Original generic gift reaction icon: magic; mappings configurable",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/round_label.png",
+      "width": 240,
+      "height": 65,
+      "category": "ui",
+      "description": "Frame label, content dynamic",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    },
+    {
+      "path": "public/assets/english-class-v1/ui/streak_badge.png",
+      "width": 240,
+      "height": 65,
+      "category": "ui",
+      "description": "Frame label, content dynamic",
+      "alpha": true,
+      "format": "png",
+      "animation": "static"
+    }
+  ]
+}

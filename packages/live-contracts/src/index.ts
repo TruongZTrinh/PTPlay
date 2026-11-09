@@ -107,6 +107,13 @@ export interface GameCommand {
     | 'cat_cafe.gift_effect'
     | 'cat_cafe.reset'
     | 'cat_cafe.demo_spawn'
+    | 'english_class.join'
+    | 'english_class.answer'
+    | 'english_class.team'
+    | 'english_class.gift'
+    | 'english_class.like'
+    | 'english_class.follow'
+    | 'english_class.reset'
     | (string & {});
   team?: Team;
   unitType?: UnitType;

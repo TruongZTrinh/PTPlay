@@ -89,6 +89,7 @@ const TAB_BREADCRUMBS = {
   games: { cat: 'Core Game Suite', name: 'Tiến Trình & Cổng Mạng' },
   miniwar: { cat: 'Core Game Suite', name: 'Mini War Arena V1.0' },
   catcafe: { cat: 'Core Game Suite', name: 'Café Mòe LIVE V1.0' },
+  englishclass: { cat: 'Core Game Suite', name: 'English Class LIVE V1.0' },
   preview: { cat: 'Core Game Suite', name: 'Multiview Dọc 9:16' },
   spectators: { cat: 'Audience & CRM', name: 'Khán Giả & Đội Ngũ' },
   economy: { cat: 'Audience & CRM', name: 'Quy Tắc Quà Tặng (Gifts)' },
@@ -144,6 +145,7 @@ async function fetchProcessStatus() {
 
     updateServiceCard('mw', svcs['mini-war']);
     updateServiceCard('cat', svcs['cat-cafe']);
+    updateServiceCard('ec', svcs['english-class']);
     updateServiceCard('bridge', svcs.bridge);
   } catch (e) {}
 }
@@ -280,6 +282,11 @@ async function fetchPorts() {
     if (val5174) val5174.innerText = p.catCafePort.open ? '5174' : '5174';
     if (dot5174) dot5174.className = `tele-dot ${p.catCafePort.open ? 'online' : 'offline'}`;
 
+    const val5175 = document.getElementById('val-port-5175');
+    const dot5175 = document.getElementById('dot-port-5175');
+    if (val5175) val5175.innerText = p.englishClassPort?.open ? '5175' : '5175';
+    if (dot5175) dot5175.className = `tele-dot ${p.englishClassPort?.open ? 'online' : 'offline'}`;
+
     const valBridge = document.getElementById('val-bridge');
     const dotBridge = document.getElementById('dot-bridge');
     if (valBridge) valBridge.innerText = p.bridgePort.open ? '8088' : '8088';
@@ -290,7 +297,7 @@ async function fetchPorts() {
     if (valTk) valTk.innerText = p.tikfinityPort.open ? '21213' : '21213';
     if (dotTk) dotTk.className = `tele-dot ${p.tikfinityPort.open ? 'online' : 'offline'}`;
 
-    // Update top server status badges in Mini War and Cat Cafe tabs
+    // Update top server status badges in Mini War, Cat Cafe, and English Class tabs
     const badgeTopMw = document.getElementById('badge-top-mw');
     if (badgeTopMw) {
       badgeTopMw.innerText = p.miniWarPort.open ? 'ONLINE (Cổng 5173)' : 'OFFLINE (Chưa bật)';
@@ -301,38 +308,56 @@ async function fetchPorts() {
       badgeTopCat.innerText = p.catCafePort.open ? 'ONLINE (Cổng 5174)' : 'OFFLINE (Chưa bật)';
       badgeTopCat.className = `badge ${p.catCafePort.open ? 'badge-green' : 'badge-red'}`;
     }
+    const badgeTopEc = document.getElementById('badge-top-ec');
+    if (badgeTopEc) {
+      badgeTopEc.innerText = p.englishClassPort?.open ? 'ONLINE (Cổng 5175)' : 'OFFLINE (Chưa bật)';
+      badgeTopEc.className = `badge ${p.englishClassPort?.open ? 'badge-green' : 'badge-red'}`;
+    }
   } catch (e) {}
 }
 
 function updateActiveGameUI(game) {
   currentActiveGame = game;
   const isMini = game === 'mini-war';
+  const isCat = game === 'cat-cafe';
+  const isEnglish = game === 'english-class' || game === 'english-class-live';
   
   const cardMw = document.getElementById('game-card-miniwar');
   const cardCat = document.getElementById('game-card-catcafe');
+  const cardEc = document.getElementById('game-card-englishclass');
   if (cardMw) cardMw.classList.toggle('active-live', isMini);
-  if (cardCat) cardCat.classList.toggle('active-live', !isMini);
+  if (cardCat) cardCat.classList.toggle('active-live', isCat);
+  if (cardEc) cardEc.classList.toggle('active-live', isEnglish);
 
   // Sidebar route switcher buttons
   const btnRouteMw = document.getElementById('btn-route-mw');
   const btnRouteCat = document.getElementById('btn-route-cat');
+  const btnRouteEc = document.getElementById('btn-route-ec');
   if (btnRouteMw) btnRouteMw.classList.toggle('active', isMini);
   if (btnRouteCat) {
-    btnRouteCat.classList.toggle('active', !isMini);
-    btnRouteCat.classList.toggle('cat', !isMini);
+    btnRouteCat.classList.toggle('active', isCat);
+    btnRouteCat.classList.toggle('cat', isCat);
+  }
+  if (btnRouteEc) {
+    btnRouteEc.classList.toggle('active', isEnglish);
+    btnRouteEc.classList.toggle('ec', isEnglish);
   }
 
   // Sidebar LIVE badges
   const badgeMw = document.getElementById('badge-mw-live');
   const badgeCat = document.getElementById('badge-cat-live');
+  const badgeEc = document.getElementById('badge-ec-live');
   if (badgeMw) badgeMw.style.display = isMini ? 'inline-block' : 'none';
-  if (badgeCat) badgeCat.style.display = !isMini ? 'inline-block' : 'none';
+  if (badgeCat) badgeCat.style.display = isCat ? 'inline-block' : 'none';
+  if (badgeEc) badgeEc.style.display = isEnglish ? 'inline-block' : 'none';
 }
 
 async function switchActiveGame(target) {
   if (target === currentActiveGame) return;
   playSound('click');
-  const targetName = target === 'mini-war' ? 'Mini War Arena' : 'Café Mòe';
+  const targetName = target === 'mini-war' 
+    ? 'Mini War Arena' 
+    : (target === 'cat-cafe' ? 'Café Mòe' : 'Lớp Học Vui LIVE');
   if (!confirm(`Xác nhận đổi game tiếp nhận luồng sự kiện TikTok LIVE sang: ${targetName}?`)) return;
   try {
     const res = await fetch('/api/active_game', {
@@ -646,9 +671,11 @@ async function updateQueueConfig() {
 
 // --- 10. Simulator & Diagnostic Prober ---
 async function sendMockChat(gameType, customNick, customComment) {
-  const nick = customNick || (gameType === 'cat' ? 'BéMèoXinh' : 'ChiếnBinhThầnTốc');
-  const comment = customComment || (gameType === 'cat' ? 'MÈO' : 'ĐỎ CỐ LÊN');
-  const endpoint = gameType === 'cat' ? '/api/catcafe/mock/chat' : '/api/mock/chat';
+  const isEc = gameType === 'english' || gameType === 'english-class';
+  const isCat = gameType === 'cat';
+  const nick = customNick || (isEc ? 'Mai Lan' : (isCat ? 'BéMèoXinh' : 'ChiếnBinhThầnTốc'));
+  const comment = customComment || (isEc ? 'JOIN' : (isCat ? 'MÈO' : 'ĐỎ CỐ LÊN'));
+  const endpoint = isEc ? '/api/english/mock/chat' : (isCat ? '/api/catcafe/mock/chat' : '/api/mock/chat');
   try {
     await fetch(endpoint, {
       method: 'POST',
@@ -663,8 +690,10 @@ async function sendMockChat(gameType, customNick, customComment) {
 }
 
 async function sendMockGift(gameType, giftName, count = 1) {
-  const nick = gameType === 'cat' ? 'MèoMêĂn' : 'ĐạiGiaTikTok';
-  const endpoint = gameType === 'cat' ? '/api/catcafe/mock/gift' : '/api/mock/gift';
+  const isEc = gameType === 'english' || gameType === 'english-class';
+  const isCat = gameType === 'cat';
+  const nick = isEc ? 'PhụHuynhVIP' : (isCat ? 'MèoMêĂn' : 'ĐạiGiaTikTok');
+  const endpoint = isEc ? '/api/english/mock/gift' : (isCat ? '/api/catcafe/mock/gift' : '/api/mock/gift');
   try {
     await fetch(endpoint, {
       method: 'POST',
@@ -675,6 +704,53 @@ async function sendMockGift(gameType, giftName, count = 1) {
     fetchStatus();
     fetchRawLogs();
   } catch (e) {}
+}
+
+// --- 10.1 English Class Live Specific Actions ---
+async function sendEcCommand(action, metadata = {}) {
+  playSound('click');
+  try {
+    const res = await fetch('/api/english/command', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ action, metadata }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`🎓 [Lớp Học Vui] Lệnh: ${action}`, 'success');
+      fetchStatus();
+    }
+  } catch (e) {
+    showToast(`Lỗi: ${e.message}`, 'error');
+  }
+}
+
+async function sendMockAnswer(answer) {
+  const names = ['Mai Lan', 'Tuấn Anh', 'Thảo My', 'Minh Trí', 'Hương Giang', 'Bảo Long', 'Hồng Phúc'];
+  const nick = names[Math.floor(Math.random() * names.length)];
+  await sendMockChat('english', nick, answer);
+}
+
+async function joinMockStudents(count = 5) {
+  const sampleNames = [
+    'Mai Lan', 'Minh Trí', 'Thu Hằng', 'Bảo Nam', 'Ngọc Ánh',
+    'Hoàng Long', 'Thảo My', 'Tuấn Anh', 'Phương Thảo', 'Quang Huy',
+    'Hương Giang', 'Hải Đăng', 'Thanh Trúc', 'Đức Anh', 'Hồng Phúc',
+    'Thùy Linh', 'Văn Hùng', 'Khánh Linh', 'Tấn Phát', 'Minh Châu',
+    'Quốc Bảo', 'Bích Ngọc', 'Trung Kiên', 'Yến Nhi', 'Gia Huy'
+  ];
+  playSound('success');
+  showToast(`🎒 Đang cho ${count} học sinh bước vào lớp...`, 'info');
+  for (let i = 0; i < count; i++) {
+    const nick = sampleNames[i % sampleNames.length] + (i >= sampleNames.length ? ` ${Math.floor(i / sampleNames.length) + 1}` : '');
+    await fetch('/api/english/mock/chat', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ nickname: nick, comment: 'JOIN' }),
+    });
+  }
+  showToast(`✅ Đã cho ${count} học sinh tham gia lớp học!`, 'success');
+  fetchStatus();
 }
 
 async function toggleAutoSim() {
@@ -722,15 +798,23 @@ function setPreviewMode(mode) {
   document.querySelectorAll('.preview-mode-btn').forEach((b) => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
   const mwWrapper = document.getElementById('wrapper-preview-mw');
   const catWrapper = document.getElementById('wrapper-preview-cat');
+  const ecWrapper = document.getElementById('wrapper-preview-ec');
   if (mode === 'mini-war') {
     if (mwWrapper) mwWrapper.style.display = 'block';
     if (catWrapper) catWrapper.style.display = 'none';
+    if (ecWrapper) ecWrapper.style.display = 'none';
   } else if (mode === 'cat-cafe') {
     if (mwWrapper) mwWrapper.style.display = 'none';
     if (catWrapper) catWrapper.style.display = 'block';
+    if (ecWrapper) ecWrapper.style.display = 'none';
+  } else if (mode === 'english-class') {
+    if (mwWrapper) mwWrapper.style.display = 'none';
+    if (catWrapper) catWrapper.style.display = 'none';
+    if (ecWrapper) ecWrapper.style.display = 'block';
   } else if (mode === 'dual') {
     if (mwWrapper) mwWrapper.style.display = 'block';
     if (catWrapper) catWrapper.style.display = 'block';
+    if (ecWrapper) ecWrapper.style.display = 'block';
   }
 }
 

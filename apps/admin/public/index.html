@@ -36,6 +36,10 @@
             <span>🐱</span>
             <span>Café Mòe</span>
           </button>
+          <button class="route-toggle-btn" id="btn-route-ec" onclick="switchActiveGame('english-class')">
+            <span>🎓</span>
+            <span>Lớp Học</span>
+          </button>
         </div>
       </div>
 
@@ -45,7 +49,7 @@
         <button class="tab-btn active" data-tab="games">
           <span class="tab-icon">🖥️</span>
           <span class="tab-label">Tiến Trình & Cổng</span>
-          <span class="tab-pill" id="pill-nav-games">3 Hubs</span>
+          <span class="tab-pill" id="pill-nav-games">4 Hubs</span>
         </button>
         <button class="tab-btn" data-tab="miniwar">
           <span class="tab-icon">⚔️</span>
@@ -56,6 +60,11 @@
           <span class="tab-icon">🐱</span>
           <span class="tab-label">Café Mòe LIVE</span>
           <span class="tab-badge-live" id="badge-cat-live" style="display:none;">LIVE</span>
+        </button>
+        <button class="tab-btn" data-tab="englishclass">
+          <span class="tab-icon">🎓</span>
+          <span class="tab-label">Lớp Học Vui LIVE</span>
+          <span class="tab-badge-live" id="badge-ec-live" style="display:none;">LIVE</span>
         </button>
         <button class="tab-btn" data-tab="preview">
           <span class="tab-icon">📱</span>
@@ -144,6 +153,11 @@
               <span class="tele-name">CatCafe:</span>
               <strong class="tele-port" id="val-port-5174">5174</strong>
             </div>
+            <div class="telemetry-item" title="Cổng 5175 (Lớp Học Vui LIVE V1.0)">
+              <span class="tele-dot offline" id="dot-port-5175"></span>
+              <span class="tele-name">EngClass:</span>
+              <strong class="tele-port" id="val-port-5175">5175</strong>
+            </div>
             <div class="telemetry-item" title="Cổng 21213 (TikFinity Desktop App)">
               <span class="tele-dot offline" id="dot-tikfinity"></span>
               <span class="tele-name">TikFinity:</span>
@@ -200,6 +214,9 @@
               </button>
               <button class="btn-green" onclick="switchActiveGame('cat-cafe')">
                 🐱 Tiếp Nhận LIVE Cho: Café Mòe (5174)
+              </button>
+              <button class="btn-gold" onclick="switchActiveGame('english-class')">
+                🎓 Tiếp Nhận LIVE Cho: Lớp Học Vui (5175)
               </button>
             </div>
           </div>
@@ -259,6 +276,28 @@
                 <pre id="term-cat" class="process-terminal">// Đang tải logs...</pre>
               </div>
 
+              <!-- PROCESS: ENGLISH CLASS -->
+              <div class="process-card">
+                <div class="process-header">
+                  <div class="process-name">
+                    <div id="dot-proc-ec" class="status-dot offline"></div>
+                    <span>Lớp Học Vui LIVE</span>
+                  </div>
+                  <span id="val-proc-ec" style="font-size: 11px; font-weight: bold; color: var(--rose);">STOPPED</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); display:flex; justify-content:space-between;">
+                  <span id="val-pid-ec">PID: –</span>
+                  <span>Port 5175</span>
+                </div>
+                <div class="btn-group">
+                  <button class="btn-gold" style="font-size: 11px; padding: 4px 9px;" onclick="startService('english-class')">▶ Bật</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="stopService('english-class')">⏹ Dừng</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="restartService('english-class')">🔄 Restart</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở</button>
+                </div>
+                <pre id="term-ec" class="process-terminal">// Đang tải logs...</pre>
+              </div>
+
               <!-- PROCESS: LIVE BRIDGE -->
               <div class="process-card">
                 <div class="process-header">
@@ -285,7 +324,7 @@
           </div>
 
           <!-- DUAL GAME HERO CARDS -->
-          <div class="grid-2">
+          <div class="grid-3">
             <div id="game-card-miniwar" class="card game-card active-live">
               <div class="active-banner">ĐANG NHẬN LIVE</div>
               <div class="game-hero">
@@ -333,6 +372,31 @@
                 <button class="btn-gold" onclick="switchTab('catcafe')">🐾 Quản Lý Quán Mèo</button>
                 <button class="btn-outline" onclick="setPreviewMode('cat-cafe'); switchTab('preview');">📺 Xem 9:16</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5174', '_blank')">🌐 Mở Tab 5174</button>
+              </div>
+            </div>
+
+            <div id="game-card-englishclass" class="card game-card">
+              <div class="active-banner">ĐANG NHẬN LIVE</div>
+              <div class="game-hero">
+                <div class="game-hero-icon" style="color: #ffd700;">🎓</div>
+                <div class="game-hero-info">
+                  <h3>English Class LIVE V1.0</h3>
+                  <p>Lớp Học Vui Chibi · Trả Lời A/B/C/D · TTS Song Ngữ · Tỷ Lệ 9:16 Dọc</p>
+                </div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-item"><div class="stat-label">25 Bàn Học</div><div class="stat-val" style="font-size:13px; color:#ffd700;">5x5 Grid</div></div>
+                <div class="stat-item"><div class="stat-label">8 Chế Độ</div><div class="stat-val" style="font-size:13px; color:#38bdf8;">Quick, Team, Boss...</div></div>
+                <div class="stat-item"><div class="stat-label">500+ Câu Hỏi</div><div class="stat-val" style="font-size:13px; color:#34d399;">Song ngữ Anh/Việt</div></div>
+                <div class="stat-item"><div class="stat-label">Quà Tặng</div><div class="stat-val" style="font-size:13px; color:#f43f5e;">8 Hiệu ứng VFX</div></div>
+              </div>
+              <div class="btn-group">
+                <button class="btn-gold" onclick="startService('english-class')">🚀 Bật Game (5175)</button>
+                <button class="btn-red" onclick="stopService('english-class')">⏹ Dừng</button>
+                <button class="btn-outline" onclick="restartService('english-class')">🔄 Restart</button>
+                <button class="btn-gold" onclick="switchTab('englishclass')">🎓 Quản Lý Lớp Học</button>
+                <button class="btn-outline" onclick="setPreviewMode('english-class'); switchTab('preview');">📺 Xem 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab 5175</button>
               </div>
             </div>
           </div>
@@ -650,6 +714,134 @@
 
         </section>
 
+        <!-- ==================== TAB 3: ENGLISH CLASS LIVE CONSOLE ==================== -->
+        <section id="panel-englishclass" class="tab-panel">
+          
+          <!-- SERVER LIFECYCLE & CONTROLS -->
+          <div class="card" style="border-left: 4px solid var(--amber); background: #161208; margin-bottom: 14px;">
+            <div class="card-header">
+              <div class="card-title">
+                <span>🎓 Trạng Thái Máy Chủ: English Class LIVE (Cổng 5175)</span>
+                <span id="badge-top-ec" class="badge badge-red">OFFLINE</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-gold" onclick="startService('english-class')">▶ Bật Lớp Học (5175)</button>
+                <button class="btn-red" onclick="stopService('english-class')">⏹ Dừng</button>
+                <button class="btn-outline" onclick="restartService('english-class')">🔄 Khởi Động Lại</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab 5175</button>
+                <button class="btn-outline" onclick="setPreviewMode('english-class'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUIZ CONTROLS & GAME MODES -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🎯 Điều Khiển Vòng Đấu & 8 Chế Độ Học Tập</div>
+              <div class="btn-group">
+                <button class="btn-gold" onclick="sendEcCommand('next_question')">⏭ Câu Hỏi Kế Tiếp</button>
+                <button class="btn-red" onclick="sendEcCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block;">Chuyển Chế Độ Game (8 Quiz Modes):</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendEcCommand('set_mode', { mode: 'quick' })">⚡ 1. Quick Quiz</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_mode', { mode: 'picture' })">🖼️ 2. Picture Quiz</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_mode', { mode: 'listening' })">🎧 3. Listening</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_mode', { mode: 'spelling' })">🔤 4. Spelling Bee</button>
+                  <button class="btn-primary" onclick="sendEcCommand('set_mode', { mode: 'team' })">⚔️ 5. Team Đỏ vs Xanh</button>
+                  <button class="btn-red" onclick="sendEcCommand('set_mode', { mode: 'survival' })">❤️ 6. Survival 3 Tim</button>
+                  <button class="btn-gold" onclick="sendEcCommand('set_mode', { mode: 'boss' })">👹 7. Boss Question</button>
+                  <button class="btn-green" onclick="sendEcCommand('set_mode', { mode: 'challenge' })">🏆 8. Challenge Hour</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block;">Không Gian & Bối Cảnh Lớp Học (3 Themes):</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendEcCommand('set_theme', { theme: 'day' })">☀️ Lớp Học Ban Ngày</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_theme', { theme: 'evening' })">🌙 Buổi Tối Ấm Áp</button>
+                  <button class="btn-gold" onclick="sendEcCommand('set_theme', { theme: 'party' })">🎉 Đại Tiệc Lớp Học (Vũ Trụ)</button>
+                </div>
+
+                <label style="font-size: 12px; color: var(--text-muted); margin: 12px 0 6px 0; display: block;">Điều Khiển Cô Giáo (AI Host Key Poses):</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendEcCommand('set_pose', { pose: 'happy' })">😊 Vui Vẻ</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_pose', { pose: 'cheer' })">🙌 Cổ Vũ</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_pose', { pose: 'clapping' })">👏 Vỗ Tay</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_pose', { pose: 'point' })">👉 Chỉ Bảng</button>
+                  <button class="btn-outline" onclick="sendEcCommand('set_pose', { pose: 'thinking' })">🤔 Suy Nghĩ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUDIENCE SIMULATOR & GIFT REACTIONS -->
+          <div class="grid-2">
+            <!-- AUDIENCE COMMANDS -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">👥 Khán Giả Vào Lớp & Trả Lời A/B/C/D</div></div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Khán Giả Vào Lớp (Lệnh JOIN / VÀO):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-green" onclick="sendMockChat('english', 'Mai Lan', 'JOIN')">🙋 1 Học Sinh (JOIN)</button>
+                  <button class="btn-green" onclick="joinMockStudents(5)">👥 5 Học Sinh Vào Lớp</button>
+                  <button class="btn-gold" onclick="joinMockStudents(25)">🏫 Lấp Đầy 25 Bàn Học</button>
+                  <button class="btn-blue" onclick="joinMockStudents(50)">🚀 Stress Test 50+ Học Sinh</button>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Học Sinh Trả Lời Câu Hỏi (A / B / C / D):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockAnswer('A')">🅰️ Chọn Đáp Án A</button>
+                  <button class="btn-blue" onclick="sendMockAnswer('B')">🅱️ Chọn Đáp Án B</button>
+                  <button class="btn-gold" onclick="sendMockAnswer('C')">🅲 Chọn Đáp Án C</button>
+                  <button class="btn-green" onclick="sendMockAnswer('D')">🅳 Chọn Đáp Án D</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Đấu Đội Team Battle (ĐỎ vs XANH):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockChat('english', 'ChiếnThầnĐỏ', 'ĐỎ')">🔴 Vào Phe ĐỎ</button>
+                  <button class="btn-blue" onclick="sendMockChat('english', 'HiệpSĩXanh', 'XANH')">🔵 Vào Phe XANH</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- GIFTS & TTS -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">🎁 Quà Tặng Hiệu Ứng (8 VFX Không Pay-to-Win)</div></div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Hiệu Ứng Quà Tặng TikTok:</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockGift('english', 'Rose', 1)">🌹 Hoa Hồng (Cánh bay)</button>
+                  <button class="btn-gold" onclick="sendMockGift('english', 'Heart', 1)">💖 Thả Tim (Mưa tim)</button>
+                  <button class="btn-blue" onclick="sendMockGift('english', 'Universe', 1)">🌌 Vũ Trụ (Đại tiệc)</button>
+                  <button class="btn-gold" onclick="sendMockGift('english', 'Crown', 1)">👑 Vương Miện</button>
+                  <button class="btn-outline" onclick="sendMockGift('english', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
+                  <button class="btn-outline" onclick="sendMockGift('english', 'Magic', 1)">✨ Bụi Sao Kỳ Diệu</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Giọng Đọc Cô Giáo (PTPlay Bi-lingual TTS):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-green" onclick="sendEcCommand('tts_speak', { text: 'Chào mừng cả lớp đến với tiết học tiếng Anh hôm nay!', lang: 'vi-VN' })">🗣️ Tiếng Việt: Chào Lớp</button>
+                  <button class="btn-blue" onclick="sendEcCommand('tts_speak', { text: 'Are you ready for the next challenge? Let\'s go!', lang: 'en-US' })">🗣️ English: Next Challenge</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
         <!-- ==================== TAB 4: SPECTATORS & TEAMS CRM ==================== -->
         <section id="panel-spectators" class="tab-panel">
           <div class="card">
@@ -777,11 +969,13 @@
               <div class="btn-group">
                 <button class="btn-outline preview-mode-btn active" data-mode="mini-war" onclick="setPreviewMode('mini-war')">⚔️ Mini War (5173)</button>
                 <button class="btn-outline preview-mode-btn" data-mode="cat-cafe" onclick="setPreviewMode('cat-cafe')">🐱 Café Mòe (5174)</button>
-                <button class="btn-outline preview-mode-btn" data-mode="dual" onclick="setPreviewMode('dual')">👥 Xem Song Song (Dual)</button>
+                <button class="btn-outline preview-mode-btn" data-mode="english-class" onclick="setPreviewMode('english-class')">🎓 Lớp Học (5175)</button>
+                <button class="btn-outline preview-mode-btn" data-mode="dual" onclick="setPreviewMode('dual')">👥 Xem Song Song</button>
                 <button id="btn-toggle-safe-zone" class="btn-outline" onclick="toggleSafeZoneOverlay()">🛡️ Vạch An Toàn TikTok LIVE</button>
                 <button class="btn-outline" onclick="reloadPreviews()">🔄 Tải Lại Màn Hình</button>
                 <button class="btn-primary" style="font-size:11px; padding:5px 9px;" onclick="startService('mini-war')">▶ Bật Mini War (5173)</button>
                 <button class="btn-green" style="font-size:11px; padding:5px 9px;" onclick="startService('cat-cafe')">▶ Bật Café Mòe (5174)</button>
+                <button class="btn-gold" style="font-size:11px; padding:5px 9px;" onclick="startService('english-class')">▶ Bật Lớp Học (5175)</button>
               </div>
             </div>
           </div>
@@ -801,6 +995,15 @@
               <div class="safe-zone-overlay">
                 <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
                 <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (CAFÉ STAGE)</div>
+                <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
+              </div>
+            </div>
+
+            <div id="wrapper-preview-ec" class="phone-mockup" style="display: none;">
+              <iframe id="preview-frame-ec" src="http://localhost:5175" title="English Class LIVE"></iframe>
+              <div class="safe-zone-overlay">
+                <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
+                <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (CLASSROOM STAGE)</div>
                 <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
               </div>
             </div>

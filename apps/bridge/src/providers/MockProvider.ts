@@ -56,7 +56,7 @@ export class MockProvider extends LiveEventProvider {
 
   // --- Simulation Methods ---
 
-  public simulateChat(nickname: string, comment: string, userId?: string): NormalizedLiveEvent {
+  public simulateChat(nickname: string, comment: string, userId?: string, avatarUrl?: string): NormalizedLiveEvent {
     const uId = userId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
     const event: NormalizedLiveEvent = {
       id: this.nextId(),
@@ -66,6 +66,7 @@ export class MockProvider extends LiveEventProvider {
       uniqueId: `@${uId}`,
       nickname,
       comment,
+      profilePictureUrl: avatarUrl,
       timestamp: Date.now(),
     };
     this.recordEvent(event);
@@ -78,7 +79,8 @@ export class MockProvider extends LiveEventProvider {
     repeatCount = 1,
     deltaCount = 1,
     repeatEnd = true,
-    userId?: string
+    userId?: string,
+    avatarUrl?: string
   ): NormalizedLiveEvent {
     const uId = userId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
     const diamondMap: Record<string, number> = {
@@ -102,6 +104,7 @@ export class MockProvider extends LiveEventProvider {
       repeatCount,
       deltaCount,
       repeatEnd,
+      profilePictureUrl: avatarUrl,
       timestamp: Date.now(),
     };
     this.recordEvent(event);

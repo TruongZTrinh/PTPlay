@@ -1,0 +1,3052 @@
+[
+  {
+    "id": "grammar-001",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: She ___ a student.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "be",
+      "B": "is",
+      "C": "are",
+      "D": "am"
+    },
+    "correct": "B",
+    "explanation": "She is a student.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-002",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: I ___ happy today.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "are",
+      "B": "is",
+      "C": "am",
+      "D": "be"
+    },
+    "correct": "C",
+    "explanation": "I am happy today.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-003",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: They ___ my friends.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "is",
+      "B": "am",
+      "C": "be",
+      "D": "are"
+    },
+    "correct": "D",
+    "explanation": "They are my friends.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-004",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: He ___ football every Sunday.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "played",
+      "B": "plays",
+      "C": "playing",
+      "D": "play"
+    },
+    "correct": "B",
+    "explanation": "He plays football every Sunday.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-005",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: We ___ to school by bus.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "goes",
+      "B": "go",
+      "C": "going",
+      "D": "went"
+    },
+    "correct": "B",
+    "explanation": "We go to school by bus.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-006",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: Yesterday, I ___ a movie.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "watched",
+      "B": "watches",
+      "C": "watching",
+      "D": "watch"
+    },
+    "correct": "A",
+    "explanation": "Yesterday is past, so use watched.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-007",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: She has ___ orange.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "a",
+      "B": "an",
+      "C": "some",
+      "D": "the"
+    },
+    "correct": "B",
+    "explanation": "Use an before a vowel sound.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-008",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: This is ___ book.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "I",
+      "B": "mine",
+      "C": "me",
+      "D": "my"
+    },
+    "correct": "D",
+    "explanation": "My is a possessive adjective.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-009",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: There ___ two cats.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "am",
+      "B": "is",
+      "C": "are",
+      "D": "be"
+    },
+    "correct": "C",
+    "explanation": "Two cats is plural; use are.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-010",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: There ___ a dog outside.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "be",
+      "B": "is",
+      "C": "are",
+      "D": "am"
+    },
+    "correct": "B",
+    "explanation": "A dog is singular; use is.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-011",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: He is taller ___ me.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "then",
+      "B": "as",
+      "C": "that",
+      "D": "than"
+    },
+    "correct": "D",
+    "explanation": "Taller than is the comparison.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-012",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: I can ___ English.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "spoke",
+      "B": "speak",
+      "C": "speaking",
+      "D": "speaks"
+    },
+    "correct": "B",
+    "explanation": "After can use the base verb.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-013",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: She does not ___ coffee.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "liked",
+      "B": "likes",
+      "C": "liking",
+      "D": "like"
+    },
+    "correct": "D",
+    "explanation": "After does not use the base verb.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-014",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: ___ you like music?",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "Are",
+      "B": "Do",
+      "C": "Did",
+      "D": "Does"
+    },
+    "correct": "B",
+    "explanation": "Do you like... is correct.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-015",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: ___ he play tennis?",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "Are",
+      "B": "Does",
+      "C": "Do",
+      "D": "Is"
+    },
+    "correct": "B",
+    "explanation": "Does he play... is correct.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-016",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: My birthday is ___ May.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "to",
+      "B": "at",
+      "C": "in",
+      "D": "on"
+    },
+    "correct": "C",
+    "explanation": "Use in for months.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-017",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: The meeting starts ___ 7 o’clock.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "on",
+      "B": "by",
+      "C": "in",
+      "D": "at"
+    },
+    "correct": "D",
+    "explanation": "Use at for clock time.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-018",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: We go to school ___ Monday.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct": "B",
+    "explanation": "Use on for days.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-019",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: This pencil is ___.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "I",
+      "B": "my",
+      "C": "mine",
+      "D": "me"
+    },
+    "correct": "C",
+    "explanation": "Mine is a possessive pronoun.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-020",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Complete: He ___ studying right now.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "be",
+      "B": "am",
+      "C": "is",
+      "D": "are"
+    },
+    "correct": "C",
+    "explanation": "He is studying is present continuous.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-021",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: They ___ studying now.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "be",
+      "B": "am",
+      "C": "is",
+      "D": "are"
+    },
+    "correct": "D",
+    "explanation": "They are studying is present continuous.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-022",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: I ___ breakfast at 7 a.m.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "had",
+      "B": "have",
+      "C": "having",
+      "D": "has"
+    },
+    "correct": "B",
+    "explanation": "I have breakfast is habitual present.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-023",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: She ___ not hungry.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "am",
+      "B": "is",
+      "C": "are",
+      "D": "be"
+    },
+    "correct": "B",
+    "explanation": "She is not hungry.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-024",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: We ___ visited Paris before.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "had",
+      "B": "has",
+      "C": "having",
+      "D": "have"
+    },
+    "correct": "D",
+    "explanation": "We have visited = present perfect.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-025",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: He ___ lived here since 2020.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "have",
+      "B": "does",
+      "C": "is",
+      "D": "has"
+    },
+    "correct": "D",
+    "explanation": "He has lived here since 2020.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-026",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: If it rains, we ___ stay home.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "are",
+      "B": "have",
+      "C": "will",
+      "D": "would"
+    },
+    "correct": "C",
+    "explanation": "First conditional uses will in result clause.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-027",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: She is good ___ English.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "at",
+      "B": "in",
+      "C": "on",
+      "D": "for"
+    },
+    "correct": "A",
+    "explanation": "Good at is correct.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-028",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: I’m interested ___ music.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "to",
+      "B": "in",
+      "C": "at",
+      "D": "on"
+    },
+    "correct": "B",
+    "explanation": "Interested in is correct.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-029",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: Please listen ___ the teacher.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "to",
+      "B": "at",
+      "C": "on",
+      "D": "for"
+    },
+    "correct": "A",
+    "explanation": "Listen to someone.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-030",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: I am looking ___ my keys.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "at",
+      "B": "for",
+      "C": "of",
+      "D": "to"
+    },
+    "correct": "B",
+    "explanation": "Look for means search.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-031",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: What time ___ it?",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "am",
+      "B": "are",
+      "C": "is",
+      "D": "be"
+    },
+    "correct": "C",
+    "explanation": "What time is it?",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-032",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: How many books ___ you have?",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "are",
+      "B": "does",
+      "C": "do",
+      "D": "is"
+    },
+    "correct": "C",
+    "explanation": "How many books do you have?",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-033",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: We ___ dinner when he called.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "was having",
+      "B": "are have",
+      "C": "have",
+      "D": "were having"
+    },
+    "correct": "D",
+    "explanation": "Past continuous plural: were having.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-034",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: If I ___ rich, I would travel.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "am",
+      "B": "were",
+      "C": "was being",
+      "D": "is"
+    },
+    "correct": "B",
+    "explanation": "Hypothetical second conditional commonly uses were.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-035",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: This is the ___ book I have read.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "good",
+      "B": "better",
+      "C": "best",
+      "D": "more good"
+    },
+    "correct": "C",
+    "explanation": "Superlative: the best.",
+    "durationSec": 14
+  },
+  {
+    "id": "grammar-036",
+    "topic": "grammar",
+    "mode": "quick",
+    "difficulty": 3,
+    "prompt": "Complete: You ___ smoke here. It is prohibited.",
+    "promptVi": "Chọn từ đúng để hoàn thành câu.",
+    "choices": {
+      "A": "must not",
+      "B": "can",
+      "C": "should",
+      "D": "may"
+    },
+    "correct": "A",
+    "explanation": "Must not expresses prohibition.",
+    "durationSec": 14
+  },
+  {
+    "id": "listen-adjectives-01",
+    "topic": "adjectives",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "đẹp",
+      "B": "nhỏ",
+      "C": "chậm",
+      "D": "vui vẻ"
+    },
+    "correct": "D",
+    "explanation": "You heard \"happy\" — \"vui vẻ\".",
+    "durationSec": 14,
+    "audioText": "happy"
+  },
+  {
+    "id": "listen-adjectives-02",
+    "topic": "adjectives",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "dễ",
+      "B": "nhỏ",
+      "C": "buồn",
+      "D": "to lớn"
+    },
+    "correct": "C",
+    "explanation": "You heard \"sad\" — \"buồn\".",
+    "durationSec": 14,
+    "audioText": "sad"
+  },
+  {
+    "id": "listen-adjectives-03",
+    "topic": "adjectives",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "nhanh",
+      "B": "lạnh",
+      "C": "to lớn",
+      "D": "chậm"
+    },
+    "correct": "C",
+    "explanation": "You heard \"big\" — \"to lớn\".",
+    "durationSec": 14,
+    "audioText": "big"
+  },
+  {
+    "id": "listen-adjectives-04",
+    "topic": "adjectives",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "nóng",
+      "B": "dễ",
+      "C": "nhỏ",
+      "D": "vui vẻ"
+    },
+    "correct": "C",
+    "explanation": "You heard \"small\" — \"nhỏ\".",
+    "durationSec": 14,
+    "audioText": "small"
+  },
+  {
+    "id": "listen-family-01",
+    "topic": "family",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "em bé",
+      "B": "bố",
+      "C": "mẹ",
+      "D": "ông"
+    },
+    "correct": "C",
+    "explanation": "You heard \"mother\" — \"mẹ\".",
+    "durationSec": 14,
+    "audioText": "mother"
+  },
+  {
+    "id": "listen-family-02",
+    "topic": "family",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "bố",
+      "B": "hàng xóm",
+      "C": "gia đình",
+      "D": "anh/em trai"
+    },
+    "correct": "A",
+    "explanation": "You heard \"father\" — \"bố\".",
+    "durationSec": 14,
+    "audioText": "father"
+  },
+  {
+    "id": "listen-family-03",
+    "topic": "family",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "bố",
+      "B": "hàng xóm",
+      "C": "mẹ",
+      "D": "chị/em gái"
+    },
+    "correct": "D",
+    "explanation": "You heard \"sister\" — \"chị/em gái\".",
+    "durationSec": 14,
+    "audioText": "sister"
+  },
+  {
+    "id": "listen-family-04",
+    "topic": "family",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "anh/em trai",
+      "B": "bố",
+      "C": "bà",
+      "D": "ông"
+    },
+    "correct": "A",
+    "explanation": "You heard \"brother\" — \"anh/em trai\".",
+    "durationSec": 14,
+    "audioText": "brother"
+  },
+  {
+    "id": "listen-nature-01",
+    "topic": "nature",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "bông hoa",
+      "B": "đám mây",
+      "C": "mặt trời",
+      "D": "mặt trăng"
+    },
+    "correct": "C",
+    "explanation": "You heard \"sun\" — \"mặt trời\".",
+    "durationSec": 14,
+    "audioText": "sun"
+  },
+  {
+    "id": "listen-nature-02",
+    "topic": "nature",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "mặt trăng",
+      "B": "rừng",
+      "C": "núi",
+      "D": "dòng sông"
+    },
+    "correct": "A",
+    "explanation": "You heard \"moon\" — \"mặt trăng\".",
+    "durationSec": 14,
+    "audioText": "moon"
+  },
+  {
+    "id": "listen-nature-03",
+    "topic": "nature",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "mưa",
+      "B": "ngôi sao",
+      "C": "mặt trăng",
+      "D": "mặt trời"
+    },
+    "correct": "B",
+    "explanation": "You heard \"star\" — \"ngôi sao\".",
+    "durationSec": 14,
+    "audioText": "star"
+  },
+  {
+    "id": "listen-nature-04",
+    "topic": "nature",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "mặt trời",
+      "B": "ngôi sao",
+      "C": "mưa",
+      "D": "đám mây"
+    },
+    "correct": "C",
+    "explanation": "You heard \"rain\" — \"mưa\".",
+    "durationSec": 14,
+    "audioText": "rain"
+  },
+  {
+    "id": "listen-school-01",
+    "topic": "school",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "giáo viên",
+      "B": "ghế",
+      "C": "trường học",
+      "D": "cửa sổ"
+    },
+    "correct": "A",
+    "explanation": "You heard \"teacher\" — \"giáo viên\".",
+    "durationSec": 14,
+    "audioText": "teacher"
+  },
+  {
+    "id": "listen-school-02",
+    "topic": "school",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "học sinh",
+      "B": "lớp học",
+      "C": "cửa sổ",
+      "D": "giáo viên"
+    },
+    "correct": "A",
+    "explanation": "You heard \"student\" — \"học sinh\".",
+    "durationSec": 14,
+    "audioText": "student"
+  },
+  {
+    "id": "listen-school-03",
+    "topic": "school",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "bàn học",
+      "B": "học sinh",
+      "C": "trường học",
+      "D": "giáo viên"
+    },
+    "correct": "C",
+    "explanation": "You heard \"school\" — \"trường học\".",
+    "durationSec": 14,
+    "audioText": "school"
+  },
+  {
+    "id": "listen-school-04",
+    "topic": "school",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "quyển sách",
+      "B": "cửa sổ",
+      "C": "trường học",
+      "D": "bút chì"
+    },
+    "correct": "A",
+    "explanation": "You heard \"book\" — \"quyển sách\".",
+    "durationSec": 14,
+    "audioText": "book"
+  },
+  {
+    "id": "listen-travel-01",
+    "topic": "travel",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "tàu hỏa",
+      "B": "khách sạn",
+      "C": "xe buýt",
+      "D": "ô tô"
+    },
+    "correct": "C",
+    "explanation": "You heard \"bus\" — \"xe buýt\".",
+    "durationSec": 14,
+    "audioText": "bus"
+  },
+  {
+    "id": "listen-travel-02",
+    "topic": "travel",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "tàu hỏa",
+      "B": "cây cầu",
+      "C": "bản đồ",
+      "D": "khách sạn"
+    },
+    "correct": "A",
+    "explanation": "You heard \"train\" — \"tàu hỏa\".",
+    "durationSec": 14,
+    "audioText": "train"
+  },
+  {
+    "id": "listen-travel-03",
+    "topic": "travel",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "xe đạp",
+      "B": "cây cầu",
+      "C": "vé",
+      "D": "ô tô"
+    },
+    "correct": "D",
+    "explanation": "You heard \"car\" — \"ô tô\".",
+    "durationSec": 14,
+    "audioText": "car"
+  },
+  {
+    "id": "listen-travel-04",
+    "topic": "travel",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "xe đạp",
+      "B": "xe buýt",
+      "C": "vé",
+      "D": "khách sạn"
+    },
+    "correct": "A",
+    "explanation": "You heard \"bicycle\" — \"xe đạp\".",
+    "durationSec": 14,
+    "audioText": "bicycle"
+  },
+  {
+    "id": "listen-verbs-01",
+    "topic": "verbs",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "đọc",
+      "B": "đi bộ",
+      "C": "uống",
+      "D": "chạy"
+    },
+    "correct": "D",
+    "explanation": "You heard \"run\" — \"chạy\".",
+    "durationSec": 14,
+    "audioText": "run"
+  },
+  {
+    "id": "listen-verbs-02",
+    "topic": "verbs",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "viết",
+      "B": "chạy",
+      "C": "đi bộ",
+      "D": "đọc"
+    },
+    "correct": "C",
+    "explanation": "You heard \"walk\" — \"đi bộ\".",
+    "durationSec": 14,
+    "audioText": "walk"
+  },
+  {
+    "id": "listen-verbs-03",
+    "topic": "verbs",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "đọc",
+      "B": "uống",
+      "C": "nói",
+      "D": "nhảy"
+    },
+    "correct": "D",
+    "explanation": "You heard \"jump\" — \"nhảy\".",
+    "durationSec": 14,
+    "audioText": "jump"
+  },
+  {
+    "id": "listen-verbs-04",
+    "topic": "verbs",
+    "mode": "listening",
+    "difficulty": 2,
+    "prompt": "Listen carefully. Which meaning is correct?",
+    "promptVi": "Nghe từ cô giáo đọc rồi chọn nghĩa đúng.",
+    "choices": {
+      "A": "chạy",
+      "B": "ngủ",
+      "C": "ăn",
+      "D": "viết"
+    },
+    "correct": "B",
+    "explanation": "You heard \"sleep\" — \"ngủ\".",
+    "durationSec": 14,
+    "audioText": "sleep"
+  },
+  {
+    "id": "reverse-adjectives-01",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"vui vẻ\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"vui vẻ\"?",
+    "choices": {
+      "A": "happy",
+      "B": "big",
+      "C": "slow",
+      "D": "beautiful"
+    },
+    "correct": "A",
+    "explanation": "\"vui vẻ\" trong tiếng Anh là \"happy\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-adjectives-02",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"buồn\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"buồn\"?",
+    "choices": {
+      "A": "happy",
+      "B": "beautiful",
+      "C": "sad",
+      "D": "cold"
+    },
+    "correct": "C",
+    "explanation": "\"buồn\" trong tiếng Anh là \"sad\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-adjectives-03",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"to lớn\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"to lớn\"?",
+    "choices": {
+      "A": "easy",
+      "B": "cold",
+      "C": "hot",
+      "D": "big"
+    },
+    "correct": "D",
+    "explanation": "\"to lớn\" trong tiếng Anh là \"big\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-adjectives-04",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"nhỏ\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"nhỏ\"?",
+    "choices": {
+      "A": "cold",
+      "B": "sad",
+      "C": "big",
+      "D": "small"
+    },
+    "correct": "D",
+    "explanation": "\"nhỏ\" trong tiếng Anh là \"small\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-animals-01",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"mèo\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"mèo\"?",
+    "choices": {
+      "A": "elephant",
+      "B": "dog",
+      "C": "cat",
+      "D": "horse"
+    },
+    "correct": "C",
+    "explanation": "\"mèo\" trong tiếng Anh là \"cat\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-animals-02",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"chó\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"chó\"?",
+    "choices": {
+      "A": "horse",
+      "B": "dog",
+      "C": "sheep",
+      "D": "duck"
+    },
+    "correct": "B",
+    "explanation": "\"chó\" trong tiếng Anh là \"dog\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-animals-03",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"chim\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"chim\"?",
+    "choices": {
+      "A": "elephant",
+      "B": "dog",
+      "C": "bird",
+      "D": "horse"
+    },
+    "correct": "C",
+    "explanation": "\"chim\" trong tiếng Anh là \"bird\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-animals-04",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"thỏ\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"thỏ\"?",
+    "choices": {
+      "A": "elephant",
+      "B": "dog",
+      "C": "horse",
+      "D": "rabbit"
+    },
+    "correct": "D",
+    "explanation": "\"thỏ\" trong tiếng Anh là \"rabbit\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-food-01",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"quả táo\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"quả táo\"?",
+    "choices": {
+      "A": "apple",
+      "B": "milk",
+      "C": "water",
+      "D": "rice"
+    },
+    "correct": "A",
+    "explanation": "\"quả táo\" trong tiếng Anh là \"apple\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-food-02",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"quả chuối\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"quả chuối\"?",
+    "choices": {
+      "A": "chicken",
+      "B": "water",
+      "C": "banana",
+      "D": "bread"
+    },
+    "correct": "C",
+    "explanation": "\"quả chuối\" trong tiếng Anh là \"banana\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-food-03",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"quả cam\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"quả cam\"?",
+    "choices": {
+      "A": "orange",
+      "B": "grape",
+      "C": "bread",
+      "D": "egg"
+    },
+    "correct": "A",
+    "explanation": "\"quả cam\" trong tiếng Anh là \"orange\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-food-04",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"quả nho\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"quả nho\"?",
+    "choices": {
+      "A": "egg",
+      "B": "water",
+      "C": "milk",
+      "D": "grape"
+    },
+    "correct": "D",
+    "explanation": "\"quả nho\" trong tiếng Anh là \"grape\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-nature-01",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"mặt trời\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"mặt trời\"?",
+    "choices": {
+      "A": "cloud",
+      "B": "sun",
+      "C": "river",
+      "D": "mountain"
+    },
+    "correct": "B",
+    "explanation": "\"mặt trời\" trong tiếng Anh là \"sun\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-nature-02",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"mặt trăng\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"mặt trăng\"?",
+    "choices": {
+      "A": "star",
+      "B": "flower",
+      "C": "rain",
+      "D": "moon"
+    },
+    "correct": "D",
+    "explanation": "\"mặt trăng\" trong tiếng Anh là \"moon\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-nature-03",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"ngôi sao\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"ngôi sao\"?",
+    "choices": {
+      "A": "star",
+      "B": "mountain",
+      "C": "moon",
+      "D": "forest"
+    },
+    "correct": "A",
+    "explanation": "\"ngôi sao\" trong tiếng Anh là \"star\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-nature-04",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"mưa\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"mưa\"?",
+    "choices": {
+      "A": "rain",
+      "B": "forest",
+      "C": "mountain",
+      "D": "cloud"
+    },
+    "correct": "A",
+    "explanation": "\"mưa\" trong tiếng Anh là \"rain\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-school-01",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"giáo viên\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"giáo viên\"?",
+    "choices": {
+      "A": "door",
+      "B": "desk",
+      "C": "teacher",
+      "D": "book"
+    },
+    "correct": "C",
+    "explanation": "\"giáo viên\" trong tiếng Anh là \"teacher\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-school-02",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"học sinh\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"học sinh\"?",
+    "choices": {
+      "A": "classroom",
+      "B": "student",
+      "C": "window",
+      "D": "desk"
+    },
+    "correct": "B",
+    "explanation": "\"học sinh\" trong tiếng Anh là \"student\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-school-03",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"trường học\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"trường học\"?",
+    "choices": {
+      "A": "door",
+      "B": "classroom",
+      "C": "school",
+      "D": "teacher"
+    },
+    "correct": "C",
+    "explanation": "\"trường học\" trong tiếng Anh là \"school\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-school-04",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"quyển sách\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"quyển sách\"?",
+    "choices": {
+      "A": "door",
+      "B": "teacher",
+      "C": "pencil",
+      "D": "book"
+    },
+    "correct": "D",
+    "explanation": "\"quyển sách\" trong tiếng Anh là \"book\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-verbs-01",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"chạy\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"chạy\"?",
+    "choices": {
+      "A": "jump",
+      "B": "run",
+      "C": "eat",
+      "D": "sleep"
+    },
+    "correct": "B",
+    "explanation": "\"chạy\" trong tiếng Anh là \"run\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-verbs-02",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"đi bộ\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"đi bộ\"?",
+    "choices": {
+      "A": "drink",
+      "B": "walk",
+      "C": "run",
+      "D": "speak"
+    },
+    "correct": "B",
+    "explanation": "\"đi bộ\" trong tiếng Anh là \"walk\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-verbs-03",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"nhảy\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"nhảy\"?",
+    "choices": {
+      "A": "walk",
+      "B": "listen",
+      "C": "run",
+      "D": "jump"
+    },
+    "correct": "D",
+    "explanation": "\"nhảy\" trong tiếng Anh là \"jump\".",
+    "durationSec": 12
+  },
+  {
+    "id": "reverse-verbs-04",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "Which English word means \"ngủ\"?",
+    "promptVi": "Từ tiếng Anh nào có nghĩa \"ngủ\"?",
+    "choices": {
+      "A": "walk",
+      "B": "sleep",
+      "C": "jump",
+      "D": "read"
+    },
+    "correct": "B",
+    "explanation": "\"ngủ\" trong tiếng Anh là \"sleep\".",
+    "durationSec": 12
+  },
+  {
+    "id": "spelling-01",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "beautifull",
+      "B": "beutiful",
+      "C": "beautyful",
+      "D": "beautiful"
+    },
+    "correct": "D",
+    "explanation": "Correct spelling: beautiful.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-02",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "becuase",
+      "B": "because",
+      "C": "becaus",
+      "D": "becouse"
+    },
+    "correct": "B",
+    "explanation": "Correct spelling: because.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-03",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "frend",
+      "B": "friand",
+      "C": "friend",
+      "D": "freind"
+    },
+    "correct": "C",
+    "explanation": "Correct spelling: friend.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-04",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "teaccher",
+      "B": "teachor",
+      "C": "teacher",
+      "D": "techer"
+    },
+    "correct": "C",
+    "explanation": "Correct spelling: teacher.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-05",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "faverite",
+      "B": "favouritee",
+      "C": "favorit",
+      "D": "favorite"
+    },
+    "correct": "D",
+    "explanation": "Correct spelling: favorite.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-06",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "elephant",
+      "B": "elephent",
+      "C": "elephat",
+      "D": "elefant"
+    },
+    "correct": "A",
+    "explanation": "Correct spelling: elephant.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-07",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "restaurant",
+      "B": "restaraunt",
+      "C": "restarant",
+      "D": "restaurent"
+    },
+    "correct": "A",
+    "explanation": "Correct spelling: restaurant.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-08",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "Wednesday",
+      "B": "Wenesday",
+      "C": "Wensday",
+      "D": "Wednsday"
+    },
+    "correct": "A",
+    "explanation": "Correct spelling: Wednesday.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-09",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "February",
+      "B": "Febuary",
+      "C": "Febraury",
+      "D": "Februari"
+    },
+    "correct": "A",
+    "explanation": "Correct spelling: February.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-10",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "different",
+      "B": "diffrent",
+      "C": "differant",
+      "D": "diferent"
+    },
+    "correct": "A",
+    "explanation": "Correct spelling: different.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-11",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "receive",
+      "B": "receve",
+      "C": "recieve",
+      "D": "receeve"
+    },
+    "correct": "A",
+    "explanation": "Correct spelling: receive.",
+    "durationSec": 14
+  },
+  {
+    "id": "spelling-12",
+    "topic": "spelling",
+    "mode": "spelling",
+    "difficulty": 3,
+    "prompt": "Choose the correctly spelled word.",
+    "promptVi": "Chọn từ viết đúng chính tả.",
+    "choices": {
+      "A": "necessery",
+      "B": "necessary",
+      "C": "neccessary",
+      "D": "necesary"
+    },
+    "correct": "B",
+    "explanation": "Correct spelling: necessary.",
+    "durationSec": 14
+  },
+  {
+    "id": "voc-adjectives-01",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"happy\" mean?",
+    "promptVi": "\"happy\" nghĩa là gì?",
+    "choices": {
+      "A": "nhanh",
+      "B": "lạnh",
+      "C": "chậm",
+      "D": "vui vẻ"
+    },
+    "correct": "D",
+    "explanation": "\"happy\" nghĩa là \"vui vẻ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-02",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"sad\" mean?",
+    "promptVi": "\"sad\" nghĩa là gì?",
+    "choices": {
+      "A": "to lớn",
+      "B": "lạnh",
+      "C": "nhỏ",
+      "D": "buồn"
+    },
+    "correct": "D",
+    "explanation": "\"sad\" nghĩa là \"buồn\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-03",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"big\" mean?",
+    "promptVi": "\"big\" nghĩa là gì?",
+    "choices": {
+      "A": "nhỏ",
+      "B": "vui vẻ",
+      "C": "to lớn",
+      "D": "nóng"
+    },
+    "correct": "C",
+    "explanation": "\"big\" nghĩa là \"to lớn\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-04",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"small\" mean?",
+    "promptVi": "\"small\" nghĩa là gì?",
+    "choices": {
+      "A": "đẹp",
+      "B": "nhỏ",
+      "C": "nóng",
+      "D": "dễ"
+    },
+    "correct": "B",
+    "explanation": "\"small\" nghĩa là \"nhỏ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-05",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"fast\" mean?",
+    "promptVi": "\"fast\" nghĩa là gì?",
+    "choices": {
+      "A": "nhanh",
+      "B": "chậm",
+      "C": "lạnh",
+      "D": "đẹp"
+    },
+    "correct": "A",
+    "explanation": "\"fast\" nghĩa là \"nhanh\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-06",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"slow\" mean?",
+    "promptVi": "\"slow\" nghĩa là gì?",
+    "choices": {
+      "A": "dễ",
+      "B": "nóng",
+      "C": "vui vẻ",
+      "D": "chậm"
+    },
+    "correct": "D",
+    "explanation": "\"slow\" nghĩa là \"chậm\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-07",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"hot\" mean?",
+    "promptVi": "\"hot\" nghĩa là gì?",
+    "choices": {
+      "A": "đẹp",
+      "B": "buồn",
+      "C": "lạnh",
+      "D": "nóng"
+    },
+    "correct": "D",
+    "explanation": "\"hot\" nghĩa là \"nóng\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-08",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"cold\" mean?",
+    "promptVi": "\"cold\" nghĩa là gì?",
+    "choices": {
+      "A": "lạnh",
+      "B": "nhỏ",
+      "C": "buồn",
+      "D": "nóng"
+    },
+    "correct": "A",
+    "explanation": "\"cold\" nghĩa là \"lạnh\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-09",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"beautiful\" mean?",
+    "promptVi": "\"beautiful\" nghĩa là gì?",
+    "choices": {
+      "A": "dễ",
+      "B": "to lớn",
+      "C": "đẹp",
+      "D": "nóng"
+    },
+    "correct": "C",
+    "explanation": "\"beautiful\" nghĩa là \"đẹp\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-adjectives-10",
+    "topic": "adjectives",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"easy\" mean?",
+    "promptVi": "\"easy\" nghĩa là gì?",
+    "choices": {
+      "A": "dễ",
+      "B": "nhanh",
+      "C": "nóng",
+      "D": "chậm"
+    },
+    "correct": "A",
+    "explanation": "\"easy\" nghĩa là \"dễ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-01",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"cat\" mean?",
+    "promptVi": "\"cat\" nghĩa là gì?",
+    "choices": {
+      "A": "mèo",
+      "B": "cừu",
+      "C": "chim",
+      "D": "thỏ"
+    },
+    "correct": "A",
+    "explanation": "\"cat\" nghĩa là \"mèo\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-02",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"dog\" mean?",
+    "promptVi": "\"dog\" nghĩa là gì?",
+    "choices": {
+      "A": "chó",
+      "B": "ngựa",
+      "C": "cừu",
+      "D": "bò"
+    },
+    "correct": "A",
+    "explanation": "\"dog\" nghĩa là \"chó\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-03",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"bird\" mean?",
+    "promptVi": "\"bird\" nghĩa là gì?",
+    "choices": {
+      "A": "chó",
+      "B": "chim",
+      "C": "sư tử",
+      "D": "bò"
+    },
+    "correct": "B",
+    "explanation": "\"bird\" nghĩa là \"chim\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-04",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"rabbit\" mean?",
+    "promptVi": "\"rabbit\" nghĩa là gì?",
+    "choices": {
+      "A": "chim",
+      "B": "chó",
+      "C": "thỏ",
+      "D": "sư tử"
+    },
+    "correct": "C",
+    "explanation": "\"rabbit\" nghĩa là \"thỏ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-05",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"horse\" mean?",
+    "promptVi": "\"horse\" nghĩa là gì?",
+    "choices": {
+      "A": "voi",
+      "B": "bò",
+      "C": "ngựa",
+      "D": "chó"
+    },
+    "correct": "C",
+    "explanation": "\"horse\" nghĩa là \"ngựa\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-06",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"cow\" mean?",
+    "promptVi": "\"cow\" nghĩa là gì?",
+    "choices": {
+      "A": "ngựa",
+      "B": "voi",
+      "C": "bò",
+      "D": "mèo"
+    },
+    "correct": "C",
+    "explanation": "\"cow\" nghĩa là \"bò\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-07",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"duck\" mean?",
+    "promptVi": "\"duck\" nghĩa là gì?",
+    "choices": {
+      "A": "sư tử",
+      "B": "bò",
+      "C": "vịt",
+      "D": "cừu"
+    },
+    "correct": "C",
+    "explanation": "\"duck\" nghĩa là \"vịt\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-08",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"sheep\" mean?",
+    "promptVi": "\"sheep\" nghĩa là gì?",
+    "choices": {
+      "A": "chim",
+      "B": "vịt",
+      "C": "cừu",
+      "D": "sư tử"
+    },
+    "correct": "C",
+    "explanation": "\"sheep\" nghĩa là \"cừu\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-09",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"elephant\" mean?",
+    "promptVi": "\"elephant\" nghĩa là gì?",
+    "choices": {
+      "A": "thỏ",
+      "B": "voi",
+      "C": "chim",
+      "D": "chó"
+    },
+    "correct": "B",
+    "explanation": "\"elephant\" nghĩa là \"voi\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-animals-10",
+    "topic": "animals",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"lion\" mean?",
+    "promptVi": "\"lion\" nghĩa là gì?",
+    "choices": {
+      "A": "chim",
+      "B": "thỏ",
+      "C": "cừu",
+      "D": "sư tử"
+    },
+    "correct": "D",
+    "explanation": "\"lion\" nghĩa là \"sư tử\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-01",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"mother\" mean?",
+    "promptVi": "\"mother\" nghĩa là gì?",
+    "choices": {
+      "A": "bạn bè",
+      "B": "mẹ",
+      "C": "ông",
+      "D": "anh/em trai"
+    },
+    "correct": "B",
+    "explanation": "\"mother\" nghĩa là \"mẹ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-02",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"father\" mean?",
+    "promptVi": "\"father\" nghĩa là gì?",
+    "choices": {
+      "A": "em bé",
+      "B": "bà",
+      "C": "chị/em gái",
+      "D": "bố"
+    },
+    "correct": "D",
+    "explanation": "\"father\" nghĩa là \"bố\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-03",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"sister\" mean?",
+    "promptVi": "\"sister\" nghĩa là gì?",
+    "choices": {
+      "A": "mẹ",
+      "B": "gia đình",
+      "C": "chị/em gái",
+      "D": "ông"
+    },
+    "correct": "C",
+    "explanation": "\"sister\" nghĩa là \"chị/em gái\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-04",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"brother\" mean?",
+    "promptVi": "\"brother\" nghĩa là gì?",
+    "choices": {
+      "A": "em bé",
+      "B": "hàng xóm",
+      "C": "anh/em trai",
+      "D": "bà"
+    },
+    "correct": "C",
+    "explanation": "\"brother\" nghĩa là \"anh/em trai\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-05",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"grandmother\" mean?",
+    "promptVi": "\"grandmother\" nghĩa là gì?",
+    "choices": {
+      "A": "bà",
+      "B": "bạn bè",
+      "C": "gia đình",
+      "D": "mẹ"
+    },
+    "correct": "A",
+    "explanation": "\"grandmother\" nghĩa là \"bà\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-06",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"grandfather\" mean?",
+    "promptVi": "\"grandfather\" nghĩa là gì?",
+    "choices": {
+      "A": "bố",
+      "B": "mẹ",
+      "C": "chị/em gái",
+      "D": "ông"
+    },
+    "correct": "D",
+    "explanation": "\"grandfather\" nghĩa là \"ông\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-07",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"baby\" mean?",
+    "promptVi": "\"baby\" nghĩa là gì?",
+    "choices": {
+      "A": "bà",
+      "B": "em bé",
+      "C": "gia đình",
+      "D": "bố"
+    },
+    "correct": "B",
+    "explanation": "\"baby\" nghĩa là \"em bé\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-08",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"friend\" mean?",
+    "promptVi": "\"friend\" nghĩa là gì?",
+    "choices": {
+      "A": "bạn bè",
+      "B": "mẹ",
+      "C": "em bé",
+      "D": "bà"
+    },
+    "correct": "A",
+    "explanation": "\"friend\" nghĩa là \"bạn bè\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-09",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"family\" mean?",
+    "promptVi": "\"family\" nghĩa là gì?",
+    "choices": {
+      "A": "bạn bè",
+      "B": "hàng xóm",
+      "C": "gia đình",
+      "D": "bà"
+    },
+    "correct": "C",
+    "explanation": "\"family\" nghĩa là \"gia đình\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-family-10",
+    "topic": "family",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"neighbor\" mean?",
+    "promptVi": "\"neighbor\" nghĩa là gì?",
+    "choices": {
+      "A": "anh/em trai",
+      "B": "em bé",
+      "C": "bà",
+      "D": "hàng xóm"
+    },
+    "correct": "D",
+    "explanation": "\"neighbor\" nghĩa là \"hàng xóm\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-01",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"apple\" mean?",
+    "promptVi": "\"apple\" nghĩa là gì?",
+    "choices": {
+      "A": "bánh mì",
+      "B": "quả cam",
+      "C": "quả táo",
+      "D": "trứng"
+    },
+    "correct": "C",
+    "explanation": "\"apple\" nghĩa là \"quả táo\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-02",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"banana\" mean?",
+    "promptVi": "\"banana\" nghĩa là gì?",
+    "choices": {
+      "A": "quả cam",
+      "B": "quả táo",
+      "C": "quả chuối",
+      "D": "trứng"
+    },
+    "correct": "C",
+    "explanation": "\"banana\" nghĩa là \"quả chuối\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-03",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"orange\" mean?",
+    "promptVi": "\"orange\" nghĩa là gì?",
+    "choices": {
+      "A": "thịt gà",
+      "B": "trứng",
+      "C": "quả cam",
+      "D": "quả táo"
+    },
+    "correct": "C",
+    "explanation": "\"orange\" nghĩa là \"quả cam\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-04",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"grape\" mean?",
+    "promptVi": "\"grape\" nghĩa là gì?",
+    "choices": {
+      "A": "quả nho",
+      "B": "sữa",
+      "C": "quả táo",
+      "D": "cà rốt"
+    },
+    "correct": "A",
+    "explanation": "\"grape\" nghĩa là \"quả nho\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-05",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"bread\" mean?",
+    "promptVi": "\"bread\" nghĩa là gì?",
+    "choices": {
+      "A": "cơm",
+      "B": "bánh mì",
+      "C": "quả cam",
+      "D": "thịt gà"
+    },
+    "correct": "B",
+    "explanation": "\"bread\" nghĩa là \"bánh mì\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-06",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"rice\" mean?",
+    "promptVi": "\"rice\" nghĩa là gì?",
+    "choices": {
+      "A": "trứng",
+      "B": "quả táo",
+      "C": "cơm",
+      "D": "quả chuối"
+    },
+    "correct": "C",
+    "explanation": "\"rice\" nghĩa là \"cơm\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-07",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"egg\" mean?",
+    "promptVi": "\"egg\" nghĩa là gì?",
+    "choices": {
+      "A": "cá",
+      "B": "trứng",
+      "C": "thịt gà",
+      "D": "quả nho"
+    },
+    "correct": "B",
+    "explanation": "\"egg\" nghĩa là \"trứng\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-08",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"milk\" mean?",
+    "promptVi": "\"milk\" nghĩa là gì?",
+    "choices": {
+      "A": "cá",
+      "B": "quả cam",
+      "C": "quả nho",
+      "D": "sữa"
+    },
+    "correct": "D",
+    "explanation": "\"milk\" nghĩa là \"sữa\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-09",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"water\" mean?",
+    "promptVi": "\"water\" nghĩa là gì?",
+    "choices": {
+      "A": "cà rốt",
+      "B": "cơm",
+      "C": "nước",
+      "D": "quả chuối"
+    },
+    "correct": "C",
+    "explanation": "\"water\" nghĩa là \"nước\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-10",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"fish\" mean?",
+    "promptVi": "\"fish\" nghĩa là gì?",
+    "choices": {
+      "A": "bánh mì",
+      "B": "thịt gà",
+      "C": "cá",
+      "D": "quả táo"
+    },
+    "correct": "C",
+    "explanation": "\"fish\" nghĩa là \"cá\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-11",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"chicken\" mean?",
+    "promptVi": "\"chicken\" nghĩa là gì?",
+    "choices": {
+      "A": "quả nho",
+      "B": "thịt gà",
+      "C": "quả táo",
+      "D": "nước"
+    },
+    "correct": "B",
+    "explanation": "\"chicken\" nghĩa là \"thịt gà\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-food-12",
+    "topic": "food",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"carrot\" mean?",
+    "promptVi": "\"carrot\" nghĩa là gì?",
+    "choices": {
+      "A": "thịt gà",
+      "B": "cà rốt",
+      "C": "quả chuối",
+      "D": "cơm"
+    },
+    "correct": "B",
+    "explanation": "\"carrot\" nghĩa là \"cà rốt\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-01",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"sun\" mean?",
+    "promptVi": "\"sun\" nghĩa là gì?",
+    "choices": {
+      "A": "mặt trời",
+      "B": "gió",
+      "C": "mặt trăng",
+      "D": "ngôi sao"
+    },
+    "correct": "A",
+    "explanation": "\"sun\" nghĩa là \"mặt trời\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-02",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"moon\" mean?",
+    "promptVi": "\"moon\" nghĩa là gì?",
+    "choices": {
+      "A": "mặt trăng",
+      "B": "gió",
+      "C": "dòng sông",
+      "D": "mưa"
+    },
+    "correct": "A",
+    "explanation": "\"moon\" nghĩa là \"mặt trăng\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-03",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"star\" mean?",
+    "promptVi": "\"star\" nghĩa là gì?",
+    "choices": {
+      "A": "dòng sông",
+      "B": "mưa",
+      "C": "ngôi sao",
+      "D": "núi"
+    },
+    "correct": "C",
+    "explanation": "\"star\" nghĩa là \"ngôi sao\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-04",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"rain\" mean?",
+    "promptVi": "\"rain\" nghĩa là gì?",
+    "choices": {
+      "A": "gió",
+      "B": "mặt trời",
+      "C": "rừng",
+      "D": "mưa"
+    },
+    "correct": "D",
+    "explanation": "\"rain\" nghĩa là \"mưa\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-05",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"wind\" mean?",
+    "promptVi": "\"wind\" nghĩa là gì?",
+    "choices": {
+      "A": "mưa",
+      "B": "bông hoa",
+      "C": "gió",
+      "D": "núi"
+    },
+    "correct": "C",
+    "explanation": "\"wind\" nghĩa là \"gió\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-06",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"cloud\" mean?",
+    "promptVi": "\"cloud\" nghĩa là gì?",
+    "choices": {
+      "A": "dòng sông",
+      "B": "mặt trăng",
+      "C": "đám mây",
+      "D": "mặt trời"
+    },
+    "correct": "C",
+    "explanation": "\"cloud\" nghĩa là \"đám mây\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-07",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"river\" mean?",
+    "promptVi": "\"river\" nghĩa là gì?",
+    "choices": {
+      "A": "mặt trăng",
+      "B": "mưa",
+      "C": "rừng",
+      "D": "dòng sông"
+    },
+    "correct": "D",
+    "explanation": "\"river\" nghĩa là \"dòng sông\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-08",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"mountain\" mean?",
+    "promptVi": "\"mountain\" nghĩa là gì?",
+    "choices": {
+      "A": "gió",
+      "B": "mưa",
+      "C": "núi",
+      "D": "rừng"
+    },
+    "correct": "C",
+    "explanation": "\"mountain\" nghĩa là \"núi\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-09",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"forest\" mean?",
+    "promptVi": "\"forest\" nghĩa là gì?",
+    "choices": {
+      "A": "ngôi sao",
+      "B": "rừng",
+      "C": "đám mây",
+      "D": "núi"
+    },
+    "correct": "B",
+    "explanation": "\"forest\" nghĩa là \"rừng\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-nature-10",
+    "topic": "nature",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"flower\" mean?",
+    "promptVi": "\"flower\" nghĩa là gì?",
+    "choices": {
+      "A": "bông hoa",
+      "B": "ngôi sao",
+      "C": "núi",
+      "D": "mưa"
+    },
+    "correct": "A",
+    "explanation": "\"flower\" nghĩa là \"bông hoa\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-01",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"teacher\" mean?",
+    "promptVi": "\"teacher\" nghĩa là gì?",
+    "choices": {
+      "A": "cánh cửa",
+      "B": "cửa sổ",
+      "C": "bàn học",
+      "D": "giáo viên"
+    },
+    "correct": "D",
+    "explanation": "\"teacher\" nghĩa là \"giáo viên\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-02",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"student\" mean?",
+    "promptVi": "\"student\" nghĩa là gì?",
+    "choices": {
+      "A": "cánh cửa",
+      "B": "trường học",
+      "C": "học sinh",
+      "D": "bút chì"
+    },
+    "correct": "C",
+    "explanation": "\"student\" nghĩa là \"học sinh\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-03",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"school\" mean?",
+    "promptVi": "\"school\" nghĩa là gì?",
+    "choices": {
+      "A": "quyển sách",
+      "B": "bàn học",
+      "C": "trường học",
+      "D": "cửa sổ"
+    },
+    "correct": "C",
+    "explanation": "\"school\" nghĩa là \"trường học\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-04",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"book\" mean?",
+    "promptVi": "\"book\" nghĩa là gì?",
+    "choices": {
+      "A": "ghế",
+      "B": "quyển sách",
+      "C": "học sinh",
+      "D": "cửa sổ"
+    },
+    "correct": "B",
+    "explanation": "\"book\" nghĩa là \"quyển sách\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-05",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"pencil\" mean?",
+    "promptVi": "\"pencil\" nghĩa là gì?",
+    "choices": {
+      "A": "giáo viên",
+      "B": "cánh cửa",
+      "C": "lớp học",
+      "D": "bút chì"
+    },
+    "correct": "D",
+    "explanation": "\"pencil\" nghĩa là \"bút chì\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-06",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"desk\" mean?",
+    "promptVi": "\"desk\" nghĩa là gì?",
+    "choices": {
+      "A": "bàn học",
+      "B": "cánh cửa",
+      "C": "bút chì",
+      "D": "cửa sổ"
+    },
+    "correct": "A",
+    "explanation": "\"desk\" nghĩa là \"bàn học\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-07",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"chair\" mean?",
+    "promptVi": "\"chair\" nghĩa là gì?",
+    "choices": {
+      "A": "học sinh",
+      "B": "trường học",
+      "C": "bút chì",
+      "D": "ghế"
+    },
+    "correct": "D",
+    "explanation": "\"chair\" nghĩa là \"ghế\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-08",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"window\" mean?",
+    "promptVi": "\"window\" nghĩa là gì?",
+    "choices": {
+      "A": "quyển sách",
+      "B": "cửa sổ",
+      "C": "bút chì",
+      "D": "trường học"
+    },
+    "correct": "B",
+    "explanation": "\"window\" nghĩa là \"cửa sổ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-09",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"door\" mean?",
+    "promptVi": "\"door\" nghĩa là gì?",
+    "choices": {
+      "A": "bàn học",
+      "B": "cánh cửa",
+      "C": "học sinh",
+      "D": "lớp học"
+    },
+    "correct": "B",
+    "explanation": "\"door\" nghĩa là \"cánh cửa\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-school-10",
+    "topic": "school",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"classroom\" mean?",
+    "promptVi": "\"classroom\" nghĩa là gì?",
+    "choices": {
+      "A": "học sinh",
+      "B": "lớp học",
+      "C": "bút chì",
+      "D": "trường học"
+    },
+    "correct": "B",
+    "explanation": "\"classroom\" nghĩa là \"lớp học\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-01",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"bus\" mean?",
+    "promptVi": "\"bus\" nghĩa là gì?",
+    "choices": {
+      "A": "cây cầu",
+      "B": "bản đồ",
+      "C": "tàu hỏa",
+      "D": "xe buýt"
+    },
+    "correct": "D",
+    "explanation": "\"bus\" nghĩa là \"xe buýt\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-02",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"train\" mean?",
+    "promptVi": "\"train\" nghĩa là gì?",
+    "choices": {
+      "A": "xe buýt",
+      "B": "chợ",
+      "C": "tàu hỏa",
+      "D": "vé"
+    },
+    "correct": "C",
+    "explanation": "\"train\" nghĩa là \"tàu hỏa\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-03",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"car\" mean?",
+    "promptVi": "\"car\" nghĩa là gì?",
+    "choices": {
+      "A": "ô tô",
+      "B": "xe đạp",
+      "C": "xe buýt",
+      "D": "cây cầu"
+    },
+    "correct": "A",
+    "explanation": "\"car\" nghĩa là \"ô tô\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-04",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"bicycle\" mean?",
+    "promptVi": "\"bicycle\" nghĩa là gì?",
+    "choices": {
+      "A": "xe đạp",
+      "B": "chợ",
+      "C": "vé",
+      "D": "cây cầu"
+    },
+    "correct": "A",
+    "explanation": "\"bicycle\" nghĩa là \"xe đạp\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-05",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"airport\" mean?",
+    "promptVi": "\"airport\" nghĩa là gì?",
+    "choices": {
+      "A": "chợ",
+      "B": "ô tô",
+      "C": "sân bay",
+      "D": "xe buýt"
+    },
+    "correct": "C",
+    "explanation": "\"airport\" nghĩa là \"sân bay\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-06",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"hotel\" mean?",
+    "promptVi": "\"hotel\" nghĩa là gì?",
+    "choices": {
+      "A": "vé",
+      "B": "khách sạn",
+      "C": "sân bay",
+      "D": "xe buýt"
+    },
+    "correct": "B",
+    "explanation": "\"hotel\" nghĩa là \"khách sạn\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-07",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"ticket\" mean?",
+    "promptVi": "\"ticket\" nghĩa là gì?",
+    "choices": {
+      "A": "bản đồ",
+      "B": "vé",
+      "C": "xe buýt",
+      "D": "sân bay"
+    },
+    "correct": "B",
+    "explanation": "\"ticket\" nghĩa là \"vé\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-08",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"map\" mean?",
+    "promptVi": "\"map\" nghĩa là gì?",
+    "choices": {
+      "A": "cây cầu",
+      "B": "sân bay",
+      "C": "khách sạn",
+      "D": "bản đồ"
+    },
+    "correct": "D",
+    "explanation": "\"map\" nghĩa là \"bản đồ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-09",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"bridge\" mean?",
+    "promptVi": "\"bridge\" nghĩa là gì?",
+    "choices": {
+      "A": "xe buýt",
+      "B": "cây cầu",
+      "C": "vé",
+      "D": "sân bay"
+    },
+    "correct": "B",
+    "explanation": "\"bridge\" nghĩa là \"cây cầu\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-travel-10",
+    "topic": "travel",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"market\" mean?",
+    "promptVi": "\"market\" nghĩa là gì?",
+    "choices": {
+      "A": "cây cầu",
+      "B": "sân bay",
+      "C": "xe buýt",
+      "D": "chợ"
+    },
+    "correct": "D",
+    "explanation": "\"market\" nghĩa là \"chợ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-01",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"run\" mean?",
+    "promptVi": "\"run\" nghĩa là gì?",
+    "choices": {
+      "A": "viết",
+      "B": "chạy",
+      "C": "lắng nghe",
+      "D": "đọc"
+    },
+    "correct": "B",
+    "explanation": "\"run\" nghĩa là \"chạy\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-02",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"walk\" mean?",
+    "promptVi": "\"walk\" nghĩa là gì?",
+    "choices": {
+      "A": "đi bộ",
+      "B": "nói",
+      "C": "nhảy",
+      "D": "ngủ"
+    },
+    "correct": "A",
+    "explanation": "\"walk\" nghĩa là \"đi bộ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-03",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"jump\" mean?",
+    "promptVi": "\"jump\" nghĩa là gì?",
+    "choices": {
+      "A": "ngủ",
+      "B": "nói",
+      "C": "đi bộ",
+      "D": "nhảy"
+    },
+    "correct": "D",
+    "explanation": "\"jump\" nghĩa là \"nhảy\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-04",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 1,
+    "prompt": "What does \"sleep\" mean?",
+    "promptVi": "\"sleep\" nghĩa là gì?",
+    "choices": {
+      "A": "lắng nghe",
+      "B": "chạy",
+      "C": "ngủ",
+      "D": "nói"
+    },
+    "correct": "C",
+    "explanation": "\"sleep\" nghĩa là \"ngủ\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-05",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"eat\" mean?",
+    "promptVi": "\"eat\" nghĩa là gì?",
+    "choices": {
+      "A": "đọc",
+      "B": "nói",
+      "C": "nhảy",
+      "D": "ăn"
+    },
+    "correct": "D",
+    "explanation": "\"eat\" nghĩa là \"ăn\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-06",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"drink\" mean?",
+    "promptVi": "\"drink\" nghĩa là gì?",
+    "choices": {
+      "A": "lắng nghe",
+      "B": "nhảy",
+      "C": "đọc",
+      "D": "uống"
+    },
+    "correct": "D",
+    "explanation": "\"drink\" nghĩa là \"uống\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-07",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"read\" mean?",
+    "promptVi": "\"read\" nghĩa là gì?",
+    "choices": {
+      "A": "nhảy",
+      "B": "uống",
+      "C": "ăn",
+      "D": "đọc"
+    },
+    "correct": "D",
+    "explanation": "\"read\" nghĩa là \"đọc\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-08",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"write\" mean?",
+    "promptVi": "\"write\" nghĩa là gì?",
+    "choices": {
+      "A": "ngủ",
+      "B": "viết",
+      "C": "đi bộ",
+      "D": "nói"
+    },
+    "correct": "B",
+    "explanation": "\"write\" nghĩa là \"viết\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-09",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"listen\" mean?",
+    "promptVi": "\"listen\" nghĩa là gì?",
+    "choices": {
+      "A": "lắng nghe",
+      "B": "ngủ",
+      "C": "nhảy",
+      "D": "viết"
+    },
+    "correct": "A",
+    "explanation": "\"listen\" nghĩa là \"lắng nghe\".",
+    "durationSec": 12
+  },
+  {
+    "id": "voc-verbs-10",
+    "topic": "verbs",
+    "mode": "quick",
+    "difficulty": 2,
+    "prompt": "What does \"speak\" mean?",
+    "promptVi": "\"speak\" nghĩa là gì?",
+    "choices": {
+      "A": "uống",
+      "B": "chạy",
+      "C": "đi bộ",
+      "D": "nói"
+    },
+    "correct": "D",
+    "explanation": "\"speak\" nghĩa là \"nói\".",
+    "durationSec": 12
+  }
+]

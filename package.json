@@ -13,17 +13,20 @@
     "start": "node scripts/start-platform.mjs",
     "start:miniwar": "node scripts/start-platform.mjs --game=mini-war-arena",
     "start:catcafe": "node scripts/start-platform.mjs --game=cat-cafe",
+    "start:english": "node scripts/start-platform.mjs --game=english-class-live",
     "validate": "node scripts/validate-games.mjs",
     "dev:bridge": "npm run dev -w @ptplay/bridge",
     "dev:admin": "npm run dev -w @ptplay/admin",
     "dev:war": "npm run dev -w @ptplay/mini-war-arena",
     "dev:cat": "npm run dev -w @ptplay/cat-cafe",
+    "dev:english": "npm run dev -w @ptplay/english-class-live",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:bridge": "npm run test -w @ptplay/bridge",
     "test:admin": "npm run test -w @ptplay/admin",
     "test:war": "npm run test -w @ptplay/mini-war-arena",
-    "test:cat": "npm run test -w @ptplay/cat-cafe"
+    "test:cat": "npm run test -w @ptplay/cat-cafe",
+    "test:english": "npm run test -w @ptplay/english-class-live"
   },
   "devDependencies": {
     "tsx": "^4.19.3",
