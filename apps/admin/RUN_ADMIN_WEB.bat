@@ -20,7 +20,8 @@ if errorlevel 1 (
 )
 
 :: Check and start Live Bridge if not running
-set "BRIDGE_DIR=..\PTPlay-Mini-War-Arena\ptplay-live-bridge"
+set "BRIDGE_DIR=..\bridge"
+if not exist "%BRIDGE_DIR%" set "BRIDGE_DIR=..\PTPlay-Mini-War-Arena\ptplay-live-bridge"
 if exist "%BRIDGE_DIR%" (
   echo [PTPlay Admin] Checking PTPlay Live Bridge at: %BRIDGE_DIR%
   if not exist "%BRIDGE_DIR%\node_modules\ws" (
