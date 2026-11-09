@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PTPlay Admin Center — Unified Game Studio & Live Operations</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261109c">
 </head>
 <body>
 
@@ -232,12 +232,12 @@
         <section id="panel-games" class="tab-panel active">
           
           <!-- ACTIVE GAME ROUTER BANNER -->
-          <div class="card" style="border-left: 4px solid var(--amber); background: #0c1830;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>🎯 Bộ Phân Tuyến Sự Kiện TikTok LIVE (Active Game Router)</span>
               </div>
-              <span style="font-size: 11px; color: var(--amber); font-weight: bold;">CƠ CHẾ CÁCH LY CHỐNG RÒ RỈ SỰ KIỆN</span>
+              <span style="font-size: 11px; color: var(--amber); font-weight: 600;">CƠ CHẾ CÁCH LY CHỐNG RÒ RỈ SỰ KIỆN</span>
             </div>
             <p class="card-desc">
               Chỉ game đang nhận LIVE mới xử lý bình luận và quà tặng từ luồng TikTok. Game còn lại hoạt động độc lập ở chế độ ngoại tuyến.
@@ -252,10 +252,10 @@
               <button class="btn-gold" onclick="switchActiveGame('english-class')">
                 🎓 Tiếp Nhận LIVE Cho: Lớp Học Vui (5175)
               </button>
-              <button class="btn-purple" style="background:#8b5cf6; color:white; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="switchActiveGame('quiz-show')">
+              <button class="btn-purple" onclick="switchActiveGame('quiz-show')">
                 🏆 Tiếp Nhận LIVE Cho: Đố Vui (5176)
               </button>
-              <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="switchActiveGame('duoi-hinh-bat-chu')">
+              <button class="btn-amber" onclick="switchActiveGame('duoi-hinh-bat-chu')">
                 💡 Tiếp Nhận LIVE Cho: Đuổi Hình (5177)
               </button>
             </div>
@@ -374,7 +374,7 @@
                   <span>Port 5176</span>
                 </div>
                 <div class="btn-group">
-                  <button class="btn-purple" style="font-size: 11px; padding: 4px 9px; background:#8b5cf6; color:white; border:none; border-radius:4px; cursor:pointer;" onclick="startService('quiz-show')">▶ Bật</button>
+                  <button class="btn-green" style="font-size: 11px; padding: 4px 9px;" onclick="startService('quiz-show')">▶ Bật</button>
                   <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="stopService('quiz-show')">⏹ Dừng</button>
                   <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="restartService('quiz-show')">🔄 Restart</button>
                   <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở</button>
@@ -396,7 +396,7 @@
                   <span>Port 5177</span>
                 </div>
                 <div class="btn-group">
-                  <button class="btn-amber" style="font-size: 11px; padding: 4px 9px; background:#f59e0b; color:black; font-weight:bold; border:none; border-radius:4px; cursor:pointer;" onclick="startService('duoi-hinh-bat-chu')">▶ Bật</button>
+                  <button class="btn-green" style="font-size: 11px; padding: 4px 9px;" onclick="startService('duoi-hinh-bat-chu')">▶ Bật</button>
                   <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
                   <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="restartService('duoi-hinh-bat-chu')">🔄 Restart</button>
                   <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở</button>
@@ -500,10 +500,10 @@
                 <div class="stat-item"><div class="stat-label">Quà Tặng</div><div class="stat-val" style="font-size:13px; color:#f43f5e;">8 Hiệu ứng VFX</div></div>
               </div>
               <div class="btn-group">
-                <button class="btn-purple" style="background:#8b5cf6; color:white; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="startService('quiz-show')">🚀 Bật Game (5176)</button>
+                <button class="btn-green" onclick="startService('quiz-show')">🚀 Bật Game (5176)</button>
                 <button class="btn-red" onclick="stopService('quiz-show')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('quiz-show')">🔄 Restart</button>
-                <button class="btn-gold" onclick="switchTab('quizshow')">🏆 Quản Lý Gameshow</button>
+                <button class="btn-outline" onclick="switchTab('quizshow')">🏆 Quản Lý Gameshow</button>
                 <button class="btn-outline" onclick="setPreviewMode('quiz-show'); switchTab('preview');">📺 Xem 9:16</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab 5176</button>
               </div>
@@ -525,10 +525,10 @@
                 <div class="stat-item"><div class="stat-label">Quà Tặng</div><div class="stat-val" style="font-size:13px; color:#f43f5e;">8 Hiệu ứng VFX</div></div>
               </div>
               <div class="btn-group">
-                <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="startService('duoi-hinh-bat-chu')">🚀 Bật Game (5177)</button>
+                <button class="btn-green" onclick="startService('duoi-hinh-bat-chu')">🚀 Bật Game (5177)</button>
                 <button class="btn-red" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('duoi-hinh-bat-chu')">🔄 Restart</button>
-                <button class="btn-gold" onclick="switchTab('duoihinh')">💡 Quản Lý Đoán Chữ</button>
+                <button class="btn-outline" onclick="switchTab('duoihinh')">💡 Quản Lý Đoán Chữ</button>
                 <button class="btn-outline" onclick="setPreviewMode('duoi-hinh-bat-chu'); switchTab('preview');">📺 Xem 9:16</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab 5177</button>
               </div>
@@ -541,14 +541,14 @@
         <section id="panel-miniwar" class="tab-panel">
           
           <!-- GAME LIFECYCLE & SERVER CONTROLS -->
-          <div class="card" style="border-left: 4px solid var(--primary-blue); background: #0c1830; margin-bottom: 14px;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>⚡ Trạng Thái Máy Chủ: Mini War Arena (Cổng 5173)</span>
                 <span id="badge-top-mw" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-primary" onclick="startService('mini-war')">▶ Bật Mini War (5173)</button>
+                <button class="btn-green" onclick="startService('mini-war')">▶ Bật Mini War (5173)</button>
                 <button class="btn-red" onclick="stopService('mini-war')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('mini-war')">🔄 Khởi Động Lại</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5173', '_blank')">🌐 Mở Tab 5173</button>
@@ -593,7 +593,7 @@
           </div>
 
           <!-- TACTICAL SPAWNER WITH LANE SELECTOR -->
-          <div class="card" style="border-left: 4px solid var(--primary-blue);">
+          <div class="card">
             <div class="card-header">
               <div class="card-title">🎯 Triệu Hồi Quân Chiến Thuật (Tactical Lane Spawner)</div>
             </div>
@@ -640,9 +640,9 @@
 
           <!-- QUICK SPAWN HOTKEYS -->
           <div class="grid-2">
-            <div class="card" style="border-top: 3px solid #ff3355;">
+            <div class="card">
               <div class="card-header">
-                <div class="card-title" style="color: #ff6b84;">🔴 Phím Nhanh Đội Đỏ (Red Legion)</div>
+                <div class="card-title">🔴 Phím Nhanh Đội Đỏ (Red Legion)</div>
                 <button class="btn-red" style="font-size: 11px; padding: 3px 8px;" onclick="sendMwCommand('boost_team', 'red')">⚡ Morale Boost</button>
               </div>
               <div class="btn-group">
@@ -655,9 +655,9 @@
               </div>
             </div>
 
-            <div class="card" style="border-top: 3px solid #288cff;">
+            <div class="card">
               <div class="card-header">
-                <div class="card-title" style="color: #7cb8ff;">🔵 Phím Nhanh Đội Xanh (Blue Guard)</div>
+                <div class="card-title">🔵 Phím Nhanh Đội Xanh (Blue Guard)</div>
                 <button class="btn-blue" style="font-size: 11px; padding: 3px 8px;" onclick="sendMwCommand('boost_team', 'blue')">⚡ Morale Boost</button>
               </div>
               <div class="btn-group">
@@ -686,7 +686,7 @@
           </div>
 
           <!-- MINI WAR TIKTOK GIFTS -->
-          <div class="card" style="border-top: 3px solid #ffcc00;">
+          <div class="card">
             <div class="card-header">
               <div class="card-title">🎁 Quà Tặng TikTok Chiến Trường (Mini War Arena Gifts)</div>
             </div>
@@ -697,7 +697,7 @@
                 <button class="btn-red" onclick="sendMockGift('mini-war', 'Rose', 5)">🌹 5 Roses (Đội Quân Hoa Hồng)</button>
                 <button class="btn-gold" onclick="sendMockGift('mini-war', 'Heart', 1)">❤️ 1 Heart (Hồi Máu Thành)</button>
                 <button class="btn-gold" onclick="sendMockGift('mini-war', 'Heart', 10)">💖 10 Hearts (Bão Hồi Máu)</button>
-                <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('mini-war', 'Lion', 1)">🦁 Lion (Triệu Hồi Siêu Trùm Boss)</button>
+                <button class="btn-amber" onclick="sendMockGift('mini-war', 'Lion', 1)">🦁 Lion (Triệu Hồi Siêu Trùm Boss)</button>
                 <button class="btn-blue" onclick="sendMockGift('mini-war', 'Universe', 1)">🌌 Universe (Đại Tiệc Thiên Hà - All Boost)</button>
                 <button class="btn-outline" onclick="sendMockGift('mini-war', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                 <button class="btn-gold" onclick="sendMockGift('mini-war', 'Crown', 1)">👑 Vương Miện Chi Viện</button>
@@ -705,8 +705,8 @@
             </div>
 
             <!-- Custom Gift Sender for Mini War -->
-            <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px;">
-              <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Tiếp Viện Tùy Chỉnh:</label>
+            <div class="subcard-box">
+              <label class="subcard-title">🎯 Bộ Gửi Quà Tiếp Viện Tùy Chỉnh</label>
               <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
                 <div>
                   <label style="font-size: 10px;">Khán Giả / Viewer:</label>
@@ -733,7 +733,7 @@
               </div>
             </div>
           </div>
-          <div class="card" style="border-top: 3px solid var(--accent);">
+          <div class="card">
             <div class="card-header">
               <div class="card-title">🗣️ Bình Luận Viên Tiếng Việt (Vietnamese TTS Shoutcaster)</div>
             </div>
@@ -755,7 +755,7 @@
         <section id="panel-catcafe" class="tab-panel">
           
           <!-- GAME LIFECYCLE & SERVER CONTROLS -->
-          <div class="card" style="border-left: 4px solid var(--emerald); background: #0c1830; margin-bottom: 14px;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>⚡ Trạng Thái Máy Chủ: Café Mòe LIVE (Cổng 5174)</span>
@@ -772,7 +772,7 @@
           </div>
 
           <!-- ENVIRONMENT & ROOMS -->
-          <div class="card" style="border-left: 4px solid var(--emerald);">
+          <div class="card">
             <div class="card-header">
               <div class="card-title">🚪 Chuyển Phòng & Thời Tiết Quán Mèo</div>
               <div class="btn-group">
@@ -923,9 +923,9 @@
                   <button class="btn-gold" onclick="sendMockGift('cat', 'Grilled Fish', 1)">🐟 Cá Nướng Thơm</button>
                   <button class="btn-gold" onclick="sendMockGift('cat', 'Heart', 1)">❤️ 1 Heart (Mưa Tim)</button>
                   <button class="btn-gold" onclick="sendMockGift('cat', 'Heart', 10)">💖 10 Hearts (Bão Tim)</button>
-                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('cat', 'Lion', 1)">🦁 Lion (Mèo Hoàng Gia 👑)</button>
+                  <button class="btn-amber" onclick="sendMockGift('cat', 'Lion', 1)">🦁 Lion (Mèo Hoàng Gia 👑)</button>
                   <button class="btn-blue" onclick="sendMockGift('cat', 'Universe', 1)">🌌 Universe (Đại Tiệc Mèo)</button>
-                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('cat', 'Cake', 1)">🎂 Cake (Tiệc Bánh Kem)</button>
+                  <button class="btn-purple" onclick="sendMockGift('cat', 'Cake', 1)">🎂 Cake (Tiệc Bánh Kem)</button>
                   <button class="btn-green" onclick="sendMockGift('cat', 'Fish Basket', 1)">🧺 Giỏ Cá Đầy</button>
                   <button class="btn-outline" onclick="sendMockGift('cat', 'Yarn Ball', 1)">🧶 Cuộn Len</button>
                   <button class="btn-outline" onclick="sendMockGift('cat', 'Fireworks', 1)">🎆 Pháo Hoa</button>
@@ -937,8 +937,8 @@
               </div>
 
               <!-- Interactive Custom Gift Dispatcher -->
-              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px;">
-                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Tùy Chỉnh (Custom Gift Dispatcher):</label>
+              <div class="subcard-box">
+                <label class="subcard-title">🎯 Bộ Gửi Quà Tùy Chỉnh (Custom Gift Dispatcher)</label>
                 <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
                   <div>
                     <label style="font-size: 10px;">Khán Giả / Viewer:</label>
@@ -976,7 +976,7 @@
           </div>
 
           <!-- CAT CAFÉ TTS ANNOUNCER -->
-          <div class="card" style="border-top: 3px solid var(--accent); margin-top: 14px;">
+          <div class="card" style="margin-top: 14px;">
             <div class="card-header">
               <div class="card-title">🗣️ Giọng Nói Quản Gia & Mèo Cưng (Cat Café TTS Announcer)</div>
             </div>
@@ -998,14 +998,14 @@
         <section id="panel-englishclass" class="tab-panel">
           
           <!-- SERVER LIFECYCLE & CONTROLS -->
-          <div class="card" style="border-left: 4px solid var(--amber); background: #161208; margin-bottom: 14px;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>🎓 Trạng Thái Máy Chủ: English Class LIVE (Cổng 5175)</span>
                 <span id="badge-top-ec" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-gold" onclick="startService('english-class')">▶ Bật Lớp Học (5175)</button>
+                <button class="btn-green" onclick="startService('english-class')">▶ Bật Lớp Học (5175)</button>
                 <button class="btn-red" onclick="stopService('english-class')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('english-class')">🔄 Khởi Động Lại</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab 5175</button>
@@ -1104,18 +1104,18 @@
                   <button class="btn-red" onclick="sendMockGift('english', 'Rose', 1)">🌹 Hoa Hồng (Cánh bay)</button>
                   <button class="btn-gold" onclick="sendMockGift('english', 'Heart', 1)">💖 Thả Tim (Mưa tim)</button>
                   <button class="btn-blue" onclick="sendMockGift('english', 'Universe', 1)">🌌 Vũ Trụ (Đại tiệc)</button>
-                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('english', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
+                  <button class="btn-amber" onclick="sendMockGift('english', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
                   <button class="btn-gold" onclick="sendMockGift('english', 'Crown', 1)">👑 Vương Miện</button>
                   <button class="btn-outline" onclick="sendMockGift('english', 'Donut', 1)">🍩 Bánh Donut</button>
-                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('english', 'Cake', 1)">🎂 Bánh Sinh Nhật</button>
+                  <button class="btn-purple" onclick="sendMockGift('english', 'Cake', 1)">🎂 Bánh Sinh Nhật</button>
                   <button class="btn-outline" onclick="sendMockGift('english', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                   <button class="btn-outline" onclick="sendMockGift('english', 'Magic', 1)">✨ Bụi Sao Kỳ Diệu</button>
                 </div>
               </div>
 
               <!-- Custom Gift Dispatcher for English Class -->
-              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
-                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Vào Lớp Học Tùy Chỉnh:</label>
+              <div class="subcard-box">
+                <label class="subcard-title">🎯 Bộ Gửi Quà Vào Lớp Học Tùy Chỉnh</label>
                 <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
                   <div>
                     <label style="font-size: 10px;">Khán Giả / Học Viên:</label>
@@ -1161,14 +1161,14 @@
         <section id="panel-quizshow" class="tab-panel">
           
           <!-- SERVER LIFECYCLE & CONTROLS -->
-          <div class="card" style="border-left: 4px solid #8b5cf6; background: #160d26; margin-bottom: 14px;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>🏆 Trạng Thái Máy Chủ: PTPlay Quiz Show (Cổng 5176)</span>
                 <span id="badge-top-qs" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-purple" style="background:#8b5cf6; color:white; padding:6px 12px; border:none; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="startService('quiz-show')">▶ Bật Quiz Show (5176)</button>
+                <button class="btn-green" onclick="startService('quiz-show')">▶ Bật Quiz Show (5176)</button>
                 <button class="btn-red" onclick="stopService('quiz-show')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('quiz-show')">🔄 Khởi Động Lại</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab 5176</button>
@@ -1260,17 +1260,17 @@
                   <button class="btn-gold" onclick="sendMockGift('quiz', 'Heart', 1)">💖 Thả Tim (+1 Tim)</button>
                   <button class="btn-outline" onclick="sendMockGift('quiz', 'Donut', 1)">🍩 Bánh Donut (+10đ)</button>
                   <button class="btn-gold" onclick="sendMockGift('quiz', 'Star', 1)">⭐ Ngôi Sao (+50đ)</button>
-                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('quiz', 'Lion', 1)">🦁 Sư Tử (Spotlight MC)</button>
+                  <button class="btn-amber" onclick="sendMockGift('quiz', 'Lion', 1)">🦁 Sư Tử (Spotlight MC)</button>
                   <button class="btn-gold" onclick="sendMockGift('quiz', 'Crown', 1)">👑 Vương Miện (x2 Điểm)</button>
-                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('quiz', 'Cake', 1)">🎂 Bánh Kem</button>
+                  <button class="btn-purple" onclick="sendMockGift('quiz', 'Cake', 1)">🎂 Bánh Kem</button>
                   <button class="btn-outline" onclick="sendMockGift('quiz', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                   <button class="btn-blue" onclick="sendMockGift('quiz', 'Universe', 1)">🌌 Vũ Trụ (Đại Tiệc Neon)</button>
                 </div>
               </div>
 
               <!-- Custom Gift Dispatcher for Quiz Show -->
-              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
-                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Gameshow Tùy Chỉnh:</label>
+              <div class="subcard-box">
+                <label class="subcard-title">🎯 Bộ Gửi Quà Gameshow Tùy Chỉnh</label>
                 <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
                   <div>
                     <label style="font-size: 10px;">Khán Giả / Thí Sinh:</label>
@@ -1316,14 +1316,14 @@
         <section id="panel-duoihinh" class="tab-panel">
           
           <!-- SERVER LIFECYCLE & CONTROLS -->
-          <div class="card" style="border-left: 4px solid #f59e0b; background: #201705; margin-bottom: 14px;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>💡 Trạng Thái Máy Chủ: Đuổi Hình Bắt Chữ (Cổng 5177)</span>
                 <span id="badge-top-dh" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:6px 12px; border:none; border-radius:6px; cursor:pointer;" onclick="startService('duoi-hinh-bat-chu')">▶ Bật Đuổi Hình (5177)</button>
+                <button class="btn-green" onclick="startService('duoi-hinh-bat-chu')">▶ Bật Đuổi Hình (5177)</button>
                 <button class="btn-red" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('duoi-hinh-bat-chu')">🔄 Khởi Động Lại</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab 5177</button>
@@ -1405,18 +1405,18 @@
                   <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)">🌹 Hoa Hồng (+10đ)</button>
                   <button class="btn-gold" onclick="sendMockGift('rebus', 'Heart', 1)">💖 Thả Tim (+20đ)</button>
                   <button class="btn-outline" onclick="sendMockGift('rebus', 'Donut', 1)">🍩 Bánh Donut (+30đ)</button>
-                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold; padding:4px 8px; border:none; border-radius:4px;" onclick="sendMockGift('rebus', 'Perfume', 1)">🧴 Nước Hoa (Mở Gợi Ý)</button>
+                  <button class="btn-purple" onclick="sendMockGift('rebus', 'Perfume', 1)">🧴 Nước Hoa (Mở Gợi Ý)</button>
                   <button class="btn-gold" onclick="sendMockGift('rebus', 'Crown', 1)">👑 Vương Miện (+100đ)</button>
-                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:4px 8px; border:none; border-radius:4px;" onclick="sendMockGift('rebus', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
-                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('rebus', 'Cake', 1)">🎂 Bánh Kem (+80đ)</button>
+                  <button class="btn-amber" onclick="sendMockGift('rebus', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
+                  <button class="btn-purple" onclick="sendMockGift('rebus', 'Cake', 1)">🎂 Bánh Kem (+80đ)</button>
                   <button class="btn-outline" onclick="sendMockGift('rebus', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                   <button class="btn-blue" onclick="sendMockGift('rebus', 'Universe', 1)">🌌 Vũ Trụ (Tiệc Lớp)</button>
                 </div>
               </div>
 
               <!-- Custom Gift Dispatcher for Rebus -->
-              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
-                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Giải Đố Tùy Chỉnh:</label>
+              <div class="subcard-box">
+                <label class="subcard-title">🎯 Bộ Gửi Quà Giải Đố Tùy Chỉnh</label>
                 <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
                   <div>
                     <label style="font-size: 10px;">Khán Giả / Thám Tử:</label>
@@ -1505,7 +1505,7 @@
 
         <!-- ==================== TAB 5: PTPLAY GIFT CONTROL CENTER ==================== -->
         <section id="panel-economy" class="tab-panel">
-          <div class="card" style="border-left: 4px solid var(--amber); margin-bottom: 14px;">
+          <div class="card server-banner" style="margin-bottom: 14px;">
             <div class="card-header">
               <div>
                 <div class="card-title">🎁 PTPlay Gift Control Center — Trung Tâm Quản Lý Quà Tặng & Mappings</div>
@@ -1600,7 +1600,7 @@
             </div>
 
             <!-- ADD / EDIT MAPPING FORM -->
-            <div class="card" style="border-top: 3px solid var(--amber); margin-bottom: 14px;">
+            <div class="card" style="margin-bottom: 14px;">
               <div class="card-header">
                 <div class="card-title">⚙️ Cấu Hình / Thêm Quy Tắc Mapping Quà Tặng Cho Game</div>
                 <div class="btn-group">
@@ -1757,7 +1757,7 @@
             </div>
 
             <!-- UNKNOWN GIFTS PANEL -->
-            <div class="card" style="border-left: 4px solid var(--rose);">
+            <div class="card">
               <div class="card-header">
                 <div class="card-title">⚠️ Quà Chưa Rõ Cần Cấu Hình (Unknown Gifts Detected)</div>
                 <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="resetAnalyticsData()">↺ Reset Thống Kê</button>
@@ -1866,8 +1866,8 @@
                 <button class="btn-primary" style="font-size:11px; padding:5px 9px;" onclick="startService('mini-war')">▶ Mini War</button>
                 <button class="btn-green" style="font-size:11px; padding:5px 9px;" onclick="startService('cat-cafe')">▶ Café Mòe</button>
                 <button class="btn-gold" style="font-size:11px; padding:5px 9px;" onclick="startService('english-class')">▶ Lớp Học</button>
-                <button class="btn-purple" style="font-size:11px; padding:5px 9px; background:#8b5cf6; color:white; border:none; border-radius:4px;" onclick="startService('quiz-show')">▶ Đố Vui</button>
-                <button class="btn-amber" style="font-size:11px; padding:5px 9px; background:#f59e0b; color:black; font-weight:bold; border:none; border-radius:4px;" onclick="startService('duoi-hinh-bat-chu')">▶ Đuổi Hình</button>
+                <button class="btn-purple" style="font-size:11px; padding:5px 9px;" onclick="startService('quiz-show')">▶ Đố Vui</button>
+                <button class="btn-amber" style="font-size:11px; padding:5px 9px;" onclick="startService('duoi-hinh-bat-chu')">▶ Đuổi Hình</button>
               </div>
             </div>
           </div>
@@ -1924,7 +1924,7 @@
         <section id="panel-ttsstudio" class="tab-panel">
           
           <!-- TTS ENGINE STATUS & DIAGNOSTICS CARD -->
-          <div class="card" style="border-left: 4px solid var(--emerald); background: #081a18; margin-bottom: 14px;">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
                 <span>🎙️ Phòng Thí Nghiệm TTS & Giọng Đọc Đa Năng (Voice Testing Studio)</span>
@@ -1948,7 +1948,7 @@
           <div class="grid-2" style="margin-bottom: 14px;">
 
             <!-- LEFT: VOICE & AUDIO PARAMETERS -->
-            <div class="card" style="border-top: 3px solid var(--primary-blue);">
+            <div class="card">
               <div class="card-header">
                 <div class="card-title">⚙️ Bộ Căn Chỉnh Tham Số Giọng Nói</div>
                 <button class="btn-outline" style="font-size: 11px; padding: 2px 8px;" onclick="resetTtsSliders()">↺ Mặc Định</button>
@@ -2016,7 +2016,7 @@
             </div>
 
             <!-- RIGHT: CUSTOM TEXT SYNTHESIS & LIVE DISPATCH -->
-            <div class="card" style="border-top: 3px solid var(--emerald); display: flex; flex-direction: column;">
+            <div class="card" style="display: flex; flex-direction: column;">
               <div class="card-header">
                 <div class="card-title">💬 Khung Soạn Thảo Giọng Đọc Tự Do</div>
               </div>
@@ -2051,7 +2051,7 @@
           </div>
 
           <!-- UNIFIED 5-GAME SOUNDBOARD MATRIX -->
-          <div class="card" style="border-top: 3px solid var(--gold);">
+          <div class="card">
             <div class="card-header">
               <div class="card-title">🎹 Bàn Điều Khiển Phát Nhanh Âm Thanh Cho 5 Game (Unified Soundboard Matrix)</div>
               <span class="badge badge-gold">20 PRESET SOUNDBOARD LINES</span>
@@ -2257,7 +2257,7 @@
 
         <!-- ==================== TAB 7: SIMULATOR STUDIO ==================== -->
         <section id="panel-simulator" class="tab-panel">
-          <div class="card" style="border-left: 4px solid var(--amber);">
+          <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">🩺 Bảng Chẩn Đoán Cổng TikFinity (Port 21213)</div>
               <div class="btn-group">
