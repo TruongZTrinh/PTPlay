@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 44" width="54" height="44">
+  <defs>
+    <radialGradient id="yarnPink" cx="40%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#ff70a6"/>
+      <stop offset="70%" stop-color="#e11d48"/>
+      <stop offset="100%" stop-color="#9f1239"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="25" cy="28" rx="18" ry="7" fill="#000" opacity="0.2"/>
+  <circle cx="25" cy="22" r="16" fill="url(#yarnPink)" stroke="#881337" stroke-width="1.5"/>
+  <g stroke="#fbcfe8" stroke-width="1.8" fill="none" opacity="0.8">
+    <path d="M 12,20 Q 25,12 38,20"/>
+    <path d="M 14,26 Q 25,18 36,26"/>
+    <path d="M 18,12 Q 25,25 22,36"/>
+    <path d="M 28,10 Q 25,22 32,34"/>
+  </g>
+  <path d="M 36,26 Q 48,22 45,34 Q 40,40 50,38" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,22 @@
+{
+  "name": "@ptplay/mini-war-arena",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173 --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 5173 --host 0.0.0.0",
+    "test": "npx tsx tests/index.ts"
+  },
+  "dependencies": {
+    "@ptplay/game-sdk": "*",
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}

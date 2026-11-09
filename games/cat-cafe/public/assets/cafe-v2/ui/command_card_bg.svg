@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 516 140" width="516" height="140">
+  <defs>
+    <linearGradient id="parchmentGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffcf5"/>
+      <stop offset="50%" stop-color="#fff8ea"/>
+      <stop offset="100%" stop-color="#faedd2"/>
+    </linearGradient>
+    <filter id="parchmentShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#3b1b0b" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#parchmentShadow)">
+    <path d="
+      M 24,12
+      Q 120,4 258,4
+      Q 396,4 492,12
+      Q 508,14 508,30
+      L 508,118
+      Q 508,132 492,134
+      Q 396,138 258,138
+      Q 120,138 24,134
+      Q 8,132 8,118
+      L 8,30
+      Q 8,14 24,12 Z
+    " fill="url(#parchmentGrad)" stroke="#c28b53" stroke-width="3"/>
+
+    <path d="
+      M 26,16
+      Q 120,8 258,8
+      Q 396,8 490,16
+      Q 504,18 504,32
+      L 504,116
+      Q 504,128 490,130
+      Q 396,134 258,134
+      Q 120,134 26,130
+      Q 12,128 12,116
+      L 12,32
+      Q 12,18 26,16 Z
+    " fill="none" stroke="#d99a5e" stroke-width="1.2" stroke-dasharray="8,4"/>
+
+    <g transform="translate(16, 114) scale(0.65)" fill="#d99a5e" opacity="0.6">
+      <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+      <circle cx="5" cy="3" r="2"/>
+      <circle cx="10" cy="1" r="2"/>
+      <circle cx="15" cy="3" r="2"/>
+    </g>
+    <g transform="translate(484, 114) scale(0.65)" fill="#d99a5e" opacity="0.6">
+      <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+      <circle cx="5" cy="3" r="2"/>
+      <circle cx="10" cy="1" r="2"/>
+      <circle cx="15" cy="3" r="2"/>
+    </g>
+  </g>
+</svg>

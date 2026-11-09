@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 120" width="150" height="120">
+  <defs>
+    <radialGradient id="tableWood" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#dfa86a"/>
+      <stop offset="50%" stop-color="#b87a3e"/>
+      <stop offset="100%" stop-color="#7a4b1e"/>
+    </radialGradient>
+    <filter id="tableShadow" x="-15%" y="-15%" width="135%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2a1409" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="75" cy="98" rx="64" ry="18" fill="#000" opacity="0.25"/>
+
+  <polygon points="35,65 30,95 38,95 44,65" fill="#4a280e"/>
+  <polygon points="115,65 120,95 112,95 106,65" fill="#4a280e"/>
+  <polygon points="72,68 71,98 79,98 80,68" fill="#381b07"/>
+
+  <g filter="url(#tableShadow)">
+    <ellipse cx="75" cy="58" rx="66" ry="32" fill="url(#tableWood)" stroke="#4a280e" stroke-width="2.5"/>
+    <ellipse cx="75" cy="56" rx="63" ry="29" fill="#c48749"/>
+    <ellipse cx="73" cy="55" rx="52" ry="23" fill="none" stroke="#eab57c" stroke-width="1.2" opacity="0.5"/>
+    <ellipse cx="72" cy="54" rx="36" ry="15" fill="none" stroke="#7a4b1e" stroke-width="1" opacity="0.3"/>
+
+    <g transform="translate(85, 34)">
+      <ellipse cx="20" cy="22" rx="18" ry="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <ellipse cx="20" cy="18" rx="14" ry="7" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+      <ellipse cx="20" cy="17" rx="12" ry="5.5" fill="#c27838"/>
+      <ellipse cx="20" cy="17" rx="8" ry="4" fill="#fffdfa"/>
+      <polygon points="14,15 13,12 16,14" fill="#c27838"/>
+      <polygon points="26,15 27,12 24,14" fill="#c27838"/>
+      <circle cx="18" cy="17" r="0.8" fill="#78350f"/>
+      <circle cx="22" cy="17" r="0.8" fill="#78350f"/>
+      <path d="M 19,19 Q 20,20 21,19" stroke="#78350f" stroke-width="0.6" fill="none"/>
+    </g>
+
+    <g transform="translate(30, 38)">
+      <ellipse cx="14" cy="18" rx="14" ry="7" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+      <g transform="translate(6, 12) scale(0.6)">
+        <ellipse cx="10" cy="10" rx="8" ry="6" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>
+        <polygon points="3,6 4,1 8,5" fill="#f59e0b"/>
+        <polygon points="17,6 16,1 12,5" fill="#f59e0b"/>
+        <circle cx="8" cy="9" r="1" fill="#78350f"/>
+        <circle cx="12" cy="9" r="1" fill="#78350f"/>
+      </g>
+      <g transform="translate(14, 14) scale(0.55)">
+        <ellipse cx="10" cy="10" rx="8" ry="6" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+        <polygon points="3,6 4,1 8,5" fill="#fbbf24"/>
+        <polygon points="17,6 16,1 12,5" fill="#fbbf24"/>
+      </g>
+    </g>
+
+    <g transform="translate(118, 22)">
+      <ellipse cx="10" cy="24" rx="8" ry="12" fill="#e0f2fe" opacity="0.7" stroke="#7dd3fc" stroke-width="1"/>
+      <line x1="10" y1="20" x2="10" y2="6" stroke="#16a34a" stroke-width="2"/>
+      <circle cx="10" cy="6" r="3" fill="#fbbf24"/>
+      <circle cx="10" cy="1" r="2.5" fill="#fff"/>
+      <circle cx="15" cy="6" r="2.5" fill="#fff"/>
+      <circle cx="10" cy="11" r="2.5" fill="#fff"/>
+      <circle cx="5" cy="6" r="2.5" fill="#fff"/>
+    </g>
+  </g>
+</svg>

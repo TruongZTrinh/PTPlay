@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 260" width="150" height="260">
+  <defs>
+    <linearGradient id="woodPlatform" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dfad74"/>
+      <stop offset="60%" stop-color="#c58e51"/>
+      <stop offset="100%" stop-color="#a46d33"/>
+    </linearGradient>
+    <linearGradient id="sisalPost" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e2b978"/>
+      <stop offset="30%" stop-color="#f7da9e"/>
+      <stop offset="70%" stop-color="#edd090"/>
+      <stop offset="100%" stop-color="#cfa05b"/>
+    </linearGradient>
+    <radialGradient id="plushPerch" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#fff8f0"/>
+      <stop offset="80%" stop-color="#fce8d5"/>
+      <stop offset="100%" stop-color="#ecc6a6"/>
+    </radialGradient>
+    <filter id="treeShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#3b1b0b" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="75" cy="245" rx="65" ry="14" fill="#000" opacity="0.25"/>
+
+  <g filter="url(#treeShadow)">
+    <ellipse cx="75" cy="240" rx="60" ry="14" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="75" cy="237" rx="58" ry="12" fill="#efc48d"/>
+
+    <rect x="62" y="145" width="26" height="92" rx="4" fill="url(#sisalPost)" stroke="#78471c" stroke-width="1.8"/>
+    <g stroke="#9e6e33" stroke-width="1.8" opacity="0.75">
+      <line x1="62" y1="155" x2="88" y2="155"/>
+      <line x1="62" y1="167" x2="88" y2="167"/>
+      <line x1="62" y1="179" x2="88" y2="179"/>
+      <line x1="62" y1="191" x2="88" y2="191"/>
+      <line x1="62" y1="203" x2="88" y2="203"/>
+      <line x1="62" y1="215" x2="88" y2="215"/>
+      <line x1="62" y1="227" x2="88" y2="227"/>
+    </g>
+
+    <line x1="45" y1="145" x2="45" y2="185" stroke="#ecc6a6" stroke-width="2"/>
+    <circle cx="45" cy="188" r="8" fill="#fff" stroke="#d5b08c" stroke-width="1.5"/>
+
+    <ellipse cx="112" cy="155" rx="34" ry="12" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="112" cy="153" rx="32" ry="10" fill="url(#plushPerch)"/>
+    <rect x="104" y="155" width="16" height="85" rx="3" fill="url(#sisalPost)" stroke="#78471c" stroke-width="1.5"/>
+    <g stroke="#9e6e33" stroke-width="1.5" opacity="0.7">
+      <line x1="104" y1="170" x2="120" y2="170"/>
+      <line x1="104" y1="185" x2="120" y2="185"/>
+      <line x1="104" y1="200" x2="120" y2="200"/>
+      <line x1="104" y1="215" x2="120" y2="215"/>
+      <line x1="104" y1="230" x2="120" y2="230"/>
+    </g>
+
+    <rect x="64" y="65" width="22" height="82" rx="3" fill="url(#sisalPost)" stroke="#78471c" stroke-width="1.8"/>
+    <g stroke="#9e6e33" stroke-width="1.8" opacity="0.75">
+      <line x1="64" y1="75" x2="86" y2="75"/>
+      <line x1="64" y1="87" x2="86" y2="87"/>
+      <line x1="64" y1="99" x2="86" y2="99"/>
+      <line x1="64" y1="111" x2="86" y2="111"/>
+      <line x1="64" y1="123" x2="86" y2="123"/>
+      <line x1="64" y1="135" x2="86" y2="135"/>
+    </g>
+
+    <ellipse cx="75" cy="144" rx="46" ry="14" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="75" cy="142" rx="43" ry="12" fill="url(#plushPerch)"/>
+
+    <ellipse cx="75" cy="65" rx="55" ry="18" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="75" cy="62" rx="52" ry="16" fill="url(#plushPerch)" stroke="#edd0b0" stroke-width="2"/>
+    <g transform="translate(67, 65) scale(0.65)" fill="#b47844" opacity="0.8">
+      <ellipse cx="12" cy="12" rx="7" ry="5"/>
+      <circle cx="6" cy="4" r="2.5"/>
+      <circle cx="12" cy="2" r="2.5"/>
+      <circle cx="18" cy="4" r="2.5"/>
+    </g>
+  </g>
+</svg>

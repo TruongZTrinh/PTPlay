@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 50" width="110" height="50">
+  <defs>
+    <filter id="peekShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#3b1b0b" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#peekShadow)">
+    <path d="M 25,48 C 20,25 35,10 55,10 C 75,10 90,25 85,48 Z" fill="#fffdfa" stroke="#451a03" stroke-width="2"/>
+    <path d="M 68,14 Q 85,15 84,32 Q 78,38 70,30 Z" fill="#ea580c"/>
+
+    <polygon points="32,24 28,2 45,14" fill="#fffdfa" stroke="#451a03" stroke-width="2"/>
+    <polygon points="33,20 31,6 41,14" fill="#fda4af"/>
+    <polygon points="65,14 82,2 78,24" fill="#d97706" stroke="#451a03" stroke-width="2"/>
+    <polygon points="69,14 79,6 77,20" fill="#fca5a5"/>
+
+    <ellipse cx="44" cy="28" rx="4" ry="5.5" fill="#1e293b"/>
+    <ellipse cx="66" cy="28" rx="4" ry="5.5" fill="#1e293b"/>
+    <circle cx="43" cy="26" r="1.6" fill="#fff"/>
+    <circle cx="45" cy="30" r="0.8" fill="#fff"/>
+    <circle cx="65" cy="26" r="1.6" fill="#fff"/>
+    <circle cx="67" cy="30" r="0.8" fill="#fff"/>
+
+    <ellipse cx="36" cy="33" rx="3.5" ry="2" fill="#fda4af" opacity="0.85"/>
+    <ellipse cx="74" cy="33" rx="3.5" ry="2" fill="#fda4af" opacity="0.85"/>
+
+    <polygon points="53.5,32 56.5,32 55,34" fill="#f43f5e"/>
+    <path d="M 52,35 Q 55,37 58,35" stroke="#451a03" stroke-width="1.4" fill="none"/>
+
+    <ellipse cx="36" cy="46" rx="9" ry="5" fill="#fffdfa" stroke="#451a03" stroke-width="1.8"/>
+    <line x1="33" y1="45" x2="33" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+    <line x1="39" y1="45" x2="39" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+    <ellipse cx="74" cy="46" rx="9" ry="5" fill="#fffdfa" stroke="#451a03" stroke-width="1.8"/>
+    <line x1="71" y1="45" x2="71" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+    <line x1="77" y1="45" x2="77" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+  </g>
+</svg>

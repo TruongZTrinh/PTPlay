@@ -1,0 +1,22 @@
+{
+  "name": "@ptplay/admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PTPlay Admin Web - Centralized Management Portal for PTPlay Interactive Games (Mini War Arena & Cat Café)",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "ptplay",
+    "tiktok-live",
+    "admin-dashboard",
+    "cat-cafe",
+    "mini-war-arena"
+  ],
+  "author": "PTPlay Team",
+  "license": "MIT"
+}
+

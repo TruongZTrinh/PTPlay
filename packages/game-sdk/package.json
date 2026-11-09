@@ -1,0 +1,15 @@
+{
+  "name": "@ptplay/game-sdk",
+  "version": "1.0.0",
+  "description": "Standardized Game SDK for PTPlay Platform games",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@ptplay/live-contracts": "*",
+    "@ptplay/shared-config": "*"
+  }
+}

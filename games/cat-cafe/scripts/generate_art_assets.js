@@ -1,0 +1,1372 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const BASE_DIR = path.resolve('public/assets/cafe-v2');
+
+// ==========================================
+// 1. BACKGROUND: CAFE MAIN ROOM (540 x 960)
+// ==========================================
+function generateCafeBackground() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960" width="540" height="960">
+  <defs>
+    <!-- Wall & Ceiling Gradients -->
+    <linearGradient id="ceilingWood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d2112"/>
+      <stop offset="40%" stop-color="#5a311b"/>
+      <stop offset="100%" stop-color="#2a1409"/>
+    </linearGradient>
+    <linearGradient id="wallWarm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf3de"/>
+      <stop offset="60%" stop-color="#fae8c6"/>
+      <stop offset="100%" stop-color="#ecd1a1"/>
+    </linearGradient>
+    <linearGradient id="floorPlank1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c89255"/>
+      <stop offset="50%" stop-color="#d9a566"/>
+      <stop offset="100%" stop-color="#b68045"/>
+    </linearGradient>
+    <linearGradient id="floorPlank2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b88349"/>
+      <stop offset="50%" stop-color="#c99457"/>
+      <stop offset="100%" stop-color="#a8743a"/>
+    </linearGradient>
+
+    <!-- Sky & Sakura View -->
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6bb8f0"/>
+      <stop offset="50%" stop-color="#a8d6fa"/>
+      <stop offset="100%" stop-color="#e0f0fd"/>
+    </linearGradient>
+    <linearGradient id="cloudGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#eaf3fb" stop-opacity="0.85"/>
+    </linearGradient>
+
+    <!-- Sunbeam Gradient -->
+    <linearGradient id="sunbeamGrad" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#fff8db" stop-opacity="0.45"/>
+      <stop offset="40%" stop-color="#fde68a" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Warm Light Halos -->
+    <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb" stop-opacity="0.85"/>
+      <stop offset="35%" stop-color="#fde68a" stop-opacity="0.45"/>
+      <stop offset="70%" stop-color="#f59e0b" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0.0"/>
+    </radialGradient>
+
+    <!-- Curtains -->
+    <linearGradient id="curtainGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="25%" stop-color="#fff7eb"/>
+      <stop offset="60%" stop-color="#faecd7"/>
+      <stop offset="100%" stop-color="#ebd5ba"/>
+    </linearGradient>
+
+    <!-- Wood Trim -->
+    <linearGradient id="woodTrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a4222"/>
+      <stop offset="50%" stop-color="#5a2d14"/>
+      <stop offset="100%" stop-color="#3d1d0c"/>
+    </linearGradient>
+
+    <!-- Counter Front -->
+    <linearGradient id="counterFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8a4f29"/>
+      <stop offset="50%" stop-color="#6e3c1d"/>
+      <stop offset="100%" stop-color="#4a2510"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="softShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4.5" flood-color="#2a1409" flood-opacity="0.28"/>
+    </filter>
+    <filter id="deepShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#1f130b" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <!-- ================= BASE ROOM ARCHITECTURE ================= -->
+  <!-- Upper Wall Plaster -->
+  <rect x="0" y="0" width="540" height="420" fill="url(#wallWarm)"/>
+
+  <!-- Wallpaper Subtle Vertical Stripes -->
+  <g opacity="0.16">
+    <path d="
+      M20,0 v420 M40,0 v420 M60,0 v420 M80,0 v420 M100,0 v420 M120,0 v420 M140,0 v420
+      M160,0 v420 M180,0 v420 M200,0 v420 M220,0 v420 M240,0 v420 M260,0 v420 M280,0 v420
+      M300,0 v420 M320,0 v420 M340,0 v420 M360,0 v420 M380,0 v420 M400,0 v420 M420,0 v420
+      M440,0 v420 M460,0 v420 M480,0 v420 M500,0 v420 M520,0 v420
+    " stroke="#b0844f" stroke-width="2"/>
+  </g>
+
+  <!-- Hardwood Floor (Y: 410 to 960) -->
+  <rect x="0" y="410" width="540" height="550" fill="#ba8246"/>
+  
+  <!-- Floor Planks with Varied Tones and Nails -->
+  <g id="hardwoodPlanks">
+    <!-- Row 1: 410 to 450 -->
+    <rect x="0" y="410" width="180" height="38" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="180" y="410" width="220" height="38" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="400" y="410" width="140" height="38" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 2: 448 to 495 -->
+    <rect x="0" y="448" width="280" height="47" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="280" y="448" width="260" height="47" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 3: 495 to 550 -->
+    <rect x="0" y="495" width="160" height="55" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="160" y="495" width="240" height="55" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="400" y="495" width="140" height="55" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 4: 550 to 615 -->
+    <rect x="0" y="550" width="250" height="65" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="250" y="550" width="290" height="65" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 5: 615 to 690 -->
+    <rect x="0" y="615" width="190" height="75" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="190" y="615" width="210" height="75" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="400" y="615" width="140" height="75" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 6: 690 to 775 -->
+    <rect x="0" y="690" width="270" height="85" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="270" y="690" width="270" height="85" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 7: 775 to 870 -->
+    <rect x="0" y="775" width="200" height="95" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="200" y="775" width="220" height="95" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="420" y="775" width="120" height="95" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+
+    <!-- Row 8: 870 to 960 -->
+    <rect x="0" y="870" width="310" height="90" fill="url(#floorPlank2)" stroke="#522f13" stroke-width="1.2"/>
+    <rect x="310" y="870" width="230" height="90" fill="url(#floorPlank1)" stroke="#522f13" stroke-width="1.2"/>
+  </g>
+
+  <!-- Floor Grain Overlay -->
+  <g opacity="0.12" stroke="#fff" stroke-width="1">
+    <path d="M10,420 Q120,418 200,420 M240,430 Q330,428 420,430"/>
+    <path d="M40,465 Q180,463 320,465 M340,475 Q440,473 510,475"/>
+    <path d="M20,520 Q150,517 280,520 M300,530 Q420,527 520,530"/>
+    <path d="M30,580 Q190,578 350,580 M380,595 Q460,593 530,595"/>
+    <path d="M10,645 Q210,642 410,645 M440,665 Q490,663 530,665"/>
+    <path d="M30,730 Q220,726 440,730 M15,820 Q240,816 480,820"/>
+  </g>
+
+  <!-- Baseboard Wood Molding -->
+  <rect x="0" y="398" width="540" height="16" fill="url(#woodTrim)"/>
+  <rect x="0" y="396" width="540" height="3" fill="#9e562b"/>
+  <rect x="0" y="412" width="540" height="2" fill="#2d1508"/>
+
+  <!-- ================= CENTER ARCHED WINDOW (X: 165 to 375, Y: 130 to 365) ================= -->
+  <!-- Outer Window Frame with Arch -->
+  <g id="archedWindow" filter="url(#softShadow)">
+    <clipPath id="windowClip">
+      <path d="M 175,230 L 175,355 L 365,355 L 365,230 Q 365,140 270,140 Q 175,140 175,230 Z"/>
+    </clipPath>
+
+    <!-- Wood Arch Outer Wall Border -->
+    <path d="M 166,230 L 166,365 L 374,365 L 374,230 Q 374,130 270,130 Q 166,130 166,230 Z" fill="#4d2410" stroke="#2d1508" stroke-width="2"/>
+    <path d="M 172,230 L 172,358 L 368,358 L 368,230 Q 368,137 270,137 Q 172,137 172,230 Z" fill="#693418"/>
+
+    <!-- Inside the window (outdoor landscape) -->
+    <g clip-path="url(#windowClip)">
+      <!-- Blue Sky -->
+      <rect x="170" y="130" width="200" height="230" fill="url(#skyGrad)"/>
+
+      <!-- Distant Hills -->
+      <ellipse cx="230" cy="355" rx="100" ry="35" fill="#93c572" opacity="0.6"/>
+      <ellipse cx="320" cy="350" rx="90" ry="30" fill="#78ab58" opacity="0.7"/>
+
+      <!-- Clouds -->
+      <g fill="url(#cloudGrad)">
+        <ellipse cx="220" cy="180" rx="35" ry="16"/>
+        <ellipse cx="245" cy="174" rx="28" ry="20"/>
+        <ellipse cx="270" cy="182" rx="22" ry="14"/>
+
+        <ellipse cx="320" cy="205" rx="32" ry="14"/>
+        <ellipse cx="340" cy="200" rx="24" ry="18"/>
+      </g>
+
+      <!-- Blooming Cherry Blossom Tree (Sakura) Branches & Flowers -->
+      <path d="M 365,180 Q 310,195 285,215 Q 260,230 240,250" stroke="#4e2b17" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M 310,195 Q 290,165 270,155" stroke="#4e2b17" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M 285,215 Q 295,245 280,265" stroke="#4e2b17" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Leaves -->
+      <g fill="#6aa84f" opacity="0.85">
+        <ellipse cx="265" cy="160" rx="8" ry="4" transform="rotate(-20 265 160)"/>
+        <ellipse cx="295" cy="180" rx="9" ry="5" transform="rotate(30 295 180)"/>
+        <ellipse cx="250" cy="235" rx="10" ry="5" transform="rotate(-15 250 235)"/>
+        <ellipse cx="330" cy="170" rx="8" ry="4" transform="rotate(45 330 170)"/>
+      </g>
+
+      <!-- Pink Sakura Blossom Clusters -->
+      <g id="sakuraBlossoms">
+        <circle cx="330" cy="160" r="14" fill="#ffaec9" opacity="0.9"/>
+        <circle cx="345" cy="150" r="16" fill="#ff90b3" opacity="0.85"/>
+        <circle cx="320" cy="145" r="12" fill="#ffd1dc" opacity="0.95"/>
+        <circle cx="355" cy="165" r="13" fill="#ff759f" opacity="0.8"/>
+
+        <circle cx="280" cy="155" r="15" fill="#ffaec9" opacity="0.9"/>
+        <circle cx="295" cy="148" r="13" fill="#ffd1dc" opacity="0.95"/>
+        <circle cx="265" cy="162" r="12" fill="#ff759f" opacity="0.85"/>
+
+        <circle cx="300" cy="205" r="16" fill="#ff90b3" opacity="0.9"/>
+        <circle cx="285" cy="218" r="14" fill="#ffd1dc" opacity="0.95"/>
+        <circle cx="318" cy="215" r="13" fill="#ffaec9" opacity="0.85"/>
+
+        <circle cx="250" cy="245" r="13" fill="#ffaec9" opacity="0.9"/>
+        <circle cx="265" cy="255" r="11" fill="#ffd1dc" opacity="0.95"/>
+        <circle cx="238" cy="258" r="12" fill="#ff759f" opacity="0.8"/>
+
+        <!-- 5-petal Flowers with golden center -->
+        <g transform="translate(325, 175) scale(0.7)">
+          <circle cx="0" cy="-6" r="4" fill="#fff"/>
+          <circle cx="6" cy="-2" r="4" fill="#fff"/>
+          <circle cx="4" cy="5" r="4" fill="#fff"/>
+          <circle cx="-4" cy="5" r="4" fill="#fff"/>
+          <circle cx="-6" cy="-2" r="4" fill="#fff"/>
+          <circle cx="0" cy="0" r="2.5" fill="#f59e0b"/>
+        </g>
+        <g transform="translate(270, 180) scale(0.65)">
+          <circle cx="0" cy="-6" r="4" fill="#fff"/>
+          <circle cx="6" cy="-2" r="4" fill="#fff"/>
+          <circle cx="4" cy="5" r="4" fill="#fff"/>
+          <circle cx="-4" cy="5" r="4" fill="#fff"/>
+          <circle cx="-6" cy="-2" r="4" fill="#fff"/>
+          <circle cx="0" cy="0" r="2.5" fill="#f59e0b"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- Window Mullions -->
+    <rect x="267" y="140" width="6" height="218" fill="#4d2410" stroke="#2d1508" stroke-width="0.5"/>
+    <rect x="174" y="260" width="192" height="6" fill="#4d2410" stroke="#2d1508" stroke-width="0.5"/>
+    <rect x="174" y="315" width="192" height="5" fill="#4d2410" stroke="#2d1508" stroke-width="0.5"/>
+    <rect x="220" y="260" width="4" height="96" fill="#4d2410"/>
+    <rect x="315" y="260" width="4" height="96" fill="#4d2410"/>
+
+    <!-- Window Sill -->
+    <rect x="156" y="356" width="228" height="12" rx="3" fill="#693418" stroke="#3d1d0c" stroke-width="1.5" filter="url(#softShadow)"/>
+    <rect x="154" y="354" width="232" height="3" fill="#9e562b"/>
+  </g>
+
+  <!-- Ruffled Curtains with Tied Ribbons -->
+  <g id="curtains" filter="url(#softShadow)">
+    <!-- Left Curtain -->
+    <path d="
+      M 160,135
+      Q 175,175 168,230
+      Q 160,270 178,285
+      Q 160,300 152,360
+      L 142,360
+      Q 148,270 145,200
+      Q 145,150 160,135 Z
+    " fill="url(#curtainGrad)" stroke="#cbb393" stroke-width="1"/>
+    <!-- Tieback Ribbon with Bow -->
+    <path d="M 150,280 Q 165,286 178,284" stroke="#e88478" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <circle cx="166" cy="285" r="4.5" fill="#e88478"/>
+    <path d="M 166,285 Q 162,298 158,308 M 166,285 Q 170,298 174,308" stroke="#e88478" stroke-width="2.5" fill="none"/>
+
+    <!-- Right Curtain -->
+    <path d="
+      M 380,135
+      Q 365,175 372,230
+      Q 380,270 362,285
+      Q 380,300 388,360
+      L 398,360
+      Q 392,270 395,200
+      Q 395,150 380,135 Z
+    " fill="url(#curtainGrad)" stroke="#cbb393" stroke-width="1"/>
+    <!-- Tieback Ribbon with Bow -->
+    <path d="M 390,280 Q 375,286 362,284" stroke="#e88478" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <circle cx="374" cy="285" r="4.5" fill="#e88478"/>
+    <path d="M 374,285 Q 378,298 382,308 M 374,285 Q 370,298 366,308" stroke="#e88478" stroke-width="2.5" fill="none"/>
+  </g>
+
+  <!-- ================= VOLUMETRIC SUNLIGHT STREAMING ================= -->
+  <polygon points="175,260 365,260 540,650 540,790 220,780 175,360" fill="url(#sunbeamGrad)" opacity="0.85"/>
+  <polygon points="210,180 340,180 490,580 320,620" fill="url(#sunbeamGrad)" opacity="0.6"/>
+
+  <!-- Dust Motes / Sunlight Sparkles -->
+  <g fill="#fff" opacity="0.75">
+    <circle cx="280" cy="380" r="2"/>
+    <circle cx="340" cy="420" r="1.5"/>
+    <circle cx="390" cy="480" r="2.2"/>
+    <circle cx="260" cy="460" r="1.8"/>
+    <circle cx="320" cy="520" r="2"/>
+    <circle cx="430" cy="540" r="1.6"/>
+    <circle cx="370" cy="600" r="2.5"/>
+    <circle cx="480" cy="620" r="1.8"/>
+  </g>
+
+  <!-- ================= LEFT WALL: CHALKBOARD, SHELVES, PLANTS ================= -->
+  <!-- Framed Chalkboard "Café Mòe ❤️" -->
+  <g id="chalkboard" filter="url(#softShadow)">
+    <rect x="22" y="170" width="80" height="115" rx="6" fill="#3d2112" stroke="#261208" stroke-width="2"/>
+    <rect x="27" y="175" width="70" height="105" rx="4" fill="#222b28"/>
+    <text x="62" y="202" font-family="'Segoe UI', cursive, sans-serif" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">Café</text>
+    <text x="62" y="222" font-family="'Segoe UI', cursive, sans-serif" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">Mòe ♡</text>
+    <path d="M 52,246 Q 52,258 62,258 Q 72,258 72,246 Z" fill="none" stroke="#fff" stroke-width="1.8"/>
+    <path d="M 72,248 Q 76,248 76,252 Q 76,256 72,256" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <path d="M 57,242 Q 55,236 58,232 M 62,242 Q 65,236 62,230 M 67,242 Q 65,236 68,232" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.8"/>
+    <ellipse cx="40" cy="265" rx="3.5" ry="3" fill="#fff" opacity="0.8"/>
+    <circle cx="35" cy="258" r="1.5" fill="#fff" opacity="0.8"/>
+    <circle cx="39" cy="256" r="1.5" fill="#fff" opacity="0.8"/>
+    <circle cx="44" cy="258" r="1.5" fill="#fff" opacity="0.8"/>
+  </g>
+
+  <!-- Wooden Bookshelf -->
+  <g id="bookshelf" filter="url(#softShadow)">
+    <rect x="115" y="195" width="46" height="170" fill="#5c2e17" stroke="#3b1b0b" stroke-width="1.5"/>
+    <rect x="113" y="195" width="50" height="6" rx="1" fill="#7d4323"/>
+    <rect x="113" y="250" width="50" height="6" rx="1" fill="#7d4323"/>
+    <rect x="113" y="305" width="50" height="6" rx="1" fill="#7d4323"/>
+    <rect x="113" y="360" width="50" height="8" rx="1" fill="#7d4323"/>
+
+    <!-- Top Shelf: Potted trailing plant & Maneki-neko lucky cat -->
+    <g transform="translate(120, 218)">
+      <path d="M 2,12 L 14,12 L 12,22 L 4,22 Z" fill="#d97706"/>
+      <circle cx="8" cy="10" r="7" fill="#4ade80"/>
+      <path d="M 4,14 Q -2,22 2,28 M 12,14 Q 18,22 14,30" stroke="#22c55e" stroke-width="2" fill="none"/>
+    </g>
+    <!-- Cute Waving Lucky Cat -->
+    <g transform="translate(142, 222) scale(0.65)">
+      <ellipse cx="10" cy="14" rx="9" ry="11" fill="#fff" stroke="#475569" stroke-width="1"/>
+      <circle cx="10" cy="6" r="7.5" fill="#fff" stroke="#475569" stroke-width="1"/>
+      <polygon points="4,2 6,-4 10,1" fill="#ef4444"/>
+      <polygon points="10,1 14,-4 16,2" fill="#ef4444"/>
+      <path d="M 5,10 Q 10,14 15,10" stroke="#dc2626" stroke-width="2" fill="none"/>
+      <circle cx="10" cy="13" r="2" fill="#fbbf24"/>
+      <ellipse cx="18" cy="4" rx="2.5" ry="4" fill="#fff" stroke="#475569" stroke-width="1" transform="rotate(20 18 4)"/>
+    </g>
+
+    <!-- Middle Shelf: Colorful Books -->
+    <rect x="120" y="260" width="6" height="42" fill="#ef4444" rx="1"/>
+    <rect x="127" y="264" width="7" height="38" fill="#3b82f6" rx="1"/>
+    <rect x="135" y="258" width="6" height="44" fill="#10b981" rx="1"/>
+    <rect x="142" y="266" width="8" height="36" fill="#f59e0b" rx="1"/>
+    <rect x="151" y="270" width="7" height="32" fill="#8b5cf6" rx="1" transform="rotate(12 151 270)"/>
+
+    <!-- Bottom Shelf: Stored Coffee Beans Jars -->
+    <rect x="122" y="322" width="14" height="24" rx="3" fill="#cbd5e1" opacity="0.8"/>
+    <rect x="124" y="328" width="10" height="16" fill="#78350f" rx="2"/>
+    <rect x="140" y="320" width="16" height="26" rx="3" fill="#cbd5e1" opacity="0.8"/>
+    <rect x="142" y="326" width="12" height="18" fill="#92400e" rx="2"/>
+  </g>
+
+  <!-- Potted Plant on Low Stand -->
+  <g id="leftPlantStand" filter="url(#softShadow)" transform="translate(18, 305)">
+    <rect x="10" y="55" width="4" height="45" fill="#5c2e17"/>
+    <rect x="36" y="55" width="4" height="45" fill="#5c2e17"/>
+    <rect x="6" y="52" width="38" height="6" rx="2" fill="#7d4323"/>
+    <path d="M 12,24 L 38,24 L 33,52 L 17,52 Z" fill="#ea580c" stroke="#9a3412" stroke-width="1.5"/>
+    <rect x="10" y="20" width="30" height="6" rx="2" fill="#f97316"/>
+    <ellipse cx="25" cy="10" rx="14" ry="22" fill="#22c55e" transform="rotate(-15 25 10)"/>
+    <ellipse cx="14" cy="5" rx="12" ry="18" fill="#16a34a" transform="rotate(-40 14 5)"/>
+    <ellipse cx="36" cy="5" rx="12" ry="18" fill="#15803d" transform="rotate(35 36 5)"/>
+    <ellipse cx="25" cy="-8" rx="11" ry="16" fill="#4ade80" transform="rotate(5 25 -8)"/>
+  </g>
+
+  <!-- ================= CENTER COUNTER ================= -->
+  <g id="mainCafeCounter" filter="url(#deepShadow)">
+    <rect x="80" y="362" width="370" height="18" rx="4" fill="#a05e32" stroke="#522a12" stroke-width="1.5"/>
+    <rect x="82" y="362" width="366" height="4" fill="#c97e47"/>
+
+    <rect x="90" y="380" width="350" height="65" fill="url(#counterFront)" stroke="#381907" stroke-width="1.5"/>
+    <g stroke="#381907" stroke-width="1.5" opacity="0.6">
+      <line x1="125" y1="380" x2="125" y2="445"/>
+      <line x1="160" y1="380" x2="160" y2="445"/>
+      <line x1="195" y1="380" x2="195" y2="445"/>
+      <line x1="230" y1="380" x2="230" y2="445"/>
+      <line x1="265" y1="380" x2="265" y2="445"/>
+      <line x1="300" y1="380" x2="300" y2="445"/>
+      <line x1="335" y1="380" x2="335" y2="445"/>
+      <line x1="370" y1="380" x2="370" y2="445"/>
+      <line x1="405" y1="380" x2="405" y2="445"/>
+    </g>
+
+    <!-- Chalk Cat Face Doodles -->
+    <g stroke="#fff" stroke-width="1.2" fill="none" opacity="0.65">
+      <g transform="translate(325, 408) scale(0.65)">
+        <ellipse cx="14" cy="14" rx="14" ry="12"/>
+        <polygon points="4,4 7,-4 12,4"/>
+        <polygon points="16,4 21,-4 24,4"/>
+        <circle cx="9" cy="12" r="1.5" fill="#fff"/>
+        <circle cx="19" cy="12" r="1.5" fill="#fff"/>
+        <path d="M 12,16 Q 14,19 16,16"/>
+        <line x1="3" y1="14" x2="-2" y2="13"/>
+        <line x1="3" y1="16" x2="-2" y2="18"/>
+        <line x1="25" y1="14" x2="30" y2="13"/>
+        <line x1="25" y1="16" x2="30" y2="18"/>
+      </g>
+      <g transform="translate(390, 412) scale(0.6)">
+        <ellipse cx="10" cy="10" rx="6" ry="5" fill="#fff" opacity="0.6"/>
+        <circle cx="4" cy="3" r="2" fill="#fff" opacity="0.6"/>
+        <circle cx="9" cy="1" r="2" fill="#fff" opacity="0.6"/>
+        <circle cx="14" cy="2" r="2" fill="#fff" opacity="0.6"/>
+        <circle cx="17" cy="6" r="1.8" fill="#fff" opacity="0.6"/>
+      </g>
+    </g>
+
+    <!-- ON THE COUNTER: Pastry Case -->
+    <g id="pastryCase" transform="translate(160, 310)">
+      <rect x="0" y="44" width="85" height="8" rx="2" fill="#522a12"/>
+      <path d="M 2,44 Q 4,8 24,6 L 76,6 Q 84,10 83,44 Z" fill="#e0f2fe" fill-opacity="0.5" stroke="#bae6fd" stroke-width="1.5"/>
+      <line x1="8" y1="28" x2="78" y2="28" stroke="#7dd3fc" stroke-width="2" opacity="0.8"/>
+      <g transform="translate(14, 30)">
+        <polygon points="0,12 18,12 18,2 0,6" fill="#fef08a"/>
+        <polygon points="0,6 18,2 18,0 0,3" fill="#ef4444"/>
+        <circle cx="10" cy="0" r="3" fill="#dc2626"/>
+      </g>
+      <ellipse cx="45" cy="40" rx="6" ry="3.5" fill="#78350f"/>
+      <ellipse cx="45" cy="37" rx="5" ry="1.5" fill="#fbcfe8"/>
+      <ellipse cx="45" cy="35" rx="6" ry="3.5" fill="#78350f"/>
+      <path d="M 60,42 Q 70,30 78,42" stroke="#d97706" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <circle cx="30" cy="24" r="4" fill="#f472b6"/>
+      <circle cx="55" cy="24" r="4" fill="#38bdf8"/>
+    </g>
+
+    <!-- Vintage Espresso Coffee Machine -->
+    <g id="espressoMachine" transform="translate(254, 280)">
+      <rect x="0" y="35" width="30" height="47" rx="3" fill="#64748b" stroke="#334155" stroke-width="1.5"/>
+      <rect x="2" y="37" width="26" height="15" fill="#94a3b8"/>
+      <path d="M 8,35 L 6,10 L 24,10 L 22,35 Z" fill="#e2e8f0" stroke="#475569" stroke-width="1.2" opacity="0.7"/>
+      <ellipse cx="15" cy="24" rx="7" ry="9" fill="#451a03"/>
+      <circle cx="15" cy="44" r="4" fill="#fbbf24" stroke="#78350f" stroke-width="1"/>
+      <line x1="28" y1="40" x2="34" y2="30" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="35" cy="29" r="3" fill="#ef4444"/>
+      <rect x="8" y="70" width="14" height="4" fill="#0f172a"/>
+      <rect x="11" y="74" width="8" height="7" rx="2" fill="#fff" stroke="#94a3b8" stroke-width="1"/>
+      <path d="M 14,70 Q 12,64 15,60 Q 18,56 14,52" stroke="#fff" stroke-width="1" fill="none" opacity="0.6"/>
+    </g>
+
+    <!-- Glass Cookie Jar -->
+    <g id="cookieJar" transform="translate(290, 335)">
+      <rect x="0" y="6" width="20" height="22" rx="3" fill="#bae6fd" opacity="0.6" stroke="#7dd3fc" stroke-width="1"/>
+      <ellipse cx="10" cy="5" rx="8" ry="3" fill="#f59e0b"/>
+      <circle cx="7" cy="18" r="3" fill="#d97706"/>
+      <circle cx="14" cy="20" r="3" fill="#d97706"/>
+      <circle cx="10" cy="12" r="3.5" fill="#d97706"/>
+    </g>
+
+    <!-- Flower Bouquet -->
+    <g id="flowerVase" transform="translate(325, 305)" filter="url(#softShadow)">
+      <path d="M 12,38 Q 4,50 10,60 L 26,60 Q 32,50 24,38 Z" fill="#fdf4ff" stroke="#e879f9" stroke-width="1"/>
+      <circle cx="18" cy="25" r="16" fill="#f472b6" opacity="0.95"/>
+      <circle cx="10" cy="22" r="12" fill="#ec4899" opacity="0.9"/>
+      <circle cx="26" cy="20" r="13" fill="#f9a8d4" opacity="0.95"/>
+      <circle cx="18" cy="12" r="14" fill="#fb7185" opacity="0.9"/>
+      <circle cx="18" cy="25" r="2" fill="#fff"/>
+      <circle cx="12" cy="20" r="2" fill="#fff"/>
+      <circle cx="24" cy="18" r="2" fill="#fff"/>
+      <ellipse cx="8" cy="38" rx="8" ry="4" fill="#22c55e" transform="rotate(-30 8 38)"/>
+      <ellipse cx="28" cy="38" rx="8" ry="4" fill="#16a34a" transform="rotate(30 28 38)"/>
+    </g>
+
+    <!-- Round Glass Fishbowl with Swimming Goldfish -->
+    <g id="fishbowl" transform="translate(390, 310)" filter="url(#softShadow)">
+      <ellipse cx="25" cy="32" rx="22" ry="24" fill="#e0f2fe" fill-opacity="0.55" stroke="#7dd3fc" stroke-width="1.8"/>
+      <ellipse cx="25" cy="20" rx="18" ry="4" fill="#38bdf8" fill-opacity="0.4"/>
+      <ellipse cx="25" cy="52" rx="16" ry="3" fill="#0284c7" opacity="0.5"/>
+      <circle cx="16" cy="50" r="2.5" fill="#38bdf8"/>
+      <circle cx="22" cy="51" r="3" fill="#f8fafc"/>
+      <circle cx="29" cy="50" r="2.5" fill="#38bdf8"/>
+      <circle cx="34" cy="51" r="2" fill="#f8fafc"/>
+      <path d="M 32,50 Q 36,36 31,24" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <g transform="translate(20, 32)">
+        <ellipse cx="5" cy="0" rx="7" ry="4.5" fill="#f97316"/>
+        <polygon points="12,0 18,-5 16,0 18,5" fill="#ea580c"/>
+        <circle cx="2" cy="-1.5" r="1.2" fill="#fff"/>
+        <circle cx="1.5" cy="-1.5" r="0.6" fill="#000"/>
+        <polygon points="5,-4 7,-8 9,-4" fill="#f97316"/>
+        <circle cx="-1" cy="-4" r="1" fill="#fff" opacity="0.8"/>
+        <circle cx="-3" cy="-9" r="1.4" fill="#fff" opacity="0.7"/>
+      </g>
+      <path d="M 12,18 Q 8,28 10,40" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.75"/>
+    </g>
+  </g>
+
+  <!-- ================= RIGHT WALL & BACKGROUND ================= -->
+  <rect x="475" y="110" width="65" height="340" fill="#4d2410" stroke="#2d1508" stroke-width="1.5"/>
+  <rect x="478" y="110" width="12" height="340" fill="#693418"/>
+  <g transform="translate(492, 215)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="36" height="42" rx="3" fill="#fef3c7" stroke="#92400e" stroke-width="2"/>
+    <ellipse cx="18" cy="24" rx="7" ry="5.5" fill="#b45309"/>
+    <circle cx="11" cy="15" r="2.5" fill="#b45309"/>
+    <circle cx="18" cy="12" r="2.5" fill="#b45309"/>
+    <circle cx="25" cy="15" r="2.5" fill="#b45309"/>
+  </g>
+
+  <g id="rightWallSconce" transform="translate(485, 155)">
+    <circle cx="12" cy="25" r="50" fill="url(#lampGlow)" opacity="0.8"/>
+    <path d="M 28,15 L 12,15 L 12,22" stroke="#1f2937" stroke-width="3.5" fill="none"/>
+    <polygon points="4,22 20,22 17,42 7,42" fill="#fef08a" stroke="#1f2937" stroke-width="2"/>
+    <polygon points="1,22 23,22 12,14" fill="#1f2937"/>
+    <circle cx="12" cy="45" r="2.5" fill="#1f2937"/>
+    <circle cx="12" cy="30" r="4.5" fill="#f59e0b"/>
+    <circle cx="12" cy="30" r="2" fill="#fff"/>
+  </g>
+
+  <g id="rightHangingPlant" transform="translate(425, 140)">
+    <path d="M 12,22 L 32,22 L 28,38 L 16,38 Z" fill="#d97706"/>
+    <line x1="14" y1="22" x2="22" y2="0" stroke="#b45309" stroke-width="1.2"/>
+    <line x1="30" y1="22" x2="22" y2="0" stroke="#b45309" stroke-width="1.2"/>
+    <g fill="#22c55e">
+      <ellipse cx="15" cy="28" rx="8" ry="5" transform="rotate(-20 15 28)"/>
+      <ellipse cx="29" cy="28" rx="8" ry="5" transform="rotate(25 29 28)"/>
+      <ellipse cx="12" cy="42" rx="7" ry="5" transform="rotate(-35 12 42)"/>
+      <ellipse cx="32" cy="45" rx="7" ry="5" transform="rotate(40 32 45)"/>
+      <ellipse cx="20" cy="54" rx="6" ry="4" transform="rotate(-10 20 54)"/>
+      <ellipse cx="28" cy="66" rx="5" ry="3.5" transform="rotate(20 28 66)"/>
+    </g>
+  </g>
+
+  <!-- ================= TOP BEAMS, HANGING IVY & PENDANT LAMP ================= -->
+  <rect x="0" y="85" width="540" height="32" fill="url(#ceilingWood)" stroke="#1a0a03" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="0" y="85" width="540" height="4" fill="#804724"/>
+
+  <g id="leftPendantLamp" transform="translate(85, 110)">
+    <circle cx="25" cy="55" r="95" fill="url(#lampGlow)" opacity="0.9"/>
+    <line x1="25" y1="0" x2="25" y2="40" stroke="#1f2937" stroke-width="3"/>
+    <path d="M 5,58 Q 25,38 45,58 Z" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+    <ellipse cx="25" cy="58" rx="20" ry="5" fill="#fef08a" stroke="#78350f" stroke-width="1.5"/>
+    <circle cx="25" cy="58" r="6" fill="#fffbeb"/>
+    <circle cx="25" cy="58" r="3" fill="#fff"/>
+  </g>
+
+  <g id="ceilingIvyVines" fill="#15803d" opacity="0.92">
+    <path d="M 0,90 Q 40,115 80,105 Q 120,95 160,118" stroke="#166534" stroke-width="2.5" fill="none"/>
+    <ellipse cx="15" cy="100" rx="9" ry="6" transform="rotate(25 15 100)"/>
+    <ellipse cx="38" cy="112" rx="8" ry="5" transform="rotate(-15 38 112)"/>
+    <ellipse cx="62" cy="110" rx="10" ry="6" transform="rotate(35 62 110)"/>
+    <ellipse cx="85" cy="118" rx="8" ry="5" transform="rotate(-20 85 118)"/>
+    <ellipse cx="115" cy="108" rx="9" ry="6" transform="rotate(40 115 108)"/>
+    <ellipse cx="140" cy="116" rx="8" ry="5" transform="rotate(-10 140 116)"/>
+
+    <path d="M 380,105 Q 430,120 480,108 Q 510,100 540,112" stroke="#166534" stroke-width="2.5" fill="none"/>
+    <ellipse cx="400" cy="110" rx="9" ry="6" transform="rotate(-30 400 110)"/>
+    <ellipse cx="425" cy="118" rx="8" ry="5" transform="rotate(20 425 118)"/>
+    <ellipse cx="452" cy="115" rx="10" ry="6" transform="rotate(-25 452 115)"/>
+    <ellipse cx="480" cy="116" rx="8" ry="5" transform="rotate(30 480 116)"/>
+    <ellipse cx="510" cy="112" rx="9" ry="6" transform="rotate(-15 510 112)"/>
+    <ellipse cx="530" cy="118" rx="8" ry="5" transform="rotate(25 530 118)"/>
+  </g>
+
+  <!-- Foreground Corner Plants -->
+  <g id="bottomLeftFramingPlant" filter="url(#softShadow)" transform="translate(-10, 780)">
+    <ellipse cx="25" cy="50" rx="28" ry="48" fill="#15803d" transform="rotate(25 25 50)"/>
+    <ellipse cx="60" cy="70" rx="22" ry="38" fill="#16a34a" transform="rotate(50 60 70)"/>
+    <ellipse cx="15" cy="90" rx="20" ry="32" fill="#22c55e" transform="rotate(70 15 90)"/>
+    <ellipse cx="40" cy="30" rx="18" ry="30" fill="#4ade80" transform="rotate(10 40 30)"/>
+  </g>
+</svg>`;
+
+  fs.writeFileSync(path.join(BASE_DIR, 'backgrounds/cafe_room_v2.svg'), svg);
+  console.log('✓ Generated backgrounds/cafe_room_v2.svg');
+}
+
+// ==========================================
+// 2. FURNITURE & PROPS
+// ==========================================
+function generateFurniture() {
+  const donutBedSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 95" width="190" height="95">
+  <defs>
+    <radialGradient id="donutPink" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#ffb7cf"/>
+      <stop offset="60%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </radialGradient>
+    <radialGradient id="donutInner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd8e5"/>
+      <stop offset="80%" stop-color="#f9a8d4"/>
+      <stop offset="100%" stop-color="#e879f9"/>
+    </radialGradient>
+    <filter id="bedShadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#4a1525" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="95" cy="55" rx="88" ry="34" fill="#000" opacity="0.22"/>
+
+  <g filter="url(#bedShadow)">
+    <ellipse cx="95" cy="46" rx="85" ry="36" fill="url(#donutPink)" stroke="#be185d" stroke-width="2.5"/>
+
+    <g stroke="#9d174d" stroke-width="2" opacity="0.45" fill="none">
+      <path d="M 25,40 Q 40,46 45,58"/>
+      <path d="M 45,26 Q 60,38 68,54"/>
+      <path d="M 75,18 Q 85,32 92,50"/>
+      <path d="M 115,18 Q 105,32 98,50"/>
+      <path d="M 145,26 Q 130,38 122,54"/>
+      <path d="M 165,40 Q 150,46 145,58"/>
+    </g>
+
+    <ellipse cx="95" cy="48" rx="55" ry="22" fill="url(#donutInner)" stroke="#f472b6" stroke-width="2"/>
+
+    <g fill="#fff" opacity="0.8">
+      <g transform="translate(35, 52) scale(0.65)">
+        <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+        <circle cx="5" cy="3" r="2.2"/>
+        <circle cx="10" cy="1" r="2.2"/>
+        <circle cx="15" cy="3" r="2.2"/>
+      </g>
+      <g transform="translate(140, 52) scale(0.65)">
+        <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+        <circle cx="5" cy="3" r="2.2"/>
+        <circle cx="10" cy="1" r="2.2"/>
+        <circle cx="15" cy="3" r="2.2"/>
+      </g>
+    </g>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/donut_bed.svg'), donutBedSvg);
+
+  const catTreeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 260" width="150" height="260">
+  <defs>
+    <linearGradient id="woodPlatform" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dfad74"/>
+      <stop offset="60%" stop-color="#c58e51"/>
+      <stop offset="100%" stop-color="#a46d33"/>
+    </linearGradient>
+    <linearGradient id="sisalPost" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e2b978"/>
+      <stop offset="30%" stop-color="#f7da9e"/>
+      <stop offset="70%" stop-color="#edd090"/>
+      <stop offset="100%" stop-color="#cfa05b"/>
+    </linearGradient>
+    <radialGradient id="plushPerch" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#fff8f0"/>
+      <stop offset="80%" stop-color="#fce8d5"/>
+      <stop offset="100%" stop-color="#ecc6a6"/>
+    </radialGradient>
+    <filter id="treeShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#3b1b0b" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="75" cy="245" rx="65" ry="14" fill="#000" opacity="0.25"/>
+
+  <g filter="url(#treeShadow)">
+    <ellipse cx="75" cy="240" rx="60" ry="14" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="75" cy="237" rx="58" ry="12" fill="#efc48d"/>
+
+    <rect x="62" y="145" width="26" height="92" rx="4" fill="url(#sisalPost)" stroke="#78471c" stroke-width="1.8"/>
+    <g stroke="#9e6e33" stroke-width="1.8" opacity="0.75">
+      <line x1="62" y1="155" x2="88" y2="155"/>
+      <line x1="62" y1="167" x2="88" y2="167"/>
+      <line x1="62" y1="179" x2="88" y2="179"/>
+      <line x1="62" y1="191" x2="88" y2="191"/>
+      <line x1="62" y1="203" x2="88" y2="203"/>
+      <line x1="62" y1="215" x2="88" y2="215"/>
+      <line x1="62" y1="227" x2="88" y2="227"/>
+    </g>
+
+    <line x1="45" y1="145" x2="45" y2="185" stroke="#ecc6a6" stroke-width="2"/>
+    <circle cx="45" cy="188" r="8" fill="#fff" stroke="#d5b08c" stroke-width="1.5"/>
+
+    <ellipse cx="112" cy="155" rx="34" ry="12" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="112" cy="153" rx="32" ry="10" fill="url(#plushPerch)"/>
+    <rect x="104" y="155" width="16" height="85" rx="3" fill="url(#sisalPost)" stroke="#78471c" stroke-width="1.5"/>
+    <g stroke="#9e6e33" stroke-width="1.5" opacity="0.7">
+      <line x1="104" y1="170" x2="120" y2="170"/>
+      <line x1="104" y1="185" x2="120" y2="185"/>
+      <line x1="104" y1="200" x2="120" y2="200"/>
+      <line x1="104" y1="215" x2="120" y2="215"/>
+      <line x1="104" y1="230" x2="120" y2="230"/>
+    </g>
+
+    <rect x="64" y="65" width="22" height="82" rx="3" fill="url(#sisalPost)" stroke="#78471c" stroke-width="1.8"/>
+    <g stroke="#9e6e33" stroke-width="1.8" opacity="0.75">
+      <line x1="64" y1="75" x2="86" y2="75"/>
+      <line x1="64" y1="87" x2="86" y2="87"/>
+      <line x1="64" y1="99" x2="86" y2="99"/>
+      <line x1="64" y1="111" x2="86" y2="111"/>
+      <line x1="64" y1="123" x2="86" y2="123"/>
+      <line x1="64" y1="135" x2="86" y2="135"/>
+    </g>
+
+    <ellipse cx="75" cy="144" rx="46" ry="14" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="75" cy="142" rx="43" ry="12" fill="url(#plushPerch)"/>
+
+    <ellipse cx="75" cy="65" rx="55" ry="18" fill="url(#woodPlatform)" stroke="#78471c" stroke-width="2"/>
+    <ellipse cx="75" cy="62" rx="52" ry="16" fill="url(#plushPerch)" stroke="#edd0b0" stroke-width="2"/>
+    <g transform="translate(67, 65) scale(0.65)" fill="#b47844" opacity="0.8">
+      <ellipse cx="12" cy="12" rx="7" ry="5"/>
+      <circle cx="6" cy="4" r="2.5"/>
+      <circle cx="12" cy="2" r="2.5"/>
+      <circle cx="18" cy="4" r="2.5"/>
+    </g>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/cat_tree.svg'), catTreeSvg);
+
+  const centerRugSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 130" width="260" height="130">
+  <defs>
+    <radialGradient id="rugBase" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff5f5"/>
+      <stop offset="40%" stop-color="#ffe3ec"/>
+      <stop offset="75%" stop-color="#fbcfe8"/>
+      <stop offset="92%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#e879f9"/>
+    </radialGradient>
+    <filter id="rugShadow" x="-10%" y="-10%" width="125%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4a1525" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#rugShadow)">
+    <ellipse cx="130" cy="65" rx="126" ry="60" fill="#fdf2e9" stroke="#d5b08c" stroke-width="2" stroke-dasharray="6,4"/>
+    <ellipse cx="130" cy="65" rx="118" ry="54" fill="url(#rugBase)" stroke="#db2777" stroke-width="2"/>
+    <ellipse cx="130" cy="65" rx="94" ry="42" fill="#fff5ea" stroke="#f472b6" stroke-width="2" stroke-dasharray="8,5"/>
+
+    <ellipse cx="130" cy="72" rx="34" ry="20" fill="#f472b6" opacity="0.85"/>
+    <ellipse cx="130" cy="71" rx="30" ry="17" fill="#fb7185" opacity="0.9"/>
+
+    <ellipse cx="98" cy="50" rx="13" ry="10" fill="#fb7185" opacity="0.9" transform="rotate(-15 98 50)"/>
+    <ellipse cx="119" cy="40" rx="12" ry="11" fill="#fb7185" opacity="0.9"/>
+    <ellipse cx="141" cy="40" rx="12" ry="11" fill="#fb7185" opacity="0.9"/>
+    <ellipse cx="162" cy="50" rx="13" ry="10" fill="#fb7185" opacity="0.9" transform="rotate(15 162 50)"/>
+
+    <ellipse cx="130" cy="65" rx="110" ry="50" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="3,6" opacity="0.7"/>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/center_rug.svg'), centerRugSvg);
+
+  const coffeeTableSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 120" width="150" height="120">
+  <defs>
+    <radialGradient id="tableWood" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#dfa86a"/>
+      <stop offset="50%" stop-color="#b87a3e"/>
+      <stop offset="100%" stop-color="#7a4b1e"/>
+    </radialGradient>
+    <filter id="tableShadow" x="-15%" y="-15%" width="135%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2a1409" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="75" cy="98" rx="64" ry="18" fill="#000" opacity="0.25"/>
+
+  <polygon points="35,65 30,95 38,95 44,65" fill="#4a280e"/>
+  <polygon points="115,65 120,95 112,95 106,65" fill="#4a280e"/>
+  <polygon points="72,68 71,98 79,98 80,68" fill="#381b07"/>
+
+  <g filter="url(#tableShadow)">
+    <ellipse cx="75" cy="58" rx="66" ry="32" fill="url(#tableWood)" stroke="#4a280e" stroke-width="2.5"/>
+    <ellipse cx="75" cy="56" rx="63" ry="29" fill="#c48749"/>
+    <ellipse cx="73" cy="55" rx="52" ry="23" fill="none" stroke="#eab57c" stroke-width="1.2" opacity="0.5"/>
+    <ellipse cx="72" cy="54" rx="36" ry="15" fill="none" stroke="#7a4b1e" stroke-width="1" opacity="0.3"/>
+
+    <g transform="translate(85, 34)">
+      <ellipse cx="20" cy="22" rx="18" ry="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <ellipse cx="20" cy="18" rx="14" ry="7" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+      <ellipse cx="20" cy="17" rx="12" ry="5.5" fill="#c27838"/>
+      <ellipse cx="20" cy="17" rx="8" ry="4" fill="#fffdfa"/>
+      <polygon points="14,15 13,12 16,14" fill="#c27838"/>
+      <polygon points="26,15 27,12 24,14" fill="#c27838"/>
+      <circle cx="18" cy="17" r="0.8" fill="#78350f"/>
+      <circle cx="22" cy="17" r="0.8" fill="#78350f"/>
+      <path d="M 19,19 Q 20,20 21,19" stroke="#78350f" stroke-width="0.6" fill="none"/>
+    </g>
+
+    <g transform="translate(30, 38)">
+      <ellipse cx="14" cy="18" rx="14" ry="7" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+      <g transform="translate(6, 12) scale(0.6)">
+        <ellipse cx="10" cy="10" rx="8" ry="6" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>
+        <polygon points="3,6 4,1 8,5" fill="#f59e0b"/>
+        <polygon points="17,6 16,1 12,5" fill="#f59e0b"/>
+        <circle cx="8" cy="9" r="1" fill="#78350f"/>
+        <circle cx="12" cy="9" r="1" fill="#78350f"/>
+      </g>
+      <g transform="translate(14, 14) scale(0.55)">
+        <ellipse cx="10" cy="10" rx="8" ry="6" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+        <polygon points="3,6 4,1 8,5" fill="#fbbf24"/>
+        <polygon points="17,6 16,1 12,5" fill="#fbbf24"/>
+      </g>
+    </g>
+
+    <g transform="translate(118, 22)">
+      <ellipse cx="10" cy="24" rx="8" ry="12" fill="#e0f2fe" opacity="0.7" stroke="#7dd3fc" stroke-width="1"/>
+      <line x1="10" y1="20" x2="10" y2="6" stroke="#16a34a" stroke-width="2"/>
+      <circle cx="10" cy="6" r="3" fill="#fbbf24"/>
+      <circle cx="10" cy="1" r="2.5" fill="#fff"/>
+      <circle cx="15" cy="6" r="2.5" fill="#fff"/>
+      <circle cx="10" cy="11" r="2.5" fill="#fff"/>
+      <circle cx="5" cy="6" r="2.5" fill="#fff"/>
+    </g>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/coffee_table.svg'), coffeeTableSvg);
+
+  const bowlFullSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36" width="60" height="36">
+  <defs>
+    <filter id="bowlShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#2a1409" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <ellipse cx="30" cy="22" rx="26" ry="11" fill="#000" opacity="0.2"/>
+  <g filter="url(#bowlShadow)">
+    <path d="M 6,14 Q 8,28 30,28 Q 52,28 54,14 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/>
+    <ellipse cx="30" cy="14" rx="24" ry="9" fill="#7dd3fc"/>
+    <ellipse cx="30" cy="13" rx="22" ry="7.5" fill="#bae6fd"/>
+    <ellipse cx="30" cy="13" rx="18" ry="5.5" fill="#d97706"/>
+    <polygon points="26,13 36,10 33,13 36,16" fill="#f59e0b"/>
+    <circle cx="28" cy="12" r="0.8" fill="#78350f"/>
+    <circle cx="20" cy="13" r="1.8" fill="#92400e"/>
+    <circle cx="23" cy="14" r="1.5" fill="#b45309"/>
+    <circle cx="38" cy="13" r="1.8" fill="#92400e"/>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/bowl_fish_full.svg'), bowlFullSvg);
+
+  const bowlEmptySvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36" width="60" height="36">
+  <ellipse cx="30" cy="22" rx="26" ry="11" fill="#000" opacity="0.2"/>
+  <path d="M 6,14 Q 8,28 30,28 Q 52,28 54,14 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/>
+  <ellipse cx="30" cy="14" rx="24" ry="9" fill="#7dd3fc"/>
+  <ellipse cx="30" cy="13" rx="20" ry="6.5" fill="#e0f2fe"/>
+  <g transform="translate(25, 10) scale(0.4)" fill="#38bdf8" opacity="0.6">
+    <ellipse cx="12" cy="10" rx="6" ry="4.5"/>
+    <circle cx="5" cy="3" r="2"/>
+    <circle cx="12" cy="1" r="2"/>
+    <circle cx="19" cy="3" r="2"/>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/bowl_fish_empty.svg'), bowlEmptySvg);
+
+  const toyYarnSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 44" width="54" height="44">
+  <defs>
+    <radialGradient id="yarnPink" cx="40%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#ff70a6"/>
+      <stop offset="70%" stop-color="#e11d48"/>
+      <stop offset="100%" stop-color="#9f1239"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="25" cy="28" rx="18" ry="7" fill="#000" opacity="0.2"/>
+  <circle cx="25" cy="22" r="16" fill="url(#yarnPink)" stroke="#881337" stroke-width="1.5"/>
+  <g stroke="#fbcfe8" stroke-width="1.8" fill="none" opacity="0.8">
+    <path d="M 12,20 Q 25,12 38,20"/>
+    <path d="M 14,26 Q 25,18 36,26"/>
+    <path d="M 18,12 Q 25,25 22,36"/>
+    <path d="M 28,10 Q 25,22 32,34"/>
+  </g>
+  <path d="M 36,26 Q 48,22 45,34 Q 40,40 50,38" stroke="#e11d48" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/toy_yarn.svg'), toyYarnSvg);
+
+  const toyFishSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 28" width="50" height="28">
+  <ellipse cx="25" cy="18" rx="20" ry="6" fill="#000" opacity="0.2"/>
+  <g transform="translate(5, 4)">
+    <polygon points="26,10 38,3 34,10 38,17" fill="#0284c7" stroke="#0369a1" stroke-width="1.5"/>
+    <ellipse cx="16" cy="10" rx="14" ry="8" fill="#38bdf8" stroke="#0284c7" stroke-width="1.8"/>
+    <circle cx="8" cy="8" r="2.5" fill="#fff"/>
+    <circle cx="8" cy="8" r="1.2" fill="#0f172a"/>
+    <path d="M 15,3 Q 18,10 15,17" stroke="#0284c7" stroke-width="1.5" fill="none"/>
+    <path d="M 21,4 Q 24,10 21,16" stroke="#0284c7" stroke-width="1.5" fill="none"/>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'furniture/toy_fish.svg'), toyFishSvg);
+
+  console.log('✓ Generated all furniture and prop assets');
+}
+
+// ==========================================
+// 3. UI ASSETS (HEADER, COMMAND CARD, ETC.)
+// ==========================================
+function generateUIAssets() {
+  const signboardSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 70" width="170" height="70">
+  <defs>
+    <linearGradient id="signWood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#784223"/>
+      <stop offset="50%" stop-color="#592e15"/>
+      <stop offset="100%" stop-color="#3c1d0c"/>
+    </linearGradient>
+    <filter id="signShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#1a0a03" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#signShadow)">
+    <path d="
+      M 12,8
+      Q 85,2 155,8
+      Q 166,10 164,28
+      Q 166,48 158,62
+      Q 85,66 14,60
+      Q 4,46 6,28
+      Q 4,12 12,8 Z
+    " fill="url(#signWood)" stroke="#2a1206" stroke-width="2.5"/>
+
+    <path d="
+      M 16,12
+      Q 85,7 150,12
+      Q 158,15 156,28
+      Q 158,45 152,56
+      Q 85,60 18,55
+      Q 10,43 11,28
+      Q 10,16 16,12 Z
+    " fill="none" stroke="#995730" stroke-width="1.5" stroke-dasharray="8,2"/>
+
+    <circle cx="18" cy="18" r="2.5" fill="#d97706" stroke="#451a03" stroke-width="1"/>
+    <circle cx="148" cy="18" r="2.5" fill="#d97706" stroke="#451a03" stroke-width="1"/>
+
+    <!-- PTPlay Blue Pill Badge (Top-left) -->
+    <g transform="translate(48, 4)">
+      <rect x="0" y="0" width="46" height="15" rx="7.5" fill="#0066ff" stroke="#fff" stroke-width="1.2"/>
+      <text x="23" y="11" font-family="'Segoe UI', sans-serif" font-size="8.5" font-weight="900" fill="#fff" text-anchor="middle">PTPlay</text>
+    </g>
+
+    <!-- White Cat Head Icon -->
+    <g transform="translate(14, 20)">
+      <circle cx="15" cy="16" r="13" fill="#fffdfa" stroke="#451a03" stroke-width="1.2"/>
+      <polygon points="5,8 7,-1 13,6" fill="#fffdfa" stroke="#451a03" stroke-width="1.2"/>
+      <polygon points="7,6 8,1 11,5" fill="#fca5a5"/>
+      <polygon points="17,6 23,-1 25,8" fill="#d97706" stroke="#451a03" stroke-width="1.2"/>
+      <polygon points="19,5 22,1 23,6" fill="#fca5a5"/>
+      <circle cx="10" cy="15" r="1.8" fill="#1e293b"/>
+      <circle cx="20" cy="15" r="1.8" fill="#1e293b"/>
+      <circle cx="7" cy="18" r="2" fill="#fda4af" opacity="0.8"/>
+      <circle cx="23" cy="18" r="2" fill="#fda4af" opacity="0.8"/>
+      <polygon points="14,18 16,18 15,19.5" fill="#f43f5e"/>
+      <path d="M 13,20 Q 15,22 17,20" stroke="#451a03" stroke-width="1" fill="none"/>
+    </g>
+
+    <!-- Main Title "Café Mòe" -->
+    <text x="50" y="38" font-family="'Segoe UI', 'Baloo 2', sans-serif" font-size="18" font-weight="900" fill="#fffdf7">Café Mòe</text>
+    <g transform="translate(132, 26) scale(0.55)" fill="#fbbf24">
+      <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+      <circle cx="5" cy="3" r="2"/>
+      <circle cx="10" cy="1" r="2"/>
+      <circle cx="15" cy="3" r="2"/>
+    </g>
+
+    <text x="52" y="52" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#fcd34d">📍 Quán Chính</text>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'ui/signboard.svg'), signboardSvg);
+
+  const peekabooCatSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 50" width="110" height="50">
+  <defs>
+    <filter id="peekShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#3b1b0b" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#peekShadow)">
+    <path d="M 25,48 C 20,25 35,10 55,10 C 75,10 90,25 85,48 Z" fill="#fffdfa" stroke="#451a03" stroke-width="2"/>
+    <path d="M 68,14 Q 85,15 84,32 Q 78,38 70,30 Z" fill="#ea580c"/>
+
+    <polygon points="32,24 28,2 45,14" fill="#fffdfa" stroke="#451a03" stroke-width="2"/>
+    <polygon points="33,20 31,6 41,14" fill="#fda4af"/>
+    <polygon points="65,14 82,2 78,24" fill="#d97706" stroke="#451a03" stroke-width="2"/>
+    <polygon points="69,14 79,6 77,20" fill="#fca5a5"/>
+
+    <ellipse cx="44" cy="28" rx="4" ry="5.5" fill="#1e293b"/>
+    <ellipse cx="66" cy="28" rx="4" ry="5.5" fill="#1e293b"/>
+    <circle cx="43" cy="26" r="1.6" fill="#fff"/>
+    <circle cx="45" cy="30" r="0.8" fill="#fff"/>
+    <circle cx="65" cy="26" r="1.6" fill="#fff"/>
+    <circle cx="67" cy="30" r="0.8" fill="#fff"/>
+
+    <ellipse cx="36" cy="33" rx="3.5" ry="2" fill="#fda4af" opacity="0.85"/>
+    <ellipse cx="74" cy="33" rx="3.5" ry="2" fill="#fda4af" opacity="0.85"/>
+
+    <polygon points="53.5,32 56.5,32 55,34" fill="#f43f5e"/>
+    <path d="M 52,35 Q 55,37 58,35" stroke="#451a03" stroke-width="1.4" fill="none"/>
+
+    <ellipse cx="36" cy="46" rx="9" ry="5" fill="#fffdfa" stroke="#451a03" stroke-width="1.8"/>
+    <line x1="33" y1="45" x2="33" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+    <line x1="39" y1="45" x2="39" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+    <ellipse cx="74" cy="46" rx="9" ry="5" fill="#fffdfa" stroke="#451a03" stroke-width="1.8"/>
+    <line x1="71" y1="45" x2="71" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+    <line x1="77" y1="45" x2="77" y2="48" stroke="#cbd5e1" stroke-width="1.2"/>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'ui/peekaboo_cat.svg'), peekabooCatSvg);
+
+  const commandCardBgSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 516 140" width="516" height="140">
+  <defs>
+    <linearGradient id="parchmentGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffcf5"/>
+      <stop offset="50%" stop-color="#fff8ea"/>
+      <stop offset="100%" stop-color="#faedd2"/>
+    </linearGradient>
+    <filter id="parchmentShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#3b1b0b" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#parchmentShadow)">
+    <path d="
+      M 24,12
+      Q 120,4 258,4
+      Q 396,4 492,12
+      Q 508,14 508,30
+      L 508,118
+      Q 508,132 492,134
+      Q 396,138 258,138
+      Q 120,138 24,134
+      Q 8,132 8,118
+      L 8,30
+      Q 8,14 24,12 Z
+    " fill="url(#parchmentGrad)" stroke="#c28b53" stroke-width="3"/>
+
+    <path d="
+      M 26,16
+      Q 120,8 258,8
+      Q 396,8 490,16
+      Q 504,18 504,32
+      L 504,116
+      Q 504,128 490,130
+      Q 396,134 258,134
+      Q 120,134 26,130
+      Q 12,128 12,116
+      L 12,32
+      Q 12,18 26,16 Z
+    " fill="none" stroke="#d99a5e" stroke-width="1.2" stroke-dasharray="8,4"/>
+
+    <g transform="translate(16, 114) scale(0.65)" fill="#d99a5e" opacity="0.6">
+      <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+      <circle cx="5" cy="3" r="2"/>
+      <circle cx="10" cy="1" r="2"/>
+      <circle cx="15" cy="3" r="2"/>
+    </g>
+    <g transform="translate(484, 114) scale(0.65)" fill="#d99a5e" opacity="0.6">
+      <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+      <circle cx="5" cy="3" r="2"/>
+      <circle cx="10" cy="1" r="2"/>
+      <circle cx="15" cy="3" r="2"/>
+    </g>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'ui/command_card_bg.svg'), commandCardBgSvg);
+
+  const lofiBannerSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 32" width="320" height="32">
+  <defs>
+    <linearGradient id="lofiGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4e7c59"/>
+      <stop offset="50%" stop-color="#60996e"/>
+      <stop offset="100%" stop-color="#4e7c59"/>
+    </linearGradient>
+    <filter id="lofiShadow" x="-5%" y="-10%" width="110%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#142c1b" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#lofiShadow)">
+    <rect x="2" y="2" width="316" height="28" rx="14" fill="url(#lofiGrad)" stroke="#a3e635" stroke-width="1.2"/>
+    <text x="18" y="19" font-family="'Segoe UI', sans-serif" font-size="12" fill="#fff">♫ ♬</text>
+    <text x="44" y="19" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="bold" fill="#f7fee7">Lofi Cat Café – Thư giãn cùng những bé mèo</text>
+    <g transform="translate(294, 11)" fill="#bef264">
+      <rect x="0" y="4" width="2.5" height="10" rx="1"/>
+      <rect x="4" y="0" width="2.5" height="14" rx="1"/>
+      <rect x="8" y="6" width="2.5" height="8" rx="1"/>
+      <rect x="12" y="2" width="2.5" height="12" rx="1"/>
+    </g>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'ui/lofi_banner.svg'), lofiBannerSvg);
+
+  const giftBannerSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 516 34" width="516" height="34">
+  <defs>
+    <linearGradient id="giftGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#542410"/>
+      <stop offset="50%" stop-color="#783516"/>
+      <stop offset="100%" stop-color="#542410"/>
+    </linearGradient>
+    <filter id="giftShadow" x="-5%" y="-10%" width="110%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#2a0d05" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#giftShadow)">
+    <rect x="2" y="2" width="512" height="30" rx="10" fill="url(#giftGrad)" stroke="#d97706" stroke-width="1.2"/>
+    <text x="14" y="20" font-family="'Segoe UI', sans-serif" font-size="12" fill="#fbbf24">🎁</text>
+    <text x="34" y="20" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="bold" fill="#fef3c7">Quà tặng đặc biệt:</text>
+
+    <text x="146" y="20" font-family="'Segoe UI', sans-serif" font-size="11" fill="#f43f5e">🌹</text>
+    <text x="162" y="20" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#fed7aa">Rose → Cá nướng</text>
+    <circle cx="260" cy="17" r="1.5" fill="#f59e0b"/>
+
+    <text x="270" y="20" font-family="'Segoe UI', sans-serif" font-size="11" fill="#ec4899">💖</text>
+    <text x="286" y="20" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#fbcfe8">Heart → Mưa tim</text>
+    <circle cx="376" cy="17" r="1.5" fill="#f59e0b"/>
+
+    <text x="386" y="20" font-family="'Segoe UI', sans-serif" font-size="11" fill="#818cf8">🌌</text>
+    <text x="404" y="20" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#c7d2fe">Universe → Đại tiệc mèo</text>
+  </g>
+</svg>`;
+  fs.writeFileSync(path.join(BASE_DIR, 'ui/gift_banner.svg'), giftBannerSvg);
+
+  console.log('✓ Generated all UI assets');
+}
+
+// ==========================================
+// 4. EXPRESSIVE CAT SPRITES (8 BREEDS X POSES)
+// ==========================================
+function generateCatSprites() {
+  const BREEDS = [
+    {
+      id: 0,
+      name: 'ginger_tabby',
+      bodyColor: '#f59e0b',
+      bellyColor: '#fef3c7',
+      stripeColor: '#d97706',
+      eyeColor: '#10b981',
+      earInner: '#fca5a5',
+      noseColor: '#f43f5e',
+    },
+    {
+      id: 1,
+      name: 'pure_white',
+      bodyColor: '#ffffff',
+      bellyColor: '#f8fafc',
+      stripeColor: '#e2e8f0',
+      eyeColor: '#38bdf8',
+      earInner: '#f9a8d4',
+      noseColor: '#fb7185',
+    },
+    {
+      id: 2,
+      name: 'slate_gray',
+      bodyColor: '#64748b',
+      bellyColor: '#cbd5e1',
+      stripeColor: '#475569',
+      eyeColor: '#fbbf24',
+      earInner: '#f472b6',
+      noseColor: '#334155',
+    },
+    {
+      id: 3,
+      name: 'tuxedo',
+      bodyColor: '#1e293b',
+      bellyColor: '#ffffff',
+      stripeColor: '#0f172a',
+      eyeColor: '#a3e635',
+      earInner: '#f472b6',
+      noseColor: '#f43f5e',
+    },
+    {
+      id: 4,
+      name: 'calico',
+      bodyColor: '#fffbeb',
+      bellyColor: '#ffffff',
+      stripeColor: '#ea580c',
+      extraColor: '#1e293b',
+      eyeColor: '#34d399',
+      earInner: '#f472b6',
+      noseColor: '#f43f5e',
+      hasBell: true,
+    },
+    {
+      id: 5,
+      name: 'midnight_black',
+      bodyColor: '#18181b',
+      bellyColor: '#27272a',
+      stripeColor: '#27272a',
+      eyeColor: '#facc15',
+      earInner: '#71717a',
+      noseColor: '#3f3f46',
+    },
+    {
+      id: 6,
+      name: 'honey_cream',
+      bodyColor: '#fde68a',
+      bellyColor: '#fffdf0',
+      stripeColor: '#f59e0b',
+      eyeColor: '#06b6d4',
+      earInner: '#fca5a5',
+      noseColor: '#f43f5e',
+    },
+    {
+      id: 7,
+      name: 'royal_siamese',
+      bodyColor: '#f1f5f9',
+      bellyColor: '#ffffff',
+      stripeColor: '#451a03',
+      eyeColor: '#2563eb',
+      earInner: '#451a03',
+      noseColor: '#451a03',
+      isSiamese: true,
+    },
+  ];
+
+  for (const b of BREEDS) {
+    // 1. SITTING POSE
+    const sitSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90" width="80" height="90">
+      <defs>
+        <radialGradient id="catBodyGrad_${b.id}" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="${b.bodyColor}"/>
+          <stop offset="100%" stop-color="${b.stripeColor}"/>
+        </radialGradient>
+        <filter id="catShadow" x="-15%" y="-15%" width="130%" height="130%">
+          <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#000" flood-opacity="0.25"/>
+        </filter>
+      </defs>
+
+      <ellipse cx="40" cy="84" rx="28" ry="7" fill="#000" opacity="0.25"/>
+
+      <g filter="url(#catShadow)">
+        <path d="M 52,72 Q 72,66 68,48 Q 66,40 70,36" stroke="${b.bodyColor}" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <path d="M 68,48 Q 66,40 70,36" stroke="${b.stripeColor}" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+        <ellipse cx="40" cy="62" rx="24" ry="22" fill="url(#catBodyGrad_${b.id})" stroke="#2a1206" stroke-width="2"/>
+        <ellipse cx="40" cy="65" rx="14" ry="16" fill="${b.bellyColor}"/>
+
+        ${b.id === 0 ? `
+          <path d="M 20,58 Q 28,60 22,66 M 60,58 Q 52,60 58,66" stroke="${b.stripeColor}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        ` : ''}
+        ${b.id === 4 ? `
+          <ellipse cx="28" cy="56" rx="8" ry="6" fill="#ea580c"/>
+          <ellipse cx="54" cy="68" rx="7" ry="5" fill="#1e293b"/>
+        ` : ''}
+        ${b.isSiamese ? `
+          <ellipse cx="40" cy="46" rx="10" ry="6" fill="#451a03" opacity="0.8"/>
+        ` : ''}
+
+        <ellipse cx="32" cy="80" rx="6" ry="4" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5"/>
+        <ellipse cx="48" cy="80" rx="6" ry="4" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5"/>
+
+        ${b.hasBell ? `
+          <path d="M 28,45 Q 40,50 52,45" stroke="#ef4444" stroke-width="2.5" fill="none"/>
+          <circle cx="40" cy="49" r="3.5" fill="#fbbf24" stroke="#78350f" stroke-width="1"/>
+        ` : ''}
+
+        <ellipse cx="40" cy="34" rx="23" ry="19" fill="url(#catBodyGrad_${b.id})" stroke="#2a1206" stroke-width="2"/>
+
+        ${b.isSiamese ? `
+          <ellipse cx="40" cy="36" rx="14" ry="11" fill="#451a03"/>
+        ` : ''}
+        ${b.id === 4 ? `
+          <path d="M 20,24 Q 28,18 34,26 Q 28,38 20,32 Z" fill="#ea580c"/>
+          <path d="M 48,22 Q 58,18 60,28 Q 54,36 48,30 Z" fill="#1e293b"/>
+        ` : ''}
+
+        <polygon points="19,25 21,5 34,18" fill="${b.bodyColor}" stroke="#2a1206" stroke-width="2"/>
+        <polygon points="22,22 23,9 31,18" fill="${b.earInner}"/>
+
+        <polygon points="46,18 59,5 61,25" fill="${b.bodyColor}" stroke="#2a1206" stroke-width="2"/>
+        <polygon points="49,18 57,9 58,22" fill="${b.earInner}"/>
+
+        <ellipse cx="30" cy="34" rx="5" ry="6.5" fill="${b.eyeColor}" stroke="#2a1206" stroke-width="1.2"/>
+        <ellipse cx="50" cy="34" rx="5" ry="6.5" fill="${b.eyeColor}" stroke="#2a1206" stroke-width="1.2"/>
+        <ellipse cx="30" cy="34" rx="3.2" ry="5" fill="#0f172a"/>
+        <ellipse cx="50" cy="34" rx="3.2" ry="5" fill="#0f172a"/>
+        <circle cx="28.5" cy="31.5" r="2" fill="#fff"/>
+        <circle cx="31.5" cy="36" r="1" fill="#fff"/>
+        <circle cx="48.5" cy="31.5" r="2" fill="#fff"/>
+        <circle cx="51.5" cy="36" r="1" fill="#fff"/>
+
+        <ellipse cx="22" cy="40" rx="4" ry="2.5" fill="#fda4af" opacity="0.85"/>
+        <ellipse cx="58" cy="40" rx="4" ry="2.5" fill="#fda4af" opacity="0.85"/>
+
+        <polygon points="38.5,39 41.5,39 40,41" fill="${b.noseColor}"/>
+        <path d="M 37,42 Q 40,44 43,42" stroke="#2a1206" stroke-width="1.5" fill="none"/>
+
+        <g stroke="#2a1206" stroke-width="1.2" opacity="0.7">
+          <line x1="16" y1="38" x2="6" y2="36"/>
+          <line x1="16" y1="42" x2="7" y2="44"/>
+          <line x1="64" y1="38" x2="74" y2="36"/>
+          <line x1="64" y1="42" x2="73" y2="44"/>
+        </g>
+      </g>
+    </svg>`;
+    fs.writeFileSync(path.join(BASE_DIR, `cats/cat_${b.name}_sit.svg`), sitSvg);
+
+    // 2. SLEEPING POSE
+    const sleepSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60" width="90" height="60">
+      <defs>
+        <radialGradient id="catSleepGrad_${b.id}" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="${b.bodyColor}"/>
+          <stop offset="100%" stop-color="${b.stripeColor}"/>
+        </radialGradient>
+      </defs>
+
+      <ellipse cx="45" cy="52" rx="36" ry="8" fill="#000" opacity="0.25"/>
+
+      <ellipse cx="48" cy="36" rx="28" ry="18" fill="url(#catSleepGrad_${b.id})" stroke="#2a1206" stroke-width="2"/>
+      <path d="M 72,38 Q 78,48 64,50 Q 52,50 48,46" stroke="${b.bodyColor}" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M 64,50 Q 52,50 48,46" stroke="${b.stripeColor}" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+      <ellipse cx="28" cy="34" rx="18" ry="16" fill="url(#catSleepGrad_${b.id})" stroke="#2a1206" stroke-width="2"/>
+
+      <polygon points="14,24 12,12 24,20" fill="${b.bodyColor}" stroke="#2a1206" stroke-width="1.8"/>
+      <polygon points="15,22 14,15 22,20" fill="${b.earInner}"/>
+      <polygon points="28,18 36,8 40,22" fill="${b.bodyColor}" stroke="#2a1206" stroke-width="1.8"/>
+      <polygon points="30,18 36,12 38,20" fill="${b.earInner}"/>
+
+      <path d="M 18,34 Q 23,38 27,34" stroke="#2a1206" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 32,34 Q 37,38 41,34" stroke="#2a1206" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <ellipse cx="18" cy="40" rx="3.5" ry="2" fill="#fda4af" opacity="0.85"/>
+      <ellipse cx="40" cy="40" rx="3.5" ry="2" fill="#fda4af" opacity="0.85"/>
+
+      <polygon points="29,38 31,38 30,39.5" fill="${b.noseColor}"/>
+      <ellipse cx="32" cy="48" rx="6" ry="4" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5"/>
+
+      <g fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-weight="900">
+        <text x="56" y="22" font-size="11">z</text>
+        <text x="66" y="14" font-size="14">Z</text>
+      </g>
+    </svg>`;
+    fs.writeFileSync(path.join(BASE_DIR, `cats/cat_${b.name}_sleep.svg`), sleepSvg);
+
+    // 3. PLAYFUL POSE
+    const playSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70" width="90" height="70">
+      <defs>
+        <radialGradient id="catPlayGrad_${b.id}" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="${b.bodyColor}"/>
+          <stop offset="100%" stop-color="${b.stripeColor}"/>
+        </radialGradient>
+      </defs>
+
+      <ellipse cx="46" cy="60" rx="34" ry="7" fill="#000" opacity="0.25"/>
+
+      <g transform="translate(48, 42) rotate(-15)">
+        <ellipse cx="0" cy="0" rx="25" ry="18" fill="url(#catPlayGrad_${b.id})" stroke="#2a1206" stroke-width="2"/>
+        <ellipse cx="0" cy="-2" rx="16" ry="12" fill="${b.bellyColor}"/>
+
+        <ellipse cx="18" cy="-14" rx="5" ry="7" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5" transform="rotate(20 18 -14)"/>
+        <ellipse cx="26" cy="-8" rx="5" ry="7" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5" transform="rotate(35 26 -8)"/>
+
+        <path d="M 22,8 Q 38,12 34,26" stroke="${b.bodyColor}" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+      </g>
+
+      <g transform="translate(24, 34) rotate(-10)">
+        <ellipse cx="0" cy="0" rx="19" ry="17" fill="url(#catPlayGrad_${b.id})" stroke="#2a1206" stroke-width="2"/>
+
+        <polygon points="-16,-6 -20,-22 -6,-12" fill="${b.bodyColor}" stroke="#2a1206" stroke-width="1.8"/>
+        <polygon points="-15,-8 -18,-18 -8,-12" fill="${b.earInner}"/>
+        <polygon points="4,-12 18,-20 15,-4" fill="${b.bodyColor}" stroke="#2a1206" stroke-width="1.8"/>
+        <polygon points="6,-11 15,-17 13,-6" fill="${b.earInner}"/>
+
+        <path d="M -12,-2 Q -7,-8 -2,-2" stroke="#2a1206" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M 2,-2 Q 7,-8 12,-2" stroke="#2a1206" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+        <circle cx="-12" cy="4" r="3.5" fill="#fda4af" opacity="0.85"/>
+        <circle cx="12" cy="4" r="3.5" fill="#fda4af" opacity="0.85"/>
+
+        <path d="M -3,5 Q 0,11 3,5 Z" fill="#f43f5e" stroke="#2a1206" stroke-width="1.2"/>
+      </g>
+
+      <ellipse cx="36" cy="24" rx="6" ry="8" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5" transform="rotate(-25 36 24)"/>
+      <ellipse cx="48" cy="22" rx="6" ry="8" fill="${b.bellyColor}" stroke="#2a1206" stroke-width="1.5" transform="rotate(15 48 22)"/>
+
+      <g transform="translate(42, 16) scale(0.7)">
+        <circle cx="14" cy="14" r="14" fill="#e11d48" stroke="#881337" stroke-width="1.5"/>
+        <path d="M 4,14 Q 14,6 24,14 M 6,18 Q 14,10 22,18" stroke="#fbcfe8" stroke-width="1.8" fill="none"/>
+        <path d="M 24,18 Q 36,14 32,26 Q 28,34 38,32" stroke="#e11d48" stroke-width="2" fill="none"/>
+      </g>
+    </svg>`;
+    fs.writeFileSync(path.join(BASE_DIR, `cats/cat_${b.name}_play.svg`), playSvg);
+  }
+
+  console.log(`✓ Generated cat sprites for all 8 breeds (sit, sleep, play)`);
+}
+
+generateCafeBackground();
+generateFurniture();
+generateUIAssets();
+generateCatSprites();
+
+console.log('🎉 ALL V2 ART ASSETS SUCCESSFULLY GENERATED!');

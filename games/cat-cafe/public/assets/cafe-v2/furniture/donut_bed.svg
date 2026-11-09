@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 95" width="190" height="95">
+  <defs>
+    <radialGradient id="donutPink" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#ffb7cf"/>
+      <stop offset="60%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </radialGradient>
+    <radialGradient id="donutInner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd8e5"/>
+      <stop offset="80%" stop-color="#f9a8d4"/>
+      <stop offset="100%" stop-color="#e879f9"/>
+    </radialGradient>
+    <filter id="bedShadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#4a1525" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="95" cy="55" rx="88" ry="34" fill="#000" opacity="0.22"/>
+
+  <g filter="url(#bedShadow)">
+    <ellipse cx="95" cy="46" rx="85" ry="36" fill="url(#donutPink)" stroke="#be185d" stroke-width="2.5"/>
+
+    <g stroke="#9d174d" stroke-width="2" opacity="0.45" fill="none">
+      <path d="M 25,40 Q 40,46 45,58"/>
+      <path d="M 45,26 Q 60,38 68,54"/>
+      <path d="M 75,18 Q 85,32 92,50"/>
+      <path d="M 115,18 Q 105,32 98,50"/>
+      <path d="M 145,26 Q 130,38 122,54"/>
+      <path d="M 165,40 Q 150,46 145,58"/>
+    </g>
+
+    <ellipse cx="95" cy="48" rx="55" ry="22" fill="url(#donutInner)" stroke="#f472b6" stroke-width="2"/>
+
+    <g fill="#fff" opacity="0.8">
+      <g transform="translate(35, 52) scale(0.65)">
+        <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+        <circle cx="5" cy="3" r="2.2"/>
+        <circle cx="10" cy="1" r="2.2"/>
+        <circle cx="15" cy="3" r="2.2"/>
+      </g>
+      <g transform="translate(140, 52) scale(0.65)">
+        <ellipse cx="10" cy="10" rx="6" ry="4.5"/>
+        <circle cx="5" cy="3" r="2.2"/>
+        <circle cx="10" cy="1" r="2.2"/>
+        <circle cx="15" cy="3" r="2.2"/>
+      </g>
+    </g>
+  </g>
+</svg>

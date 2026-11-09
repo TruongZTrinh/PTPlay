@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>PTPlay Cat Café LIVE — Café Mòe</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #111827;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      }
+      #game-container {
+        width: 100%;
+        height: 100%;
+        max-width: 540px;
+        max-height: 960px;
+        aspect-ratio: 9 / 16;
+        position: relative;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        background: #2b1d16;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+

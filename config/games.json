@@ -1,0 +1,83 @@
+{
+  "version": "1.0.0",
+  "platform": "PTPlay Interactive TikTok LIVE Gaming Platform",
+  "defaultActiveGame": "mini-war-arena",
+  "games": [
+    {
+      "id": "mini-war-arena",
+      "name": "Mini War Arena",
+      "vietnameseName": "Đấu Trường Chiến Binh",
+      "genre": "2D Cartoon Auto-Battler (Red vs Blue)",
+      "version": "1.0.0",
+      "port": 5173,
+      "devCommand": "npm run dev -w @ptplay/mini-war-arena",
+      "buildCommand": "npm run build -w @ptplay/mini-war-arena",
+      "workspace": "games/mini-war-arena",
+      "active": true,
+      "icon": "⚔️",
+      "description": "Trận chiến thời gian thực giữa hai phe Đỏ và Xanh điều khiển bằng comment và quà tặng TikTok LIVE.",
+      "capabilities": {
+        "chatCommands": true,
+        "giftStreaks": true,
+        "teamBattles": true,
+        "bossSpawns": true
+      }
+    },
+    {
+      "id": "cat-cafe",
+      "name": "Cat Café LIVE",
+      "vietnameseName": "Café Mòe",
+      "genre": "Cozy Cat Simulator & Live Pet Simulator",
+      "version": "1.0.0",
+      "port": 5174,
+      "devCommand": "npm run dev -w @ptplay/cat-cafe",
+      "buildCommand": "npm run build -w @ptplay/cat-cafe",
+      "workspace": "games/cat-cafe",
+      "active": true,
+      "icon": "🐱",
+      "description": "Quán cà phê mèo tương tác dọc màn hình (9:16 mobile), khán giả nhận mèo, cho ăn, chơi đùa và nâng cấp quán.",
+      "capabilities": {
+        "chatCommands": true,
+        "giftStreaks": true,
+        "catInteractions": true,
+        "progression": true
+      }
+    },
+    {
+      "id": "plinko-drop",
+      "name": "Plinko Drop Arena",
+      "vietnameseName": "Thả Bóng May Mắn",
+      "genre": "Physics Arcade Ball Drop",
+      "version": "0.1.0",
+      "port": 5175,
+      "devCommand": "npm run dev -w @ptplay/plinko-drop",
+      "workspace": "games/plinko-drop",
+      "active": false,
+      "icon": "⚪",
+      "description": "Game arcade thả bóng vật lý tương tác theo quà tặng (Kế hoạch mở rộng).",
+      "capabilities": {
+        "chatCommands": true,
+        "giftStreaks": true
+      }
+    },
+    {
+      "id": "zombie-siege",
+      "name": "Zombie Siege Defense",
+      "vietnameseName": "Thủ Thành Zombie",
+      "genre": "Co-op Tower Defense",
+      "version": "0.1.0",
+      "port": 5176,
+      "devCommand": "npm run dev -w @ptplay/zombie-siege",
+      "workspace": "games/zombie-siege",
+      "active": false,
+      "icon": "🧟",
+      "description": "Game thủ thành sinh tồn co-op khán giả cùng phòng thủ căn cứ trước đợt sóng zombie (Kế hoạch mở rộng).",
+      "capabilities": {
+        "chatCommands": true,
+        "giftStreaks": true,
+        "teamBattles": true,
+        "bossSpawns": true
+      }
+    }
+  ]
+}

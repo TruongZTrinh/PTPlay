@@ -1,0 +1,23 @@
+{
+  "name": "@ptplay/cat-cafe",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5174 --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 5174 --host 0.0.0.0",
+    "test": "tsx tests/index.ts"
+  },
+  "dependencies": {
+    "@ptplay/game-sdk": "*",
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}
+
