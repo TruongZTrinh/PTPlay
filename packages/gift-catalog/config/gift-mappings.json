@@ -286,12 +286,13 @@
       "giftName": "Rose",
       "action": "rebus.gift",
       "params": {
-        "effect": "rose"
+        "effect": "rose",
+        "addTimeSec": 10
       },
       "cooldownSec": 0,
       "maxPerEvent": 10,
       "enabled": true,
-      "description": "Hoa hồng tặng thám tử"
+      "description": "Tăng +10s thời gian suy nghĩ cho cả lớp & +25đ VIP"
     },
     {
       "id": "dh_lion",

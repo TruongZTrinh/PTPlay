@@ -1376,8 +1376,8 @@
               <div class="card-title">🎯 Điều Khiển Ô Chữ & Gợi Ý Tự Động (Ngân Hàng 666 Câu Đố)</div>
               <div class="btn-group">
                 <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Đổi Sang Câu Đố Khác</button>
-                <button class="btn-primary" onclick="sendRebusCommand('trigger_hint_1')">💡 Mở Gợi Ý 1 (Loại 1 Chữ)</button>
-                <button class="btn-gold" onclick="sendRebusCommand('trigger_hint_2')">🅰️ Mở Gợi Ý 2 (Mở 1 Ký Tự)</button>
+                <button class="btn-primary" onclick="sendRebusCommand('add_time', { seconds: 10 })">🌹 Tăng Thời Gian (+10s)</button>
+                <button class="btn-blue" onclick="sendRebusCommand('follow', { nickname: 'FanCungTikTok' })">➕ Follow (Mở Chữ Đầu)</button>
                 <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua Câu Này</button>
                 <button class="btn-red" onclick="sendRebusCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
               </div>
@@ -1413,9 +1413,10 @@
               <div class="card-header"><div class="card-title">🔍 Thám Tử Chibi Vào Bàn & Đoán Từ (Có/Không Dấu)</div></div>
               
               <div style="margin-bottom: 12px;">
-                <label style="font-size: 11px; color: var(--text-muted);">Khán Giả Vào Lớp (Lệnh JOIN):</label>
+                <label style="font-size: 11px; color: var(--text-muted);">Khán Giả Vào Lớp (Lệnh JOIN) & Follow:</label>
                 <div class="btn-group" style="margin-top: 4px;">
                   <button class="btn-green" onclick="sendMockChat('rebus', 'Phan Khánh', 'JOIN')">🙋 1 Thám Tử (JOIN)</button>
+                  <button class="btn-purple" onclick="sendMockChat('rebus', 'FanCungTikTok', 'FL')">➕ Chat "FL" (Follow Mở Chữ Đầu)</button>
                   <button class="btn-green" onclick="['Cường Bo', 'Mai Trang', 'Hồng Nhung'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">👥 3 Thám Tử Vào Bàn</button>
                   <button class="btn-gold" onclick="['Bé Na', 'Minh Quân', 'Lan Anh', 'Huy', 'Khánh Vy'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">🏫 5 Bàn Thám Tử Đầy Đủ</button>
                 </div>
@@ -1440,7 +1441,7 @@
               <div style="margin-bottom: 12px;">
                 <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà TikTok:</label>
                 <div class="btn-group" style="margin-top: 4px;">
-                  <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)"><img src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-btn-img" alt="Rose"> Hoa Hồng (+10đ)</button>
+                  <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)"><img src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-btn-img" alt="Rose"> Hoa Hồng (+10s & +25đ)</button>
                   <button class="btn-gold" onclick="sendMockGift('rebus', 'Heart', 1)"><img src="/assets/gifts/heart.webp" onerror="this.src='https://beetgames.com/images/gifts/heart.webp'" class="gift-btn-img" alt="Heart"> Thả Tim (+20đ)</button>
                   <button class="btn-outline" onclick="sendMockGift('rebus', 'Donut', 1)"><img src="/assets/gifts/cheese_donuts.webp" onerror="this.src='https://beetgames.com/images/gifts/cheese_donuts.webp'" class="gift-btn-img" alt="Donut"> Bánh Donut (+30đ)</button>
                   <button class="btn-purple" onclick="sendMockGift('rebus', 'Perfume', 1)"><img src="/assets/gifts/perfume.webp" onerror="this.src='https://beetgames.com/images/gifts/perfume.webp'" class="gift-btn-img" alt="Perfume"> Nước Hoa (Mở Gợi Ý)</button>

@@ -180,6 +180,10 @@ export class RebusScene extends Phaser.Scene {
         this.easelBoard.updateTimer(rem, tot);
       },
 
+      onTimeAdded: (seconds, sponsorName) => {
+        this.easelBoard.showTimeAdded(seconds, sponsorName);
+      },
+
       onHint1Triggered: (h1, sponsorName) => {
         this.easelBoard.showHint1(h1, sponsorName);
       },

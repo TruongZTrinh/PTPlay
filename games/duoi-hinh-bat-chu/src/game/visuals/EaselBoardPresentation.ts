@@ -304,14 +304,14 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       this.clueCard1.setVisible(false);
       this.plusSign.setVisible(false);
       this.clueCard2.setVisible(false);
-      this.hintBannerText.setText('🌹 Tặng Hoa Hồng hoặc Follow để mở Gợi ý!');
+      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Follow: Mở Chữ Đầu!');
       this.hintBannerText.setColor('#fde047');
     } else {
       this.singleImageContainer.setVisible(false);
       this.clueCard1.setVisible(true);
       this.plusSign.setVisible(true);
       this.clueCard2.setVisible(true);
-      this.hintBannerText.setText('🌹 Tặng Hoa Hồng hoặc Follow để mở Gợi ý!');
+      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Follow: Mở Chữ Đầu!');
       this.hintBannerText.setColor('#fde047');
 
       // Clue 1 icon
@@ -452,6 +452,21 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }
   }
 
+  public showTimeAdded(seconds: number, sponsorName?: string): void {
+    const text = sponsorName
+      ? `🌹 ${sponsorName} tặng Hoa Hồng: +${seconds}s thời gian suy nghĩ!`
+      : `⏱ Cả lớp được cộng thêm +${seconds}s thời gian suy nghĩ!`;
+    this.hintBannerText.setText(text);
+    this.hintBannerText.setColor('#34d399');
+    this.scene.tweens.add({
+      targets: this.hintBannerText,
+      scale: 1.1,
+      duration: 250,
+      yoyo: true,
+      repeat: 1,
+    });
+  }
+
   public showHint1(hint1: string, sponsorName?: string): void {
     const text = sponsorName
       ? `💡 Gợi ý (từ ${sponsorName}): ${hint1}`
@@ -469,8 +484,8 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   public showHint2(hint2: string, firstChar: string, sponsorName?: string): void {
     const text = sponsorName
-      ? `💡 Chữ đầu là "${firstChar}" (mở bởi ${sponsorName})`
-      : `💡 Gợi ý 2: Chữ cái đầu là "${firstChar}"`;
+      ? `➕ ${sponsorName} đã Follow: Chữ cái đầu là "${firstChar}"!`
+      : `💡 Chữ cái đầu tiên là "${firstChar}"!`;
     this.hintBannerText.setText(text);
     this.hintBannerText.setColor('#38bdf8');
     if (this.currentPuzzleAnswer) {
@@ -478,8 +493,8 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }
     this.scene.tweens.add({
       targets: this.hintBannerText,
-      scale: 1.08,
-      duration: 220,
+      scale: 1.1,
+      duration: 250,
       yoyo: true,
       repeat: 1,
     });

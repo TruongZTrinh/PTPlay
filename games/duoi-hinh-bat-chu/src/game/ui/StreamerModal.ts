@@ -118,10 +118,10 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       }
     });
 
-    this.createButton(140, 520, '🌹 Quà Hoa Hồng', 0xbe185d, () => {
+    this.createButton(140, 520, '🌹 Quà Hoa Hồng (+10s)', 0xbe185d, () => {
       this.giftController.triggerGiftReaction('Rose', 'Khán giả VIP');
       this.tts.announceGift('Khán giả VIP', 'Hoa Hồng');
-      this.engine.unlockNextHint('Khán giả VIP', 'rose');
+      this.engine.addTime(10, 'Khán giả VIP');
       const p = this.roster.getAllPlayers()[0];
       if (p) {
         this.roster.addGiftPoints(p.userId, 25);
@@ -129,18 +129,19 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       }
     });
 
-    this.createButton(380, 520, '🦁 Quà Lion', 0xb45309, () => {
+    this.createButton(380, 520, '🦁 Quà Lion (+30s)', 0xb45309, () => {
       this.giftController.triggerGiftReaction('Lion', 'Đại Gia');
       this.tts.announceGift('Đại Gia', 'Sư Tử');
-      this.engine.unlockNextHint('Đại Gia', 'rose');
+      this.engine.addTime(30, 'Đại Gia');
+      this.engine.triggerFirstCharHint('Đại Gia');
       const p = this.roster.getAllPlayers()[0];
       if (p) {
         this.roster.addGiftPoints(p.userId, 150);
       }
     });
 
-    this.createButton(140, 570, '➕ Giả Lập Follow', 0x059669, () => {
-      this.engine.unlockNextHint('Fan Mới', 'follow');
+    this.createButton(140, 570, '➕ Follow Kênh (Mở Chữ Đầu)', 0x059669, () => {
+      this.engine.triggerFirstCharHint('Fan Mới');
     });
 
     this.createButton(380, 570, '🌌 Quà Universe', 0x6d28d9, () => {

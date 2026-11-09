@@ -67,8 +67,17 @@ export class RebusLiveEventRouter {
         break;
       }
 
-      case 'rebus.hint': {
-        this.engine.triggerHint1();
+      case 'rebus.hint':
+      case 'rebus.trigger_hint_1': {
+        this.engine.triggerHint1(nickname, 'rose');
+        break;
+      }
+
+      case 'rebus.add_time': {
+        const sec = Number(cmd.metadata?.seconds || 10);
+        this.roster.registerOrGet(userId, nickname, avatarUrl);
+        this.engine.addTime(sec, nickname);
+        this.scoreboard.setChatTicker(`🌹 cộng +${sec}s thời gian suy nghĩ!`, nickname);
         break;
       }
 
@@ -85,21 +94,21 @@ export class RebusLiveEventRouter {
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
           this.roster.addGiftPoints(userId, 25);
           this.roster.grantExtraGuesses(userId, 3);
-          const unlocked = this.engine.unlockNextHint(nickname, 'rose');
-          perkText = unlocked
-            ? '🌹 Tặng Hoa Hồng: Mở Gợi ý cho cả lớp (+25đ)!'
-            : '🌹 Tặng Hoa Hồng: Cổ vũ cả lớp (+25đ)!';
+          this.engine.addTime(10, nickname);
+          perkText = '🌹 Tặng Hoa Hồng: +10s Thời Gian Suy Nghĩ (+25đ)!';
         } else if (cleanGift.includes('lion') || cleanGift.includes('su tu')) {
           this.roster.addGiftPoints(userId, 150);
           this.roster.grantExtraGuesses(userId, 10);
-          this.engine.unlockNextHint(nickname, 'rose');
-          perkText = 'Đại gia mở Gợi ý cho cả lớp (+150đ)!';
+          this.engine.addTime(30, nickname);
+          this.engine.triggerFirstCharHint(nickname);
+          perkText = '🦁 Đại gia tặng Sư Tử: +30s & Mở Chữ Đầu (+150đ)!';
         } else if (cleanGift.includes('universe') || cleanGift.includes('vu tru')) {
           this.roster.addGiftPoints(userId, 300);
           this.roster.grantExtraGuesses(userId, 20);
+          this.engine.addTime(60, nickname);
           this.engine.triggerHint1(nickname, 'rose');
-          this.engine.triggerHint2(nickname, 'rose');
-          perkText = 'Vũ Trụ giải cứu: Mở toàn bộ gợi ý (+300đ)!';
+          this.engine.triggerFirstCharHint(nickname);
+          perkText = '🌌 Vũ Trụ giải cứu: +60s & Mở toàn bộ gợi ý (+300đ)!';
         } else {
           this.roster.addGiftPoints(userId, 20);
         }
@@ -110,14 +119,16 @@ export class RebusLiveEventRouter {
         break;
       }
 
+      case 'rebus.trigger_hint_2':
       case 'rebus.follow':
       case 'tiktok.follow':
       case 'follow': {
         this.roster.registerOrGet(userId, nickname, avatarUrl);
-        const unlocked = this.engine.unlockNextHint(nickname, 'follow');
-        const ticker = unlocked
-          ? 'đã Follow kênh và mở Gợi ý cho cả lớp!'
-          : 'vừa theo dõi kênh!';
+        this.engine.triggerFirstCharHint(nickname);
+        const firstChar = this.engine.currentPuzzle?.answer?.trim().charAt(0).toUpperCase() || '';
+        const ticker = firstChar
+          ? `đã Follow kênh và mở chữ cái đầu "${firstChar}"!`
+          : `vừa theo dõi kênh!`;
         this.scoreboard.setChatTicker(ticker, nickname);
         break;
       }

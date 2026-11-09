@@ -536,7 +536,25 @@ export class GameBridgeServer {
       };
     }
 
-    // 2. Guess / Answer phrase (any comment between 2 and 60 chars)
+    // 2. Follow / Mở gợi ý chữ cái đầu: FL, FOLLOW, THEO DOI
+    if (/^(FL|FOLLOW|THEO DOI|DA FOLLOW|DA FL)$/.test(cleanNoAccent)) {
+      return {
+        id: `cmd_rebus_follow_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'rebus.follow',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    // 3. Guess / Answer phrase (any comment between 2 and 60 chars)
     const rawGuess = event.comment.trim();
     if (rawGuess.length >= 2 && rawGuess.length <= 60) {
       const normalizedGuess = this.stripVietnameseAccents(rawGuess).toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -1828,14 +1846,22 @@ export class GameBridgeServer {
         }
 
         if (pathname === '/api/rebus/command') {
-          const action = String(json.action || '');
+          let action = String(json.action || '');
+          if (!action.startsWith('rebus.') && action !== 'tts_speak') {
+            action = `rebus.${action}`;
+          }
           const allowedRebus = [
             'rebus.join',
             'rebus.answer',
             'rebus.gift',
             'rebus.hint',
+            'rebus.trigger_hint_1',
+            'rebus.trigger_hint_2',
             'rebus.like',
             'rebus.follow',
+            'rebus.add_time',
+            'rebus.next_puzzle',
+            'rebus.skip_puzzle',
             'rebus.reset',
             'rebus.tts_speak',
             'rebus.set_volume',
@@ -1844,7 +1870,7 @@ export class GameBridgeServer {
           ];
           if (!allowedRebus.includes(action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Action not permitted for Rebus' }));
+            res.end(JSON.stringify({ error: `Action ${action} not permitted for Rebus` }));
             return;
           }
           const cmd: GameCommand = {

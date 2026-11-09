@@ -165,6 +165,15 @@ export class TTSController {
     this.speak(`Câu số ${roundNumber}! Hãy quan sát hình ảnh và nhanh tay đoán từ khóa nào cả lớp!`, false);
   }
 
+  public announceTimeAdded(seconds: number, sponsorName?: string): void {
+    if (sponsorName) {
+      const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn khán giả');
+      this.speak(`Cảm ơn bạn ${cleanSponsor} đã tặng Hoa Hồng! Cả lớp được cộng thêm ${seconds} giây suy nghĩ!`, false);
+    } else {
+      this.speak(`Cả lớp được cộng thêm ${seconds} giây suy nghĩ!`, false);
+    }
+  }
+
   public announceHint(hintText: string, sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
     const cleanHint = hintText
       .replace(/[()+=]/g, ' ')
@@ -174,20 +183,19 @@ export class TTSController {
 
     if (sponsorName) {
       const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn khán giả');
-      const actionText = reason === 'follow' ? 'đã theo dõi kênh và' : 'đã tặng Hoa Hồng';
+      const actionText = reason === 'follow' ? 'đã theo dõi kênh và' : 'đã tặng quà cổ vũ để';
       this.speak(`Cảm ơn bạn ${cleanSponsor} ${actionText} mở gợi ý cho cả lớp! Gợi ý là: ${cleanHint}`, false);
     } else {
       this.speak(`Gợi ý dành cho cả lớp: ${cleanHint}`, false);
     }
   }
 
-  public announceFirstChar(firstChar: string, sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
+  public announceFirstChar(firstChar: string, sponsorName?: string, reason: 'rose' | 'follow' = 'follow'): void {
     if (sponsorName) {
       const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn khán giả');
-      const actionText = reason === 'follow' ? 'theo dõi kênh và' : 'tặng Hoa Hồng';
-      this.speak(`Cảm ơn bạn ${cleanSponsor} đã ${actionText} mở chữ cái đầu tiên! Chữ cái đầu là chữ ${firstChar}!`, false);
+      this.speak(`Cảm ơn bạn ${cleanSponsor} đã theo dõi kênh và mở chữ cái đầu tiên! Chữ cái đầu là ${firstChar}!`, false);
     } else {
-      this.speak(`Gợi ý thêm, chữ cái đầu tiên là chữ ${firstChar}!`, false);
+      this.speak(`Gợi ý chữ cái đầu tiên là chữ ${firstChar}!`, false);
     }
   }
 

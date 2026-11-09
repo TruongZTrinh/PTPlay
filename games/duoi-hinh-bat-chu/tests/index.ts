@@ -143,8 +143,8 @@ async function runTests() {
     engine.destroy();
   });
 
-  // 5. HINTS: TRIGGERED ON ROSE OR FOLLOW (NO AUTOMATIC TIME PROGRESSION)
-  test('5. Hints: Triggered only when users send Rose or Follow (no automatic time countdown reveal)', () => {
+  // 5. ROSE ADDS TIME & FOLLOW UNLOCKS FIRST CHARACTER
+  test('5. Rose adds time (+10s) & Follow reveals first letter directly', () => {
     const alloc = new SeatAllocator();
     const roster = new StudentRoster(alloc);
     const audio = new AudioEngine();
@@ -154,34 +154,31 @@ async function runTests() {
     engine.startShow();
     engine.currentState = 'guessing';
 
-    let hint1Sponsor = '';
+    let timeAddedSec = 0;
+    let timeAddedSponsor = '';
     let hint2Sponsor = '';
     let hint2Char = '';
 
     engine.setEvents({
-      onHint1Triggered: (h1, sponsor) => { hint1Sponsor = sponsor || ''; },
+      onTimeAdded: (sec, sponsor) => { timeAddedSec = sec; timeAddedSponsor = sponsor || ''; },
       onHint2Triggered: (h2, firstChar, sponsor) => { hint2Sponsor = sponsor || ''; hint2Char = firstChar; },
     });
 
-    // 1. Initial round has no hints unlocked
-    assert.strictEqual(hint1Sponsor, '');
-    assert.strictEqual(hint2Sponsor, '');
+    const initialRem = engine.remainingTimeMs;
 
-    // 2. User sends Rose -> unlocks Hint 1
-    const roseOk = engine.unlockNextHint('Thám Tử Hoa', 'rose');
-    assert.strictEqual(roseOk, true);
-    assert.strictEqual(hint1Sponsor, 'Thám Tử Hoa');
-    assert.strictEqual(hint2Sponsor, '');
+    // 1. User sends Rose -> Adds +10s time
+    engine.addTime(10, 'Thám Tử Hoa');
+    assert.strictEqual(timeAddedSec, 10);
+    assert.strictEqual(timeAddedSponsor, 'Thám Tử Hoa');
+    assert.strictEqual(engine.remainingTimeMs, initialRem + 10000);
 
-    // 3. User Follows -> unlocks Hint 2 (revealing first character)
-    const followOk = engine.unlockNextHint('Fan Cứng', 'follow');
+    // 2. User Follows -> Unlocks first letter directly
+    assert.strictEqual(hint2Sponsor, '');
+    const followOk = engine.triggerFirstCharHint('Fan Cứng');
     assert.strictEqual(followOk, true);
     assert.strictEqual(hint2Sponsor, 'Fan Cứng');
-    assert(hint2Char.length === 1, 'Hint 2 must reveal first character');
-
-    // 4. Further hints return false as both are already unlocked
-    const extraOk = engine.unlockNextHint('Fan Khác', 'rose');
-    assert.strictEqual(extraOk, false);
+    assert(hint2Char.length === 1, 'Follow must reveal first character');
+    assert.strictEqual(hint2Char, engine.currentPuzzle!.answer.trim().charAt(0).toUpperCase());
 
     engine.destroy();
   });

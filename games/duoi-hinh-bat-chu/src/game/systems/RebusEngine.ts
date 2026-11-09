@@ -9,6 +9,7 @@ export interface RebusEngineEvents {
   onStateChanged?: (state: RebusState) => void;
   onPuzzleStarted?: (puzzle: RebusPuzzle, round: number, totalRounds?: number) => void;
   onTick?: (remainingSec: number, totalSec: number) => void;
+  onTimeAdded?: (seconds: number, sponsorName?: string) => void;
   onHint1Triggered?: (hint1: string, sponsorName?: string) => void;
   onHint2Triggered?: (hint2: string, firstChar: string, sponsorName?: string) => void;
   onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean, solverRank?: number, points?: number) => void;
@@ -269,6 +270,28 @@ export class RebusEngine {
     }
   }
 
+  public addTime(seconds: number = 10, sponsorName?: string): void {
+    if (this.currentState !== 'guessing') return;
+    this.remainingTimeMs += seconds * 1000;
+    this.totalTimeMs = Math.max(this.totalTimeMs, this.remainingTimeMs);
+
+    this.audioEngine.playGiftRose();
+    this.events.onTimeAdded?.(seconds, sponsorName);
+
+    const secLeft = Math.ceil(this.remainingTimeMs / 1000);
+    this.events.onTick?.(secLeft, Math.ceil(this.totalTimeMs / 1000));
+
+    if (this.config.ttsEnabled) {
+      this.ttsController.announceTimeAdded(seconds, sponsorName);
+    }
+  }
+
+  public triggerFirstCharHint(sponsorName?: string): boolean {
+    if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
+    this.triggerHint2(sponsorName, 'follow');
+    return true;
+  }
+
   public unlockNextHint(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): boolean {
     if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
     if (!this.hint1Given) {
@@ -292,8 +315,8 @@ export class RebusEngine {
     }
   }
 
-  public triggerHint2(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
-    if (this.hint2Given || !this.currentPuzzle) return;
+  public triggerHint2(sponsorName?: string, reason: 'rose' | 'follow' = 'follow'): void {
+    if (!this.currentPuzzle) return;
     this.hint2Given = true;
     this.audioEngine.playHintChime();
     const firstChar = this.currentPuzzle.answer.trim().charAt(0).toUpperCase();
