@@ -264,6 +264,16 @@ async function runSuite() {
     assert.strictEqual(bossWon, true, 'Boss must be defeated when collaborative goal reached');
   });
 
+  await test('5.6 Quiz Engine: Continuous play extends beyond question 10 without artificial cap', () => {
+    const engine = new QuizEngine();
+    engine.startRound('quick');
+    for (let i = 0; i < 15; i++) {
+      engine.nextQuestion();
+    }
+    assert.strictEqual(engine.questionIndex, 16);
+    assert.strictEqual(engine.phase, 'question');
+  });
+
   // --- 6. GIFT REACTION CONTROLLER ---
   await test('6.1 Gift Reactions: Maps gifts to cosmetic VFX without pay-to-win advantage', () => {
     const giftFx = new GiftReactionController();
