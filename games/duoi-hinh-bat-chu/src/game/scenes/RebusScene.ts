@@ -12,12 +12,14 @@ import { RebusEngine } from '../systems/RebusEngine';
 import { GiftReactionController } from '../systems/GiftReactionController';
 import { StreamerModal } from '../ui/StreamerModal';
 import { RebusLiveEventRouter } from '../events/RebusLiveEventRouter';
+import { CongratulationsPresenter } from '../visuals/CongratulationsPresenter';
 
 export class RebusScene extends Phaser.Scene {
   private easelBoard!: EaselBoardPresentation;
   private mc!: MCCharacter;
   private scoreboard!: Scoreboard;
   private studentCharacters: Map<string, StudentCharacter> = new Map();
+  private congratsPresenter!: CongratulationsPresenter;
 
   private audioEngine!: AudioEngine;
   private ttsController!: TTSController;
@@ -51,6 +53,7 @@ export class RebusScene extends Phaser.Scene {
     this.mc.setDepth(55);
 
     this.scoreboard = new Scoreboard(this);
+    this.congratsPresenter = new CongratulationsPresenter(this);
 
     // 4. Instantiate visible chibi students
     this.renderInitialStudents();
@@ -153,7 +156,7 @@ export class RebusScene extends Phaser.Scene {
         this.easelBoard.showHint2(h2, firstChar);
       },
 
-      onGuessAttempt: (userId, guess, isCorrect) => {
+      onGuessAttempt: (userId, guess, isCorrect, solverRank, points) => {
         const student = this.studentCharacters.get(userId);
         if (student) {
           if (isCorrect) {
@@ -162,19 +165,26 @@ export class RebusScene extends Phaser.Scene {
             student.reactWrong();
           }
         }
+        if (isCorrect && solverRank && solverRank > 1) {
+          const medal = solverRank === 2 ? '🥈 VỀ NHÌ' : '🥉 VỀ BA';
+          const player = this.studentRoster.getPlayer(userId);
+          const name = player ? player.nickname : userId;
+          this.scoreboard.setChatTicker(`${medal}: +${points}đ tốc độ!`, name);
+        }
       },
 
-      onPuzzleSolved: (puzzle, winner) => {
+      onPuzzleSolved: (puzzle, winner, points) => {
         this.mc.cheer();
         const winnerChar = this.studentCharacters.get(winner.userId);
         if (winnerChar) {
           winnerChar.reactCorrect();
         }
-        this.scoreboard.setChatTicker(`🎉 ${winner.nickname} giải đúng "${puzzle.answer}"!`, 'Hệ thống');
+        this.scoreboard.setChatTicker(`⚡ NHANH NHẤT: "${puzzle.answer}" (+${points}đ)!`, winner.nickname);
+        this.congratsPresenter.showRoundWinner(winner.nickname, puzzle.answer, points);
       },
 
-      onPuzzleRevealed: (puzzle, solved) => {
-        this.easelBoard.revealAnswer(puzzle.answer, solved);
+      onPuzzleRevealed: (puzzle, solved, winner) => {
+        this.easelBoard.revealAnswer(puzzle.answer, solved, winner?.nickname);
         const allPlayers = this.studentRoster.getAllPlayers();
         allPlayers.forEach((p) => {
           this.spawnOrUpdateStudent(p);
@@ -189,6 +199,7 @@ export class RebusScene extends Phaser.Scene {
           const char = this.studentCharacters.get(p.userId);
           if (char) char.reactCorrect();
         });
+        this.congratsPresenter.showCeremonyPodium(top3);
       },
     });
   }
@@ -197,6 +208,8 @@ export class RebusScene extends Phaser.Scene {
     this.rebusEngine?.destroy();
     this.liveRouter?.stop();
     this.ttsController?.cancel();
+    this.audioEngine?.stopBGM();
+    this.congratsPresenter?.destroy();
   }
 }
 

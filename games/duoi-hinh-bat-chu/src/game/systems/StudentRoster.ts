@@ -130,6 +130,19 @@ export class StudentRoster {
     });
   }
 
+  public addGiftPoints(userId: string, points: number): void {
+    const player = this.players.get(userId);
+    if (!player) return;
+    player.score += points;
+    player.lastActiveTime = Date.now();
+  }
+
+  public grantExtraGuesses(userId: string, count: number = 3): void {
+    const player = this.players.get(userId);
+    if (!player) return;
+    player.guessesInCurrentRound = Math.max(0, player.guessesInCurrentRound - count);
+  }
+
   public addScore(userId: string, points: number, isCorrect: boolean): void {
     const player = this.players.get(userId);
     if (!player) return;

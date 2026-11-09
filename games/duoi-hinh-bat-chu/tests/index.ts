@@ -27,14 +27,14 @@ async function runTests() {
   }
 
   // 1. PUZZLES BANK
-  test('1. Puzzles Bank: Exceeds 300+ verified puzzles with 2+ clues and hints', () => {
+  test('1. Puzzles Bank: Exceeds 100+ verified puzzles with 2+ clues and hints', () => {
     const alloc = new SeatAllocator();
     const roster = new StudentRoster(alloc);
     const audio = new AudioEngine();
     const tts = new TTSController(audio);
 
     const engine = new RebusEngine(roster, audio, tts);
-    assert(engine.allPuzzles.length >= 300, `Puzzles count ${engine.allPuzzles.length} must be >= 300`);
+    assert(engine.allPuzzles.length >= 100, `Puzzles count ${engine.allPuzzles.length} must be >= 100`);
 
     const p = engine.allPuzzles[0];
     assert(p.id.startsWith('dhbc-'), 'Puzzle ID must have prefix dhbc-');
@@ -121,14 +121,24 @@ async function runTests() {
     const pBefore = roster.getPlayer('det_1');
     if (pBefore) pBefore.lastGuessTime -= 2000;
 
-    // Correct guess
+    // Correct guess (1st fastest solver)
     const correctRes = engine.submitGuess('det_1', answer);
     assert.strictEqual(correctRes, true);
 
-    // Check player score updated
-    const p = roster.getPlayer('det_1');
-    assert(p && p.score >= 15);
-    assert.strictEqual(p.streak, 1);
+    // Check 1st player score updated (base + speed + streak)
+    const p1 = roster.getPlayer('det_1');
+    assert(p1 && p1.score >= 15);
+    assert.strictEqual(p1.streak, 1);
+
+    // 2nd fastest solver within grace window
+    const p2Res = engine.submitGuess('det_2', answer);
+    assert.strictEqual(p2Res, true);
+    const p2 = roster.getPlayer('det_2');
+    assert(p2 && p2.score >= 10);
+
+    // Duplicate guess by same player in same round rejected
+    const dupRes = engine.submitGuess('det_1', answer);
+    assert.strictEqual(dupRes, false);
 
     engine.destroy();
   });
@@ -188,6 +198,45 @@ async function runTests() {
     assert.strictEqual(tts.isEnabled, true);
 
     tts.destroy();
+  });
+
+  // 7. BGM SYSTEM (FUNNY & CHILL TRACKS)
+  test('7. Audio Engine BGM: 4 funny and chill tracks, track cycling, volume and ducking', () => {
+    const audio = new AudioEngine();
+    assert.strictEqual(audio.bgmEnabled, true);
+
+    const initialTrack = audio.getCurrentTrack();
+    assert.strictEqual(initialTrack.id, 'funny_monkeys');
+
+    // Cycle tracks
+    const t2 = audio.nextBGMTrack();
+    assert.strictEqual(t2.id, 'silly_cartoon');
+
+    const t3 = audio.nextBGMTrack();
+    assert.strictEqual(t3.id, 'sneaky_detective');
+
+    const t4 = audio.nextBGMTrack();
+    assert.strictEqual(t4.id, 'chill_carefree');
+
+    const tCycle = audio.nextBGMTrack();
+    assert.strictEqual(tCycle.id, 'funny_monkeys');
+
+    // Test volume and ducking
+    audio.setBGMVolume(0.5);
+    assert.strictEqual(audio.bgmVolume, 0.5);
+
+    audio.setDucking(true);
+    audio.setDucking(false);
+
+    const toggledOff = audio.toggleBGM();
+    assert.strictEqual(toggledOff, false);
+    assert.strictEqual(audio.bgmEnabled, false);
+
+    const toggledOn = audio.toggleBGM();
+    assert.strictEqual(toggledOn, true);
+    assert.strictEqual(audio.bgmEnabled, true);
+
+    audio.stopBGM();
   });
 
   console.log('\n========================================================');

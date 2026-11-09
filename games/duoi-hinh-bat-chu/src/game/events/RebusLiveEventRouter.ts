@@ -74,9 +74,34 @@ export class RebusLiveEventRouter {
 
       case 'rebus.gift': {
         const giftName = (cmd.metadata?.giftName as string) || 'Rose';
+        const cleanGift = giftName.toLowerCase();
         this.roster.registerOrGet(userId, nickname, avatarUrl);
         this.giftController.triggerGiftReaction(giftName, nickname, avatarUrl);
-        this.scoreboard.setChatTicker(`gửi tặng ${giftName}! 🎁`, nickname);
+
+        let perkText = '+25đ VIP & hồi lượt đoán!';
+        if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
+          this.roster.addGiftPoints(userId, 10);
+          perkText = '+10đ cổ vũ!';
+        } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
+          this.roster.addGiftPoints(userId, 25);
+          this.roster.grantExtraGuesses(userId, 3);
+          perkText = '+25đ VIP & hồi 3 lượt đoán!';
+        } else if (cleanGift.includes('lion') || cleanGift.includes('su tu')) {
+          this.roster.addGiftPoints(userId, 150);
+          this.roster.grantExtraGuesses(userId, 10);
+          this.engine.triggerHint1();
+          perkText = 'Đại gia mở Gợi ý cho cả lớp (+150đ)!';
+        } else if (cleanGift.includes('universe') || cleanGift.includes('vu tru')) {
+          this.roster.addGiftPoints(userId, 300);
+          this.roster.grantExtraGuesses(userId, 20);
+          this.engine.triggerHint2();
+          perkText = 'Vũ Trụ giải cứu: Mở chữ cái đầu (+300đ)!';
+        } else {
+          this.roster.addGiftPoints(userId, 20);
+        }
+
+        this.scoreboard.setChatTicker(`tặng ${giftName}: ${perkText}`, nickname);
+        this.scoreboard.updateLeaderboard(this.roster.getAllPlayers());
         this.tts?.announceGift(nickname, giftName);
         break;
       }

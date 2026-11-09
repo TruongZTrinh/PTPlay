@@ -1,8 +1,49 @@
+export interface BGMTrack {
+  id: string;
+  title: string;
+  filename: string;
+  genre: string;
+}
+
+export const BGM_TRACKS: BGMTrack[] = [
+  {
+    id: 'funny_monkeys',
+    title: 'Khỉ Tinh Nghịch (Monkeys Spinning)',
+    filename: 'bgm_funny_monkeys.mp3',
+    genre: 'Hài hước / Viral TikTok',
+  },
+  {
+    id: 'silly_cartoon',
+    title: 'Hoạt Hình Nhí Nhố (Fluffing a Duck)',
+    filename: 'bgm_silly_cartoon.mp3',
+    genre: 'Hoạt hình vui nhộn',
+  },
+  {
+    id: 'sneaky_detective',
+    title: 'Thám Tử Lém Lỉnh (Sneaky Snitch)',
+    filename: 'bgm_sneaky_detective.mp3',
+    genre: 'Trinh thám dí dỏm',
+  },
+  {
+    id: 'chill_carefree',
+    title: 'Thảnh Thơi Yêu Đời (Carefree)',
+    filename: 'bgm_chill_carefree.mp3',
+    genre: 'Chill & Thư giãn',
+  },
+];
+
 export class AudioEngine {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private soundVolume: number = 0.8;
   private isDucked: boolean = false;
+
+  // Background Music (BGM)
+  private bgmAudio: HTMLAudioElement | null = null;
+  public bgmEnabled: boolean = true;
+  public bgmVolume: number = 0.35;
+  private currentTrackIndex: number = 0;
+  private basePath: string = 'assets/rebus-v1/audio/bgm';
 
   constructor() {}
 
@@ -24,6 +65,104 @@ export class AudioEngine {
     if (this.ctx && this.ctx.state === 'suspended') {
       void this.ctx.resume();
     }
+    if (this.bgmEnabled) {
+      this.playBGM();
+    }
+  }
+
+  // --- BGM Controls ---
+
+  public playBGM(trackId?: string): void {
+    if (!this.bgmEnabled || typeof window === 'undefined' || typeof Audio === 'undefined') return;
+
+    if (trackId) {
+      const idx = BGM_TRACKS.findIndex((t) => t.id === trackId);
+      if (idx !== -1) {
+        this.currentTrackIndex = idx;
+      }
+    }
+
+    const track = BGM_TRACKS[this.currentTrackIndex];
+    if (!track) return;
+
+    const audioSrc = `${this.basePath}/${track.filename}`;
+
+    try {
+      if (!this.bgmAudio) {
+        this.bgmAudio = new Audio(audioSrc);
+      } else if (!this.bgmAudio.src.endsWith(track.filename)) {
+        this.bgmAudio.src = audioSrc;
+      }
+
+      this.bgmAudio.loop = true;
+      const targetVolume = this.isDucked ? this.bgmVolume * 0.2 : this.bgmVolume;
+      this.bgmAudio.volume = targetVolume;
+
+      const playPromise = this.bgmAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Awaiting user interaction
+        });
+      }
+    } catch {
+      // Audio element not supported
+    }
+  }
+
+  public stopBGM(): void {
+    if (this.bgmAudio) {
+      try {
+        this.bgmAudio.pause();
+        this.bgmAudio.currentTime = 0;
+      } catch {}
+    }
+  }
+
+  public pauseBGM(): void {
+    if (this.bgmAudio) {
+      try {
+        this.bgmAudio.pause();
+      } catch {}
+    }
+  }
+
+  public resumeBGM(): void {
+    if (this.bgmEnabled && this.bgmAudio) {
+      try {
+        this.bgmAudio.play().catch(() => {});
+      } catch {}
+    } else if (this.bgmEnabled) {
+      this.playBGM();
+    }
+  }
+
+  public toggleBGM(): boolean {
+    this.bgmEnabled = !this.bgmEnabled;
+    if (this.bgmEnabled) {
+      this.playBGM();
+    } else {
+      this.pauseBGM();
+    }
+    return this.bgmEnabled;
+  }
+
+  public nextBGMTrack(): BGMTrack {
+    this.currentTrackIndex = (this.currentTrackIndex + 1) % BGM_TRACKS.length;
+    if (this.bgmEnabled) {
+      this.playBGM();
+    }
+    return BGM_TRACKS[this.currentTrackIndex];
+  }
+
+  public getCurrentTrack(): BGMTrack {
+    return BGM_TRACKS[this.currentTrackIndex] || BGM_TRACKS[0];
+  }
+
+  public setBGMVolume(vol: number): void {
+    this.bgmVolume = Math.max(0, Math.min(1, vol));
+    if (this.bgmAudio) {
+      this.bgmAudio.volume = this.isDucked ? this.bgmVolume * 0.2 : this.bgmVolume;
+    }
   }
 
   public setVolume(vol: number): void {
@@ -39,6 +178,11 @@ export class AudioEngine {
     if (this.masterGain && this.ctx) {
       const targetGain = ducked ? this.soundVolume * 0.25 : this.soundVolume;
       this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
+    }
+    if (this.bgmAudio) {
+      // Duck BGM during TTS announcements so voice is 100% intelligible
+      const targetVolume = ducked ? this.bgmVolume * 0.2 : this.bgmVolume;
+      this.bgmAudio.volume = targetVolume;
     }
   }
 

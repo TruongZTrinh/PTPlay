@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import rawPuzzles from '../../data/puzzles.json';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -62,14 +63,15 @@ export class BootScene extends Phaser.Scene {
     });
 
     // 3. Props
-    this.load.image('props_desk', `${assetPath}/props/props_desk.png`);
-    this.load.image('props_podium', `${assetPath}/props/props_podium.png`);
-    this.load.image('props_board', `${assetPath}/props/props_board.png`);
+    this.load.image('props_desk', `${assetPath}/props/student_desk.png`);
+    this.load.image('props_podium', `${assetPath}/props/teacher_podium.png`);
+    this.load.image('props_board', `${assetPath}/props/chalkboard.png`);
 
     // 4. Backgrounds
-    this.load.image('bg_resort', `${assetPath}/backgrounds/bg_resort_day.png`);
-    this.load.image('bg_studio', `${assetPath}/backgrounds/bg_studio_neon.png`);
-    this.load.image('bg_party', `${assetPath}/backgrounds/bg_class_party.png`);
+    this.load.image('bg_resort', `${assetPath}/backgrounds/classroom_day.png`);
+    this.load.image('bg_classroom_day', `${assetPath}/backgrounds/classroom_day.png`);
+    this.load.image('bg_classroom_evening', `${assetPath}/backgrounds/classroom_evening.png`);
+    this.load.image('bg_classroom_party', `${assetPath}/backgrounds/classroom_party.png`);
 
     // 5. Clue Icons (100+ transparent PNG clue icons)
     const clueIcons = [
@@ -102,6 +104,32 @@ export class BootScene extends Phaser.Scene {
     this.load.image('effect_heart', `${assetPath}/effects/effect_heart.png`);
     this.load.image('effect_correct', `${assetPath}/effects/effect_correct.png`);
     this.load.image('effect_wrong', `${assetPath}/effects/effect_wrong.png`);
+
+    // 8. Authentic Picture Puzzles
+    (rawPuzzles as any[]).forEach((p) => {
+      if (p.image) {
+        this.load.image(`puzzle_${p.id}`, `${assetPath}/puzzles/${p.image}`);
+      }
+    });
+
+    // 9. Game Style UI & Mode UI Assets
+    this.load.image('ui_hud_top', `${assetPath}/ui/hud_top.png`);
+    this.load.image('ui_round_label', `${assetPath}/ui/round_label.png`);
+    this.load.image('ui_scoreboard', `${assetPath}/ui/scoreboard.png`);
+    this.load.image('ui_streak_badge', `${assetPath}/ui/streak_badge.png`);
+    this.load.image('ui_question_banner', `${assetPath}/ui/question_banner.png`);
+    this.load.image('ui_results_banner', `${assetPath}/ui/results_banner.png`);
+    this.load.image('ui_avatar_frame_gold', `${assetPath}/ui/avatar_frame_gold.png`);
+
+    this.load.image('letter_blank', `${assetPath}/mode-ui/letter_blank.png`);
+    this.load.image('letter_revealed', `${assetPath}/mode-ui/letter_revealed.png`);
+    this.load.image('rebus_logo', `${assetPath}/mode-ui/rebus_logo.png`);
+    this.load.image('rebus_timer', `${assetPath}/mode-ui/rebus_timer.png`);
+    this.load.image('rebus_hint', `${assetPath}/mode-ui/rebus_hint.png`);
+    this.load.image('rebus_fast', `${assetPath}/mode-ui/rebus_fast.png`);
+    this.load.image('rebus_correct', `${assetPath}/mode-ui/rebus_correct.png`);
+    this.load.image('rebus_combo', `${assetPath}/mode-ui/rebus_combo.png`);
+    this.load.image('rebus_top', `${assetPath}/mode-ui/rebus_top.png`);
   }
 
   public create(): void {

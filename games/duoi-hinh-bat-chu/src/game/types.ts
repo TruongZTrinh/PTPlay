@@ -26,6 +26,7 @@ export interface RebusPuzzle {
   answer: string;
   aliases: string[];
   clues: string[];
+  image?: string;
   hint1: string;
   hint2: string;
   explanation: string;

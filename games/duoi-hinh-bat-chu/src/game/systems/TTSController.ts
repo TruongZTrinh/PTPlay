@@ -14,12 +14,13 @@ export class TTSController {
   private queue: TTSQueueItem[] = [];
   private isSpeaking: boolean = false;
   private lastSpeakTime: number = 0;
-  private cooldownMs: number = 1000;
+  private cooldownMs: number = 600;
   private recentKeys = new Map<string, number>();
   private cleanupVoiceLoader?: () => void;
+  private watchdogTimer?: any;
 
   public rate: number = 1.05;
-  public pitch: number = 1.1; // Cheerful, warm host tone
+  public pitch: number = 1.05; // Cheerful, warm host tone
 
   constructor(audioEngine: AudioEngine) {
     this.audioEngine = audioEngine;
@@ -69,15 +70,20 @@ export class TTSController {
     if (!cleanText) return;
 
     if (priority) {
-      window.speechSynthesis.cancel();
+      try {
+        window.speechSynthesis.cancel();
+      } catch {}
       this.queue = [{ text: cleanText, priority: true, createdAt: now }];
       this.isSpeaking = false;
-    } else {
-      if (this.queue.length >= 3) {
-        this.queue.shift();
-      }
-      this.queue.push({ text: cleanText, priority: false, createdAt: now });
+      // Allow 60ms for Chromium audio engine to reset cleanly before firing new utterance
+      setTimeout(() => this.processQueue(), 60);
+      return;
     }
+
+    if (this.queue.length >= 3) {
+      this.queue.shift();
+    }
+    this.queue.push({ text: cleanText, priority: false, createdAt: now });
 
     this.processQueue();
   }
@@ -88,7 +94,7 @@ export class TTSController {
 
     const now = Date.now();
     if (now - this.lastSpeakTime < this.cooldownMs) {
-      setTimeout(() => this.processQueue(), this.cooldownMs);
+      setTimeout(() => this.processQueue(), this.cooldownMs - (now - this.lastSpeakTime));
       return;
     }
 
@@ -114,14 +120,25 @@ export class TTSController {
     const cleanup = () => {
       if (finished) return;
       finished = true;
+      if (this.watchdogTimer) {
+        clearTimeout(this.watchdogTimer);
+        this.watchdogTimer = undefined;
+      }
       this.isSpeaking = false;
       this.lastSpeakTime = Date.now();
       this.audioEngine.setDucking(false);
-      setTimeout(() => this.processQueue(), 300);
+      setTimeout(() => this.processQueue(), 250);
     };
 
     utterance.onend = cleanup;
     utterance.onerror = cleanup;
+
+    // Safety watchdog: Chromium speech synthesis can sometimes hang or fail to emit onend
+    this.watchdogTimer = setTimeout(() => {
+      if (this.isSpeaking) {
+        cleanup();
+      }
+    }, 12000);
 
     try {
       window.speechSynthesis.speak(utterance);
@@ -137,33 +154,52 @@ export class TTSController {
   }
 
   public announcePlayerJoin(nickname: string): void {
-    this.speak(`Chào mừng thám tử ${nickname} đã tham gia giải đố!`, false, `join_${nickname}`);
+    // Only speak player join if not currently speaking a puzzle clue
+    if (!this.isSpeaking && this.queue.length === 0) {
+      this.speak(`Chào mừng thám tử ${nickname} đã tham gia giải đố!`, false, `join_${nickname}`);
+    }
   }
 
   public announceRoundStart(roundNumber: number): void {
-    this.speak(`Câu đố số ${roundNumber}! Hai hình ảnh ghép thành từ gì nào cả lớp!`, false);
+    this.speak(`Câu số ${roundNumber}! Hãy quan sát hình ảnh và nhanh tay đoán từ khóa nào cả lớp!`, false);
   }
 
   public announceHint(hintText: string): void {
-    this.speak(`Gợi ý: ${hintText}`, false);
+    const cleanHint = hintText
+      .replace(/[()+=]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (cleanHint) {
+      this.speak(`Gợi ý dành cho cả lớp: ${cleanHint}`, false);
+    }
   }
 
   public announceFirstChar(firstChar: string): void {
-    this.speak(`Gợi ý chữ cái đầu là chữ: ${firstChar}`, false);
+    this.speak(`Gợi ý thêm, chữ cái đầu tiên là chữ ${firstChar}!`, false);
   }
 
   public announceTimeWarning(): void {
-    this.speak('Còn 5 giây cuối cùng, cả lớp nhanh tay gõ đáp án nào!', true, 'time_warning');
+    // Only announce 5s warning if not already speaking a hint to avoid cutting off clues
+    if (this.isSpeaking || this.queue.length > 0) return;
+    this.speak('Còn 5 giây cuối cùng, cả lớp nhanh tay gõ đáp án nào!', false, 'time_warning');
   }
 
   public announceCorrect(nickname: string, answer: string): void {
-    this.speak(`Chính xác! ${nickname} đã đoán đúng đáp án ${answer}!`, true);
+    this.speak(`Chính xác! Bạn ${nickname} đã giải đố nhanh nhất với đáp án ${answer}!`, true);
   }
 
   public announceTimeout(answer: string, explanation?: string): void {
     let msg = `Hết giờ! Đáp án chính xác là: ${answer}.`;
     if (explanation) {
-      msg += ` ${explanation}`;
+      const cleanExp = explanation
+        .replace(/\([^)]*\)/g, '')
+        .replace(/\+/g, ' kết hợp cùng ')
+        .replace(/=/g, ' tạo thành ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (cleanExp) {
+        msg += ` ${cleanExp}`;
+      }
     }
     this.speak(msg, true);
   }

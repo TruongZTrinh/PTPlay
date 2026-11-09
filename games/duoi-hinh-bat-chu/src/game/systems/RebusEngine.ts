@@ -11,9 +11,9 @@ export interface RebusEngineEvents {
   onTick?: (remainingSec: number, totalSec: number) => void;
   onHint1Triggered?: (hint1: string) => void;
   onHint2Triggered?: (hint2: string, firstChar: string) => void;
-  onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean) => void;
+  onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean, solverRank?: number, points?: number) => void;
   onPuzzleSolved?: (puzzle: RebusPuzzle, winner: RebusPlayerRecord, points: number) => void;
-  onPuzzleRevealed?: (puzzle: RebusPuzzle, solved: boolean) => void;
+  onPuzzleRevealed?: (puzzle: RebusPuzzle, solved: boolean, winner?: RebusPlayerRecord) => void;
   onCeremonyStarted?: () => void;
 }
 
@@ -37,6 +37,7 @@ export class RebusEngine {
   private hint2Given: boolean = false;
   private isSolvedInCurrentRound: boolean = false;
   private roundWinner: RebusPlayerRecord | null = null;
+  private roundSolvers: string[] = [];
 
   private timerHandle: any = null;
   private stateTimerHandle: any = null;
@@ -110,6 +111,7 @@ export class RebusEngine {
     this.hint2Given = false;
     this.isSolvedInCurrentRound = false;
     this.roundWinner = null;
+    this.roundSolvers = [];
 
     this.totalTimeMs = (this.currentPuzzle.durationSec || 20) * 1000;
     this.remainingTimeMs = this.totalTimeMs;
@@ -134,8 +136,15 @@ export class RebusEngine {
     }
     if (pool.length === 0) return null;
 
-    const randomIndex = Math.floor(Math.random() * pool.length);
-    const selected = { ...pool[randomIndex] };
+    let selected: RebusPuzzle;
+    // Show CẨU THẢ first on round 1 if available
+    if (this.roundNumber === 1) {
+      const first = pool.find((p) => p.id === 'dhbc-0001');
+      selected = first ? { ...first } : { ...pool[0] };
+    } else {
+      const randomIndex = Math.floor(Math.random() * pool.length);
+      selected = { ...pool[randomIndex] };
+    }
 
     this.historyIds.push(selected.id);
     if (this.historyIds.length > 50) {
@@ -162,17 +171,17 @@ export class RebusEngine {
 
       const elapsedRatio = 1 - this.remainingTimeMs / this.totalTimeMs;
 
-      // 1. Hint 1 at 60% elapsed time
-      if (!this.hint1Given && elapsedRatio >= 0.6) {
+      // 1. Hint 1 at 40% elapsed time (e.g. at 8s mark for 20s round)
+      if (!this.hint1Given && elapsedRatio >= 0.4) {
         this.triggerHint1();
       }
 
-      // 2. Hint 2 at 85% elapsed time
-      if (!this.hint2Given && elapsedRatio >= 0.85) {
+      // 2. Hint 2 (first character) at 70% elapsed time (e.g. at 14s mark, 6s remaining)
+      if (!this.hint2Given && elapsedRatio >= 0.7) {
         this.triggerHint2();
       }
 
-      // Time warning at 5 seconds remaining
+      // Time warning at 5 seconds remaining (only announces if host is not speaking a hint)
       if (this.remainingTimeMs <= 5000 && this.remainingTimeMs > 4800 && this.config.ttsEnabled) {
         this.ttsController.announceTimeWarning();
       }
@@ -192,7 +201,8 @@ export class RebusEngine {
 
   public submitGuess(userId: string, comment: string): boolean {
     if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
-    if (this.isSolvedInCurrentRound) return false;
+    // Disallow duplicate correct guesses from the same player in one round
+    if (this.roundSolvers.includes(userId)) return false;
 
     // Auto-register contestant if not yet in roster
     this.studentRoster.registerOrGet(userId, userId);
@@ -214,33 +224,53 @@ export class RebusEngine {
     );
 
     if (isMatch) {
-      this.isSolvedInCurrentRound = true;
-      this.clearTimers();
-
-      const timeRatio = Math.max(0, this.remainingTimeMs / this.totalTimeMs);
-      const speedBonus = Math.round(timeRatio * this.config.maxSpeedBonus);
+      this.roundSolvers.push(userId);
+      const solverRank = this.roundSolvers.length;
       const player = this.studentRoster.getPlayer(userId);
-      const streakBonus = Math.min(this.config.maxStreakBonus, (player?.streak || 0) + 1);
-      const totalPoints = this.config.basePoints + speedBonus + streakBonus;
+      const timeRatio = Math.max(0, this.remainingTimeMs / this.totalTimeMs);
 
-      this.studentRoster.addScore(userId, totalPoints, true);
-      this.roundWinner = player || null;
+      if (solverRank === 1) {
+        // --- #1 FASTEST SOLVER (Round Winner) ---
+        this.isSolvedInCurrentRound = true;
+        this.clearTimers();
 
-      this.audioEngine.playCorrect();
-      this.events.onGuessAttempt?.(userId, comment, true);
-      if (this.roundWinner) {
-        this.events.onPuzzleSolved?.(this.currentPuzzle, this.roundWinner, totalPoints);
+        const speedBonus = Math.round(timeRatio * this.config.maxSpeedBonus);
+        const streakBonus = Math.min(this.config.maxStreakBonus, (player?.streak || 0) + 1);
+        const totalPoints = this.config.basePoints + speedBonus + streakBonus;
+
+        this.studentRoster.addScore(userId, totalPoints, true);
+        this.roundWinner = player || null;
+
+        this.audioEngine.playCorrect();
+        this.events.onGuessAttempt?.(userId, comment, true, 1, totalPoints);
+        if (this.roundWinner) {
+          this.events.onPuzzleSolved?.(this.currentPuzzle, this.roundWinner, totalPoints);
+        }
+
+        if (this.config.ttsEnabled && player) {
+          this.ttsController.announceCorrect(player.nickname, this.currentPuzzle.answer);
+        }
+
+        // 1500ms grace window before revealing answer to viewers
+        this.stateTimerHandle = setTimeout(() => {
+          this.revealPuzzle();
+        }, 1500);
+
+        return true;
+      } else if (solverRank <= 3) {
+        // --- 2nd & 3rd FASTEST SOLVERS (Grace period bonus) ---
+        const runnerUpBase = solverRank === 2 ? 10 : 8;
+        const runnerUpSpeed = Math.round(timeRatio * (solverRank === 2 ? 4 : 2));
+        const totalPoints = runnerUpBase + runnerUpSpeed + 1;
+
+        this.studentRoster.addScore(userId, totalPoints, true);
+        this.audioEngine.playCorrect();
+        this.events.onGuessAttempt?.(userId, comment, true, solverRank, totalPoints);
+
+        return true;
       }
 
-      if (this.config.ttsEnabled && player) {
-        this.ttsController.announceCorrect(player.nickname, this.currentPuzzle.answer);
-      }
-
-      this.stateTimerHandle = setTimeout(() => {
-        this.revealPuzzle();
-      }, 1500);
-
-      return true;
+      return false;
     } else {
       this.audioEngine.playWrong();
       this.events.onGuessAttempt?.(userId, comment, false);
@@ -284,7 +314,7 @@ export class RebusEngine {
   private revealPuzzle(): void {
     if (!this.currentPuzzle) return;
     this.setState('reveal');
-    this.events.onPuzzleRevealed?.(this.currentPuzzle, this.isSolvedInCurrentRound);
+    this.events.onPuzzleRevealed?.(this.currentPuzzle, this.isSolvedInCurrentRound, this.roundWinner || undefined);
 
     if (!this.isSolvedInCurrentRound && this.config.ttsEnabled) {
       this.ttsController.announceTimeout(this.currentPuzzle.answer, this.currentPuzzle.explanation);
