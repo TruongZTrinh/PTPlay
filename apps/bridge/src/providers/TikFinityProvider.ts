@@ -51,8 +51,12 @@ export class TikFinityProvider extends LiveEventProvider {
       this.reconnectTimer = null;
     }
     if (this.ws) {
-      this.ws.removeAllListeners();
-      this.ws.close();
+      try {
+        this.ws.on('error', () => {});
+        this.ws.close();
+      } catch {
+        // ignore cleanup error
+      }
       this.ws = null;
     }
     this.wsConnected = false;
@@ -119,11 +123,12 @@ export class TikFinityProvider extends LiveEventProvider {
   private initSocket(): void {
     if (this.ws) {
       try {
-        this.ws.removeAllListeners();
+        this.ws.on('error', () => {});
         this.ws.close();
       } catch {
         // ignore cleanup error
       }
+      this.ws = null;
     }
 
     try {
