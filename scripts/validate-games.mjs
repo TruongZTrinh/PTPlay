@@ -79,3 +79,4 @@ if (hasErrors) {
   console.log('✅ All Game Registry records are valid and consistent!');
   process.exit(0);
 }
+

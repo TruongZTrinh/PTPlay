@@ -89,3 +89,4 @@ npm run start:catcafe
    ```
 4. Register your game in [`config/games.json`](file:///config/games.json) with an available port.
 5. Run `npm run validate`. Done!
+

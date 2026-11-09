@@ -40,3 +40,4 @@ export interface PlatformConfig {
   bridgePort: number;
   games: GameRegistryItem[];
 }
+

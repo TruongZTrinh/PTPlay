@@ -168,3 +168,4 @@ export interface GiftMappingRule {
   enabled: boolean;
   description: string;
 }
+
