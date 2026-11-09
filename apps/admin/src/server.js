@@ -16,6 +16,8 @@ const BRIDGE_PORT = 8088;
 const MINI_WAR_PORT = 5173;
 const CAT_CAFE_PORT = 5174;
 const ENGLISH_CLASS_PORT = 5175;
+const QUIZ_SHOW_PORT = 5176;
+const DUOI_HINH_PORT = 5177;
 const TIKFINITY_PORT = 21213;
 
 const PLATFORM_DIR = path.resolve(__dirname, '../../');
@@ -32,6 +34,9 @@ const catCafePath = fs.existsSync(path.join(PLATFORM_DIR, 'games', 'cat-cafe'))
 const englishClassPath = fs.existsSync(path.join(PLATFORM_DIR, 'games', 'english-class-live'))
   ? path.join(PLATFORM_DIR, 'games', 'english-class-live')
   : path.join(WORKSPACE_DIR, 'PTPlay-English-Class-Live');
+
+const quizShowPath = path.join(PLATFORM_DIR, 'games', 'quiz-show');
+const duoiHinhPath = path.join(PLATFORM_DIR, 'games', 'duoi-hinh-bat-chu');
 
 const bridgePath = fs.existsSync(path.join(PLATFORM_DIR, 'apps', 'bridge'))
   ? path.join(PLATFORM_DIR, 'apps', 'bridge')
@@ -71,6 +76,28 @@ const GAME_CONFIGS = [
     launcherBat: path.join(englishClassPath, 'RUN_ENGLISH_CLASS_WINDOWS.bat'),
     icon: '🎓',
   },
+  {
+    id: 'quiz-show',
+    name: 'PTPlay Quiz Show',
+    vietnameseName: 'Đố Vui Có Thưởng',
+    genre: '2D Interactive Neon Quiz Gameshow (9:16 portrait)',
+    path: quizShowPath,
+    port: QUIZ_SHOW_PORT,
+    url: `http://localhost:${QUIZ_SHOW_PORT}`,
+    launcherBat: path.join(quizShowPath, 'RUN_QUIZ_SHOW_WINDOWS.bat'),
+    icon: '🏆',
+  },
+  {
+    id: 'duoi-hinh-bat-chu',
+    name: 'PTPlay Đuổi Hình Bắt Chữ',
+    vietnameseName: 'Đuổi Hình Bắt Chữ',
+    genre: '2D Interactive Vietnamese Rebus Puzzle Show (9:16 portrait)',
+    path: duoiHinhPath,
+    port: DUOI_HINH_PORT,
+    url: `http://localhost:${DUOI_HINH_PORT}`,
+    launcherBat: path.join(duoiHinhPath, 'RUN_DUOI_HINH_WINDOWS.bat'),
+    icon: '💡',
+  },
 ];
 
 // In-Memory Managed Child Processes & Logs Buffer
@@ -99,6 +126,24 @@ const managedProcesses = {
     startedAt: null,
     logs: [],
     workDir: englishClassPath,
+    cmd: process.platform === 'win32' ? 'npm.cmd' : 'npm',
+    args: ['run', 'dev'],
+  },
+  'quiz-show': {
+    process: null,
+    pid: null,
+    startedAt: null,
+    logs: [],
+    workDir: quizShowPath,
+    cmd: process.platform === 'win32' ? 'npm.cmd' : 'npm',
+    args: ['run', 'dev'],
+  },
+  'duoi-hinh-bat-chu': {
+    process: null,
+    pid: null,
+    startedAt: null,
+    logs: [],
+    workDir: duoiHinhPath,
     cmd: process.platform === 'win32' ? 'npm.cmd' : 'npm',
     args: ['run', 'dev'],
   },
@@ -240,7 +285,11 @@ function stopManagedProcess(serviceKey) {
       ? CAT_CAFE_PORT 
       : (serviceKey === 'english-class' 
         ? ENGLISH_CLASS_PORT 
-        : BRIDGE_PORT));
+        : (serviceKey === 'quiz-show'
+          ? QUIZ_SHOW_PORT
+          : (serviceKey === 'duoi-hinh-bat-chu'
+            ? DUOI_HINH_PORT
+            : BRIDGE_PORT))));
 
   try {
     if (item && item.pid) {
@@ -325,10 +374,12 @@ const server = http.createServer(async (req, res) => {
 
   // 1. Process Status & Health
   if (pathname === '/api/process/status' && req.method === 'GET') {
-    const [pMini, pCat, pEnglish, pBridge] = await Promise.all([
+    const [pMini, pCat, pEnglish, pQuiz, pDuoiHinh, pBridge] = await Promise.all([
       checkPort(MINI_WAR_PORT),
       checkPort(CAT_CAFE_PORT),
       checkPort(ENGLISH_CLASS_PORT),
+      checkPort(QUIZ_SHOW_PORT),
+      checkPort(DUOI_HINH_PORT),
       checkPort(BRIDGE_PORT),
     ]);
 
@@ -358,6 +409,22 @@ const server = http.createServer(async (req, res) => {
           pid: managedProcesses['english-class'].pid,
           startedAt: managedProcesses['english-class'].startedAt,
           recentLogs: managedProcesses['english-class'].logs.slice(-30),
+        },
+        'quiz-show': {
+          running: pQuiz || !!managedProcesses['quiz-show'].process,
+          portOpen: pQuiz,
+          port: QUIZ_SHOW_PORT,
+          pid: managedProcesses['quiz-show'].pid,
+          startedAt: managedProcesses['quiz-show'].startedAt,
+          recentLogs: managedProcesses['quiz-show'].logs.slice(-30),
+        },
+        'duoi-hinh-bat-chu': {
+          running: pDuoiHinh || !!managedProcesses['duoi-hinh-bat-chu'].process,
+          portOpen: pDuoiHinh,
+          port: DUOI_HINH_PORT,
+          pid: managedProcesses['duoi-hinh-bat-chu'].pid,
+          startedAt: managedProcesses['duoi-hinh-bat-chu'].startedAt,
+          recentLogs: managedProcesses['duoi-hinh-bat-chu'].logs.slice(-30),
         },
         bridge: {
           running: pBridge || !!managedProcesses.bridge.process,
@@ -408,8 +475,10 @@ const server = http.createServer(async (req, res) => {
     const rMini = startManagedProcess('mini-war');
     const rCat = startManagedProcess('cat-cafe');
     const rEnglish = startManagedProcess('english-class');
+    const rQuiz = startManagedProcess('quiz-show');
+    const rDuoiHinh = startManagedProcess('duoi-hinh-bat-chu');
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ success: true, bridge: rBridge, miniWar: rMini, catCafe: rCat, englishClass: rEnglish }));
+    res.end(JSON.stringify({ success: true, bridge: rBridge, miniWar: rMini, catCafe: rCat, englishClass: rEnglish, quizShow: rQuiz, duoiHinh: rDuoiHinh }));
     return;
   }
 
@@ -417,6 +486,8 @@ const server = http.createServer(async (req, res) => {
     stopManagedProcess('mini-war');
     stopManagedProcess('cat-cafe');
     stopManagedProcess('english-class');
+    stopManagedProcess('quiz-show');
+    stopManagedProcess('duoi-hinh-bat-chu');
     stopManagedProcess('bridge');
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ success: true }));
@@ -449,19 +520,30 @@ const server = http.createServer(async (req, res) => {
 
   // 4. API: Games directory & local paths
   if (pathname === '/api/games' && req.method === 'GET') {
-    const [pMini, pCat, pEnglish, pBridge, pTikFinity] = await Promise.all([
+    const [pMini, pCat, pEnglish, pQuiz, pDuoiHinh, pBridge, pTikFinity] = await Promise.all([
       checkPort(MINI_WAR_PORT),
       checkPort(CAT_CAFE_PORT),
       checkPort(ENGLISH_CLASS_PORT),
+      checkPort(QUIZ_SHOW_PORT),
+      checkPort(DUOI_HINH_PORT),
       checkPort(BRIDGE_PORT),
       checkPort(TIKFINITY_PORT),
     ]);
 
-    const result = GAME_CONFIGS.map((g) => ({
-      ...g,
-      isRunning: g.id === 'mini-war' ? pMini : (g.id === 'cat-cafe' ? pCat : pEnglish),
-      pathExists: fs.existsSync(g.path),
-    }));
+    const result = GAME_CONFIGS.map((g) => {
+      let isRunning = false;
+      if (g.id === 'mini-war') isRunning = pMini;
+      else if (g.id === 'cat-cafe') isRunning = pCat;
+      else if (g.id === 'english-class') isRunning = pEnglish;
+      else if (g.id === 'quiz-show') isRunning = pQuiz;
+      else if (g.id === 'duoi-hinh-bat-chu') isRunning = pDuoiHinh;
+
+      return {
+        ...g,
+        isRunning,
+        pathExists: fs.existsSync(g.path),
+      };
+    });
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(
@@ -479,10 +561,12 @@ const server = http.createServer(async (req, res) => {
 
   // 5. API: System ports health scan
   if (pathname === '/api/ports' && req.method === 'GET') {
-    const [p5173, p5174, p5175, p8088, p21213] = await Promise.all([
+    const [p5173, p5174, p5175, p5176, p5177, p8088, p21213] = await Promise.all([
       checkPort(MINI_WAR_PORT),
       checkPort(CAT_CAFE_PORT),
       checkPort(ENGLISH_CLASS_PORT),
+      checkPort(QUIZ_SHOW_PORT),
+      checkPort(DUOI_HINH_PORT),
       checkPort(BRIDGE_PORT),
       checkPort(TIKFINITY_PORT),
     ]);
@@ -496,6 +580,8 @@ const server = http.createServer(async (req, res) => {
         miniWarPort: { port: MINI_WAR_PORT, open: p5173 },
         catCafePort: { port: CAT_CAFE_PORT, open: p5174 },
         englishClassPort: { port: ENGLISH_CLASS_PORT, open: p5175 },
+        quizShowPort: { port: QUIZ_SHOW_PORT, open: p5176 },
+        duoiHinhPort: { port: DUOI_HINH_PORT, open: p5177 },
         tikfinityPort: { port: TIKFINITY_PORT, open: p21213 },
       })
     );

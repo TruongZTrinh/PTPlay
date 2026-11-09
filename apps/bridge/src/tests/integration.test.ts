@@ -682,6 +682,134 @@ async function runTests() {
     assert.strictEqual((ev3 as any)?.profilePictureUrl, 'https://cdn.example.com/c.jpg');
   });
 
+  // --- 17. QUIZ SHOW LIVE COMMAND & ROUTING SUITE ---
+  await test('17. Quiz Show: Routes JOIN, A/B/C/D answer, team and gifts when active', async () => {
+    const { GameBridgeServer } = await import('../server/GameBridgeServer.js');
+    const server = new GameBridgeServer(9886);
+    server.activeGame = 'quiz-show';
+    assert.strictEqual(server.activeGame, 'quiz-show');
+    server.eventQueue.clear();
+
+    // 1. JOIN
+    server.processIncomingLiveEvent({
+      id: 'quiz_chat_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'quiz_user_1',
+      uniqueId: 'quiz_user_1',
+      nickname: 'Ngọc Anh',
+      comment: 'JOIN',
+      profilePictureUrl: 'https://cdn.example.com/na.jpg',
+    });
+
+    // 2. Answer C
+    server.processIncomingLiveEvent({
+      id: 'quiz_chat_2',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'quiz_user_1',
+      uniqueId: 'quiz_user_1',
+      nickname: 'Ngọc Anh',
+      comment: 'C - Đáp án chuẩn',
+    });
+
+    // 3. Gift Lion
+    server.processIncomingLiveEvent({
+      id: 'quiz_gift_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'gift',
+      userId: 'quiz_user_1',
+      uniqueId: 'quiz_user_1',
+      nickname: 'Ngọc Anh',
+      giftId: 'lion',
+      giftName: 'Lion',
+      diamondCount: 29999,
+      repeatCount: 1,
+      deltaCount: 1,
+      repeatEnd: true,
+      profilePictureUrl: 'https://cdn.example.com/na.jpg',
+    });
+
+    const logs = server.eventQueue.getRecentLogs();
+    const joinCmd = logs.find((l) => l.action === 'quiz_show.join');
+    const ansCmd = logs.find((l) => l.action === 'quiz_show.answer');
+    const giftCmd = logs.find((l) => l.action === 'quiz_show.gift');
+
+    assert(joinCmd, 'Join command must be queued for Quiz Show');
+    assert.strictEqual(joinCmd?.userName, 'Ngọc Anh');
+    assert(ansCmd, 'Answer command must be queued for Quiz Show');
+    assert(giftCmd, 'Gift command must be queued for Quiz Show');
+
+    await server.stop();
+  });
+
+  // --- 18. REBUS (ĐUỔI HÌNH BẮT CHỮ) LIVE COMMAND & ROUTING SUITE ---
+  await test('18. Rebus (Đuổi Hình Bắt Chữ): Routes JOIN, word guess, hint and gift when active', async () => {
+    const { GameBridgeServer } = await import('../server/GameBridgeServer.js');
+    const server = new GameBridgeServer(9887);
+    server.activeGame = 'duoi-hinh-bat-chu';
+    assert.strictEqual(server.activeGame, 'duoi-hinh-bat-chu');
+    server.eventQueue.clear();
+
+    // 1. JOIN
+    server.processIncomingLiveEvent({
+      id: 'rebus_chat_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'rebus_user_1',
+      uniqueId: 'rebus_user_1',
+      nickname: 'Minh Quân',
+      comment: 'VÀO',
+      profilePictureUrl: 'https://cdn.example.com/mq.jpg',
+    });
+
+    // 2. Guess Vietnamese word phrase "CÁ VÀNG"
+    server.processIncomingLiveEvent({
+      id: 'rebus_chat_2',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'chat',
+      userId: 'rebus_user_1',
+      uniqueId: 'rebus_user_1',
+      nickname: 'Minh Quân',
+      comment: 'cá vàng nha mn ơi',
+    });
+
+    // 3. Gift Universe
+    server.processIncomingLiveEvent({
+      id: 'rebus_gift_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'gift',
+      userId: 'rebus_user_1',
+      uniqueId: 'rebus_user_1',
+      nickname: 'Minh Quân',
+      giftId: 'universe',
+      giftName: 'Universe',
+      diamondCount: 34999,
+      repeatCount: 1,
+      deltaCount: 1,
+      repeatEnd: true,
+      profilePictureUrl: 'https://cdn.example.com/mq.jpg',
+    });
+
+    const logs = server.eventQueue.getRecentLogs();
+    const joinCmd = logs.find((l) => l.action === 'rebus.join');
+    const ansCmd = logs.find((l) => l.action === 'rebus.answer');
+    const giftCmd = logs.find((l) => l.action === 'rebus.gift');
+
+    assert(joinCmd, 'Join command must be queued for Rebus');
+    assert.strictEqual(joinCmd?.userName, 'Minh Quân');
+    assert(ansCmd, 'Answer command must be queued for Rebus');
+    assert(giftCmd, 'Gift command must be queued for Rebus');
+
+    await server.stop();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

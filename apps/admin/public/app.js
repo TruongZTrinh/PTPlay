@@ -90,6 +90,8 @@ const TAB_BREADCRUMBS = {
   miniwar: { cat: 'Core Game Suite', name: 'Mini War Arena V1.0' },
   catcafe: { cat: 'Core Game Suite', name: 'Café Mòe LIVE V1.0' },
   englishclass: { cat: 'Core Game Suite', name: 'English Class LIVE V1.0' },
+  quizshow: { cat: 'Core Game Suite', name: 'PTPlay Quiz Show (Đố Vui Có Thưởng)' },
+  duoihinh: { cat: 'Core Game Suite', name: 'PTPlay Đuổi Hình Bắt Chữ' },
   preview: { cat: 'Core Game Suite', name: 'Multiview Dọc 9:16' },
   spectators: { cat: 'Audience & CRM', name: 'Khán Giả & Đội Ngũ' },
   economy: { cat: 'Audience & CRM', name: 'Quy Tắc Quà Tặng (Gifts)' },
@@ -146,6 +148,8 @@ async function fetchProcessStatus() {
     updateServiceCard('mw', svcs['mini-war']);
     updateServiceCard('cat', svcs['cat-cafe']);
     updateServiceCard('ec', svcs['english-class']);
+    updateServiceCard('qs', svcs['quiz-show']);
+    updateServiceCard('dh', svcs['duoi-hinh-bat-chu']);
     updateServiceCard('bridge', svcs.bridge);
   } catch (e) {}
 }
@@ -287,6 +291,16 @@ async function fetchPorts() {
     if (val5175) val5175.innerText = p.englishClassPort?.open ? '5175' : '5175';
     if (dot5175) dot5175.className = `tele-dot ${p.englishClassPort?.open ? 'online' : 'offline'}`;
 
+    const val5176 = document.getElementById('val-port-5176');
+    const dot5176 = document.getElementById('dot-port-5176');
+    if (val5176) val5176.innerText = p.quizShowPort?.open ? '5176' : '5176';
+    if (dot5176) dot5176.className = `tele-dot ${p.quizShowPort?.open ? 'online' : 'offline'}`;
+
+    const val5177 = document.getElementById('val-port-5177');
+    const dot5177 = document.getElementById('dot-port-5177');
+    if (val5177) val5177.innerText = p.duoiHinhPort?.open ? '5177' : '5177';
+    if (dot5177) dot5177.className = `tele-dot ${p.duoiHinhPort?.open ? 'online' : 'offline'}`;
+
     const valBridge = document.getElementById('val-bridge');
     const dotBridge = document.getElementById('dot-bridge');
     if (valBridge) valBridge.innerText = p.bridgePort.open ? '8088' : '8088';
@@ -313,6 +327,16 @@ async function fetchPorts() {
       badgeTopEc.innerText = p.englishClassPort?.open ? 'ONLINE (Cổng 5175)' : 'OFFLINE (Chưa bật)';
       badgeTopEc.className = `badge ${p.englishClassPort?.open ? 'badge-green' : 'badge-red'}`;
     }
+    const badgeTopQs = document.getElementById('badge-top-qs');
+    if (badgeTopQs) {
+      badgeTopQs.innerText = p.quizShowPort?.open ? 'ONLINE (Cổng 5176)' : 'OFFLINE (Chưa bật)';
+      badgeTopQs.className = `badge ${p.quizShowPort?.open ? 'badge-green' : 'badge-red'}`;
+    }
+    const badgeTopDh = document.getElementById('badge-top-dh');
+    if (badgeTopDh) {
+      badgeTopDh.innerText = p.duoiHinhPort?.open ? 'ONLINE (Cổng 5177)' : 'OFFLINE (Chưa bật)';
+      badgeTopDh.className = `badge ${p.duoiHinhPort?.open ? 'badge-green' : 'badge-red'}`;
+    }
   } catch (e) {}
 }
 
@@ -321,18 +345,26 @@ function updateActiveGameUI(game) {
   const isMini = game === 'mini-war';
   const isCat = game === 'cat-cafe';
   const isEnglish = game === 'english-class' || game === 'english-class-live';
+  const isQuiz = game === 'quiz-show' || game === 'ptplay-quiz-show';
+  const isDuoiHinh = game === 'duoi-hinh-bat-chu' || game === 'ptplay-duoi-hinh-bat-chu';
   
   const cardMw = document.getElementById('game-card-miniwar');
   const cardCat = document.getElementById('game-card-catcafe');
   const cardEc = document.getElementById('game-card-englishclass');
+  const cardQs = document.getElementById('game-card-quizshow');
+  const cardDh = document.getElementById('game-card-duoihinh');
   if (cardMw) cardMw.classList.toggle('active-live', isMini);
   if (cardCat) cardCat.classList.toggle('active-live', isCat);
   if (cardEc) cardEc.classList.toggle('active-live', isEnglish);
+  if (cardQs) cardQs.classList.toggle('active-live', isQuiz);
+  if (cardDh) cardDh.classList.toggle('active-live', isDuoiHinh);
 
   // Sidebar route switcher buttons
   const btnRouteMw = document.getElementById('btn-route-mw');
   const btnRouteCat = document.getElementById('btn-route-cat');
   const btnRouteEc = document.getElementById('btn-route-ec');
+  const btnRouteQs = document.getElementById('btn-route-qs');
+  const btnRouteDh = document.getElementById('btn-route-dh');
   if (btnRouteMw) btnRouteMw.classList.toggle('active', isMini);
   if (btnRouteCat) {
     btnRouteCat.classList.toggle('active', isCat);
@@ -342,14 +374,26 @@ function updateActiveGameUI(game) {
     btnRouteEc.classList.toggle('active', isEnglish);
     btnRouteEc.classList.toggle('ec', isEnglish);
   }
+  if (btnRouteQs) {
+    btnRouteQs.classList.toggle('active', isQuiz);
+    btnRouteQs.classList.toggle('qs', isQuiz);
+  }
+  if (btnRouteDh) {
+    btnRouteDh.classList.toggle('active', isDuoiHinh);
+    btnRouteDh.classList.toggle('dh', isDuoiHinh);
+  }
 
   // Sidebar LIVE badges
   const badgeMw = document.getElementById('badge-mw-live');
   const badgeCat = document.getElementById('badge-cat-live');
   const badgeEc = document.getElementById('badge-ec-live');
+  const badgeQs = document.getElementById('badge-qs-live');
+  const badgeDh = document.getElementById('badge-dh-live');
   if (badgeMw) badgeMw.style.display = isMini ? 'inline-block' : 'none';
   if (badgeCat) badgeCat.style.display = isCat ? 'inline-block' : 'none';
   if (badgeEc) badgeEc.style.display = isEnglish ? 'inline-block' : 'none';
+  if (badgeQs) badgeQs.style.display = isQuiz ? 'inline-block' : 'none';
+  if (badgeDh) badgeDh.style.display = isDuoiHinh ? 'inline-block' : 'none';
 }
 
 async function switchActiveGame(target) {
@@ -357,7 +401,13 @@ async function switchActiveGame(target) {
   playSound('click');
   const targetName = target === 'mini-war' 
     ? 'Mini War Arena' 
-    : (target === 'cat-cafe' ? 'Café Mòe' : 'Lớp Học Vui LIVE');
+    : (target === 'cat-cafe' 
+      ? 'Café Mòe' 
+      : (target === 'english-class' 
+        ? 'Lớp Học Vui LIVE' 
+        : (target === 'quiz-show' 
+          ? 'Đố Vui Có Thưởng' 
+          : 'Đuổi Hình Bắt Chữ')));
   if (!confirm(`Xác nhận đổi game tiếp nhận luồng sự kiện TikTok LIVE sang: ${targetName}?`)) return;
   try {
     const res = await fetch('/api/active_game', {
@@ -673,9 +723,18 @@ async function updateQueueConfig() {
 async function sendMockChat(gameType, customNick, customComment) {
   const isEc = gameType === 'english' || gameType === 'english-class';
   const isCat = gameType === 'cat';
-  const nick = customNick || (isEc ? 'Mai Lan' : (isCat ? 'BéMèoXinh' : 'ChiếnBinhThầnTốc'));
-  const comment = customComment || (isEc ? 'JOIN' : (isCat ? 'MÈO' : 'ĐỎ CỐ LÊN'));
-  const endpoint = isEc ? '/api/english/mock/chat' : (isCat ? '/api/catcafe/mock/chat' : '/api/mock/chat');
+  const isQuiz = gameType === 'quiz' || gameType === 'quiz-show';
+  const isRebus = gameType === 'rebus' || gameType === 'duoi-hinh-bat-chu';
+
+  const nick = customNick || (isEc ? 'Mai Lan' : (isCat ? 'BéMèoXinh' : (isQuiz ? 'Thí Sinh Pro' : (isRebus ? 'Thám Tử Chibi' : 'ChiếnBinhThầnTốc'))));
+  const comment = customComment || (isEc ? 'JOIN' : (isCat ? 'MÈO' : (isQuiz ? 'JOIN' : (isRebus ? 'CÁ VÀNG' : 'ĐỎ CỐ LÊN'))));
+  
+  let endpoint = '/api/mock/chat';
+  if (isEc) endpoint = '/api/english/mock/chat';
+  else if (isCat) endpoint = '/api/catcafe/mock/chat';
+  else if (isQuiz) endpoint = '/api/quiz/mock/chat';
+  else if (isRebus) endpoint = '/api/rebus/mock/chat';
+
   try {
     await fetch(endpoint, {
       method: 'POST',
@@ -692,8 +751,17 @@ async function sendMockChat(gameType, customNick, customComment) {
 async function sendMockGift(gameType, giftName, count = 1) {
   const isEc = gameType === 'english' || gameType === 'english-class';
   const isCat = gameType === 'cat';
-  const nick = isEc ? 'PhụHuynhVIP' : (isCat ? 'MèoMêĂn' : 'ĐạiGiaTikTok');
-  const endpoint = isEc ? '/api/english/mock/gift' : (isCat ? '/api/catcafe/mock/gift' : '/api/mock/gift');
+  const isQuiz = gameType === 'quiz' || gameType === 'quiz-show';
+  const isRebus = gameType === 'rebus' || gameType === 'duoi-hinh-bat-chu';
+
+  const nick = isEc ? 'PhụHuynhVIP' : (isCat ? 'MèoMêĂn' : (isQuiz ? 'ĐạiGiaNeon' : (isRebus ? 'TrùmĐoánChữ' : 'ĐạiGiaTikTok')));
+
+  let endpoint = '/api/mock/gift';
+  if (isEc) endpoint = '/api/english/mock/gift';
+  else if (isCat) endpoint = '/api/catcafe/mock/gift';
+  else if (isQuiz) endpoint = '/api/quiz/mock/gift';
+  else if (isRebus) endpoint = '/api/rebus/mock/gift';
+
   try {
     await fetch(endpoint, {
       method: 'POST',
@@ -704,6 +772,56 @@ async function sendMockGift(gameType, giftName, count = 1) {
     fetchStatus();
     fetchRawLogs();
   } catch (e) {}
+}
+
+// --- 10.1 Quiz Show Specific Actions ---
+async function sendQuizCommand(action, metadata = {}) {
+  playSound('click');
+  try {
+    const res = await fetch('/api/quiz/command', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ action, metadata }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`🏆 [Quiz Show] Lệnh: ${action}`, 'success');
+      fetchStatus();
+    }
+  } catch (e) {
+    showToast(`Lỗi: ${e.message}`, 'error');
+  }
+}
+
+async function sendMockQuizAnswer(choice) {
+  const names = ['Ngọc Anh', 'Minh Quân', 'Lan Anh', 'Huy', 'Khánh Vy', 'Bảo Nam'];
+  const nick = names[Math.floor(Math.random() * names.length)];
+  await sendMockChat('quiz', nick, choice);
+}
+
+// --- 10.2 Rebus (Đuổi Hình Bắt Chữ) Specific Actions ---
+async function sendRebusCommand(action, metadata = {}) {
+  playSound('click');
+  try {
+    const res = await fetch('/api/rebus/command', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ action, metadata }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`💡 [Đuổi Hình] Lệnh: ${action}`, 'success');
+      fetchStatus();
+    }
+  } catch (e) {
+    showToast(`Lỗi: ${e.message}`, 'error');
+  }
+}
+
+async function sendMockRebusGuess(guess) {
+  const names = ['Phan Khánh', 'Cường Bo', 'Mai Trang', 'Hồng Nhung', 'Quang Vinh'];
+  const nick = names[Math.floor(Math.random() * names.length)];
+  await sendMockChat('rebus', nick, guess);
 }
 
 // --- 10.1 English Class Live Specific Actions ---
@@ -799,22 +917,38 @@ function setPreviewMode(mode) {
   const mwWrapper = document.getElementById('wrapper-preview-mw');
   const catWrapper = document.getElementById('wrapper-preview-cat');
   const ecWrapper = document.getElementById('wrapper-preview-ec');
+  const qsWrapper = document.getElementById('wrapper-preview-qs');
+  const dhWrapper = document.getElementById('wrapper-preview-dh');
+
+  const hideAll = () => {
+    if (mwWrapper) mwWrapper.style.display = 'none';
+    if (catWrapper) catWrapper.style.display = 'none';
+    if (ecWrapper) ecWrapper.style.display = 'none';
+    if (qsWrapper) qsWrapper.style.display = 'none';
+    if (dhWrapper) dhWrapper.style.display = 'none';
+  };
+
   if (mode === 'mini-war') {
+    hideAll();
     if (mwWrapper) mwWrapper.style.display = 'block';
-    if (catWrapper) catWrapper.style.display = 'none';
-    if (ecWrapper) ecWrapper.style.display = 'none';
   } else if (mode === 'cat-cafe') {
-    if (mwWrapper) mwWrapper.style.display = 'none';
+    hideAll();
     if (catWrapper) catWrapper.style.display = 'block';
-    if (ecWrapper) ecWrapper.style.display = 'none';
   } else if (mode === 'english-class') {
-    if (mwWrapper) mwWrapper.style.display = 'none';
-    if (catWrapper) catWrapper.style.display = 'none';
+    hideAll();
     if (ecWrapper) ecWrapper.style.display = 'block';
-  } else if (mode === 'dual') {
+  } else if (mode === 'quiz-show') {
+    hideAll();
+    if (qsWrapper) qsWrapper.style.display = 'block';
+  } else if (mode === 'duoi-hinh-bat-chu') {
+    hideAll();
+    if (dhWrapper) dhWrapper.style.display = 'block';
+  } else if (mode === 'dual' || mode === 'all') {
     if (mwWrapper) mwWrapper.style.display = 'block';
     if (catWrapper) catWrapper.style.display = 'block';
     if (ecWrapper) ecWrapper.style.display = 'block';
+    if (qsWrapper) qsWrapper.style.display = 'block';
+    if (dhWrapper) dhWrapper.style.display = 'block';
   }
 }
 
@@ -831,9 +965,15 @@ function toggleSafeZoneOverlay() {
 function reloadPreviews() {
   const mwFrame = document.getElementById('preview-frame-mw');
   const catFrame = document.getElementById('preview-frame-cat');
+  const ecFrame = document.getElementById('preview-frame-ec');
+  const qsFrame = document.getElementById('preview-frame-qs');
+  const dhFrame = document.getElementById('preview-frame-dh');
   if (mwFrame) mwFrame.src = mwFrame.src;
   if (catFrame) catFrame.src = catFrame.src;
-  showToast('🔄 Đã tải lại màn hình xem trước', 'info');
+  if (ecFrame) ecFrame.src = ecFrame.src;
+  if (qsFrame) qsFrame.src = qsFrame.src;
+  if (dhFrame) dhFrame.src = dhFrame.src;
+  showToast('🔄 Đã tải lại toàn bộ màn hình xem trước', 'info');
 }
 
 // --- 12. Logs & RAW JSON Inspector ---

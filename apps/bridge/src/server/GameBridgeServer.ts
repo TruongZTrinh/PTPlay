@@ -18,7 +18,7 @@ export class GameBridgeServer {
   private httpServer: http.Server;
   private wss: WebSocketServer;
   private gameClients: Set<WebSocket> = new Set();
-  private clientApps: Map<WebSocket, 'mini-war' | 'cat-cafe' | 'english-class-live'> = new Map();
+  private clientApps: Map<WebSocket, 'mini-war' | 'cat-cafe' | 'english-class-live' | 'quiz-show' | 'duoi-hinh-bat-chu'> = new Map();
   public activeGame: ActiveGame = 'mini-war';
 
   // Authentication & Security
@@ -127,9 +127,11 @@ export class GameBridgeServer {
     this.wss.on('connection', (ws, request) => {
       const reqUrl = new URL(request?.url || '/game', 'http://127.0.0.1');
       const appParam = reqUrl.searchParams.get('app');
-      let targetApp: 'mini-war' | 'cat-cafe' | 'english-class-live' = 'mini-war';
+      let targetApp: 'mini-war' | 'cat-cafe' | 'english-class-live' | 'quiz-show' | 'duoi-hinh-bat-chu' = 'mini-war';
       if (appParam === 'cat-cafe') targetApp = 'cat-cafe';
       else if (appParam === 'english-class' || appParam === 'english-class-live') targetApp = 'english-class-live';
+      else if (appParam === 'quiz-show' || appParam === 'ptplay-quiz-show') targetApp = 'quiz-show';
+      else if (appParam === 'duoi-hinh-bat-chu' || appParam === 'ptplay-duoi-hinh-bat-chu' || appParam === 'rebus') targetApp = 'duoi-hinh-bat-chu';
 
       this.clientApps.set(ws, targetApp);
       console.log(`[GameBridge] Client connected via WebSocket for: ${targetApp}`);
@@ -141,9 +143,11 @@ export class GameBridgeServer {
         try {
           const msg = JSON.parse(data.toString());
           if (msg.type === 'register' && msg.app) {
-            let regApp: 'mini-war' | 'cat-cafe' | 'english-class-live' = 'mini-war';
+            let regApp: 'mini-war' | 'cat-cafe' | 'english-class-live' | 'quiz-show' | 'duoi-hinh-bat-chu' = 'mini-war';
             if (msg.app === 'cat-cafe') regApp = 'cat-cafe';
             else if (msg.app === 'english-class' || msg.app === 'english-class-live') regApp = 'english-class-live';
+            else if (msg.app === 'quiz-show' || msg.app === 'ptplay-quiz-show') regApp = 'quiz-show';
+            else if (msg.app === 'duoi-hinh-bat-chu' || msg.app === 'ptplay-duoi-hinh-bat-chu' || msg.app === 'rebus') regApp = 'duoi-hinh-bat-chu';
             this.clientApps.set(ws, regApp);
             console.log(`[GameBridge] Client registered as: ${this.clientApps.get(ws)}`);
           }
@@ -254,6 +258,8 @@ export class GameBridgeServer {
   public broadcastToGame(cmd: GameCommand): void {
     const isCatCafeCmd = cmd.action.startsWith('cat_cafe.');
     const isEnglishCmd = cmd.action.startsWith('english_class.');
+    const isQuizShowCmd = cmd.action.startsWith('quiz_show.');
+    const isRebusCmd = cmd.action.startsWith('rebus.');
     const payload = JSON.stringify(cmd);
 
     for (const ws of this.gameClients) {
@@ -263,7 +269,11 @@ export class GameBridgeServer {
           ws.send(payload);
         } else if (isEnglishCmd && app === 'english-class-live') {
           ws.send(payload);
-        } else if (!isCatCafeCmd && !isEnglishCmd && app === 'mini-war') {
+        } else if (isQuizShowCmd && app === 'quiz-show') {
+          ws.send(payload);
+        } else if (isRebusCmd && app === 'duoi-hinh-bat-chu') {
+          ws.send(payload);
+        } else if (!isCatCafeCmd && !isEnglishCmd && !isQuizShowCmd && !isRebusCmd && app === 'mini-war') {
           ws.send(payload);
         }
       }
@@ -375,7 +385,9 @@ export class GameBridgeServer {
     }
 
     // 3. Quiz answers: A, B, C, D (intentional commands only)
-    const answerMatch = cleanNoAccent.match(/^(?:DAP AN|ANSWER|CHON|CAU)?\s*[:.\-]?\s*([ABCD])(?:[.)!])?$/);
+    const answerMatch =
+      cleanNoAccent.match(/^(?:DAP AN|ANSWER|CHON|CAU)?\s*[:.\-]?\s*([ABCD])(?:[.)!])?$/) ||
+      cleanNoAccent.match(/^([ABCD])\s*[:.\-]\s*.*$/);
     if (answerMatch) {
       const choice = answerMatch[1];
       return {
@@ -389,6 +401,132 @@ export class GameBridgeServer {
         metadata: {
           choice,
           comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    return null;
+  }
+
+  public parseQuizShowComment(event: NormalizedChatEvent): GameCommand | null {
+    if (!event.comment || typeof event.comment !== 'string') return null;
+    const cleanNoAccent = this.stripVietnameseAccents(event.comment.trim()).toUpperCase();
+
+    // 1. Join commands
+    if (/^(JOIN|VAO|THAM GIA|PLAY|CHOI|DI THI)$/.test(cleanNoAccent) || cleanNoAccent.includes('XIN VAO')) {
+      return {
+        id: `cmd_qs_join_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'quiz_show.join',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    // 2. Team commands (Red / Blue)
+    if (/^(RED|DO|TEAM RED|TEAM DO)$/.test(cleanNoAccent)) {
+      return {
+        id: `cmd_qs_team_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'quiz_show.team',
+        team: 'red',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+          team: 'red',
+        },
+        metadata: { team: 'red', comment: event.comment, profilePictureUrl: event.profilePictureUrl },
+        timestamp: Date.now(),
+      };
+    }
+    if (/^(BLUE|XANH|TEAM BLUE|TEAM XANH)$/.test(cleanNoAccent)) {
+      return {
+        id: `cmd_qs_team_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'quiz_show.team',
+        team: 'blue',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+          team: 'blue',
+        },
+        metadata: { team: 'blue', comment: event.comment, profilePictureUrl: event.profilePictureUrl },
+        timestamp: Date.now(),
+      };
+    }
+
+    // 3. Quiz answers: A, B, C, D
+    const answerMatch =
+      cleanNoAccent.match(/^(?:DAP AN|ANSWER|CHON|CAU)?\s*[:.\-]?\s*([ABCD])(?:[.)!])?$/) ||
+      cleanNoAccent.match(/^([ABCD])\s*[:.\-]\s*.*$/);
+    if (answerMatch) {
+      const choice = answerMatch[1];
+      return {
+        id: `cmd_qs_ans_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'quiz_show.answer',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          choice,
+          comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    return null;
+  }
+
+  public parseRebusComment(event: NormalizedChatEvent): GameCommand | null {
+    if (!event.comment || typeof event.comment !== 'string') return null;
+    const cleanNoAccent = this.stripVietnameseAccents(event.comment.trim()).toUpperCase();
+
+    // 1. Explicit Join commands
+    if (/^(JOIN|VAO|THAM GIA|PLAY|CHOI)$/.test(cleanNoAccent) || cleanNoAccent.includes('XIN VAO')) {
+      return {
+        id: `cmd_rebus_join_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'rebus.join',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          comment: event.comment,
+          profilePictureUrl: event.profilePictureUrl,
+        },
+        timestamp: Date.now(),
+      };
+    }
+
+    // 2. Guess / Answer phrase (any comment between 2 and 60 chars)
+    const rawGuess = event.comment.trim();
+    if (rawGuess.length >= 2 && rawGuess.length <= 60) {
+      const normalizedGuess = this.stripVietnameseAccents(rawGuess).toLowerCase().replace(/[^a-z0-9]/g, '');
+      return {
+        id: `cmd_rebus_ans_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        action: 'rebus.answer',
+        user: {
+          userId: event.userId,
+          uniqueId: event.uniqueId,
+          nickname: event.nickname,
+        },
+        metadata: {
+          guess: rawGuess,
+          normalizedGuess,
           profilePictureUrl: event.profilePictureUrl,
         },
         timestamp: Date.now(),
@@ -577,6 +715,108 @@ export class GameBridgeServer {
         };
         this.eventQueue.push(engFollowCmd);
       }
+    } else if (this.activeGame === 'quiz-show' || this.activeGame === 'ptplay-quiz-show') {
+      if (event.type === 'chat') {
+        const qsCmd = this.parseQuizShowComment(event);
+        if (qsCmd) this.eventQueue.push(qsCmd);
+      } else if (event.type === 'gift') {
+        const streakResult = this.streakHandler.processGift(event);
+        if (streakResult.isDuplicate || streakResult.deltaCount <= 0) return;
+        const qsGiftCmd: GameCommand = {
+          id: `cmd_qs_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'quiz_show.gift',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: event.nickname,
+          },
+          metadata: {
+            giftId: event.giftId,
+            giftName: event.giftName,
+            count: streakResult.deltaCount,
+            diamondCount: event.diamondCount,
+            profilePictureUrl: event.profilePictureUrl,
+          },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(qsGiftCmd);
+      } else if (event.type === 'like') {
+        const qsLikeCmd: GameCommand = {
+          id: `cmd_qs_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'quiz_show.like',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: (event as any).nickname || event.uniqueId || 'Khán Giả',
+          },
+          metadata: { likeCount: (event as any).likeCount || 1 },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(qsLikeCmd);
+      } else if (event.type === 'follow') {
+        const qsFollowCmd: GameCommand = {
+          id: `cmd_qs_follow_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'quiz_show.follow',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: event.nickname,
+          },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(qsFollowCmd);
+      }
+    } else if (this.activeGame === 'duoi-hinh-bat-chu' || this.activeGame === 'ptplay-duoi-hinh-bat-chu') {
+      if (event.type === 'chat') {
+        const rebusCmd = this.parseRebusComment(event);
+        if (rebusCmd) this.eventQueue.push(rebusCmd);
+      } else if (event.type === 'gift') {
+        const streakResult = this.streakHandler.processGift(event);
+        if (streakResult.isDuplicate || streakResult.deltaCount <= 0) return;
+        const rebusGiftCmd: GameCommand = {
+          id: `cmd_rebus_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'rebus.gift',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: event.nickname,
+          },
+          metadata: {
+            giftId: event.giftId,
+            giftName: event.giftName,
+            count: streakResult.deltaCount,
+            diamondCount: event.diamondCount,
+            profilePictureUrl: event.profilePictureUrl,
+          },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(rebusGiftCmd);
+      } else if (event.type === 'like') {
+        const rebusLikeCmd: GameCommand = {
+          id: `cmd_rebus_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'rebus.like',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: (event as any).nickname || event.uniqueId || 'Khán Giả',
+          },
+          metadata: { likeCount: (event as any).likeCount || 1 },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(rebusLikeCmd);
+      } else if (event.type === 'follow') {
+        const rebusFollowCmd: GameCommand = {
+          id: `cmd_rebus_follow_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          action: 'rebus.follow',
+          user: {
+            userId: event.userId,
+            uniqueId: event.uniqueId,
+            nickname: event.nickname,
+          },
+          timestamp: Date.now(),
+        };
+        this.eventQueue.push(rebusFollowCmd);
+      }
     }
   }
 
@@ -637,6 +877,8 @@ export class GameBridgeServer {
           miniWar: Array.from(this.clientApps.values()).filter((a) => a === 'mini-war').length,
           catCafe: Array.from(this.clientApps.values()).filter((a) => a === 'cat-cafe').length,
           englishClass: Array.from(this.clientApps.values()).filter((a) => a === 'english-class-live').length,
+          quizShow: Array.from(this.clientApps.values()).filter((a) => a === 'quiz-show').length,
+          duoiHinh: Array.from(this.clientApps.values()).filter((a) => a === 'duoi-hinh-bat-chu').length,
         },
         teamCounts: this.teamManager.getTeamCounts(),
         teamUnits: {
@@ -682,6 +924,8 @@ export class GameBridgeServer {
       const miniWarClients = Array.from(this.clientApps.values()).filter((a) => a === 'mini-war').length;
       const catCafeClients = Array.from(this.clientApps.values()).filter((a) => a === 'cat-cafe').length;
       const englishClassClients = Array.from(this.clientApps.values()).filter((a) => a === 'english-class-live').length;
+      const quizShowClients = Array.from(this.clientApps.values()).filter((a) => a === 'quiz-show').length;
+      const rebusClients = Array.from(this.clientApps.values()).filter((a) => a === 'duoi-hinh-bat-chu').length;
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(
         JSON.stringify({
@@ -722,6 +966,30 @@ export class GameBridgeServer {
               clientConnections: englishClassClients,
               status: englishClassClients > 0 ? 'connected' : 'waiting',
             },
+            {
+              id: 'ptplay-quiz-show',
+              name: 'Đố Vui Có Thưởng — PTPlay Quiz Show V1.0',
+              vietnameseName: 'Đố Vui Có Thưởng',
+              genre: '2D Interactive Neon Trivia Gameshow (9:16 portrait)',
+              workspacePath: 'C:\\Workspace\\PTPlay\\games\\quiz-show',
+              port: 5176,
+              url: 'http://localhost:5176',
+              isActiveForLive: this.activeGame === 'quiz-show' || this.activeGame === 'ptplay-quiz-show',
+              clientConnections: quizShowClients,
+              status: quizShowClients > 0 ? 'connected' : 'waiting',
+            },
+            {
+              id: 'ptplay-duoi-hinh-bat-chu',
+              name: 'Đuổi Hình Bắt Chữ LIVE V1.0',
+              vietnameseName: 'Đuổi Hình Bắt Chữ (Rebus)',
+              genre: '2D Interactive Visual Rebus Word Puzzle (9:16 portrait)',
+              workspacePath: 'C:\\Workspace\\PTPlay\\games\\duoi-hinh-bat-chu',
+              port: 5177,
+              url: 'http://localhost:5177',
+              isActiveForLive: this.activeGame === 'duoi-hinh-bat-chu' || this.activeGame === 'ptplay-duoi-hinh-bat-chu',
+              clientConnections: rebusClients,
+              status: rebusClients > 0 ? 'connected' : 'waiting',
+            },
           ],
         })
       );
@@ -729,10 +997,12 @@ export class GameBridgeServer {
     }
 
     if (pathname === '/api/system/ports' && req.method === 'GET') {
-      const [p5173, p5174, p5175, p21213] = await Promise.all([
+      const [p5173, p5174, p5175, p5176, p5177, p21213] = await Promise.all([
         TikFinityProber.checkPort(5173, '127.0.0.1', 800),
         TikFinityProber.checkPort(5174, '127.0.0.1', 800),
         TikFinityProber.checkPort(5175, '127.0.0.1', 800),
+        TikFinityProber.checkPort(5176, '127.0.0.1', 800),
+        TikFinityProber.checkPort(5177, '127.0.0.1', 800),
         TikFinityProber.checkPort(21213, '127.0.0.1', 800),
       ]);
       res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -743,6 +1013,8 @@ export class GameBridgeServer {
           miniWarPort: { port: 5173, open: p5173 },
           catCafePort: { port: 5174, open: p5174 },
           englishClassPort: { port: 5175, open: p5175 },
+          quizShowPort: { port: 5176, open: p5176 },
+          duoiHinhPort: { port: 5177, open: p5177 },
           tikfinityPort: { port: 21213, open: p21213 },
         })
       );
@@ -868,6 +1140,8 @@ export class GameBridgeServer {
           let game: ActiveGame = 'mini-war';
           if (json.activeGame === 'cat-cafe') game = 'cat-cafe';
           else if (json.activeGame === 'english-class' || json.activeGame === 'english-class-live') game = 'english-class-live';
+          else if (json.activeGame === 'quiz-show' || json.activeGame === 'ptplay-quiz-show') game = 'quiz-show';
+          else if (json.activeGame === 'duoi-hinh-bat-chu' || json.activeGame === 'ptplay-duoi-hinh-bat-chu' || json.activeGame === 'rebus') game = 'duoi-hinh-bat-chu';
           this.activeGame = game;
           console.log(`[GameBridge] Active game switched to: ${this.activeGame}`);
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -1054,6 +1328,114 @@ export class GameBridgeServer {
           }
           const cmd: GameCommand = {
             id: `cmd_eng_manual_${Date.now()}`,
+            action: action as any,
+            user: {
+              userId: String(json.userId || 'admin_test'),
+              uniqueId: String(json.uniqueId || '@admin'),
+              nickname: String(json.nickname || 'Streamer'),
+            },
+            metadata: json.metadata || {},
+            timestamp: Date.now(),
+          };
+          this.eventQueue.push(cmd);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/quiz/mock/chat') {
+          const nick = String(json.nickname || 'Thí Sinh Chibi').slice(0, 40);
+          const comm = String(json.comment || 'JOIN').slice(0, 150);
+          const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
+          this.mockProvider.simulateChat(nick, comm, undefined, avatarUrl);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/quiz/mock/gift') {
+          const nick = String(json.nickname || 'Thí Sinh Chibi').slice(0, 40);
+          const gift = String(json.giftName || 'Rose').slice(0, 40);
+          const count = Math.min(100, Math.max(1, Number(json.count) || 1));
+          const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
+          this.mockProvider.simulateGift(nick, gift, count, count, true, undefined, avatarUrl);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/quiz/command') {
+          const action = String(json.action || '');
+          const allowedQuiz = [
+            'quiz_show.join',
+            'quiz_show.answer',
+            'quiz_show.team',
+            'quiz_show.gift',
+            'quiz_show.like',
+            'quiz_show.follow',
+            'quiz_show.reset',
+          ];
+          if (!allowedQuiz.includes(action)) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Action not permitted for Quiz Show' }));
+            return;
+          }
+          const cmd: GameCommand = {
+            id: `cmd_qs_manual_${Date.now()}`,
+            action: action as any,
+            user: {
+              userId: String(json.userId || 'admin_test'),
+              uniqueId: String(json.uniqueId || '@admin'),
+              nickname: String(json.nickname || 'Streamer'),
+            },
+            metadata: json.metadata || {},
+            timestamp: Date.now(),
+          };
+          this.eventQueue.push(cmd);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/rebus/mock/chat') {
+          const nick = String(json.nickname || 'Thám Tử Chibi').slice(0, 40);
+          const comm = String(json.comment || 'CÁ VÀNG').slice(0, 150);
+          const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
+          this.mockProvider.simulateChat(nick, comm, undefined, avatarUrl);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/rebus/mock/gift') {
+          const nick = String(json.nickname || 'Thám Tử Chibi').slice(0, 40);
+          const gift = String(json.giftName || 'Rose').slice(0, 40);
+          const count = Math.min(100, Math.max(1, Number(json.count) || 1));
+          const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
+          this.mockProvider.simulateGift(nick, gift, count, count, true, undefined, avatarUrl);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/rebus/command') {
+          const action = String(json.action || '');
+          const allowedRebus = [
+            'rebus.join',
+            'rebus.answer',
+            'rebus.gift',
+            'rebus.hint',
+            'rebus.like',
+            'rebus.follow',
+            'rebus.reset',
+          ];
+          if (!allowedRebus.includes(action)) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Action not permitted for Rebus' }));
+            return;
+          }
+          const cmd: GameCommand = {
+            id: `cmd_rebus_manual_${Date.now()}`,
             action: action as any,
             user: {
               userId: String(json.userId || 'admin_test'),

@@ -4,6 +4,8 @@ export const PORTS = {
   MINI_WAR: 5173,
   CAT_CAFE: 5174,
   ENGLISH_CLASS: 5175,
+  QUIZ_SHOW: 5176,
+  DUOI_HINH: 5177,
   TIKFINITY: 21213,
 } as const;
 

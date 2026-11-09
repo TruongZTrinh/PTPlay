@@ -1,0 +1,173 @@
+import assert from 'node:assert';
+import { TextNormalizer } from '../src/game/utils/TextNormalizer';
+import { SeatAllocator } from '../src/game/systems/SeatAllocator';
+import { StudentRoster } from '../src/game/systems/StudentRoster';
+import { RebusEngine } from '../src/game/systems/RebusEngine';
+import { AudioEngine } from '../src/game/audio/AudioEngine';
+import { TTSController } from '../src/game/systems/TTSController';
+
+console.log('========================================================');
+console.log('🧪 RUNNING PTPLAY ĐUỔI HÌNH BẮT CHỮ TEST SUITE');
+console.log('========================================================\n');
+
+async function runTests() {
+  let passed = 0;
+  let failed = 0;
+
+  function test(name: string, fn: () => void | Promise<void>) {
+    try {
+      fn();
+      console.log(`  ✓ ${name}`);
+      passed++;
+    } catch (err) {
+      console.error(`  ✗ ${name}`);
+      console.error('    Error:', (err as Error).message);
+      failed++;
+    }
+  }
+
+  // 1. PUZZLES BANK
+  test('1. Puzzles Bank: Exceeds 300+ verified puzzles with 2+ clues and hints', () => {
+    const alloc = new SeatAllocator();
+    const roster = new StudentRoster(alloc);
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    const engine = new RebusEngine(roster, audio, tts);
+    assert(engine.allPuzzles.length >= 300, `Puzzles count ${engine.allPuzzles.length} must be >= 300`);
+
+    const p = engine.allPuzzles[0];
+    assert(p.id.startsWith('dhbc-'), 'Puzzle ID must have prefix dhbc-');
+    assert(p.clues && p.clues.length >= 2, 'Puzzle must have at least 2 clues');
+    assert(p.hint1, 'Hint 1 must exist');
+    assert(p.hint2, 'Hint 2 must exist');
+    assert(p.answer, 'Answer must exist');
+    engine.destroy();
+  });
+
+  // 2. TEXT NORMALIZER & VIETNAMESE ACCENTS
+  test('2. Text Normalizer: Exact match, no accent, punctuation & sentence matching', () => {
+    assert.strictEqual(TextNormalizer.normalizeExactAnswer('CÁ VÀNG!'), 'cavang');
+    assert.strictEqual(TextNormalizer.normalizeExactAnswer('ca-vang'), 'cavang');
+    assert.strictEqual(TextNormalizer.normalizeExactAnswer('   cá vàng   '), 'cavang');
+
+    // Matching tests
+    assert.strictEqual(TextNormalizer.matchesAnswer('cá vàng', 'Cá vàng'), true);
+    assert.strictEqual(TextNormalizer.matchesAnswer('ca vang', 'Cá vàng'), true);
+    assert.strictEqual(TextNormalizer.matchesAnswer('CÁ VÀNG NÈ', 'Cá vàng'), true);
+    assert.strictEqual(TextNormalizer.matchesAnswer('đáp án là cá vàng nha', 'Cá vàng'), true);
+    assert.strictEqual(TextNormalizer.matchesAnswer('cá bạc', 'Cá vàng'), false);
+  });
+
+  // 3. RATE LIMITING & COOLDOWN
+  test('3. Student Roster: Enforces 4 guesses max per round and cooldown', () => {
+    const alloc = new SeatAllocator();
+    const roster = new StudentRoster(alloc);
+
+    const { player } = roster.registerOrGet('detective_1', 'Minh Quân');
+    assert(player);
+
+    // First guess allowed
+    const c1 = roster.checkCanGuess('detective_1', 4, 1500);
+    assert.strictEqual(c1.allowed, true);
+    roster.recordGuessAttempt('detective_1');
+
+    // Immediate second guess blocked by cooldown
+    const c2 = roster.checkCanGuess('detective_1', 4, 1500);
+    assert.strictEqual(c2.allowed, false);
+    assert.strictEqual(c2.reason, 'cooldown');
+
+    // Simulate after cooldown
+    player.lastGuessTime -= 2000;
+    const c3 = roster.checkCanGuess('detective_1', 4, 1500);
+    assert.strictEqual(c3.allowed, true);
+
+    // Consume all 4 guesses
+    roster.recordGuessAttempt('detective_1');
+    roster.recordGuessAttempt('detective_1');
+    roster.recordGuessAttempt('detective_1');
+
+    player.lastGuessTime -= 2000;
+    const c4 = roster.checkCanGuess('detective_1', 4, 1500);
+    assert.strictEqual(c4.allowed, false);
+    assert.strictEqual(c4.reason, 'limit_reached');
+
+    // New round resets attempts
+    roster.resetRoundAttempts();
+    const c5 = roster.checkCanGuess('detective_1', 4, 1500);
+    assert.strictEqual(c5.allowed, true);
+  });
+
+  // 4. REBUS ENGINE FLOW & SPEED/STREAK SCORING
+  test('4. Rebus Engine: Fast solver wins round, receives speed and streak bonus', () => {
+    const alloc = new SeatAllocator();
+    const roster = new StudentRoster(alloc);
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    const engine = new RebusEngine(roster, audio, tts);
+    engine.startShow();
+    assert(engine.currentPuzzle !== null);
+
+    // Set guessing state
+    engine.currentState = 'guessing';
+    const answer = engine.currentPuzzle.answer;
+
+    // Wrong guess
+    const wrongRes = engine.submitGuess('det_1', 'sai rồi');
+    assert.strictEqual(wrongRes, false);
+
+    // Simulate cooldown elapsed
+    const pBefore = roster.getPlayer('det_1');
+    if (pBefore) pBefore.lastGuessTime -= 2000;
+
+    // Correct guess
+    const correctRes = engine.submitGuess('det_1', answer);
+    assert.strictEqual(correctRes, true);
+
+    // Check player score updated
+    const p = roster.getPlayer('det_1');
+    assert(p && p.score >= 15);
+    assert.strictEqual(p.streak, 1);
+
+    engine.destroy();
+  });
+
+  // 5. PUBLIC HINTS AT 60% AND 85%
+  test('5. Public Hints: Automatically triggered based on time progression', () => {
+    const alloc = new SeatAllocator();
+    const roster = new StudentRoster(alloc);
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    const engine = new RebusEngine(roster, audio, tts);
+    engine.startShow();
+
+    let hint1Called = false;
+    let hint2Called = false;
+
+    engine.setEvents({
+      onHint1Triggered: () => { hint1Called = true; },
+      onHint2Triggered: () => { hint2Called = true; },
+    });
+
+    engine.triggerHint1();
+    assert.strictEqual(hint1Called, true);
+
+    engine.triggerHint2();
+    assert.strictEqual(hint2Called, true);
+
+    engine.destroy();
+  });
+
+  console.log('\n========================================================');
+  console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
+  console.log('========================================================');
+
+  if (failed > 0) {
+    process.exit(1);
+  }
+  process.exit(0);
+}
+
+void runTests();

@@ -40,6 +40,14 @@
             <span>🎓</span>
             <span>Lớp Học</span>
           </button>
+          <button class="route-toggle-btn" id="btn-route-qs" onclick="switchActiveGame('quiz-show')">
+            <span>🏆</span>
+            <span>Đố Vui</span>
+          </button>
+          <button class="route-toggle-btn" id="btn-route-dh" onclick="switchActiveGame('duoi-hinh-bat-chu')">
+            <span>💡</span>
+            <span>Đuổi Hình</span>
+          </button>
         </div>
       </div>
 
@@ -49,7 +57,7 @@
         <button class="tab-btn active" data-tab="games">
           <span class="tab-icon">🖥️</span>
           <span class="tab-label">Tiến Trình & Cổng</span>
-          <span class="tab-pill" id="pill-nav-games">4 Hubs</span>
+          <span class="tab-pill" id="pill-nav-games">5 Games</span>
         </button>
         <button class="tab-btn" data-tab="miniwar">
           <span class="tab-icon">⚔️</span>
@@ -65,6 +73,16 @@
           <span class="tab-icon">🎓</span>
           <span class="tab-label">Lớp Học Vui LIVE</span>
           <span class="tab-badge-live" id="badge-ec-live" style="display:none;">LIVE</span>
+        </button>
+        <button class="tab-btn" data-tab="quizshow">
+          <span class="tab-icon">🏆</span>
+          <span class="tab-label">Đố Vui Có Thưởng</span>
+          <span class="tab-badge-live" id="badge-qs-live" style="display:none;">LIVE</span>
+        </button>
+        <button class="tab-btn" data-tab="duoihinh">
+          <span class="tab-icon">💡</span>
+          <span class="tab-label">Đuổi Hình Bắt Chữ</span>
+          <span class="tab-badge-live" id="badge-dh-live" style="display:none;">LIVE</span>
         </button>
         <button class="tab-btn" data-tab="preview">
           <span class="tab-icon">📱</span>
@@ -158,6 +176,16 @@
               <span class="tele-name">EngClass:</span>
               <strong class="tele-port" id="val-port-5175">5175</strong>
             </div>
+            <div class="telemetry-item" title="Cổng 5176 (PTPlay Quiz Show — Đố Vui Có Thưởng)">
+              <span class="tele-dot offline" id="dot-port-5176"></span>
+              <span class="tele-name">QuizShow:</span>
+              <strong class="tele-port" id="val-port-5176">5176</strong>
+            </div>
+            <div class="telemetry-item" title="Cổng 5177 (PTPlay Đuổi Hình Bắt Chữ — Thử Tài IQ)">
+              <span class="tele-dot offline" id="dot-port-5177"></span>
+              <span class="tele-name">DuoiHinh:</span>
+              <strong class="tele-port" id="val-port-5177">5177</strong>
+            </div>
             <div class="telemetry-item" title="Cổng 21213 (TikFinity Desktop App)">
               <span class="tele-dot offline" id="dot-tikfinity"></span>
               <span class="tele-name">TikFinity:</span>
@@ -176,7 +204,7 @@
 
           <!-- GLOBAL CLUSTER ACTIONS -->
           <div class="btn-group">
-            <button class="btn-enterprise-green" onclick="startAllServices()" title="Khởi động tất cả dịch vụ">⚡ Bật Cả 3</button>
+            <button class="btn-enterprise-green" onclick="startAllServices()" title="Khởi động tất cả dịch vụ">⚡ Bật Cả 5</button>
             <button class="btn-enterprise-red" onclick="stopAllServices()" title="Dừng toàn bộ dịch vụ">⏹ Dừng</button>
           </div>
 
@@ -217,6 +245,12 @@
               </button>
               <button class="btn-gold" onclick="switchActiveGame('english-class')">
                 🎓 Tiếp Nhận LIVE Cho: Lớp Học Vui (5175)
+              </button>
+              <button class="btn-purple" style="background:#8b5cf6; color:white; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="switchActiveGame('quiz-show')">
+                🏆 Tiếp Nhận LIVE Cho: Đố Vui (5176)
+              </button>
+              <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="switchActiveGame('duoi-hinh-bat-chu')">
+                💡 Tiếp Nhận LIVE Cho: Đuổi Hình (5177)
               </button>
             </div>
           </div>
@@ -320,6 +354,50 @@
                 <pre id="term-bridge" class="process-terminal">// Đang tải logs...</pre>
               </div>
 
+              <!-- PROCESS: QUIZ SHOW -->
+              <div class="process-card">
+                <div class="process-header">
+                  <div class="process-name">
+                    <div id="dot-proc-qs" class="status-dot offline"></div>
+                    <span>PTPlay Quiz Show</span>
+                  </div>
+                  <span id="val-proc-qs" style="font-size: 11px; font-weight: bold; color: var(--rose);">STOPPED</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); display:flex; justify-content:space-between;">
+                  <span id="val-pid-qs">PID: –</span>
+                  <span>Port 5176</span>
+                </div>
+                <div class="btn-group">
+                  <button class="btn-purple" style="font-size: 11px; padding: 4px 9px; background:#8b5cf6; color:white; border:none; border-radius:4px; cursor:pointer;" onclick="startService('quiz-show')">▶ Bật</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="stopService('quiz-show')">⏹ Dừng</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="restartService('quiz-show')">🔄 Restart</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở</button>
+                </div>
+                <pre id="term-qs" class="process-terminal">// Đang tải logs...</pre>
+              </div>
+
+              <!-- PROCESS: DUOI HINH BAT CHU -->
+              <div class="process-card">
+                <div class="process-header">
+                  <div class="process-name">
+                    <div id="dot-proc-dh" class="status-dot offline"></div>
+                    <span>Đuổi Hình Bắt Chữ</span>
+                  </div>
+                  <span id="val-proc-dh" style="font-size: 11px; font-weight: bold; color: var(--rose);">STOPPED</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); display:flex; justify-content:space-between;">
+                  <span id="val-pid-dh">PID: –</span>
+                  <span>Port 5177</span>
+                </div>
+                <div class="btn-group">
+                  <button class="btn-amber" style="font-size: 11px; padding: 4px 9px; background:#f59e0b; color:black; font-weight:bold; border:none; border-radius:4px; cursor:pointer;" onclick="startService('duoi-hinh-bat-chu')">▶ Bật</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="restartService('duoi-hinh-bat-chu')">🔄 Restart</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 4px 9px;" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở</button>
+                </div>
+                <pre id="term-dh" class="process-terminal">// Đang tải logs...</pre>
+              </div>
+
             </div>
           </div>
 
@@ -397,6 +475,56 @@
                 <button class="btn-gold" onclick="switchTab('englishclass')">🎓 Quản Lý Lớp Học</button>
                 <button class="btn-outline" onclick="setPreviewMode('english-class'); switchTab('preview');">📺 Xem 9:16</button>
                 <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab 5175</button>
+              </div>
+            </div>
+
+            <div id="game-card-quizshow" class="card game-card">
+              <div class="active-banner">ĐANG NHẬN LIVE</div>
+              <div class="game-hero">
+                <div class="game-hero-icon" style="color: #a855f7;">🏆</div>
+                <div class="game-hero-info">
+                  <h3>PTPlay Quiz Show (Đố Vui)</h3>
+                  <p>Gameshow Đố Vui Neon Chibi · Trả Lời A/B/C/D · TTS Song Ngữ · Tỷ Lệ 9:16 Dọc</p>
+                </div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-item"><div class="stat-label">529 Câu Hỏi</div><div class="stat-val" style="font-size:13px; color:#34d399;">Kiến thức đời sống</div></div>
+                <div class="stat-item"><div class="stat-label">8 Chế Độ</div><div class="stat-val" style="font-size:13px; color:#38bdf8;">Quick, Team, Boss...</div></div>
+                <div class="stat-item"><div class="stat-label">Top 3 & Streak</div><div class="stat-val" style="font-size:13px; color:#ffd700;">Huy hiệu rực rỡ</div></div>
+                <div class="stat-item"><div class="stat-label">Quà Tặng</div><div class="stat-val" style="font-size:13px; color:#f43f5e;">8 Hiệu ứng VFX</div></div>
+              </div>
+              <div class="btn-group">
+                <button class="btn-purple" style="background:#8b5cf6; color:white; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="startService('quiz-show')">🚀 Bật Game (5176)</button>
+                <button class="btn-red" onclick="stopService('quiz-show')">⏹ Dừng</button>
+                <button class="btn-outline" onclick="restartService('quiz-show')">🔄 Restart</button>
+                <button class="btn-gold" onclick="switchTab('quizshow')">🏆 Quản Lý Gameshow</button>
+                <button class="btn-outline" onclick="setPreviewMode('quiz-show'); switchTab('preview');">📺 Xem 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab 5176</button>
+              </div>
+            </div>
+
+            <div id="game-card-duoihinh" class="card game-card">
+              <div class="active-banner">ĐANG NHẬN LIVE</div>
+              <div class="game-hero">
+                <div class="game-hero-icon" style="color: #f59e0b;">💡</div>
+                <div class="game-hero-info">
+                  <h3>Đuổi Hình Bắt Chữ LIVE</h3>
+                  <p>Giải Đố Hình Ảnh & Thành Ngữ Tiếng Việt · Bảng Giá Vẽ Gỗ · Tỷ Lệ 9:16 Dọc</p>
+                </div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-item"><div class="stat-label">666 Câu Đố</div><div class="stat-val" style="font-size:13px; color:#34d399;">Hình ảnh & ô chữ</div></div>
+                <div class="stat-item"><div class="stat-label">Gợi Ý Mở</div><div class="stat-val" style="font-size:13px; color:#38bdf8;">Tại 60% & 85% giờ</div></div>
+                <div class="stat-item"><div class="stat-label">Tiếng Việt</div><div class="stat-val" style="font-size:13px; color:#ffd700;">Nhận cả có/không dấu</div></div>
+                <div class="stat-item"><div class="stat-label">Quà Tặng</div><div class="stat-val" style="font-size:13px; color:#f43f5e;">8 Hiệu ứng VFX</div></div>
+              </div>
+              <div class="btn-group">
+                <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:8px 14px; border-radius:6px; border:none; cursor:pointer;" onclick="startService('duoi-hinh-bat-chu')">🚀 Bật Game (5177)</button>
+                <button class="btn-red" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
+                <button class="btn-outline" onclick="restartService('duoi-hinh-bat-chu')">🔄 Restart</button>
+                <button class="btn-gold" onclick="switchTab('duoihinh')">💡 Quản Lý Đoán Chữ</button>
+                <button class="btn-outline" onclick="setPreviewMode('duoi-hinh-bat-chu'); switchTab('preview');">📺 Xem 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab 5177</button>
               </div>
             </div>
           </div>
@@ -842,6 +970,239 @@
 
         </section>
 
+        <!-- ==================== TAB 2.1: QUIZ SHOW CONSOLE ==================== -->
+        <section id="panel-quizshow" class="tab-panel">
+          
+          <!-- SERVER LIFECYCLE & CONTROLS -->
+          <div class="card" style="border-left: 4px solid #8b5cf6; background: #160d26; margin-bottom: 14px;">
+            <div class="card-header">
+              <div class="card-title">
+                <span>🏆 Trạng Thái Máy Chủ: PTPlay Quiz Show (Cổng 5176)</span>
+                <span id="badge-top-qs" class="badge badge-red">OFFLINE</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-purple" style="background:#8b5cf6; color:white; padding:6px 12px; border:none; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="startService('quiz-show')">▶ Bật Quiz Show (5176)</button>
+                <button class="btn-red" onclick="stopService('quiz-show')">⏹ Dừng</button>
+                <button class="btn-outline" onclick="restartService('quiz-show')">🔄 Khởi Động Lại</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab 5176</button>
+                <button class="btn-outline" onclick="setPreviewMode('quiz-show'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUIZ CONTROLS & GAME MODES -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🎯 Điều Khiển Vòng Gameshow & 8 Chế Độ (Ngân Hàng 529 Câu Hỏi)</div>
+              <div class="btn-group">
+                <button class="btn-gold" onclick="sendQuizCommand('next_question')">⏭ Câu Hỏi Kế Tiếp</button>
+                <button class="btn-red" onclick="sendQuizCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block;">Chuyển Chế Độ Gameshow (8 Quiz Modes):</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendQuizCommand('set_mode', { mode: 'quick' })">⚡ 1. Quick Trivia (10s)</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_mode', { mode: 'picture' })">🖼️ 2. Picture Quiz</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_mode', { mode: 'listening' })">🎧 3. Audio & TTS</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_mode', { mode: 'spelling' })">🔤 4. Tiếng Việt Chuẩn</button>
+                  <button class="btn-primary" onclick="sendQuizCommand('set_mode', { mode: 'team' })">⚔️ 5. Team Đỏ vs Xanh</button>
+                  <button class="btn-red" onclick="sendQuizCommand('set_mode', { mode: 'survival' })">❤️ 6. Survival 3 Tim</button>
+                  <button class="btn-gold" onclick="sendQuizCommand('set_mode', { mode: 'boss' })">👹 7. Boss Quiz x3 Điểm</button>
+                  <button class="btn-green" onclick="sendQuizCommand('set_mode', { mode: 'challenge' })">🏆 8. Challenge Hour</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block;">Điều Khiển Biểu Cảm MC Nữ Host:</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendQuizCommand('set_pose', { pose: 'happy' })">😊 Vui Vẻ</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_pose', { pose: 'cheer' })">🙌 Cổ Vũ</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_pose', { pose: 'clapping' })">👏 Vỗ Tay</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_pose', { pose: 'point' })">👉 Chỉ Bảng</button>
+                  <button class="btn-outline" onclick="sendQuizCommand('set_pose', { pose: 'thinking' })">🤔 Suy Nghĩ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUDIENCE SIMULATOR & GIFT REACTIONS -->
+          <div class="grid-2">
+            <!-- AUDIENCE COMMANDS -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">👥 Thí Sinh Chibi Vào Sân Khấu & Trả Lời A/B/C/D</div></div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Thí Sinh Bước Vào Sân Khấu (Lệnh JOIN):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-green" onclick="sendMockChat('quiz', 'Ngọc Anh', 'JOIN')">🙋 1 Thí Sinh (JOIN)</button>
+                  <button class="btn-green" onclick="sendMockChat('quiz', 'Minh Quân', 'JOIN'); setTimeout(() => sendMockChat('quiz', 'Lan Anh', 'JOIN'), 200);">👥 2 Thí Sinh</button>
+                  <button class="btn-gold" onclick="['Huy', 'Khánh Vy', 'Bảo Nam', 'Gia Huy', 'Thảo Vy'].forEach((n, i) => setTimeout(() => sendMockChat('quiz', n, 'JOIN'), i * 200))">🏟️ 5 Thí Sinh Khán Đài</button>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Thí Sinh Trả Lời Câu Hỏi (A / B / C / D):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockQuizAnswer('A')">🅰️ Chọn Đáp Án A</button>
+                  <button class="btn-blue" onclick="sendMockQuizAnswer('B')">🅱️ Chọn Đáp Án B</button>
+                  <button class="btn-gold" onclick="sendMockQuizAnswer('C')">🅲 Chọn Đáp Án C</button>
+                  <button class="btn-green" onclick="sendMockQuizAnswer('D')">🅳 Chọn Đáp Án D</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Đấu Đội Team Show (ĐỎ vs XANH):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockChat('quiz', 'ChiếnThầnĐỏ', 'RED')">🔴 Vào Phe ĐỎ</button>
+                  <button class="btn-blue" onclick="sendMockChat('quiz', 'HiệpSĩXanh', 'BLUE')">🔵 Vào Phe XANH</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- GIFTS & TTS -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">🎁 Quà Tặng Hiệu Ứng (VFX Sân Khấu Neon)</div></div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Hiệu Ứng Quà Tặng TikTok:</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockGift('quiz', 'Rose', 1)">🌹 Hoa Hồng (+Gợi ý)</button>
+                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Heart', 1)">💖 Thả Tim (+1 Tim)</button>
+                  <button class="btn-outline" onclick="sendMockGift('quiz', 'Donut', 1)">🍩 Bánh Donut (+10đ)</button>
+                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Star', 1)">⭐ Ngôi Sao (+50đ)</button>
+                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Crown', 1)">👑 Vương Miện (x2 Điểm)</button>
+                  <button class="btn-outline" onclick="sendMockGift('quiz', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
+                  <button class="btn-blue" onclick="sendMockGift('quiz', 'Universe', 1)">🌌 Vũ Trụ (Đại Tiệc Neon)</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Giọng Đọc MC Nữ (PTPlay Bi-lingual Web Speech TTS):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-green" onclick="sendQuizCommand('tts_speak', { text: 'Chào mừng các bạn đến với gameshow Đố Vui Có Thưởng!', lang: 'vi-VN' })">🗣️ Tiếng Việt: Chào Mừng</button>
+                  <button class="btn-blue" onclick="sendQuizCommand('tts_speak', { text: 'Welcome to PTPlay Quiz Show! Get ready for the next trivia question!', lang: 'en-US' })">🗣️ English: Welcome</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================== TAB 2.2: DUOI HINH BAT CHU CONSOLE ==================== -->
+        <section id="panel-duoihinh" class="tab-panel">
+          
+          <!-- SERVER LIFECYCLE & CONTROLS -->
+          <div class="card" style="border-left: 4px solid #f59e0b; background: #201705; margin-bottom: 14px;">
+            <div class="card-header">
+              <div class="card-title">
+                <span>💡 Trạng Thái Máy Chủ: Đuổi Hình Bắt Chữ (Cổng 5177)</span>
+                <span id="badge-top-dh" class="badge badge-red">OFFLINE</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:6px 12px; border:none; border-radius:6px; cursor:pointer;" onclick="startService('duoi-hinh-bat-chu')">▶ Bật Đuổi Hình (5177)</button>
+                <button class="btn-red" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
+                <button class="btn-outline" onclick="restartService('duoi-hinh-bat-chu')">🔄 Khởi Động Lại</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab 5177</button>
+                <button class="btn-outline" onclick="setPreviewMode('duoi-hinh-bat-chu'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- REBUS PUZZLE CONTROLS & HINTS -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🎯 Điều Khiển Ô Chữ & Gợi Ý Tự Động (Ngân Hàng 666 Câu Đố)</div>
+              <div class="btn-group">
+                <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Đổi Sang Câu Đố Khác</button>
+                <button class="btn-primary" onclick="sendRebusCommand('trigger_hint_1')">💡 Mở Gợi Ý 1 (Loại 1 Chữ)</button>
+                <button class="btn-gold" onclick="sendRebusCommand('trigger_hint_2')">🅰️ Mở Gợi Ý 2 (Mở 1 Ký Tự)</button>
+                <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua Câu Này</button>
+                <button class="btn-red" onclick="sendRebusCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block;">Chế Độ Giải Đố & Thời Gian:</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendRebusCommand('set_mode', { mode: 'normal' })">⏱ Chuẩn (30s, Gợi ý 60% & 85%)</button>
+                  <button class="btn-outline" onclick="sendRebusCommand('set_mode', { mode: 'speed' })">⚡ Tốc Độ Cao (15s)</button>
+                  <button class="btn-gold" onclick="sendRebusCommand('set_mode', { mode: 'idioms' })">📚 Chuyên Đề Thành Ngữ</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block;">Điều Khiển Biểu Cảm MC Nữ:</label>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="sendRebusCommand('set_pose', { pose: 'happy' })">😊 Tươi Cười</button>
+                  <button class="btn-outline" onclick="sendRebusCommand('set_pose', { pose: 'cheer' })">🙌 Cổ Vũ</button>
+                  <button class="btn-outline" onclick="sendRebusCommand('set_pose', { pose: 'clapping' })">👏 Vỗ Tay</button>
+                  <button class="btn-outline" onclick="sendRebusCommand('set_pose', { pose: 'point' })">👉 Chỉ Bảng Tranh</button>
+                  <button class="btn-outline" onclick="sendRebusCommand('set_pose', { pose: 'thinking' })">🤔 Cùng Suy Nghĩ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUDIENCE GUESSES & REBUS GIFTS -->
+          <div class="grid-2">
+            <!-- AUDIENCE GUESSES -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">🔍 Thám Tử Chibi Vào Bàn & Đoán Từ (Có/Không Dấu)</div></div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Khán Giả Vào Lớp (Lệnh JOIN):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-green" onclick="sendMockChat('rebus', 'Phan Khánh', 'JOIN')">🙋 1 Thám Tử (JOIN)</button>
+                  <button class="btn-green" onclick="['Cường Bo', 'Mai Trang', 'Hồng Nhung'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">👥 3 Thám Tử Vào Bàn</button>
+                  <button class="btn-gold" onclick="['Bé Na', 'Minh Quân', 'Lan Anh', 'Huy', 'Khánh Vy'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">🏫 5 Bàn Thám Tử Đầy Đủ</button>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Bình Luận Đoán Từ / Thành Ngữ Mẫu:</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-gold" onclick="sendMockRebusGuess('Cá vàng')">🐟 "Cá vàng" (Có dấu)</button>
+                  <button class="btn-gold" onclick="sendMockRebusGuess('ca vang')">🐟 "ca vang" (Không dấu)</button>
+                  <button class="btn-blue" onclick="sendMockRebusGuess('Đàn bầu')">🎵 "Đàn bầu"</button>
+                  <button class="btn-green" onclick="sendMockRebusGuess('Bánh bao')">🥟 "Bánh bao"</button>
+                  <button class="btn-red" onclick="sendMockRebusGuess('Sai bét')">❌ Đáp án sai (Thử thách)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- GIFTS & TTS -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">🎁 Quà Tặng Đuổi Hình & Giọng Đọc MC</div></div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--text-muted);">Hiệu Ứng Quà Tặng TikTok:</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)">🌹 Hoa Hồng (+10đ)</button>
+                  <button class="btn-gold" onclick="sendMockGift('rebus', 'Heart', 1)">💖 Thả Tim (+20đ)</button>
+                  <button class="btn-outline" onclick="sendMockGift('rebus', 'Donut', 1)">🍩 Bánh Donut (+30đ)</button>
+                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold; padding:4px 8px; border:none; border-radius:4px;" onclick="sendMockGift('rebus', 'Perfume', 1)">🧴 Nước Hoa (Mở Gợi Ý)</button>
+                  <button class="btn-gold" onclick="sendMockGift('rebus', 'Crown', 1)">👑 Vương Miện (+100đ)</button>
+                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:4px 8px; border:none; border-radius:4px;" onclick="sendMockGift('rebus', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
+                  <button class="btn-blue" onclick="sendMockGift('rebus', 'Universe', 1)">🌌 Vũ Trụ (Tiệc Lớp)</button>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted);">Giọng Đọc MC Nữ (PTPlay Bi-lingual TTS):</label>
+                <div class="btn-group" style="margin-top: 4px;">
+                  <button class="btn-green" onclick="sendRebusCommand('tts_speak', { text: 'Chào mừng cả nhà đến với Đuổi Hình Bắt Chữ! Cùng nhìn hình và đoán nhanh nhé!', lang: 'vi-VN' })">🗣️ Tiếng Việt: Chào Mừng</button>
+                  <button class="btn-blue" onclick="sendRebusCommand('tts_speak', { text: 'Look at the picture clues on the board and guess the secret phrase!', lang: 'en-US' })">🗣️ English: Instructions</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
         <!-- ==================== TAB 4: SPECTATORS & TEAMS CRM ==================== -->
         <section id="panel-spectators" class="tab-panel">
           <div class="card">
@@ -970,12 +1331,16 @@
                 <button class="btn-outline preview-mode-btn active" data-mode="mini-war" onclick="setPreviewMode('mini-war')">⚔️ Mini War (5173)</button>
                 <button class="btn-outline preview-mode-btn" data-mode="cat-cafe" onclick="setPreviewMode('cat-cafe')">🐱 Café Mòe (5174)</button>
                 <button class="btn-outline preview-mode-btn" data-mode="english-class" onclick="setPreviewMode('english-class')">🎓 Lớp Học (5175)</button>
-                <button class="btn-outline preview-mode-btn" data-mode="dual" onclick="setPreviewMode('dual')">👥 Xem Song Song</button>
+                <button class="btn-outline preview-mode-btn" data-mode="quiz-show" onclick="setPreviewMode('quiz-show')">🏆 Đố Vui (5176)</button>
+                <button class="btn-outline preview-mode-btn" data-mode="duoi-hinh-bat-chu" onclick="setPreviewMode('duoi-hinh-bat-chu')">💡 Đuổi Hình (5177)</button>
+                <button class="btn-outline preview-mode-btn" data-mode="all" onclick="setPreviewMode('all')">📱 Xem Tất Cả 5 Game</button>
                 <button id="btn-toggle-safe-zone" class="btn-outline" onclick="toggleSafeZoneOverlay()">🛡️ Vạch An Toàn TikTok LIVE</button>
-                <button class="btn-outline" onclick="reloadPreviews()">🔄 Tải Lại Màn Hình</button>
-                <button class="btn-primary" style="font-size:11px; padding:5px 9px;" onclick="startService('mini-war')">▶ Bật Mini War (5173)</button>
-                <button class="btn-green" style="font-size:11px; padding:5px 9px;" onclick="startService('cat-cafe')">▶ Bật Café Mòe (5174)</button>
-                <button class="btn-gold" style="font-size:11px; padding:5px 9px;" onclick="startService('english-class')">▶ Bật Lớp Học (5175)</button>
+                <button class="btn-outline" onclick="reloadPreviews()">🔄 Tải Lại Toàn Bộ</button>
+                <button class="btn-primary" style="font-size:11px; padding:5px 9px;" onclick="startService('mini-war')">▶ Mini War</button>
+                <button class="btn-green" style="font-size:11px; padding:5px 9px;" onclick="startService('cat-cafe')">▶ Café Mòe</button>
+                <button class="btn-gold" style="font-size:11px; padding:5px 9px;" onclick="startService('english-class')">▶ Lớp Học</button>
+                <button class="btn-purple" style="font-size:11px; padding:5px 9px; background:#8b5cf6; color:white; border:none; border-radius:4px;" onclick="startService('quiz-show')">▶ Đố Vui</button>
+                <button class="btn-amber" style="font-size:11px; padding:5px 9px; background:#f59e0b; color:black; font-weight:bold; border:none; border-radius:4px;" onclick="startService('duoi-hinh-bat-chu')">▶ Đuổi Hình</button>
               </div>
             </div>
           </div>
@@ -1004,6 +1369,24 @@
               <div class="safe-zone-overlay">
                 <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
                 <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (CLASSROOM STAGE)</div>
+                <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
+              </div>
+            </div>
+
+            <div id="wrapper-preview-qs" class="phone-mockup" style="display: none;">
+              <iframe id="preview-frame-qs" src="http://localhost:5176" title="Quiz Show LIVE"></iframe>
+              <div class="safe-zone-overlay">
+                <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
+                <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (QUIZ STAGE)</div>
+                <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
+              </div>
+            </div>
+
+            <div id="wrapper-preview-dh" class="phone-mockup" style="display: none;">
+              <iframe id="preview-frame-dh" src="http://localhost:5177" title="Đuổi Hình Bắt Chữ"></iframe>
+              <div class="safe-zone-overlay">
+                <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
+                <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (REBUS EASEL STAGE)</div>
                 <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
               </div>
             </div>

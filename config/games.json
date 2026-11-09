@@ -68,39 +68,49 @@
       }
     },
     {
-      "id": "plinko-drop",
-      "name": "Plinko Drop Arena",
-      "vietnameseName": "Thả Bóng May Mắn",
-      "genre": "Physics Arcade Ball Drop",
-      "version": "0.1.0",
-      "port": 5177,
-      "devCommand": "npm run dev -w @ptplay/plinko-drop",
-      "workspace": "games/plinko-drop",
-      "active": false,
-      "icon": "⚪",
-      "description": "Game arcade thả bóng vật lý tương tác theo quà tặng (Kế hoạch mở rộng).",
-      "capabilities": {
-        "chatCommands": true,
-        "giftStreaks": true
-      }
-    },
-    {
-      "id": "zombie-siege",
-      "name": "Zombie Siege Defense",
-      "vietnameseName": "Thủ Thành Zombie",
-      "genre": "Co-op Tower Defense",
-      "version": "0.1.0",
+      "id": "quiz-show",
+      "name": "PTPlay Quiz Show",
+      "vietnameseName": "Đố Vui Có Thưởng",
+      "genre": "2D Interactive Neon Quiz Gameshow (9:16 portrait)",
+      "version": "1.0.0",
       "port": 5176,
-      "devCommand": "npm run dev -w @ptplay/zombie-siege",
-      "workspace": "games/zombie-siege",
-      "active": false,
-      "icon": "🧟",
-      "description": "Game thủ thành sinh tồn co-op khán giả cùng phòng thủ căn cứ trước đợt sóng zombie (Kế hoạch mở rộng).",
+      "devCommand": "npm run dev -w @ptplay/quiz-show",
+      "buildCommand": "npm run build -w @ptplay/quiz-show",
+      "workspace": "games/quiz-show",
+      "active": true,
+      "icon": "🏆",
+      "description": "Gameshow đố vui kiến thức trực tiếp 9:16 với sân khấu neon, MC nữ chibi dẫn chương trình, trả lời A/B/C/D và bảng xếp hạng.",
       "capabilities": {
         "chatCommands": true,
         "giftStreaks": true,
+        "quizModes": true,
+        "ttsHost": true,
+        "avatarBadges": true,
         "teamBattles": true,
-        "bossSpawns": true
+        "leaderboard": true
+      }
+    },
+    {
+      "id": "duoi-hinh-bat-chu",
+      "name": "PTPlay Đuổi Hình Bắt Chữ",
+      "vietnameseName": "Đuổi Hình Bắt Chữ",
+      "genre": "2D Interactive Vietnamese Rebus Puzzle Show (9:16 portrait)",
+      "version": "1.0.0",
+      "port": 5177,
+      "devCommand": "npm run dev -w @ptplay/duoi-hinh-bat-chu",
+      "buildCommand": "npm run build -w @ptplay/duoi-hinh-bat-chu",
+      "workspace": "games/duoi-hinh-bat-chu",
+      "active": true,
+      "icon": "💡",
+      "description": "Game đoán chữ đuổi hình bắt chữ 9:16, MC nữ hoạt bát, gợi ý hình ảnh trực quan, ô chữ ký tự và nhận diện đáp án tiếng Việt tự do.",
+      "capabilities": {
+        "chatCommands": true,
+        "giftStreaks": true,
+        "rebusModes": true,
+        "ttsHost": true,
+        "avatarBadges": true,
+        "publicHints": true,
+        "leaderboard": true
       }
     }
   ]

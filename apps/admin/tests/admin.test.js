@@ -70,3 +70,31 @@ test('5. English Class LIVE: Admin console, port 5175 and controls integrated', 
   assert.ok(serverCode.includes("'english-class'"));
 });
 
+test('6. PTPlay Quiz Show: Admin console, port 5176 and controls integrated', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('panel-quizshow'));
+  assert.ok(html.includes("startService('quiz-show')"));
+  assert.ok(html.includes("switchActiveGame('quiz-show')"));
+  assert.ok(html.includes('PTPlay Quiz Show'));
+  assert.ok(html.includes('5176'));
+  assert.ok(html.includes('preview-frame-qs'));
+
+  const serverCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'server.js'), 'utf-8');
+  assert.ok(serverCode.includes('QUIZ_SHOW_PORT = 5176'));
+  assert.ok(serverCode.includes("'quiz-show'"));
+});
+
+test('7. Đuổi Hình Bắt Chữ: Admin console, port 5177 and controls integrated', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('panel-duoihinh'));
+  assert.ok(html.includes("startService('duoi-hinh-bat-chu')"));
+  assert.ok(html.includes("switchActiveGame('duoi-hinh-bat-chu')"));
+  assert.ok(html.includes('Đuổi Hình Bắt Chữ'));
+  assert.ok(html.includes('5177'));
+  assert.ok(html.includes('preview-frame-dh'));
+
+  const serverCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'server.js'), 'utf-8');
+  assert.ok(serverCode.includes('DUOI_HINH_PORT = 5177'));
+  assert.ok(serverCode.includes("'duoi-hinh-bat-chu'"));
+});
+

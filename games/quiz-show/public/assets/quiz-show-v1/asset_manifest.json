@@ -1,0 +1,722 @@
+{
+  "version": "quiz-show-v1",
+  "assetRoot": "/assets/quiz-show-v1/",
+  "count": 119,
+  "images": [
+    {
+      "path": "backgrounds/classroom_day.png",
+      "width": 540,
+      "height": 960,
+      "alpha": false
+    },
+    {
+      "path": "backgrounds/classroom_evening.png",
+      "width": 540,
+      "height": 960,
+      "alpha": false
+    },
+    {
+      "path": "backgrounds/classroom_party.png",
+      "width": 540,
+      "height": 960,
+      "alpha": false
+    },
+    {
+      "path": "effects/check.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/confetti.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/crown.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/fire.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/lightning.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/music.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/sparkle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/speech.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/star.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/timer.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/wrong.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/crown.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/cup.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/fish.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/giftbox.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/magic.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/rose.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/universe.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/answer_a.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/answer_b.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/answer_c.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/answer_d.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_correct.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_gift.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_join.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_logo.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_mvp.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_next.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_streak.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_timer.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_top3.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/quiz_wrong.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "props/chalkboard.png",
+      "width": 480,
+      "height": 330,
+      "alpha": true
+    },
+    {
+      "path": "props/student_desk.png",
+      "width": 270,
+      "height": 190,
+      "alpha": true
+    },
+    {
+      "path": "props/teacher_podium.png",
+      "width": 230,
+      "height": 300,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/cloud.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/coins.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/confetti.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/crown.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/firework.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/flag.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/gamepad.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/gift.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/lightbulb.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/medal.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/microphone.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/puzzle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/question.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/star.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/ticket.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/timer.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/trophy.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "show-icons/whistle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_cheer.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_clap.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_explain.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_happy.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_idle.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_point.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_sad.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_surprise.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_talk.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_think.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_a.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_b.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_c.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_d.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_blue.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_gold.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_neutral.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_red.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/compact_help.png",
+      "width": 510,
+      "height": 60,
+      "alpha": true
+    },
+    {
+      "path": "ui/hud_top.png",
+      "width": 520,
+      "height": 104,
+      "alpha": true
+    },
+    {
+      "path": "ui/nameplate.png",
+      "width": 240,
+      "height": 62,
+      "alpha": true
+    },
+    {
+      "path": "ui/question_banner.png",
+      "width": 440,
+      "height": 85,
+      "alpha": true
+    },
+    {
+      "path": "ui/results_banner.png",
+      "width": 470,
+      "height": 126,
+      "alpha": true
+    },
+    {
+      "path": "ui/round_label.png",
+      "width": 240,
+      "height": 65,
+      "alpha": true
+    },
+    {
+      "path": "ui/scoreboard.png",
+      "width": 440,
+      "height": 280,
+      "alpha": true
+    },
+    {
+      "path": "ui/streak_badge.png",
+      "width": 240,
+      "height": 65,
+      "alpha": true
+    },
+    {
+      "path": "ui/toast_success.png",
+      "width": 430,
+      "height": 100,
+      "alpha": true
+    },
+    {
+      "path": "ui/toast_wrong.png",
+      "width": 430,
+      "height": 100,
+      "alpha": true
+    }
+  ],
+  "notes": "Independent images, not ready-to-play full animations; preview posters kept outside assets."
+}

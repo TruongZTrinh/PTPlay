@@ -1,7 +1,15 @@
 export type Team = 'red' | 'blue';
 export type UnitType = 'warrior' | 'archer' | 'tank' | 'mage' | 'boss';
 export type OverflowPolicy = 'wait' | 'convert_heal' | 'convert_buff' | 'drop';
-export type ActiveGame = 'mini-war' | 'cat-cafe' | 'english-class' | 'english-class-live';
+export type ActiveGame = 
+  | 'mini-war' 
+  | 'cat-cafe' 
+  | 'english-class' 
+  | 'english-class-live'
+  | 'quiz-show'
+  | 'ptplay-quiz-show'
+  | 'duoi-hinh-bat-chu'
+  | 'ptplay-duoi-hinh-bat-chu';
 
 export type LiveRoomStatus =
   | 'disconnected'      // TikFinity app not connected or explicitly sent disconnected
@@ -114,6 +122,20 @@ export interface GameCommand {
     | 'english_class.like'
     | 'english_class.follow'
     | 'english_class.reset'
+    | 'quiz_show.join'
+    | 'quiz_show.answer'
+    | 'quiz_show.team'
+    | 'quiz_show.gift'
+    | 'quiz_show.like'
+    | 'quiz_show.follow'
+    | 'quiz_show.reset'
+    | 'rebus.join'
+    | 'rebus.answer'
+    | 'rebus.gift'
+    | 'rebus.hint'
+    | 'rebus.like'
+    | 'rebus.follow'
+    | 'rebus.reset'
     | (string & {});
   team?: Team;
   unitType?: UnitType;

@@ -1,0 +1,1352 @@
+{
+  "version": "rebus-v1",
+  "assetRoot": "/assets/rebus-v1/",
+  "count": 224,
+  "images": [
+    {
+      "path": "backgrounds/classroom_day.png",
+      "width": 540,
+      "height": 960,
+      "alpha": false
+    },
+    {
+      "path": "backgrounds/classroom_evening.png",
+      "width": 540,
+      "height": 960,
+      "alpha": false
+    },
+    {
+      "path": "backgrounds/classroom_party.png",
+      "width": 540,
+      "height": 960,
+      "alpha": false
+    },
+    {
+      "path": "clue-icons/arrow.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/ball.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/balloon.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/banana.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/bell.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/bike.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/blue.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/boat.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/book.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/bread.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/bridge.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/buffalo.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/bulb.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/butterfly.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/cake.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/camera.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/car.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/cat.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/caterpillar.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/cherry.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/chicken.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/clock.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/cloud.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/coin.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/crab.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/crown.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/cup.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/dog.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/donut.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/door.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/dragon.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/earth.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/egg.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/elephant.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/eye.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/face.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/fairy.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/fire.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/firework.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/fish.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/fishcake.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/flag.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/flower.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/foot.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/frog.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/fruit.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/gift.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/glasses.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/goat.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/gold.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/hand.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/hat.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/honey.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/horse.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/house.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/ice.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/key.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/lamp.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/leaf.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/lightning.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/lion.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/lotus.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/mask.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/medal.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/microphone.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/milk.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/moon.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/mountain.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/mouse.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/music.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/needle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/paint.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/paw.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/pen.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/pencil.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/pepper.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/phone.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/pizza.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/puzzle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/rain.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/rainbow.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/red.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/river.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/rock.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/rose.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/salt.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/saw.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/scissors.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/sea.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/shield.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/shirt.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/shirt2.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/shoe.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/shrimp.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/snow.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/soup.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/star.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/strawberry.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/sun.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/sunflower.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/sunglasses.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/sword.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/target.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/tooth.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/train.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/tree.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/trophy.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/umbrella.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/universe.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/water.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/well.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/white.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/wind.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "clue-icons/window.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/check.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/confetti.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/crown.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/fire.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/lightning.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/music.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/sparkle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/speech.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/star.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/timer.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "effects/wrong.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/crown.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/cup.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/fish.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/giftbox.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/magic.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/rose.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "gifts/universe.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/hint_1.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/hint_2.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/hint_3.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/hint_4.png",
+      "width": 360,
+      "height": 130,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/letter_blank.png",
+      "width": 120,
+      "height": 138,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/letter_revealed.png",
+      "width": 120,
+      "height": 138,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_combo.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_correct.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_fast.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_hint.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_join.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_logo.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_party.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_reveal.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_timer.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "mode-ui/rebus_top.png",
+      "width": 420,
+      "height": 110,
+      "alpha": true
+    },
+    {
+      "path": "props/chalkboard.png",
+      "width": 480,
+      "height": 330,
+      "alpha": true
+    },
+    {
+      "path": "props/student_desk.png",
+      "width": 270,
+      "height": 190,
+      "alpha": true
+    },
+    {
+      "path": "props/teacher_podium.png",
+      "width": 230,
+      "height": 300,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/firework.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/gift.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/heart.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/lightbulb.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/microphone.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/puzzle.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "rebus-effects/star.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/blue/blue_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/coral/coral_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/green/green_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/navy/navy_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/orange/orange_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/pink/pink_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/purple/purple_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_cheer.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_idle.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_walk.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "students/yellow/yellow_wrong.png",
+      "width": 320,
+      "height": 380,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_cheer.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_clap.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_explain.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_happy.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_idle.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_point.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_sad.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_surprise.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_talk.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "teacher/teacher_think.png",
+      "width": 512,
+      "height": 720,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_a.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_b.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_c.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/answer_d.png",
+      "width": 198,
+      "height": 90,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_blue.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_gold.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_neutral.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/avatar_frame_red.png",
+      "width": 128,
+      "height": 128,
+      "alpha": true
+    },
+    {
+      "path": "ui/compact_help.png",
+      "width": 510,
+      "height": 60,
+      "alpha": true
+    },
+    {
+      "path": "ui/hud_top.png",
+      "width": 520,
+      "height": 104,
+      "alpha": true
+    },
+    {
+      "path": "ui/nameplate.png",
+      "width": 240,
+      "height": 62,
+      "alpha": true
+    },
+    {
+      "path": "ui/question_banner.png",
+      "width": 440,
+      "height": 85,
+      "alpha": true
+    },
+    {
+      "path": "ui/results_banner.png",
+      "width": 470,
+      "height": 126,
+      "alpha": true
+    },
+    {
+      "path": "ui/round_label.png",
+      "width": 240,
+      "height": 65,
+      "alpha": true
+    },
+    {
+      "path": "ui/scoreboard.png",
+      "width": 440,
+      "height": 280,
+      "alpha": true
+    },
+    {
+      "path": "ui/streak_badge.png",
+      "width": 240,
+      "height": 65,
+      "alpha": true
+    },
+    {
+      "path": "ui/toast_success.png",
+      "width": 430,
+      "height": 100,
+      "alpha": true
+    },
+    {
+      "path": "ui/toast_wrong.png",
+      "width": 430,
+      "height": 100,
+      "alpha": true
+    }
+  ],
+  "notes": "Independent images, not ready-to-play full animations; preview posters kept outside assets."
+}
