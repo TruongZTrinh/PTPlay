@@ -618,6 +618,7 @@ const server = http.createServer(async (req, res) => {
     '.js': 'application/javascript; charset=utf-8',
     '.json': 'application/json; charset=utf-8',
     '.png': 'image/png',
+    '.webp': 'image/webp',
     '.jpg': 'image/jpeg',
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
@@ -628,11 +629,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  console.log('====================================================');
-  console.log(`[PTPLAY ADMIN WEB] Running at http://127.0.0.1:${PORT}`);
-  console.log(`[Mini War Arena] http://127.0.0.1:${MINI_WAR_PORT}`);
-  console.log(`[Cat Café LIVE]  http://127.0.0.1:${CAT_CAFE_PORT}`);
-  console.log(`[English Class]  http://127.0.0.1:${ENGLISH_CLASS_PORT}`);
-  console.log(`[LIVE Bridge]    http://127.0.0.1:${BRIDGE_PORT}`);
-  console.log('====================================================');
+  if (!process.env.PTPLAY_MANAGED) {
+    console.log(`[PTPLAY ADMIN WEB] Running at http://127.0.0.1:${PORT}`);
+  }
 });

@@ -15,7 +15,9 @@ export class MockProvider extends LiveEventProvider {
   public async connect(): Promise<void> {
     this.connected = true;
     this.emitStatusChange();
-    console.log('[MockProvider] Connected to Mock Stream Engine.');
+    if (!process.env.PTPLAY_MANAGED) {
+      console.log('[MockProvider] Connected to Mock Stream Engine.');
+    }
   }
 
   public async disconnect(): Promise<void> {

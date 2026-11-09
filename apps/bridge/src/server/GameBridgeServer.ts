@@ -223,12 +223,9 @@ export class GameBridgeServer {
 
     return new Promise((resolve) => {
       this.httpServer.listen(this.port, '127.0.0.1', () => {
-        console.log(`====================================================`);
-        console.log(`[PTPLAY LIVE BRIDGE] Running securely at http://127.0.0.1:${this.port}`);
-        console.log(`[Streamer Dashboard] http://127.0.0.1:${this.port}/admin`);
-        console.log(`[Game WebSocket API] ws://127.0.0.1:${this.port}/game`);
-        console.log(`[Control Token] ${this.controlSecret}`);
-        console.log(`====================================================`);
+        if (!process.env.PTPLAY_MANAGED) {
+          console.log(`[PTPLAY LIVE BRIDGE] Running at http://127.0.0.1:${this.port}`);
+        }
         resolve();
       });
     });
@@ -1240,16 +1237,17 @@ export class GameBridgeServer {
 
       let body = '';
       let bodyLen = 0;
+      req.setEncoding('utf8');
 
-      req.on('data', (chunk: Buffer) => {
-        bodyLen += chunk.length;
+      req.on('data', (chunk: string) => {
+        bodyLen += Buffer.byteLength(chunk, 'utf8');
         if (bodyLen > 32768) {
           res.writeHead(413, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'Payload too large' }));
           req.destroy();
           return;
         }
-        body += chunk.toString();
+        body += chunk;
       });
 
       req.on('end', async () => {
@@ -1483,6 +1481,7 @@ export class GameBridgeServer {
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
           const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const lookup = this.giftCatalog.resolveGiftEvent(null, gift);
           const rule = this.giftCatalog.findMatchingRule('cat-cafe', gift);
           const catGiftCmd: GameCommand = {
             id: `cmd_cat_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -1492,6 +1491,7 @@ export class GameBridgeServer {
               giftName: gift,
               count,
               diamondCount: 1,
+              iconUrl: (lookup.match as any)?.iconUrl,
               ...(rule?.params || {}),
             },
             timestamp: Date.now(),
@@ -1509,7 +1509,7 @@ export class GameBridgeServer {
             viewerNick: nick,
             activeGame: this.activeGame,
             targetGame: 'cat-cafe',
-            resolvedStatus: 'verified',
+            resolvedStatus: lookup.status,
             mappingMatched: !!rule,
             actionExecuted: rule?.action || 'cat_cafe.gift_effect',
             pipelineStatus: 'executed',

@@ -9,6 +9,7 @@ function serveAssetsPlugin(): Plugin {
   const assetsDir = resolve(__dirname, 'assets');
   const mimeTypes: Record<string, string> = {
     '.png': 'image/png',
+    '.webp': 'image/webp',
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',
     '.svg': 'image/svg+xml',

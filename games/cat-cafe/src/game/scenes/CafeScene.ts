@@ -413,6 +413,10 @@ export class CafeScene extends Phaser.Scene {
           this.v3Visuals.play('ice_cream', cat, gx, gy, count);
         } else if (norm.includes('coffee') || norm.includes('cà phê')) {
           this.v3Visuals.play('coffee', cat, gx, gy, count);
+        } else if (norm.includes('crown') || norm.includes('vương miện')) {
+          this.v3Visuals.play('crown' as any, cat, gx, gy, count);
+        } else if (norm.includes('donut')) {
+          this.v3Visuals.play('donut' as any, cat, gx, gy, count);
         } else {
           this.v3Visuals.play('rose', cat, gx, gy, count);
         }

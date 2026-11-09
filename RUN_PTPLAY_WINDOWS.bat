@@ -28,8 +28,7 @@ if not exist "node_modules" (
   )
 )
 
-echo [PTPlay] Validating game registry...
-call node scripts/validate-games.mjs
+call node scripts/validate-games.mjs --quiet
 if errorlevel 1 (
   echo [ERROR] Game validation failed!
   pause

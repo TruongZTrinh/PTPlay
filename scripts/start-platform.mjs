@@ -31,30 +31,31 @@ if (gameArg && !selectedGame) {
   process.exit(1);
 }
 
+console.log('\n========================================================');
+console.log('🚀 PTPLAY MULTI-GAME PLATFORM READY');
 console.log('========================================================');
-console.log('🚀 STARTING PTPLAY MULTI-GAME PLATFORM');
-console.log('========================================================');
-console.log(`• Authoritative LIVE Bridge: http://127.0.0.1:8088`);
-console.log(`• Central Admin Portal:     http://127.0.0.1:8080`);
+console.log('• Admin Portal : http://127.0.0.1:8080');
+console.log('• LIVE Bridge  : http://127.0.0.1:8088');
 if (shouldStartAll) {
-  console.log(`• Mode:                     Starting All Active Games`);
+  console.log('• Mode         : Khởi động toàn bộ 5 game');
 } else if (selectedGame) {
-  console.log(`• Selected Interactive Game: ${selectedGame.name} (Port ${selectedGame.port})`);
+  console.log(`• Game Đã Chọn : ${selectedGame.name} (Cổng ${selectedGame.port})`);
 } else {
-  console.log(`• Mode:                     Admin & Bridge Ready (Bấm nút trên Admin để bật game)`);
+  console.log('• Trạng Thái   : Sẵn sàng (Bấm nút trên Admin để bật game)');
 }
 console.log('========================================================\n');
 
+const nodeExe = process.execPath;
+const tsxCli = path.join(ROOT_DIR, 'node_modules', 'tsx', 'dist', 'cli.mjs');
 const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const runningProcesses = [];
 
 function startProcess(name, cwd, cmd, cmdArgs, env = {}) {
-  console.log(`[Platform] Launching ${name}...`);
   const child = spawn(cmd, cmdArgs, {
     cwd,
     stdio: 'inherit',
-    env: { ...process.env, ...env },
-    shell: true,
+    env: { ...process.env, PTPLAY_MANAGED: '1', ...env },
+    shell: false,
   });
 
   child.on('exit', (code) => {
@@ -71,25 +72,24 @@ function startProcess(name, cwd, cmd, cmdArgs, env = {}) {
 startProcess(
   'PTPlay LIVE Bridge (Port 8088)',
   path.join(ROOT_DIR, 'apps', 'bridge'),
-  npmCmd,
-  ['run', 'start']
+  nodeExe,
+  [tsxCli, 'src/index.ts']
 );
 
 // 2. Start Central Admin (Port 8080)
 startProcess(
   'PTPlay Central Admin (Port 8080)',
   path.join(ROOT_DIR, 'apps', 'admin'),
-  npmCmd,
-  ['run', 'start']
+  nodeExe,
+  ['src/server.js']
 );
 
 // 3. Start Game(s) (only if explicitly requested via --all or --game=<id>)
 if (shouldStartAll) {
-  console.log('[Platform] Starting all active registered games...');
   for (const g of config.games) {
     if (g.active) {
       const gDir = path.join(ROOT_DIR, g.workspace);
-      startProcess(`${g.name} (Port ${g.port})`, gDir, npmCmd, ['run', 'dev']);
+      startProcess(`${g.name} (Port ${g.port})`, gDir, npmCmd, ['--silent', 'run', 'dev']);
     }
   }
 } else if (selectedGame && selectedGame.active) {
@@ -98,10 +98,8 @@ if (shouldStartAll) {
     `${selectedGame.name} (Port ${selectedGame.port})`,
     gameDir,
     npmCmd,
-    ['run', 'dev']
+    ['--silent', 'run', 'dev']
   );
-} else {
-  console.log('[Platform] Sẵn sàng! Hãy truy cập http://127.0.0.1:8080 và bấm nút "Khởi Động" ở tựa game bạn muốn bật.');
 }
 
 function cleanup() {

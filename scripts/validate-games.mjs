@@ -7,9 +7,13 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(ROOT_DIR, 'config', 'games.json');
 
-console.log('========================================================');
-console.log('🎮 PTPLAY PLATFORM — GAME REGISTRY VALIDATION');
-console.log('========================================================\n');
+const isQuiet = process.argv.includes('--quiet') || process.argv.includes('-q');
+
+if (!isQuiet) {
+  console.log('========================================================');
+  console.log('🎮 PTPLAY PLATFORM — GAME REGISTRY VALIDATION');
+  console.log('========================================================\n');
+}
 
 if (!fs.existsSync(CONFIG_PATH)) {
   console.error(`❌ Missing configuration file: ${CONFIG_PATH}`);
@@ -33,7 +37,9 @@ const seenIds = new Set();
 const seenPorts = new Set();
 let hasErrors = false;
 
-console.log(`Found ${config.games.length} registered games:\n`);
+if (!isQuiet) {
+  console.log(`Found ${config.games.length} registered games:\n`);
+}
 
 for (const game of config.games) {
   const { id, name, port, active, workspace } = game;
@@ -66,17 +72,22 @@ for (const game of config.games) {
   if (active && !exists) {
     console.error(`❌ Active game "${id}" workspace folder not found: ${fullWorkspace}`);
     hasErrors = true;
-  } else {
+  } else if (!isQuiet) {
     console.log(`  [${status}] ${game.icon || '🎮'} ${name} (ID: ${id}) -> Port ${port} [${exists ? 'Folder Exists' : 'Planned'}]`);
   }
 }
 
-console.log('\n========================================================');
 if (hasErrors) {
+  console.error('\n========================================================');
   console.error('❌ Validation Failed! Fix errors above.');
+  console.error('========================================================');
   process.exit(1);
 } else {
-  console.log('✅ All Game Registry records are valid and consistent!');
+  if (!isQuiet) {
+    console.log('\n========================================================');
+    console.log('✅ All Game Registry records are valid and consistent!');
+    console.log('========================================================');
+  }
   process.exit(0);
 }
 

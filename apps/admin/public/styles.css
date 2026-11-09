@@ -880,6 +880,26 @@ main.tab-content {
   align-items: center;
 }
 
+.gift-btn-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  vertical-align: middle;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.gift-preview-thumb {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
 button {
   background: #141c2e;
   color: #e2e8f0;
