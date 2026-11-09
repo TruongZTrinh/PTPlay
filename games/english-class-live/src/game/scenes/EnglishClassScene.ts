@@ -63,8 +63,8 @@ export class EnglishClassScene extends Phaser.Scene {
     // 2. Classroom Presentation Layer
     this.presentation = new ClassroomPresentation(this);
 
-    // 3. Teacher Host Character (Positioned cleanly beside question board, 100% visible)
-    this.teacher = new TeacherCharacter(this, 98, 450, 295, 200);
+    // 3. Teacher Host Character (Positioned cleanly on the classroom floor, pointing at question board)
+    this.teacher = new TeacherCharacter(this, 94, 568, 345, 230);
 
     // Dynamic Teacher Speech Coordination via TTS events
     this.tts.onSpeechStart = () => {
@@ -139,10 +139,10 @@ export class EnglishClassScene extends Phaser.Scene {
     }
 
     if (testReveal) {
-      this.time.delayedCall(300, () => {
-        this.teacher.setState('happy');
-        this.questionBoard.revealCorrectAnswer('C', '"sleep" có nghĩa là "ngủ".', 'Mai Anh');
-      });
+      const q = this.engine.questionBank.getNextQuestion('quick');
+      this.questionBoard.showQuestion(q, 1);
+      this.teacher.setState('happy');
+      this.questionBoard.revealCorrectAnswer(q.correct, q.explanation, 'Mai Anh');
     } else if (testPose) {
       this.time.delayedCall(300, () => {
         this.teacher.setState(testPose as any);
@@ -271,7 +271,8 @@ export class EnglishClassScene extends Phaser.Scene {
         const student = new StudentCharacter(this, player, seat.x, seat.y, this.avatarManager);
         this.students.set(player.id, student);
 
-        if (isNew) {
+        const isInstant = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('students');
+        if (isNew && !isInstant) {
           // Walk in from classroom doorway on left
           student.walkInFromDoor(-40, seat.y + 10, seat.x, seat.y);
           this.audio.playBell();

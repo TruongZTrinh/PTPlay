@@ -20,12 +20,12 @@ export class ClassroomPresentation {
     // 2. Subtle chalkboard contrast enhancer over the wall chalkboard
     const boardEnhancer = scene.add.graphics();
     boardEnhancer.fillStyle(0x0a1612, 0.45);
-    boardEnhancer.fillRoundedRect(210, 238, 278, 178, 4);
+    boardEnhancer.fillRoundedRect(174, 145, 352, 286, 8);
     boardEnhancer.setDepth(4);
 
     // Legacy props retained for compatibility but hidden to preserve modern anime aesthetic
-    this.boardProp = scene.add.image(350, 326, 'prop_board');
-    this.boardProp.setDisplaySize(280, 180);
+    this.boardProp = scene.add.image(350, 288, 'prop_board');
+    this.boardProp.setDisplaySize(352, 286);
     this.boardProp.setDepth(3);
     this.boardProp.setVisible(false);
 

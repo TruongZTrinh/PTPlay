@@ -1,4 +1,4 @@
-import { PTPlayGameClient, VietnameseVoiceHelper } from '@ptplay/game-sdk';
+import { PTPlayGameClient, SharedMusicManager, VietnameseVoiceHelper } from '@ptplay/game-sdk';
 import { GameCommand } from '@ptplay/live-contracts';
 import { QuizEngine } from '../systems/QuizEngine.js';
 import { GiftReactionController } from '../systems/GiftReactionController.js';
@@ -104,6 +104,23 @@ export class EnglishLiveEventRouter {
         if (text) {
           this.tts.speak(text, lang, 2);
         }
+        break;
+      }
+
+      case 'english_class.set_volume':
+      case 'set_volume': {
+        const vol = Number(cmd.metadata?.volume ?? cmd.metadata?.bgm ?? 0.3);
+        SharedMusicManager.getInstance({ gameId: 'english-class' }).setVolume(vol);
+        break;
+      }
+
+      case 'english_class.switch_music':
+      case 'switch_music': {
+        const cue = cmd.metadata?.cue;
+        const trackId = cmd.metadata?.trackId;
+        const mgr = SharedMusicManager.getInstance({ gameId: 'english-class' });
+        if (typeof cue === 'string') mgr.playCue(cue);
+        else if (typeof trackId === 'string') mgr.playTrack(trackId);
         break;
       }
     }

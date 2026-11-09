@@ -16,6 +16,7 @@ export class TeacherCharacter {
   public readonly bottomY: number;
   public readonly maxHeight: number;
   public readonly maxWidth: number;
+  public shadow: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene, x = 98, bottomY = 450, maxHeight = 295, maxWidth = 200) {
     this.scene = scene;
@@ -24,8 +25,14 @@ export class TeacherCharacter {
     this.maxHeight = maxHeight;
     this.maxWidth = maxWidth;
 
-    // Outer container for positioning & depth management
-    this.container = scene.add.container(0, 0).setDepth(15);
+    // Soft grounded contact shadow on classroom parquet floor
+    this.shadow = scene.add.graphics();
+    this.shadow.fillStyle(0x0e0906, 0.44);
+    this.shadow.fillEllipse(this.x, this.bottomY - 4, 115, 20);
+    this.shadow.setDepth(21);
+
+    // Outer container for positioning & depth management (in front of back-row desks, depth sorted)
+    this.container = scene.add.container(0, 0).setDepth(22);
 
     // Underlying TeacherPoseController manages still textures & uniform fitting
     this.poseController = new TeacherPoseController(scene, x, bottomY, maxHeight, maxWidth);
@@ -221,6 +228,7 @@ export class TeacherCharacter {
       this.autoRevertTimer = null;
     }
     this.stopCurrentTween();
+    this.shadow.destroy();
     this.poseController.destroy();
     this.container.destroy();
   }
