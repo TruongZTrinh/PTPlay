@@ -2,7 +2,7 @@
 // PTPLAY ENTERPRISE ADMIN CENTER — ENGINE & INTERACTIVITY SCRIPT
 // ==========================================================================
 
-let authToken = '';
+let authToken = 'ptplay_control_secret_2026';
 let currentActiveGame = 'mini-war';
 let currentProvider = 'mock';
 let isAutoSim = false;
@@ -428,10 +428,13 @@ async function switchActiveGame(target) {
       body: JSON.stringify({ activeGame: target }),
     });
     const data = await res.json();
-    if (data.success) {
+    if (res.ok && data.success) {
       playSound('success');
       showToast(`🎯 Đã chuyển sang nhận LIVE cho ${targetName}!`, 'success');
-      updateActiveGameUI(data.activeGame);
+      updateActiveGameUI(data.activeGame || target);
+      fetchStatus();
+    } else {
+      showToast(`⚠️ Không thể chuyển game: ${data.error || res.statusText}`, 'warn');
     }
   } catch (e) {
     showToast(`Lỗi chuyển game: ${e.message}`, 'error');
@@ -440,7 +443,7 @@ async function switchActiveGame(target) {
 
 async function toggleProvider() {
   playSound('click');
-  const isMock = currentProvider.includes('Mock');
+  const isMock = (currentProvider || '').toLowerCase().includes('mock');
   const target = isMock ? 'tikfinity' : 'mock';
   try {
     const res = await fetch('/api/provider/switch', {
@@ -449,10 +452,13 @@ async function toggleProvider() {
       body: JSON.stringify({ provider: target }),
     });
     const d = await res.json();
-    if (d.success) {
+    if (res.ok && d.success) {
       playSound('success');
+      currentProvider = d.active || (target === 'mock' ? 'Mock Provider' : 'TikFinity Desktop Provider');
       showToast(`⚡ Đã chuyển Provider: ${target.toUpperCase()}`, 'success');
       fetchStatus();
+    } else {
+      showToast(`⚠️ Không thể chuyển provider: ${d.error || res.statusText}`, 'warn');
     }
   } catch (e) {
     showToast(`Lỗi: ${e.message}`, 'error');
@@ -2257,6 +2263,11 @@ function updateClockAndUptime() {
 
 // --- 15. Initial Setup ---
 window.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/auth/token')
+    .then(r => r.json())
+    .then(d => { if (d && d.token) authToken = d.token; })
+    .catch(() => {});
+
   initTabs();
   initAdminTts();
   initKeyboardShortcuts();

@@ -314,17 +314,24 @@ function stopManagedProcess(serviceKey) {
   }
 }
 
+const CONTROL_SECRET = process.env.PTPLAY_CONTROL_SECRET || 'ptplay_control_secret_2026';
+
 // Proxy request to Bridge server (port 8088)
 function proxyToBridge(req, res, targetPath) {
+  const headers = {
+    ...req.headers,
+    host: `127.0.0.1:${BRIDGE_PORT}`,
+  };
+  if (!headers['x-ptplay-token']) {
+    headers['x-ptplay-token'] = CONTROL_SECRET;
+  }
+
   const options = {
     hostname: '127.0.0.1',
     port: BRIDGE_PORT,
     path: targetPath,
     method: req.method,
-    headers: {
-      ...req.headers,
-      host: `127.0.0.1:${BRIDGE_PORT}`,
-    },
+    headers,
   };
 
   const proxyReq = http.request(options, (proxyRes) => {
