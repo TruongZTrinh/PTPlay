@@ -9,8 +9,8 @@ export interface RebusEngineEvents {
   onStateChanged?: (state: RebusState) => void;
   onPuzzleStarted?: (puzzle: RebusPuzzle, round: number, totalRounds: number) => void;
   onTick?: (remainingSec: number, totalSec: number) => void;
-  onHint1Triggered?: (hint1: string) => void;
-  onHint2Triggered?: (hint2: string, firstChar: string) => void;
+  onHint1Triggered?: (hint1: string, sponsorName?: string) => void;
+  onHint2Triggered?: (hint2: string, firstChar: string, sponsorName?: string) => void;
   onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean, solverRank?: number, points?: number) => void;
   onPuzzleSolved?: (puzzle: RebusPuzzle, winner: RebusPlayerRecord, points: number) => void;
   onPuzzleRevealed?: (puzzle: RebusPuzzle, solved: boolean, winner?: RebusPlayerRecord) => void;
@@ -176,15 +176,7 @@ export class RebusEngine {
 
       const elapsedRatio = 1 - this.remainingTimeMs / this.totalTimeMs;
 
-      // 1. Hint 1 at 40% elapsed time (e.g. at 8s mark for 20s round)
-      if (!this.hint1Given && elapsedRatio >= 0.4) {
-        this.triggerHint1();
-      }
-
-      // 2. Hint 2 (first character) at 70% elapsed time (e.g. at 14s mark, 6s remaining)
-      if (!this.hint2Given && elapsedRatio >= 0.7) {
-        this.triggerHint2();
-      }
+      // Hints are NOT automatically revealed by time - only shown when users send Rose or Follow!
 
       // Time warning at 5 seconds remaining (only announces if host is not speaking a hint)
       if (this.remainingTimeMs <= 5000 && this.remainingTimeMs > 4800 && this.config.ttsEnabled) {
@@ -283,26 +275,38 @@ export class RebusEngine {
     }
   }
 
-  public triggerHint1(): void {
+  public unlockNextHint(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): boolean {
+    if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
+    if (!this.hint1Given) {
+      this.triggerHint1(sponsorName, reason);
+      return true;
+    } else if (!this.hint2Given) {
+      this.triggerHint2(sponsorName, reason);
+      return true;
+    }
+    return false;
+  }
+
+  public triggerHint1(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
     if (this.hint1Given || !this.currentPuzzle) return;
     this.hint1Given = true;
     this.audioEngine.playHintChime();
-    this.events.onHint1Triggered?.(this.currentPuzzle.hint1);
+    this.events.onHint1Triggered?.(this.currentPuzzle.hint1, sponsorName);
 
     if (this.config.ttsEnabled) {
-      this.ttsController.announceHint(this.currentPuzzle.hint1);
+      this.ttsController.announceHint(this.currentPuzzle.hint1, sponsorName, reason);
     }
   }
 
-  public triggerHint2(): void {
+  public triggerHint2(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
     if (this.hint2Given || !this.currentPuzzle) return;
     this.hint2Given = true;
     this.audioEngine.playHintChime();
     const firstChar = this.currentPuzzle.answer.trim().charAt(0).toUpperCase();
-    this.events.onHint2Triggered?.(this.currentPuzzle.hint2, firstChar);
+    this.events.onHint2Triggered?.(this.currentPuzzle.hint2, firstChar, sponsorName);
 
     if (this.config.ttsEnabled) {
-      this.ttsController.announceFirstChar(firstChar);
+      this.ttsController.announceFirstChar(firstChar, sponsorName, reason);
     }
   }
 

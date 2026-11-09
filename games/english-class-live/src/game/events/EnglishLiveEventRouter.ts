@@ -1,4 +1,4 @@
-import { PTPlayGameClient } from '@ptplay/game-sdk';
+import { PTPlayGameClient, VietnameseVoiceHelper } from '@ptplay/game-sdk';
 import { GameCommand } from '@ptplay/live-contracts';
 import { QuizEngine } from '../systems/QuizEngine.js';
 import { GiftReactionController } from '../systems/GiftReactionController.js';
@@ -86,7 +86,8 @@ export class EnglishLiveEventRouter {
 
       case 'english_class.follow': {
         if (cmd.user) {
-          this.tts.speak(`Chào mừng bạn ${cmd.user.nickname} đã theo dõi kênh!`, 'vi-VN', 1);
+          const speechNick = VietnameseVoiceHelper.formatNicknameForSpeech(cmd.user.nickname, 'học sinh mới');
+          this.tts.speak(`Chào mừng bạn ${speechNick} đã theo dõi kênh!`, 'vi-VN', 1);
         }
         break;
       }

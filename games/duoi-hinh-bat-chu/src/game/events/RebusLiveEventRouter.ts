@@ -85,17 +85,21 @@ export class RebusLiveEventRouter {
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
           this.roster.addGiftPoints(userId, 25);
           this.roster.grantExtraGuesses(userId, 3);
-          perkText = '+25đ VIP & hồi 3 lượt đoán!';
+          const unlocked = this.engine.unlockNextHint(nickname, 'rose');
+          perkText = unlocked
+            ? '🌹 Tặng Hoa Hồng: Mở Gợi ý cho cả lớp (+25đ)!'
+            : '🌹 Tặng Hoa Hồng: Cổ vũ cả lớp (+25đ)!';
         } else if (cleanGift.includes('lion') || cleanGift.includes('su tu')) {
           this.roster.addGiftPoints(userId, 150);
           this.roster.grantExtraGuesses(userId, 10);
-          this.engine.triggerHint1();
+          this.engine.unlockNextHint(nickname, 'rose');
           perkText = 'Đại gia mở Gợi ý cho cả lớp (+150đ)!';
         } else if (cleanGift.includes('universe') || cleanGift.includes('vu tru')) {
           this.roster.addGiftPoints(userId, 300);
           this.roster.grantExtraGuesses(userId, 20);
-          this.engine.triggerHint2();
-          perkText = 'Vũ Trụ giải cứu: Mở chữ cái đầu (+300đ)!';
+          this.engine.triggerHint1(nickname, 'rose');
+          this.engine.triggerHint2(nickname, 'rose');
+          perkText = 'Vũ Trụ giải cứu: Mở toàn bộ gợi ý (+300đ)!';
         } else {
           this.roster.addGiftPoints(userId, 20);
         }
@@ -103,6 +107,18 @@ export class RebusLiveEventRouter {
         this.scoreboard.setChatTicker(`tặng ${giftName}: ${perkText}`, nickname);
         this.scoreboard.updateLeaderboard(this.roster.getAllPlayers());
         this.tts?.announceGift(nickname, giftName);
+        break;
+      }
+
+      case 'rebus.follow':
+      case 'tiktok.follow':
+      case 'follow': {
+        this.roster.registerOrGet(userId, nickname, avatarUrl);
+        const unlocked = this.engine.unlockNextHint(nickname, 'follow');
+        const ticker = unlocked
+          ? 'đã Follow kênh và mở Gợi ý cho cả lớp!'
+          : 'vừa theo dõi kênh!';
+        this.scoreboard.setChatTicker(ticker, nickname);
         break;
       }
 

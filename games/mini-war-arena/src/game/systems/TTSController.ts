@@ -140,22 +140,25 @@ export class TTSController {
   }
 
   public announceTeamJoin(nickname: string, team: 'red' | 'blue'): void {
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'chiến binh');
     const teamName = team === 'red' ? 'Phe Đỏ' : 'Phe Xanh';
-    this.speak(`Chào mừng chiến binh ${nickname} gia nhập ${teamName}!`, false, `join_${nickname}`);
+    this.speak(`Chào mừng chiến binh ${cleanNick} gia nhập ${teamName}!`, false, `join_${nickname}`);
   }
 
   public announceSummon(team: 'red' | 'blue', unitName: string, count: number, nickname?: string): void {
     const teamName = team === 'red' ? 'Phe Đỏ' : 'Phe Xanh';
-    const summonMsg = nickname
-      ? `${nickname} gọi ${count} ${unitName} chi viện cho ${teamName}!`
+    const cleanNick = nickname ? VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'chiến binh') : undefined;
+    const summonMsg = cleanNick
+      ? `${cleanNick} gọi ${count} ${unitName} chi viện cho ${teamName}!`
       : `${teamName} tăng cường ${count} ${unitName}!`;
     this.speak(summonMsg, false, `summon_${team}_${unitName}`);
   }
 
   public announceBossSpawn(team: 'red' | 'blue', bossName: string, nickname?: string): void {
     const teamName = team === 'red' ? 'Phe Đỏ' : 'Phe Xanh';
-    const bossMsg = nickname
-      ? `Báo động chiến trường! ${nickname} vừa triệu hồi Đại Tướng ${bossName} cho ${teamName}!`
+    const cleanNick = nickname ? VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'chiến binh') : undefined;
+    const bossMsg = cleanNick
+      ? `Báo động chiến trường! ${cleanNick} vừa triệu hồi Đại Tướng ${bossName} cho ${teamName}!`
       : `Báo động chiến trường! Đại Tướng ${bossName} xuất trận cho ${teamName}!`;
     this.speak(bossMsg, true);
   }
@@ -171,13 +174,15 @@ export class TTSController {
   }
 
   public announceHeal(nickname: string, team: 'red' | 'blue', amount: number): void {
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'chiến binh');
     const teamName = team === 'red' ? 'Phe Đỏ' : 'Phe Xanh';
-    this.speak(`${nickname} vừa hồi ${amount} máu cho căn cứ ${teamName}!`, false, `heal_${team}`);
+    this.speak(`${cleanNick} vừa hồi ${amount} máu cho căn cứ ${teamName}!`, false, `heal_${team}`);
   }
 
   public announceBoost(nickname: string, team: 'red' | 'blue'): void {
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'chiến binh');
     const teamName = team === 'red' ? 'Phe Đỏ' : 'Phe Xanh';
-    this.speak(`${nickname} kích hoạt tăng tốc toàn diện cho ${teamName}!`, false, `boost_${team}`);
+    this.speak(`${cleanNick} kích hoạt tăng tốc toàn diện cho ${teamName}!`, false, `boost_${team}`);
   }
 
   public announceVictory(winner: 'red' | 'blue' | 'draw'): void {

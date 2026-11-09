@@ -137,7 +137,8 @@ export class TTSController {
   }
 
   public announcePlayerJoin(nickname: string): void {
-    this.speak(`Chào mừng bạn ${nickname} đã vào trường quay!`, false, `join_${nickname}`);
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn khán giả');
+    this.speak(`Chào mừng bạn ${cleanNick} đã vào trường quay!`, false, `join_${nickname}`);
   }
 
   public announceQuestion(roundNumber: number, questionText: string): void {
@@ -151,7 +152,8 @@ export class TTSController {
   public announceReveal(correctChoice: string, correctText: string, explanation?: string, fastestWinner?: string): void {
     let msg = `Hết giờ! Đáp án chính xác là ${correctChoice}: ${correctText}.`;
     if (fastestWinner) {
-      msg += ` Chúc mừng ${fastestWinner} đã trả lời nhanh nhất!`;
+      const cleanWinner = VietnameseVoiceHelper.formatNicknameForSpeech(fastestWinner, 'bạn khán giả');
+      msg += ` Chúc mừng ${cleanWinner} đã trả lời nhanh nhất!`;
     }
     if (explanation) {
       msg += ` ${explanation}`;
@@ -161,16 +163,19 @@ export class TTSController {
 
   public announceStreak(nickname: string, streak: number): void {
     if (streak >= 3) {
-      this.speak(`Tuyệt vời! ${nickname} đang có chuỗi ${streak} câu trả lời đúng liên tiếp!`, false, `streak_${nickname}`);
+      const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn khán giả');
+      this.speak(`Tuyệt vời! ${cleanNick} đang có chuỗi ${streak} câu trả lời đúng liên tiếp!`, false, `streak_${nickname}`);
     }
   }
 
   public announceGift(nickname: string, giftName: string): void {
-    this.speak(`Trân trọng cảm ơn bạn ${nickname} đã gửi tặng ${giftName} cổ vũ trường quay!`, false, `gift_${nickname}_${giftName}`);
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn khán giả');
+    this.speak(`Trân trọng cảm ơn bạn ${cleanNick} đã gửi tặng ${giftName} cổ vũ trường quay!`, false, `gift_${nickname}_${giftName}`);
   }
 
   public announceChampion(championName: string): void {
-    this.speak(`Chúc mừng ${championName} đã xuất sắc đạt ngôi vô địch vòng chơi hôm nay!`, true);
+    const cleanChamp = VietnameseVoiceHelper.formatNicknameForSpeech(championName, 'người chơi xuất sắc');
+    this.speak(`Chúc mừng ${cleanChamp} đã xuất sắc đạt ngôi vô địch vòng chơi hôm nay!`, true);
   }
 
   public testVoice(): void {

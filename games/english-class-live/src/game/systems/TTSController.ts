@@ -241,7 +241,8 @@ export class TTSController {
 
   public announceWelcome(nickname?: string): void {
     if (nickname) {
-      this.speak(`Chào mừng bạn ${nickname} đã vào lớp học vui!`, 'vi-VN', 1, `join_${nickname}`);
+      const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'học sinh mới');
+      this.speak(`Chào mừng bạn ${cleanNick} đã vào lớp học vui!`, 'vi-VN', 1, `join_${nickname}`);
     } else {
       this.speak('Xin chào cả lớp! Hôm nay chúng ta cùng học tiếng Anh thật vui nhé!', 'vi-VN', 1, 'welcome_all');
     }
@@ -423,7 +424,8 @@ export class TTSController {
 
     let viMsg = `Hết giờ! Đáp án chính xác là ${letter}.`;
     if (winner) {
-      viMsg += ` Chúc mừng ${winner} đã trả lời nhanh nhất!`;
+      const cleanWinner = VietnameseVoiceHelper.formatNicknameForSpeech(winner, 'bạn học sinh');
+      viMsg += ` Chúc mừng ${cleanWinner} đã trả lời nhanh nhất!`;
     }
 
     if (targetEnWord) {
@@ -450,7 +452,8 @@ export class TTSController {
 
   public announceStreak(nickname: string, streak: number): void {
     if (streak >= 3) {
-      this.speak(`Tuyệt vời! ${nickname} đang có chuỗi ${streak} câu đúng liên tiếp!`, 'vi-VN', 2, `streak_${nickname}`);
+      const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn học sinh');
+      this.speak(`Tuyệt vời! ${cleanNick} đang có chuỗi ${streak} câu đúng liên tiếp!`, 'vi-VN', 2, `streak_${nickname}`);
     }
   }
 
@@ -463,7 +466,8 @@ export class TTSController {
   }
 
   public announceGift(nickname: string, giftName: string): void {
-    this.speak(`Cảm ơn ${nickname} đã gửi tặng ${giftName} cổ vũ lớp học!`, 'vi-VN', 1, `gift_${nickname}_${giftName}`);
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn học sinh');
+    this.speak(`Cảm ơn bạn ${cleanNick} đã gửi tặng ${giftName} cổ vũ lớp học!`, 'vi-VN', 1, `gift_${nickname}_${giftName}`);
   }
 
   public testVoice(): void {

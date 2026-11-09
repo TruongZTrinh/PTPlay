@@ -156,7 +156,8 @@ export class TTSController {
   public announcePlayerJoin(nickname: string): void {
     // Only speak player join if not currently speaking a puzzle clue
     if (!this.isSpeaking && this.queue.length === 0) {
-      this.speak(`Chào mừng thám tử ${nickname} đã tham gia giải đố!`, false, `join_${nickname}`);
+      const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'thám tử mới');
+      this.speak(`Chào mừng thám tử ${cleanNick} đã tham gia giải đố!`, false, `join_${nickname}`);
     }
   }
 
@@ -164,18 +165,30 @@ export class TTSController {
     this.speak(`Câu số ${roundNumber}! Hãy quan sát hình ảnh và nhanh tay đoán từ khóa nào cả lớp!`, false);
   }
 
-  public announceHint(hintText: string): void {
+  public announceHint(hintText: string, sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
     const cleanHint = hintText
       .replace(/[()+=]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
-    if (cleanHint) {
+    if (!cleanHint) return;
+
+    if (sponsorName) {
+      const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn khán giả');
+      const actionText = reason === 'follow' ? 'đã theo dõi kênh và' : 'đã tặng Hoa Hồng';
+      this.speak(`Cảm ơn bạn ${cleanSponsor} ${actionText} mở gợi ý cho cả lớp! Gợi ý là: ${cleanHint}`, false);
+    } else {
       this.speak(`Gợi ý dành cho cả lớp: ${cleanHint}`, false);
     }
   }
 
-  public announceFirstChar(firstChar: string): void {
-    this.speak(`Gợi ý thêm, chữ cái đầu tiên là chữ ${firstChar}!`, false);
+  public announceFirstChar(firstChar: string, sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
+    if (sponsorName) {
+      const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn khán giả');
+      const actionText = reason === 'follow' ? 'theo dõi kênh và' : 'tặng Hoa Hồng';
+      this.speak(`Cảm ơn bạn ${cleanSponsor} đã ${actionText} mở chữ cái đầu tiên! Chữ cái đầu là chữ ${firstChar}!`, false);
+    } else {
+      this.speak(`Gợi ý thêm, chữ cái đầu tiên là chữ ${firstChar}!`, false);
+    }
   }
 
   public announceTimeWarning(): void {
@@ -185,7 +198,8 @@ export class TTSController {
   }
 
   public announceCorrect(nickname: string, answer: string): void {
-    this.speak(`Chính xác! Bạn ${nickname} đã giải đố nhanh nhất với đáp án ${answer}!`, true);
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn khán giả');
+    this.speak(`Chính xác! Bạn ${cleanNick} đã giải đố nhanh nhất với đáp án ${answer}!`, true);
   }
 
   public announceTimeout(answer: string, explanation?: string): void {
@@ -206,16 +220,19 @@ export class TTSController {
 
   public announceStreak(nickname: string, streak: number): void {
     if (streak >= 3) {
-      this.speak(`Tuyệt vời! ${nickname} đang có chuỗi ${streak} câu giải đúng liên tiếp!`, false, `streak_${nickname}`);
+      const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn khán giả');
+      this.speak(`Tuyệt vời! ${cleanNick} đang có chuỗi ${streak} câu giải đúng liên tiếp!`, false, `streak_${nickname}`);
     }
   }
 
   public announceGift(nickname: string, giftName: string): void {
-    this.speak(`Cảm ơn bạn ${nickname} đã gửi tặng ${giftName} cổ vũ lớp học!`, false, `gift_${nickname}_${giftName}`);
+    const cleanNick = VietnameseVoiceHelper.formatNicknameForSpeech(nickname, 'bạn khán giả');
+    this.speak(`Cảm ơn bạn ${cleanNick} đã gửi tặng ${giftName} cổ vũ lớp học!`, false, `gift_${nickname}_${giftName}`);
   }
 
   public announceChampion(championName: string): void {
-    this.speak(`Vinh danh nhà vô địch Đuổi Hình Bắt Chữ hôm nay: ${championName}!`, true);
+    const cleanChamp = VietnameseVoiceHelper.formatNicknameForSpeech(championName, 'thám tử xuất sắc');
+    this.speak(`Vinh danh nhà vô địch Đuổi Hình Bắt Chữ hôm nay: ${cleanChamp}!`, true);
   }
 
   public testVoice(): void {

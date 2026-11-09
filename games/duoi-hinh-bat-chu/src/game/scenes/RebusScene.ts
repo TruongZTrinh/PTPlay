@@ -156,6 +156,13 @@ export class RebusScene extends Phaser.Scene {
     this.rebusEngine.setEvents({
       onStateChanged: (state) => {
         this.mc.onStateChanged(state);
+        if (state === 'intro' || state === 'idle') {
+          this.audioEngine.playCue('lobby');
+        } else if (state === 'guessing') {
+          this.audioEngine.playCue('thinking');
+        } else if (state === 'celebrate' || state === 'reveal') {
+          this.audioEngine.playCue('transition');
+        }
       },
 
       onPuzzleStarted: (p, round, totalRounds) => {
@@ -167,12 +174,12 @@ export class RebusScene extends Phaser.Scene {
         this.easelBoard.updateTimer(rem, tot);
       },
 
-      onHint1Triggered: (h1) => {
-        this.easelBoard.showHint1(h1);
+      onHint1Triggered: (h1, sponsorName) => {
+        this.easelBoard.showHint1(h1, sponsorName);
       },
 
-      onHint2Triggered: (h2, firstChar) => {
-        this.easelBoard.showHint2(h2, firstChar);
+      onHint2Triggered: (h2, firstChar, sponsorName) => {
+        this.easelBoard.showHint2(h2, firstChar, sponsorName);
       },
 
       onGuessAttempt: (userId, guess, isCorrect, solverRank, points) => {

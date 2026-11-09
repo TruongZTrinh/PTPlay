@@ -304,13 +304,15 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       this.clueCard1.setVisible(false);
       this.plusSign.setVisible(false);
       this.clueCard2.setVisible(false);
-      this.hintBannerText.setText(puzzle.hint1 || '🔍 Gợi ý: Quan sát hình ảnh để bắt chữ...');
+      this.hintBannerText.setText('🌹 Tặng Hoa Hồng hoặc Follow để mở Gợi ý!');
+      this.hintBannerText.setColor('#fde047');
     } else {
       this.singleImageContainer.setVisible(false);
       this.clueCard1.setVisible(true);
       this.plusSign.setVisible(true);
       this.clueCard2.setVisible(true);
-      this.hintBannerText.setText('🔍 Gợi ý: Quan sát 2 hình ảnh để tìm từ ghép...');
+      this.hintBannerText.setText('🌹 Tặng Hoa Hồng hoặc Follow để mở Gợi ý!');
+      this.hintBannerText.setColor('#fde047');
 
       // Clue 1 icon
       const icon1Key = `clue_${puzzle.clues?.[0] || 'fish'}`;
@@ -450,22 +452,37 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }
   }
 
-  public showHint1(hint1: string): void {
-    this.hintBannerText.setText(`💡 Gợi ý 1: ${hint1}`);
+  public showHint1(hint1: string, sponsorName?: string): void {
+    const text = sponsorName
+      ? `💡 Gợi ý (từ ${sponsorName}): ${hint1}`
+      : `💡 Gợi ý 1: ${hint1}`;
+    this.hintBannerText.setText(text);
+    this.hintBannerText.setColor('#fde047');
     this.scene.tweens.add({
       targets: this.hintBannerText,
-      scale: 1.1,
-      duration: 200,
+      scale: 1.08,
+      duration: 220,
       yoyo: true,
       repeat: 1,
     });
   }
 
-  public showHint2(hint2: string, firstChar: string): void {
-    this.hintBannerText.setText(`💡 Gợi ý 2: Chữ cái đầu là "${firstChar}"`);
+  public showHint2(hint2: string, firstChar: string, sponsorName?: string): void {
+    const text = sponsorName
+      ? `💡 Chữ đầu là "${firstChar}" (mở bởi ${sponsorName})`
+      : `💡 Gợi ý 2: Chữ cái đầu là "${firstChar}"`;
+    this.hintBannerText.setText(text);
+    this.hintBannerText.setColor('#38bdf8');
     if (this.currentPuzzleAnswer) {
       this.renderLetterBoxes(this.currentPuzzleAnswer, false, firstChar);
     }
+    this.scene.tweens.add({
+      targets: this.hintBannerText,
+      scale: 1.08,
+      duration: 220,
+      yoyo: true,
+      repeat: 1,
+    });
   }
 
   private currentPuzzleAnswer: string = '';

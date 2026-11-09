@@ -143,8 +143,8 @@ async function runTests() {
     engine.destroy();
   });
 
-  // 5. PUBLIC HINTS AT 60% AND 85%
-  test('5. Public Hints: Automatically triggered based on time progression', () => {
+  // 5. HINTS: TRIGGERED ON ROSE OR FOLLOW (NO AUTOMATIC TIME PROGRESSION)
+  test('5. Hints: Triggered only when users send Rose or Follow (no automatic time countdown reveal)', () => {
     const alloc = new SeatAllocator();
     const roster = new StudentRoster(alloc);
     const audio = new AudioEngine();
@@ -152,20 +152,36 @@ async function runTests() {
 
     const engine = new RebusEngine(roster, audio, tts);
     engine.startShow();
+    engine.currentState = 'guessing';
 
-    let hint1Called = false;
-    let hint2Called = false;
+    let hint1Sponsor = '';
+    let hint2Sponsor = '';
+    let hint2Char = '';
 
     engine.setEvents({
-      onHint1Triggered: () => { hint1Called = true; },
-      onHint2Triggered: () => { hint2Called = true; },
+      onHint1Triggered: (h1, sponsor) => { hint1Sponsor = sponsor || ''; },
+      onHint2Triggered: (h2, firstChar, sponsor) => { hint2Sponsor = sponsor || ''; hint2Char = firstChar; },
     });
 
-    engine.triggerHint1();
-    assert.strictEqual(hint1Called, true);
+    // 1. Initial round has no hints unlocked
+    assert.strictEqual(hint1Sponsor, '');
+    assert.strictEqual(hint2Sponsor, '');
 
-    engine.triggerHint2();
-    assert.strictEqual(hint2Called, true);
+    // 2. User sends Rose -> unlocks Hint 1
+    const roseOk = engine.unlockNextHint('Thám Tử Hoa', 'rose');
+    assert.strictEqual(roseOk, true);
+    assert.strictEqual(hint1Sponsor, 'Thám Tử Hoa');
+    assert.strictEqual(hint2Sponsor, '');
+
+    // 3. User Follows -> unlocks Hint 2 (revealing first character)
+    const followOk = engine.unlockNextHint('Fan Cứng', 'follow');
+    assert.strictEqual(followOk, true);
+    assert.strictEqual(hint2Sponsor, 'Fan Cứng');
+    assert(hint2Char.length === 1, 'Hint 2 must reveal first character');
+
+    // 4. Further hints return false as both are already unlocked
+    const extraOk = engine.unlockNextHint('Fan Khác', 'rose');
+    assert.strictEqual(extraOk, false);
 
     engine.destroy();
   });

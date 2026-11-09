@@ -8,6 +8,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "test": "tsx tests/music.test.ts && tsx tests/nickname_tts.test.ts"
+  },
   "dependencies": {
     "@ptplay/live-contracts": "*",
     "@ptplay/shared-config": "*"
