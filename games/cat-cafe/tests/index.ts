@@ -3,6 +3,7 @@ import { TextSanitizer } from '../src/game/utils/TextSanitizer';
 import { CafeCommandAdapter } from '../src/game/events/CafeCommandAdapter';
 import { CAFE_CONFIG, COAT_VARIANTS, PERSONALITY_DEFS, LEVEL_MILESTONES, SESSION_CHALLENGES } from '../src/game/config/CafeConfig';
 import { ProgressionManager } from '../src/game/progression/ProgressionManager';
+import { TTSController } from '../src/game/systems/TTSController';
 
 console.log('========================================================');
 console.log('🧪 RUNNING PTPLAY CAT CAFÉ FULL V1.0 TEST SUITE');
@@ -346,6 +347,28 @@ async function runTests() {
     assert.strictEqual(importSuccess, true);
     assert.strictEqual(freshPm.data.purrPoints, 250);
     assert.strictEqual(freshPm.getPlacedDecor('cafe', 'table'), 'decor_cat_tree');
+  });
+
+  // --- 8. TTS WELCOMING CONTROLLER ---
+  await test('8.1 TTS Controller: Generates warm Vietnamese welcoming message for new viewer', () => {
+    const tts = TTSController.getInstance();
+    const msg = tts.welcomeNewViewer('LanAnh', 'Mèo Vàng Cam');
+    assert(msg.length > 10, 'Must generate non-empty greeting');
+    assert(msg.includes('LanAnh'), 'Greeting must include sanitized nickname');
+    assert(msg.includes('Mèo Vàng Cam'), 'Greeting must include cat breed');
+  });
+
+  await test('8.2 TTS Controller: Debounces rapid duplicate welcomes within 10s', () => {
+    const tts = TTSController.getInstance();
+    const secondMsg = tts.welcomeNewViewer('LanAnh', 'Mèo Vàng Cam');
+    assert.strictEqual(secondMsg, '', 'Must debounce duplicate greeting within 10s window');
+  });
+
+  await test('8.3 TTS Controller: Generates welcome back message for returning viewer', () => {
+    const tts = TTSController.getInstance();
+    const returnMsg = tts.welcomeReturningViewer('MinhQuân');
+    assert(returnMsg.length > 10, 'Must generate return greeting');
+    assert(returnMsg.includes('MinhQuân'), 'Greeting must include returning nickname');
   });
 
   console.log('\n========================================================');

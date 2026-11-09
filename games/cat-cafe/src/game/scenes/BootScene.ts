@@ -52,6 +52,15 @@ export class BootScene extends Phaser.Scene {
   }
 
   public create(): void {
+    // Keep game and audio running seamlessly even in background or blurred tabs
+    this.sound.pauseOnBlur = false;
+    this.game.events.on('hidden', () => {
+      this.game.loop.wake();
+    });
+    this.game.events.on('blur', () => {
+      this.game.loop.wake();
+    });
+
     // Generate fallback textures if any
     ProceduralTextures.generateAll(this);
 

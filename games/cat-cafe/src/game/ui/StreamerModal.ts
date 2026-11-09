@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { CAFE_CONFIG, RoomId, TimeOfDay, WeatherType, COAT_VARIANTS, SESSION_CHALLENGES } from '../config/CafeConfig';
 import { ProgressionManager } from '../progression/ProgressionManager';
 import { CafeAudioEngine } from '../audio/CafeAudioEngine';
+import { TTSController } from '../systems/TTSController';
 
 export class StreamerModal {
   private scene: Phaser.Scene;
@@ -478,7 +479,7 @@ export class StreamerModal {
       { label: '💖 Nổ Bóng Tim', fn: () => CafeAudioEngine.getInstance().playHeartPop() },
       { label: '✨ Quà Lấp Lánh', fn: () => CafeAudioEngine.getInstance().playSparkleShower() },
       { label: '🔔 Chuông Cửa', fn: () => CafeAudioEngine.getInstance().playDoorbell() },
-      { label: '🎉 Thăng Cấp', fn: () => CafeAudioEngine.getInstance().playLevelUp() },
+      { label: '🗣️ TTS Chào Mừng', fn: () => TTSController.getInstance().welcomeNewViewer('KhánGiảVIP', 'Mèo Vàng Cam') },
     ];
 
     testButtons.forEach((btn, i) => {
@@ -548,6 +549,31 @@ export class StreamerModal {
       this.renderAudioTab();
     });
     this.contentContainer.add(szZone);
+
+    // TTS Welcoming Toggle Button
+    const isTtsOn = TTSController.getInstance().getEnabled();
+    const ttsBtn = this.scene.add.graphics();
+    ttsBtn.fillStyle(isTtsOn ? 0x059669 : 0x1E293B, 1);
+    ttsBtn.fillRoundedRect(230, y, 220, 40, 8);
+    ttsBtn.lineStyle(1.5, isTtsOn ? 0x34D399 : 0x475569, 1);
+    ttsBtn.strokeRoundedRect(230, y, 220, 40, 8);
+    this.contentContainer.add(ttsBtn);
+
+    const ttsText = this.scene.add.text(246, y + 12, `TTS Chào Mừng: ${isTtsOn ? 'BẬT' : 'TẮT'}`, {
+      fontFamily: 'Segoe UI, sans-serif',
+      fontSize: '12px',
+      fontStyle: 'bold',
+      color: '#FFFFFF',
+    });
+    this.contentContainer.add(ttsText);
+
+    const ttsZone = this.scene.add.zone(340, y + 20, 220, 40);
+    ttsZone.setInteractive({ useHandCursor: true });
+    ttsZone.on('pointerdown', () => {
+      TTSController.getInstance().setEnabled(!isTtsOn);
+      this.renderAudioTab();
+    });
+    this.contentContainer.add(ttsZone);
   }
 
   private createVolumeRow(label: string, curVal: number, y: number, onChange: (val: number) => void): void {

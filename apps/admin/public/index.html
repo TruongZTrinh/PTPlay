@@ -810,6 +810,13 @@
                   <input type="range" id="range-amb" value="50" min="0" max="100" style="width: 100%;" onchange="updateCatVolume()">
                 </div>
               </div>
+              <div style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px;">
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Giọng Đọc TTS Chào Mừng Khách Vào Quán Mèo:</label>
+                <div class="btn-group">
+                  <button class="btn-green" style="font-size: 11px; padding: 4px 8px;" onclick="sendMockChat('cat', 'MaiLan', 'MÈO')">🗣️ Chào Mừng Khách Mới (MÈO)</button>
+                  <button class="btn-gold" style="font-size: 11px; padding: 4px 8px;" onclick="sendMockChat('cat', 'MinhQuân', 'JOIN')">🗣️ Chào Mừng Khách Mới (JOIN)</button>
+                </div>
+              </div>
             </div>
           </div>
 

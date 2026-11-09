@@ -21,7 +21,9 @@ export const phaserGameConfig: Phaser.Types.Core.GameConfig = {
   fps: {
     target: 60,
     min: 30,
+    forceSetTimeOut: true,
   },
+  autoFocus: true,
   scene: [BootScene, CafeScene, UIScene],
 };
 

@@ -220,6 +220,22 @@ export class CafeAudioEngine {
     this.ambienceGain.gain.value = Math.max(0, Math.min(1, s.ambienceVolume));
   }
 
+  /**
+   * Duck background music volume during speech synthesis announcements.
+   */
+  public setDucking(isDucking: boolean): void {
+    if (!this.bgmGain || !this.ctx) return;
+    const s = ProgressionManager.getInstance().data.settings;
+    const baseBgm = s.muted ? 0 : Math.max(0, Math.min(1, s.bgmVolume));
+    const target = isDucking ? baseBgm * 0.35 : baseBgm;
+    try {
+      this.bgmGain.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.bgmGain.gain.linearRampToValueAtTime(target, this.ctx.currentTime + 0.15);
+    } catch {
+      this.bgmGain.gain.value = target;
+    }
+  }
+
   private ensureRunning(): boolean {
     if (!this.ctx) {
       this.unlock();

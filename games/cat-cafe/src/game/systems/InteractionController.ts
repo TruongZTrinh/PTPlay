@@ -5,6 +5,7 @@ import { EffectManager } from './EffectManager';
 import { CAFE_CONFIG } from '../config/CafeConfig';
 import { ProgressionManager } from '../progression/ProgressionManager';
 import { CafeAudioEngine } from '../audio/CafeAudioEngine';
+import { TTSController } from './TTSController';
 
 export interface InteractionResponse {
   success: boolean;
@@ -55,6 +56,10 @@ export class InteractionController {
     this.notify(result.messageVi);
     if (result.isNew) {
       CafeAudioEngine.getInstance().playDoorbell();
+      const coatName = result.cat?.coat?.nameVi;
+      TTSController.getInstance().welcomeNewViewer(nickname, coatName);
+    } else if (!result.isWaitlisted) {
+      TTSController.getInstance().welcomeReturningViewer(nickname);
     }
     return {
       success: !result.isWaitlisted,
