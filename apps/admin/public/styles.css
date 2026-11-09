@@ -124,6 +124,11 @@ aside.app-sidebar.collapsed {
   min-width: 72px;
 }
 
+aside.app-sidebar.collapsed .sidebar-brand {
+  padding: 16px 8px;
+  justify-content: center;
+}
+
 /* Sidebar Brand */
 .sidebar-brand {
   padding: 16px;
@@ -154,7 +159,7 @@ aside.app-sidebar.collapsed {
 }
 
 aside.app-sidebar.collapsed .brand-text {
-  display: none;
+  display: none !important;
 }
 
 .brand-title {
@@ -186,7 +191,7 @@ aside.app-sidebar.collapsed .brand-text {
 }
 
 aside.app-sidebar.collapsed .sidebar-route-switcher {
-  display: none;
+  display: none !important;
 }
 
 .route-switcher-label {
@@ -333,7 +338,7 @@ aside.app-sidebar.collapsed .nav-section-title {
 }
 
 aside.app-sidebar.collapsed .tab-label {
-  display: none;
+  display: none !important;
 }
 
 .tab-pill {
@@ -346,7 +351,7 @@ aside.app-sidebar.collapsed .tab-label {
 }
 
 aside.app-sidebar.collapsed .tab-pill {
-  display: none;
+  display: none !important;
 }
 
 .tab-badge-live {
@@ -361,7 +366,26 @@ aside.app-sidebar.collapsed .tab-pill {
 }
 
 aside.app-sidebar.collapsed .tab-badge-live {
-  display: none;
+  display: none !important;
+}
+
+aside.app-sidebar.collapsed .tab-btn {
+  justify-content: center;
+  padding: 10px 0;
+  gap: 0;
+}
+
+aside.app-sidebar.collapsed .tab-btn.active {
+  border-left: none !important;
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-sm);
+  padding-left: 0;
+}
+
+aside.app-sidebar.collapsed .tab-icon {
+  font-size: 18px;
+  width: auto;
+  margin: 0;
 }
 
 /* Sidebar Footer */
@@ -372,7 +396,7 @@ aside.app-sidebar.collapsed .tab-badge-live {
 }
 
 aside.app-sidebar.collapsed .sidebar-footer {
-  padding: 8px;
+  padding: 8px 6px;
 }
 
 .sidebar-system-card {
@@ -385,7 +409,7 @@ aside.app-sidebar.collapsed .sidebar-footer {
 }
 
 aside.app-sidebar.collapsed .sidebar-system-card {
-  display: none;
+  display: none !important;
 }
 
 .sys-meta-row {
@@ -404,6 +428,11 @@ aside.app-sidebar.collapsed .sidebar-system-card {
   gap: 6px;
 }
 
+aside.app-sidebar.collapsed .sidebar-footer-actions {
+  flex-direction: column;
+  gap: 4px;
+}
+
 .footer-btn {
   flex: 1;
   background: var(--bg-card);
@@ -419,6 +448,13 @@ aside.app-sidebar.collapsed .sidebar-system-card {
   justify-content: center;
   gap: 4px;
   transition: all 0.15s ease;
+}
+
+aside.app-sidebar.collapsed .footer-btn {
+  padding: 6px 0;
+  font-size: 10px;
+  text-align: center;
+  justify-content: center;
 }
 
 .footer-btn:hover {
@@ -445,18 +481,21 @@ header.app-header {
   background: var(--bg-header);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 0 18px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 10px;
   z-index: 80;
+  overflow: hidden;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .sidebar-toggle-btn {
@@ -465,6 +504,7 @@ header.app-header {
   border-radius: var(--radius-sm);
   width: 32px;
   height: 32px;
+  min-width: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -472,6 +512,7 @@ header.app-header {
   gap: 4px;
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
 .sidebar-toggle-btn:hover {
@@ -492,25 +533,43 @@ header.app-header {
   align-items: center;
   gap: 6px;
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .crumb-root {
   font-weight: 800;
   color: var(--primary-blue);
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .crumb-sep {
   color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .crumb-category {
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  max-width: 160px;
 }
 
 .crumb-active {
   font-weight: 700;
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  max-width: 220px;
 }
 
 /* Telemetry Pills */
@@ -518,6 +577,8 @@ header.app-header {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 2;
+  min-width: 0;
 }
 
 .telemetry-bar {
@@ -528,6 +589,8 @@ header.app-header {
   border: 1px solid rgba(255, 255, 255, 0.07);
   padding: 3px 8px;
   border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .telemetry-item {
@@ -540,6 +603,7 @@ header.app-header {
   color: var(--text-secondary);
   cursor: default;
   transition: background 0.15s ease;
+  white-space: nowrap;
 }
 
 .telemetry-item:hover {
@@ -551,6 +615,7 @@ header.app-header {
   height: 6px;
   border-radius: 50%;
   background: #475569;
+  flex-shrink: 0;
 }
 
 .tele-dot.online {
@@ -579,7 +644,9 @@ header.app-header {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .provider-pill-btn {
@@ -1606,4 +1673,93 @@ footer.app-footer {
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN & ADAPTIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Breakpoint 1: Medium-Large screens (<= 1360px)
+   Condense telemetry bar by hiding labels: only show dots and ports */
+@media (max-width: 1360px) {
+  .telemetry-bar .tele-name {
+    display: none;
+  }
+  .telemetry-bar {
+    gap: 2px;
+    padding: 3px 6px;
+  }
+  .telemetry-item {
+    padding: 2px 5px;
+    gap: 4px;
+  }
+  .crumb-category {
+    max-width: 110px;
+  }
+}
+
+/* Breakpoint 2: Medium screens (<= 1150px)
+   Hide secondary breadcrumb category & clock, compact command palette button */
+@media (max-width: 1150px) {
+  .breadcrumbs .crumb-category,
+  .breadcrumbs .crumb-sep:nth-of-type(2) {
+    display: none;
+  }
+  .header-clock {
+    display: none;
+  }
+  .cmd-palette-btn kbd {
+    display: none;
+  }
+  .cmd-palette-btn {
+    padding: 5px 8px;
+  }
+}
+
+/* Breakpoint 3: Split-screen / Half-monitor view (<= 990px)
+   Hide header telemetry center to guarantee all critical action buttons stay visible */
+@media (max-width: 990px) {
+  .header-center {
+    display: none !important;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  main.tab-content {
+    padding: 14px 16px;
+  }
+}
+
+/* Breakpoint 4: Compact / Mobile view (<= 768px)
+   Compact action buttons and responsive sidebar behavior */
+@media (max-width: 768px) {
+  .breadcrumbs .crumb-root,
+  .breadcrumbs .crumb-sep:first-of-type {
+    display: none;
+  }
+  .crumb-active {
+    max-width: 140px;
+    font-size: 11px;
+  }
+  .provider-pill-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+  .btn-enterprise-green,
+  .btn-enterprise-red {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+  .cmd-palette-btn span {
+    display: none;
+  }
+  .cmd-palette-btn::before {
+    content: "🔍";
+  }
+  .cmd-palette-btn {
+    padding: 5px 8px;
+  }
 }
