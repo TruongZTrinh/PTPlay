@@ -786,6 +786,7 @@ function renderCatalogGrid(gifts) {
         </div>
         <div class="catalog-card-actions">
           <button class="btn-outline" style="font-size: 10px; padding: 3px 6px;" onclick="prefillMappingFromCatalog('${safeName}', ${diamonds})">+ Ánh Xạ</button>
+          <button class="btn-green" style="font-size: 10px; padding: 3px 6px;" onclick="selectGiftForActiveGame('${safeName}', '${iconUrl}')" title="Chọn quà này vào bộ gửi quà giả lập">📥 Chọn</button>
           <button class="btn-gold" style="font-size: 10px; padding: 3px 6px;" onclick="testGiftFromCatalog('${safeName}')">🧪 Thử</button>
         </div>
       </div>
@@ -828,7 +829,85 @@ function prefillMappingFromCatalog(giftName, coins) {
 
 function testGiftFromCatalog(giftName) {
   playSound('click');
-  sendMockGift(currentActiveGame, giftName, 1);
+  const gameMap = {
+    'cat-cafe': 'cat',
+    'mini-war': 'mini-war',
+    'english-class': 'english',
+    'english-class-live': 'english',
+    'quiz-show': 'quiz',
+    'duoi-hinh-bat-chu': 'rebus'
+  };
+  const targetKey = gameMap[currentActiveGame] || 'cat';
+  sendMockGift(targetKey, giftName, 1);
+}
+
+function selectGiftForActiveGame(giftName, iconUrl) {
+  playSound('click');
+  const gameMap = {
+    'cat-cafe': 'cat',
+    'mini-war': 'mini-war',
+    'english-class': 'english',
+    'english-class-live': 'english',
+    'quiz-show': 'quiz',
+    'duoi-hinh-bat-chu': 'rebus'
+  };
+  const targetKey = gameMap[currentActiveGame] || 'cat';
+  const select = document.getElementById(`select-${targetKey}-gift-name`);
+  const preview = document.getElementById(`preview-${targetKey}-gift-img`);
+
+  if (select) {
+    let exists = false;
+    for (let i = 0; i < select.options.length; i++) {
+      if (select.options[i].value.toLowerCase() === giftName.toLowerCase()) {
+        select.selectedIndex = i;
+        exists = true;
+        break;
+      }
+    }
+    if (!exists) {
+      const opt = document.createElement('option');
+      opt.value = giftName;
+      opt.textContent = `${giftName} (Catalog TikTok)`;
+      if (iconUrl) opt.setAttribute('data-icon', iconUrl);
+      select.insertBefore(opt, select.firstChild);
+      select.selectedIndex = 0;
+    }
+    if (preview && iconUrl) {
+      preview.src = iconUrl;
+    }
+    showToast(`✅ Đã chọn "${giftName}" vào bộ gửi quà của ${currentActiveGame}!`, 'success');
+  }
+}
+
+function openCatalogGiftPicker(gameType) {
+  playSound('click');
+  switchTab('gifts');
+  switchGiftSubtab('catalog');
+  const searchInput = document.getElementById('input-catalog-search');
+  if (searchInput) {
+    searchInput.focus();
+    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  showToast(`🔍 Duyệt 727+ quà TikTok và nhấn "📥 Chọn" hoặc "🧪 Thử" để gửi ngay!`, 'info');
+}
+
+function updateGiftPreview(gameType) {
+  const select = document.getElementById(`select-${gameType}-gift-name`);
+  const img = document.getElementById(`preview-${gameType}-gift-img`);
+  if (!select || !img) return;
+  const opt = select.selectedOptions[0];
+  const icon = opt ? opt.getAttribute('data-icon') : '';
+  if (icon) {
+    img.src = icon;
+    img.style.display = 'inline-block';
+  } else {
+    const giftName = select.value.trim().toLowerCase();
+    const found = (catalogGiftsCache || []).find(g => (g.name || '').toLowerCase() === giftName);
+    if (found && (found.iconUrl || found.localIcon)) {
+      img.src = found.iconUrl || found.localIcon;
+      img.style.display = 'inline-block';
+    }
+  }
 }
 
 async function syncCatalogFromSource() {

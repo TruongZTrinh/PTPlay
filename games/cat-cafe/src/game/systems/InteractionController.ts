@@ -41,7 +41,36 @@ export class InteractionController {
     this.onFeedbackCallback?.(msg);
   }
 
+  public getOrCreateCat(viewerId: string, nickname: string): any {
+    let cat = this.catManager.getCatByViewerId(viewerId);
+    if (!cat) {
+      const joinRes = this.catManager.handleViewerJoin(viewerId, nickname);
+      cat = joinRes.cat;
+      if (joinRes.isNew) {
+        CafeAudioEngine.getInstance().playDoorbell();
+        const coatName = joinRes.cat?.coat?.nameVi;
+        TTSController.getInstance().welcomeNewViewer(nickname, coatName);
+      }
+    }
+    if (!cat) {
+      const all = this.catManager.getAllCats();
+      if (all.length > 0) {
+        cat = all[Math.floor(Math.random() * all.length)];
+      }
+    }
+    return cat;
+  }
+
   private isRateLimited(viewerId: string): boolean {
+    if (
+      viewerId.startsWith('mock_') ||
+      viewerId.startsWith('user_') ||
+      viewerId.startsWith('admin_') ||
+      viewerId.startsWith('host_') ||
+      viewerId.startsWith('test_')
+    ) {
+      return false;
+    }
     const last = this.userCooldowns.get(viewerId) || 0;
     const now = Date.now();
     if (now - last < CAFE_CONFIG.userCooldownMs) {
@@ -69,9 +98,9 @@ export class InteractionController {
   }
 
   public handleFeed(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.feed', messageVi: msg };
     }
@@ -88,15 +117,15 @@ export class InteractionController {
     });
 
     ProgressionManager.getInstance().trackAction('feed');
-    const msg = `🍽️ @${cat.nickname} đang chạy tới bát ăn!`;
+    const msg = `🍽️ @${cat.nickname} đang chạy tới bát ăn cá!`;
     this.notify(msg);
     return { success: true, action: 'cat_cafe.feed', messageVi: msg };
   }
 
   public handlePlay(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.play', messageVi: msg };
     }
@@ -119,9 +148,9 @@ export class InteractionController {
   }
 
   public handleNap(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.nap', messageVi: msg };
     }
@@ -142,13 +171,13 @@ export class InteractionController {
   }
 
   public handleLove(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
       // General audience heart taps (e.g. from TikTok screen tap likes)
       this.effectManager.spawnHeartShower(CAFE_CONFIG.width / 2 + (Math.random() * 200 - 100), 460, 5);
       CafeAudioEngine.getInstance().playHeartPop();
       ProgressionManager.getInstance().trackAction('love');
-      const msg = `💖 @${nickname} vừa thả tim cho quán mèo! (Gõ 'MÈO' để nhận mèo riêng nhé🐾)`;
+      const msg = `💖 @${nickname} vừa thả tim cho quán mèo!`;
       this.notify(msg);
       return { success: true, action: 'cat_cafe.love', messageVi: msg };
     }
@@ -167,9 +196,9 @@ export class InteractionController {
   }
 
   public handleCall(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.call', messageVi: msg };
     }
@@ -188,14 +217,15 @@ export class InteractionController {
   }
 
   public handlePhoto(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.photo', messageVi: msg };
     }
 
     cat.showEmote('emote_camera', 3000);
+    cat.setActionPose('photo');
     CafeAudioEngine.getInstance().playCameraShutter();
 
     // Flash screen effect
@@ -218,32 +248,32 @@ export class InteractionController {
   }
 
   public handleGarden(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.garden', messageVi: msg };
     }
 
-    // If garden is unlocked in progression, switch or give feedback
     const pm = ProgressionManager.getInstance();
-    if (!pm.isItemUnlocked('room_garden')) {
-      const msg = `🔒 Vườn Mèo sẽ mở khoá khi quán đạt Cấp 3 (hiện tại: Cấp ${pm.data.level})!`;
-      this.notify(msg);
-      return { success: false, action: 'cat_cafe.garden', messageVi: msg };
-    }
+    cat.walkTo(380, 560, () => {
+      cat.showEmote('emote_heart', 3000);
+      cat.setActionPose('garden');
+      this.effectManager.spawnSparkles(cat.x, cat.y - 20, 10);
+    });
 
-    cat.showLoveReaction();
     pm.trackAction('garden');
-    const msg = `🌿 @${cat.nickname} thích thú dạo chơi ngoài Vườn Mèo!`;
+    const msg = pm.isItemUnlocked('room_garden')
+      ? `🌿 @${cat.nickname} thích thú dạo chơi ngoài Vườn Mèo!`
+      : `🌿 @${cat.nickname} thích thú đùa nghịch bên góc cây xanh & ngắm vườn hoa!`;
     this.notify(msg);
     return { success: true, action: 'cat_cafe.garden', messageVi: msg };
   }
 
   public handleAngry(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.angry', messageVi: msg };
     }
@@ -260,9 +290,9 @@ export class InteractionController {
   }
 
   public handleDance(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.dance', messageVi: msg };
     }
@@ -279,9 +309,9 @@ export class InteractionController {
   }
 
   public handleZoomies(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.zoomies', messageVi: msg };
     }
@@ -298,9 +328,9 @@ export class InteractionController {
   }
 
   public handleBox(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.box', messageVi: msg };
     }
@@ -317,9 +347,9 @@ export class InteractionController {
   }
 
   public handleBath(viewerId: string, nickname: string): InteractionResponse {
-    const cat = this.catManager.getCatByViewerId(viewerId);
+    const cat = this.getOrCreateCat(viewerId, nickname);
     if (!cat) {
-      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      const msg = `@${nickname} ơi: Quán đang đông, bé của bạn đang chờ vào bàn nhé! 🐾`;
       this.notify(msg);
       return { success: false, action: 'cat_cafe.bath', messageVi: msg };
     }

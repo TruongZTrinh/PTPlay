@@ -1281,39 +1281,47 @@
               <div style="margin-bottom: 12px;">
                 <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà TikTok:</label>
                 <div class="btn-group" style="margin-top: 4px;">
-                  <button class="btn-red" onclick="sendMockGift('quiz', 'Rose', 1)">🌹 Hoa Hồng (+Gợi ý)</button>
-                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Heart', 1)">💖 Thả Tim (+1 Tim)</button>
-                  <button class="btn-outline" onclick="sendMockGift('quiz', 'Donut', 1)">🍩 Bánh Donut (+10đ)</button>
-                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Star', 1)">⭐ Ngôi Sao (+50đ)</button>
-                  <button class="btn-amber" onclick="sendMockGift('quiz', 'Lion', 1)">🦁 Sư Tử (Spotlight MC)</button>
-                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Crown', 1)">👑 Vương Miện (x2 Điểm)</button>
-                  <button class="btn-purple" onclick="sendMockGift('quiz', 'Cake', 1)">🎂 Bánh Kem</button>
-                  <button class="btn-outline" onclick="sendMockGift('quiz', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
-                  <button class="btn-blue" onclick="sendMockGift('quiz', 'Universe', 1)">🌌 Vũ Trụ (Đại Tiệc Neon)</button>
+                  <button class="btn-red" onclick="sendMockGift('quiz', 'Rose', 1)"><img src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-btn-img" alt="Rose"> Hoa Hồng (+Gợi ý)</button>
+                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Heart', 1)"><img src="/assets/gifts/heart.webp" onerror="this.src='https://beetgames.com/images/gifts/heart.webp'" class="gift-btn-img" alt="Heart"> Thả Tim (+1 Tim)</button>
+                  <button class="btn-outline" onclick="sendMockGift('quiz', 'Donut', 1)"><img src="/assets/gifts/cheese_donuts.webp" onerror="this.src='https://beetgames.com/images/gifts/cheese_donuts.webp'" class="gift-btn-img" alt="Donut"> Bánh Donut (+10đ)</button>
+                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Star', 1)"><img src="/assets/gifts/star.webp" onerror="this.src='https://beetgames.com/images/gifts/star.webp'" class="gift-btn-img" alt="Star"> Ngôi Sao (+50đ)</button>
+                  <button class="btn-amber" onclick="sendMockGift('quiz', 'Lion', 1)"><img src="/assets/gifts/lion.webp" onerror="this.src='https://beetgames.com/images/gifts/lion.webp'" class="gift-btn-img" alt="Lion"> Sư Tử (Spotlight MC)</button>
+                  <button class="btn-gold" onclick="sendMockGift('quiz', 'Crown', 1)"><img src="/assets/gifts/crown.webp" onerror="this.src='https://beetgames.com/images/gifts/crown.webp'" class="gift-btn-img" alt="Crown"> Vương Miện (x2 Điểm)</button>
+                  <button class="btn-purple" onclick="sendMockGift('quiz', 'Cake', 1)"><img src="/assets/gifts/birthday_cake.webp" onerror="this.src='https://beetgames.com/images/gifts/birthday_cake.webp'" class="gift-btn-img" alt="Cake"> Bánh Kem</button>
+                  <button class="btn-outline" onclick="sendMockGift('quiz', 'Fireworks', 1)"><img src="/assets/gifts/fireworks.webp" onerror="this.src='https://beetgames.com/images/gifts/fireworks.webp'" class="gift-btn-img" alt="Fireworks"> Pháo Hoa Sân Khấu</button>
+                  <button class="btn-blue" onclick="sendMockGift('quiz', 'Universe', 1)"><img src="/assets/gifts/tiktok_universe.webp" onerror="this.src='https://beetgames.com/images/gifts/tiktok_universe.webp'" class="gift-btn-img" alt="Universe"> Vũ Trụ (Đại Tiệc Neon)</button>
                 </div>
               </div>
 
               <!-- Custom Gift Dispatcher for Quiz Show -->
               <div class="subcard-box">
-                <label class="subcard-title">🎯 Bộ Gửi Quà Gameshow Tùy Chỉnh</label>
-                <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="subcard-title" style="margin-bottom: 0;">🎯 Bộ Gửi Quà Gameshow Tùy Chỉnh</label>
+                  <button type="button" class="btn-outline" style="font-size: 10.5px; padding: 2px 8px; gap: 4px;" onclick="openCatalogGiftPicker('quiz')">
+                    <span>🔍</span> Chọn Từ Catalog
+                  </button>
+                </div>
+                <div style="display: grid; grid-template-columns: 1.2fr 1.6fr 0.8fr auto; gap: 8px; align-items: end;">
                   <div>
                     <label style="font-size: 10px;">Khán Giả / Thí Sinh:</label>
                     <input type="text" id="input-quiz-gift-nick" value="ĐạiGiaNeon" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                   </div>
                   <div>
-                    <label style="font-size: 10px;">Loại Quà (Gift):</label>
-                    <select id="select-quiz-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
-                      <option value="Rose">🌹 Rose (Hoa Hồng)</option>
-                      <option value="Heart">❤️ Heart (Thả Tim)</option>
-                      <option value="Donut">🍩 Donut (Bánh Ngọt)</option>
-                      <option value="Star">⭐ Star (Ngôi Sao)</option>
-                      <option value="Lion">🦁 Lion (Sư Tử)</option>
-                      <option value="Crown">👑 Crown (Vương Miện)</option>
-                      <option value="Cake">🎂 Cake (Bánh Kem)</option>
-                      <option value="Fireworks">🎆 Fireworks (Pháo Hoa)</option>
-                      <option value="Universe">🌌 Universe (Vũ Trụ)</option>
-                    </select>
+                    <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <img id="preview-quiz-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
+                      <select id="select-quiz-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('quiz')">
+                        <option value="Rose" data-icon="/assets/gifts/rose.webp">Rose (Hoa Hồng) - 1 Xu</option>
+                        <option value="Heart" data-icon="/assets/gifts/heart.webp">Heart (Thả Tim) - 1 Xu</option>
+                        <option value="Donut" data-icon="/assets/gifts/cheese_donuts.webp">Donut (Bánh Ngọt) - 30 Xu</option>
+                        <option value="Star" data-icon="/assets/gifts/star.webp">Star (Ngôi Sao) - 99 Xu</option>
+                        <option value="Crown" data-icon="/assets/gifts/crown.webp">Crown (Vương Miện) - 99 Xu</option>
+                        <option value="Cake" data-icon="/assets/gifts/birthday_cake.webp">Cake (Bánh Kem) - 1 Xu</option>
+                        <option value="Fireworks" data-icon="/assets/gifts/fireworks.webp">Fireworks (Pháo Hoa) - 1.088 Xu</option>
+                        <option value="Lion" data-icon="/assets/gifts/lion.webp">Lion (Sư Tử Spotlight) - 29.999 Xu</option>
+                        <option value="Universe" data-icon="/assets/gifts/tiktok_universe.webp">TikTok Universe (Vũ Trụ) - 44.999 Xu</option>
+                      </select>
+                    </div>
                   </div>
                   <div>
                     <label style="font-size: 10px;">Số Lượng:</label>
@@ -1427,39 +1435,47 @@
               <div style="margin-bottom: 12px;">
                 <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà TikTok:</label>
                 <div class="btn-group" style="margin-top: 4px;">
-                  <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)">🌹 Hoa Hồng (+10đ)</button>
-                  <button class="btn-gold" onclick="sendMockGift('rebus', 'Heart', 1)">💖 Thả Tim (+20đ)</button>
-                  <button class="btn-outline" onclick="sendMockGift('rebus', 'Donut', 1)">🍩 Bánh Donut (+30đ)</button>
-                  <button class="btn-purple" onclick="sendMockGift('rebus', 'Perfume', 1)">🧴 Nước Hoa (Mở Gợi Ý)</button>
-                  <button class="btn-gold" onclick="sendMockGift('rebus', 'Crown', 1)">👑 Vương Miện (+100đ)</button>
-                  <button class="btn-amber" onclick="sendMockGift('rebus', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
-                  <button class="btn-purple" onclick="sendMockGift('rebus', 'Cake', 1)">🎂 Bánh Kem (+80đ)</button>
-                  <button class="btn-outline" onclick="sendMockGift('rebus', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
-                  <button class="btn-blue" onclick="sendMockGift('rebus', 'Universe', 1)">🌌 Vũ Trụ (Tiệc Lớp)</button>
+                  <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)"><img src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-btn-img" alt="Rose"> Hoa Hồng (+10đ)</button>
+                  <button class="btn-gold" onclick="sendMockGift('rebus', 'Heart', 1)"><img src="/assets/gifts/heart.webp" onerror="this.src='https://beetgames.com/images/gifts/heart.webp'" class="gift-btn-img" alt="Heart"> Thả Tim (+20đ)</button>
+                  <button class="btn-outline" onclick="sendMockGift('rebus', 'Donut', 1)"><img src="/assets/gifts/cheese_donuts.webp" onerror="this.src='https://beetgames.com/images/gifts/cheese_donuts.webp'" class="gift-btn-img" alt="Donut"> Bánh Donut (+30đ)</button>
+                  <button class="btn-purple" onclick="sendMockGift('rebus', 'Perfume', 1)"><img src="/assets/gifts/perfume.webp" onerror="this.src='https://beetgames.com/images/gifts/perfume.webp'" class="gift-btn-img" alt="Perfume"> Nước Hoa (Mở Gợi Ý)</button>
+                  <button class="btn-gold" onclick="sendMockGift('rebus', 'Crown', 1)"><img src="/assets/gifts/crown.webp" onerror="this.src='https://beetgames.com/images/gifts/crown.webp'" class="gift-btn-img" alt="Crown"> Vương Miện (+100đ)</button>
+                  <button class="btn-amber" onclick="sendMockGift('rebus', 'Lion', 1)"><img src="/assets/gifts/lion.webp" onerror="this.src='https://beetgames.com/images/gifts/lion.webp'" class="gift-btn-img" alt="Lion"> Sư Tử (Spotlight)</button>
+                  <button class="btn-purple" onclick="sendMockGift('rebus', 'Cake', 1)"><img src="/assets/gifts/birthday_cake.webp" onerror="this.src='https://beetgames.com/images/gifts/birthday_cake.webp'" class="gift-btn-img" alt="Cake"> Bánh Kem (+80đ)</button>
+                  <button class="btn-outline" onclick="sendMockGift('rebus', 'Fireworks', 1)"><img src="/assets/gifts/fireworks.webp" onerror="this.src='https://beetgames.com/images/gifts/fireworks.webp'" class="gift-btn-img" alt="Fireworks"> Pháo Hoa Sân Khấu</button>
+                  <button class="btn-blue" onclick="sendMockGift('rebus', 'Universe', 1)"><img src="/assets/gifts/tiktok_universe.webp" onerror="this.src='https://beetgames.com/images/gifts/tiktok_universe.webp'" class="gift-btn-img" alt="Universe"> Vũ Trụ (Tiệc Lớp)</button>
                 </div>
               </div>
 
               <!-- Custom Gift Dispatcher for Rebus -->
               <div class="subcard-box">
-                <label class="subcard-title">🎯 Bộ Gửi Quà Giải Đố Tùy Chỉnh</label>
-                <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="subcard-title" style="margin-bottom: 0;">🎯 Bộ Gửi Quà Giải Đố Tùy Chỉnh</label>
+                  <button type="button" class="btn-outline" style="font-size: 10.5px; padding: 2px 8px; gap: 4px;" onclick="openCatalogGiftPicker('rebus')">
+                    <span>🔍</span> Chọn Từ Catalog
+                  </button>
+                </div>
+                <div style="display: grid; grid-template-columns: 1.2fr 1.6fr 0.8fr auto; gap: 8px; align-items: end;">
                   <div>
                     <label style="font-size: 10px;">Khán Giả / Thám Tử:</label>
                     <input type="text" id="input-rebus-gift-nick" value="TrùmĐoánChữ" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                   </div>
                   <div>
-                    <label style="font-size: 10px;">Loại Quà (Gift):</label>
-                    <select id="select-rebus-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
-                      <option value="Rose">🌹 Rose (Hoa Hồng)</option>
-                      <option value="Heart">❤️ Heart (Thả Tim)</option>
-                      <option value="Donut">🍩 Donut (Bánh Donut)</option>
-                      <option value="Perfume">🧴 Perfume (Nước Hoa Gợi Ý)</option>
-                      <option value="Lion">🦁 Lion (Sư Tử Spotlight)</option>
-                      <option value="Crown">👑 Crown (Vương Miện)</option>
-                      <option value="Cake">🎂 Cake (Bánh Kem)</option>
-                      <option value="Fireworks">🎆 Fireworks (Pháo Hoa)</option>
-                      <option value="Universe">🌌 Universe (Vũ Trụ)</option>
-                    </select>
+                    <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <img id="preview-rebus-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
+                      <select id="select-rebus-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('rebus')">
+                        <option value="Rose" data-icon="/assets/gifts/rose.webp">Rose (Hoa Hồng) - 1 Xu</option>
+                        <option value="Heart" data-icon="/assets/gifts/heart.webp">Heart (Thả Tim) - 1 Xu</option>
+                        <option value="Donut" data-icon="/assets/gifts/cheese_donuts.webp">Donut (Bánh Donut) - 30 Xu</option>
+                        <option value="Perfume" data-icon="/assets/gifts/perfume.webp">Perfume (Nước Hoa) - 20 Xu</option>
+                        <option value="Crown" data-icon="/assets/gifts/crown.webp">Crown (Vương Miện) - 99 Xu</option>
+                        <option value="Cake" data-icon="/assets/gifts/birthday_cake.webp">Cake (Bánh Kem) - 1 Xu</option>
+                        <option value="Fireworks" data-icon="/assets/gifts/fireworks.webp">Fireworks (Pháo Hoa) - 1.088 Xu</option>
+                        <option value="Lion" data-icon="/assets/gifts/lion.webp">Lion (Sư Tử Spotlight) - 29.999 Xu</option>
+                        <option value="Universe" data-icon="/assets/gifts/tiktok_universe.webp">TikTok Universe (Vũ Trụ) - 44.999 Xu</option>
+                      </select>
+                    </div>
                   </div>
                   <div>
                     <label style="font-size: 10px;">Số Lượng:</label>

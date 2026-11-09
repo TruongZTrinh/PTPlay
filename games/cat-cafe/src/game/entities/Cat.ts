@@ -478,7 +478,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public becomeParty(durationMs = 4000): void {
-    if (this.isRoyal) return;
+    if (this.isRoyal) this.isRoyal = false;
     this.setActionPose('party');
     this.scene.tweens.add({
       targets: this.catSprite,
@@ -494,7 +494,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public becomeAngry(onComplete?: () => void): void {
-    if (this.isRoyal) return;
+    if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('angry');
     this.setActionPose('meow');
     this.catSprite.setTint(0xFF6B6B);
@@ -529,7 +529,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public doDance(onComplete?: () => void): void {
-    if (this.isRoyal) return;
+    if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('dance');
     this.setActionPose('party');
     this.showEmote('emote_dance', 3200);
@@ -562,7 +562,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public doZoomies(onComplete?: () => void): void {
-    if (this.isRoyal) return;
+    if (this.isRoyal) this.isRoyal = false;
     if (this.moveTween) {
       this.moveTween.stop();
       this.moveTween = null;
@@ -630,7 +630,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public hideInBox(onComplete?: () => void): void {
-    if (this.isRoyal) return;
+    if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('box');
     this.setActionPose('box');
     this.showEmote('emote_box', 3500);
@@ -659,7 +659,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public takeBath(onComplete?: () => void): void {
-    if (this.isRoyal) return;
+    if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('bath');
     this.setActionPose('bath');
     this.showEmote('emote_bath', 3200);
@@ -791,7 +791,9 @@ export class Cat extends Phaser.GameObjects.Container {
 
   private transitionTo(newState: CatState): void {
     this.currentState = newState;
-    if (this.isRoyal) return;
+    if (this.isRoyal && newState !== 'react') {
+      this.isRoyal = false;
+    }
 
     if (newState === 'sleep') {
       this.setActionPose('sleep');

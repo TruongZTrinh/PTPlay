@@ -253,6 +253,7 @@ export class CafeScene extends Phaser.Scene {
         if (cat) {
           this.v3Visuals.play('fish_basket', cat, cat.x, cat.y, 1);
         }
+        this.notifyCatCount();
         break;
       }
 
@@ -262,11 +263,13 @@ export class CafeScene extends Phaser.Scene {
         if (cat) {
           this.v3Visuals.play('yarn_ball', cat, cat.x, cat.y, 1);
         }
+        this.notifyCatCount();
         break;
       }
 
       case 'cat_cafe.nap':
         this.interactionController.handleNap(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.love': {
@@ -275,39 +278,48 @@ export class CafeScene extends Phaser.Scene {
         const lx = cat ? cat.x : 270;
         const ly = cat ? cat.y : 480;
         this.v3Visuals.play('heart', cat, lx, ly, 1);
+        this.notifyCatCount();
         break;
       }
 
       case 'cat_cafe.call':
         this.interactionController.handleCall(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.photo':
         this.interactionController.handlePhoto(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.garden':
         this.interactionController.handleGarden(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.angry':
         this.interactionController.handleAngry(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.dance':
         this.interactionController.handleDance(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.zoomies':
         this.interactionController.handleZoomies(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.box':
         this.interactionController.handleBox(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.bath':
         this.interactionController.handleBath(cmd.userId, cmd.nickname);
+        this.notifyCatCount();
         break;
 
       case 'cat_cafe.switch_room': {
