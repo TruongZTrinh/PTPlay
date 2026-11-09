@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "updatedAt": "2026-11-09T15:02:49.684Z",
+  "updatedAt": "2026-11-09T15:45:14.071Z",
   "total": 25,
   "rules": [
     {
@@ -311,11 +311,14 @@
       "id": "dh_perfume",
       "gameType": "duoi-hinh-bat-chu",
       "giftName": "Perfume",
-      "action": "rebus.hint",
-      "cooldownSec": 6,
+      "action": "rebus.gift",
+      "params": {
+        "effect": "perfume"
+      },
+      "cooldownSec": 4,
       "maxPerEvent": 1,
       "enabled": true,
-      "description": "Mở khóa gợi ý chữ cái đầu"
+      "description": "Nước hoa thơm cổ vũ cả lớp (+20đ)"
     }
   ]
 }
