@@ -688,17 +688,31 @@ async function fetchCatalogGifts() {
     ]);
 
     if (giftsRes.ok) {
-      catalogGiftsCache = await giftsRes.json();
+      const data = await giftsRes.json();
+      catalogGiftsCache = Array.isArray(data) ? data : (data.gifts || []);
       renderCatalogGrid(catalogGiftsCache);
-      if (countBadge) countBadge.innerText = catalogGiftsCache.length.toLocaleString('vi-VN');
+      const totalCount = (data && typeof data.total === 'number') ? data.total : catalogGiftsCache.length;
+      if (countBadge) countBadge.innerText = totalCount.toLocaleString('vi-VN');
     }
 
     if (statsRes && statsRes.ok) {
       catalogStatsCache = await statsRes.json();
       const totBadge = document.getElementById('badge-stat-total-catalog');
       const vnBadge = document.getElementById('badge-stat-vn-catalog');
-      if (totBadge) totBadge.innerText = `${catalogStatsCache.totalGifts.toLocaleString('vi-VN')} Quà`;
-      if (vnBadge) vnBadge.innerText = `${catalogStatsCache.vnGifts.toLocaleString('vi-VN')} Quà`;
+      const obsBadge = document.getElementById('badge-stat-observed');
+      const mapBadge = document.getElementById('badge-stat-mappings');
+
+      const tot = catalogStatsCache.totalCatalog ?? catalogStatsCache.totalGifts ?? 1711;
+      const vn = catalogStatsCache.totalVn ?? catalogStatsCache.vnGifts ?? 727;
+      const obs = catalogStatsCache.totalObserved ?? 0;
+      const maps = catalogStatsCache.totalMappings ?? 25;
+
+      if (totBadge) totBadge.innerText = `${tot.toLocaleString('vi-VN')} Quà`;
+      if (vnBadge) vnBadge.innerText = `${vn.toLocaleString('vi-VN')} Quà`;
+      if (obsBadge) obsBadge.innerText = `${obs.toLocaleString('vi-VN')} ID`;
+      if (mapBadge && (!currentMappingsList || currentMappingsList.length === 0)) {
+        mapBadge.innerText = `${maps} Quy Tắc`;
+      }
     }
   } catch (err) {
     console.error('Lỗi tải Catalog:', err);
@@ -853,7 +867,8 @@ async function onMappingGameChange() {
     if (!gameActionsMapCache[game]) {
       const res = await fetch(`/api/gift-mappings/actions?gameType=${game}`);
       if (res.ok) {
-        gameActionsMapCache[game] = await res.json();
+        const actionData = await res.json();
+        gameActionsMapCache[game] = Array.isArray(actionData) ? actionData : (actionData.actions || []);
       }
     }
 
@@ -918,10 +933,12 @@ async function fetchGiftMappings() {
     if (!res.ok) {
       const legacyRes = await fetch('/api/mapping');
       if (legacyRes.ok) {
-        currentMappingsList = await legacyRes.json();
+        const legData = await legacyRes.json();
+        currentMappingsList = Array.isArray(legData) ? legData : (legData.rules || []);
       }
     } else {
-      currentMappingsList = await res.json();
+      const data = await res.json();
+      currentMappingsList = Array.isArray(data) ? data : (data.rules || []);
     }
 
     const badgeStat = document.getElementById('badge-stat-mappings');
@@ -939,7 +956,8 @@ function renderMappingsTable(rules) {
   const tbody = document.getElementById('mapping-tbody');
   if (!tbody) return;
 
-  const filtered = (rules || []).filter(r => {
+  const list = Array.isArray(rules) ? rules : (rules?.rules || []);
+  const filtered = list.filter(r => {
     if (currentMappingGameFilter === 'all') return true;
     return (r.gameType || 'mini-war') === currentMappingGameFilter;
   });
@@ -1118,7 +1136,8 @@ async function exportMappingsJson() {
     const res = await fetch('/api/gift-mappings/export');
     let data;
     if (res.ok) {
-      data = await res.json();
+      const expData = await res.json();
+      data = expData.rules || expData;
     } else {
       data = { version: '1.0', exportedAt: new Date().toISOString(), mappings: currentMappingsList };
     }
@@ -1144,7 +1163,7 @@ async function importMappingsJson(event) {
   try {
     const text = await file.text();
     const parsed = JSON.parse(text);
-    const mappings = Array.isArray(parsed) ? parsed : (parsed.mappings || []);
+    const mappings = Array.isArray(parsed) ? parsed : (parsed.mappings || parsed.rules || []);
 
     if (!Array.isArray(mappings) || mappings.length === 0) {
       showToast('⚠️ File JSON không chứa danh sách mappings hợp lệ', 'warn');
@@ -1184,15 +1203,27 @@ async function fetchGiftAnalytics() {
     const kpiDiamonds = document.getElementById('kpi-real-diamonds');
     const kpiMock = document.getElementById('kpi-mock-gifts');
 
-    if (kpiReal && data.summary) kpiReal.innerText = (data.summary.realGiftsReceived || 0).toLocaleString();
-    if (kpiActions && data.summary) kpiActions.innerText = (data.summary.executedActions || 0).toLocaleString();
-    if (kpiDiamonds && data.summary) kpiDiamonds.innerText = (data.summary.realDiamondsReceived || 0).toLocaleString();
-    if (kpiMock && data.summary) kpiMock.innerText = (data.summary.mockGiftsReceived || 0).toLocaleString();
+    const realGifts = data.real?.totalGifts ?? data.summary?.realGiftsReceived ?? 0;
+    const realActions = data.real?.totalActionsExecuted ?? data.summary?.executedActions ?? 0;
+    const realDiamonds = data.real?.totalDiamonds ?? data.summary?.realDiamondsReceived ?? 0;
+    const mockGifts = data.mock?.totalSimulatedGifts ?? data.summary?.mockGiftsReceived ?? 0;
+
+    if (kpiReal) kpiReal.innerText = realGifts.toLocaleString();
+    if (kpiActions) kpiActions.innerText = realActions.toLocaleString();
+    if (kpiDiamonds) kpiDiamonds.innerText = realDiamonds.toLocaleString();
+    if (kpiMock) kpiMock.innerText = mockGifts.toLocaleString();
 
     // 2. Top 5 Gifts
     const topGiftsContainer = document.getElementById('analytics-top-gifts-container');
     if (topGiftsContainer) {
-      const topList = data.topGifts || [];
+      let topList = [];
+      if (Array.isArray(data.topGifts)) {
+        topList = data.topGifts;
+      } else if (data.real?.topGifts && typeof data.real.topGifts === 'object') {
+        topList = Object.entries(data.real.topGifts)
+          .map(([name, count]) => ({ name, count }))
+          .sort((a, b) => b.count - a.count);
+      }
       if (topList.length === 0) {
         topGiftsContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có sự kiện quà tặng nào trong phiên</div>';
       } else {
@@ -1217,7 +1248,7 @@ async function fetchGiftAnalytics() {
     // 3. Per Game Stats
     const perGameContainer = document.getElementById('analytics-per-game-container');
     if (perGameContainer) {
-      const perGame = data.perGameStats || {};
+      const perGame = data.perGameStats || data.real?.perGame || {};
       const gameEntries = Object.entries(perGame);
       if (gameEntries.length === 0) {
         perGameContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có dữ liệu theo game</div>';
@@ -1231,14 +1262,18 @@ async function fetchGiftAnalytics() {
         };
         perGameContainer.innerHTML = `
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
-            ${gameEntries.map(([g, s]) => `
-              <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 6px; padding: 8px; text-align: center;">
+            ${gameEntries.map(([g, s]) => {
+              const rcv = s.received ?? s.giftsReceived ?? 0;
+              const exe = s.executed ?? s.actionsExecuted ?? 0;
+              const fail = s.failed ?? 0;
+              return `
+              <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-card); border-radius: 6px; padding: 8px; text-align: center;">
                 <div style="font-size: 11px; font-weight: bold; color: #38bdf8; margin-bottom: 4px;">${GAME_ICONS[g] || g}</div>
-                <div style="font-size: 18px; font-weight: 700; color: #f8fafc;">${s.received || 0}</div>
-                <div style="font-size: 10px; color: #10b981;">⚡ ${s.executed || 0} thực thi</div>
-                ${s.failed > 0 ? `<div style="font-size: 10px; color: #ef4444;">✕ ${s.failed} lỗi</div>` : ''}
-              </div>
-            `).join('')}
+                <div style="font-size: 18px; font-weight: 700; color: #f8fafc;">${rcv}</div>
+                <div style="font-size: 10px; color: #10b981;">⚡ ${exe} thực thi</div>
+                ${fail > 0 ? `<div style="font-size: 10px; color: #ef4444;">✕ ${fail} lỗi</div>` : ''}
+              </div>`;
+            }).join('')}
           </div>
         `;
       }
@@ -1247,7 +1282,16 @@ async function fetchGiftAnalytics() {
     // 4. Unknown Gifts Alert
     const unknownContainer = document.getElementById('analytics-unknown-gifts-container');
     if (unknownContainer) {
-      const unknowns = data.unknownGifts || [];
+      let unknowns = [];
+      if (Array.isArray(data.unknownGifts)) {
+        unknowns = data.unknownGifts;
+      } else if (data.real?.unknownGifts && typeof data.real.unknownGifts === 'object') {
+        unknowns = Object.entries(data.real.unknownGifts).map(([name, info]) => ({
+          name,
+          giftId: 'Chưa biết',
+          count: info.count || 1
+        }));
+      }
       if (unknowns.length === 0) {
         unknownContainer.innerHTML = '<div style="color: #10b981; font-size: 12px; padding: 10px;">✓ Không phát hiện quà chưa rõ nào. Toàn bộ quà đã được nhận diện hoặc ánh xạ chuẩn xác!</div>';
       } else {
@@ -1269,7 +1313,8 @@ async function fetchGiftAnalytics() {
     }
 
     // 5. Render Pipeline Trace
-    renderPipelineHistory(data.recentPipelineEvents);
+    const pipeEvents = data.recentPipelineEvents || data.pipelineHistory || [];
+    renderPipelineHistory(pipeEvents);
 
   } catch (e) {
     console.error('Lỗi nạp thống kê quà:', e);
@@ -1280,13 +1325,14 @@ function renderPipelineHistory(events) {
   const tbody = document.getElementById('pipeline-tbody');
   if (!tbody) return;
 
-  const rawEvents = events || (latestAnalyticsData?.recentPipelineEvents) || [];
+  const rawEvents = events || (latestAnalyticsData?.recentPipelineEvents) || (latestAnalyticsData?.pipelineHistory) || [];
   const filterSelect = document.getElementById('select-pipeline-filter-source');
   const filterSource = filterSelect ? filterSelect.value : 'all';
 
   const filtered = rawEvents.filter(ev => {
-    if (filterSource === 'real') return !ev.isMock;
-    if (filterSource === 'mock') return !!ev.isMock;
+    const isMock = ev.source === 'mock' || !!ev.isMock;
+    if (filterSource === 'real') return !isMock;
+    if (filterSource === 'mock') return isMock;
     return true;
   });
 
@@ -1299,22 +1345,30 @@ function renderPipelineHistory(events) {
     'EXECUTED': '<span class="badge badge-green">✓ Đã Thực Thi</span>',
     'FAILED': '<span class="badge badge-red">✕ Thất Bại</span>',
     'IGNORED': '<span class="badge" style="background:#475569; color:#94a3b8;">Bỏ Qua (Khác Game)</span>',
-    'UNMAPPED': '<span class="badge badge-amber">Chưa Có Mapping</span>'
+    'FILTERED_INACTIVE': '<span class="badge" style="background:#475569; color:#94a3b8;">Bỏ Qua (Khác Game)</span>',
+    'UNMAPPED': '<span class="badge badge-amber">Chưa Có Mapping</span>',
+    'UNKNOWN_GIFT': '<span class="badge badge-amber">Quà Chưa Rõ</span>',
+    'QUEUED': '<span class="badge badge-blue">Đang Chờ</span>',
+    'COOLDOWN': '<span class="badge badge-gold">Hồi Chiêu</span>'
   };
 
   tbody.innerHTML = filtered.slice(0, 50).map(ev => {
-    const timeStr = new Date(ev.timestamp).toLocaleTimeString();
-    const sourceBadge = ev.isMock
+    const timeStr = new Date(ev.timestamp || Date.now()).toLocaleTimeString();
+    const isMock = ev.source === 'mock' || !!ev.isMock;
+    const sourceBadge = isMock
       ? '<span class="badge" style="background: rgba(192,132,252,0.15); color: #c084fc; border: 1px solid rgba(192,132,252,0.3);">🧪 Mock Sim</span>'
       : '<span class="badge badge-green">🟢 Real LIVE</span>';
-    const statusHtml = STATUS_BADGES[ev.status] || `<span class="badge">${ev.status}</span>`;
-    const actionCode = ev.action ? `<code>${ev.action}</code>` : '<span style="color:#64748b;">–</span>';
-    const gameLabel = ev.gameType || '–';
+    const rawStatus = (ev.status || ev.pipelineStatus || 'EXECUTED').toUpperCase();
+    const statusHtml = STATUS_BADGES[rawStatus] || `<span class="badge">${rawStatus}</span>`;
+    const actionVal = ev.action || ev.actionExecuted;
+    const actionCode = actionVal ? `<code>${actionVal}</code>` : '<span style="color:#64748b;">–</span>';
+    const gameLabel = ev.gameType || ev.targetGame || ev.activeGame || '–';
+    const senderName = ev.sender || ev.viewerNick || 'Khán giả';
 
     return `<tr>
       <td style="font-family: monospace; font-size: 11px; color: #94a3b8;">${timeStr}</td>
       <td>${sourceBadge}</td>
-      <td><strong>${ev.sender || 'Khán giả'}</strong></td>
+      <td><strong>${senderName}</strong></td>
       <td>🎁 <strong>${ev.giftName}</strong> <small style="color:#64748b;">(ID: ${ev.giftId || '?'})</small></td>
       <td><span class="badge badge-gold">x${ev.count || 1}</span></td>
       <td>${gameLabel} ➔ ${actionCode}</td>
