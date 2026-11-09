@@ -41,6 +41,7 @@ export class RebusEngine {
 
   private timerHandle: any = null;
   private stateTimerHandle: any = null;
+  private puzzleDeck: RebusPuzzle[] = [];
 
   constructor(
     studentRoster: StudentRoster,
@@ -52,9 +53,10 @@ export class RebusEngine {
     this.audioEngine = audioEngine;
     this.ttsController = ttsController;
 
-    this.allPuzzles = (rawPuzzles as RebusPuzzle[]).filter((p) => p.verified);
+    // Only include puzzles with authentic rebus images
+    this.allPuzzles = (rawPuzzles as RebusPuzzle[]).filter((p) => p.verified && !!p.image);
     if (this.allPuzzles.length === 0) {
-      this.allPuzzles = rawPuzzles as RebusPuzzle[];
+      this.allPuzzles = (rawPuzzles as RebusPuzzle[]).filter((p) => !!p.image);
     }
 
     this.config = {
@@ -117,6 +119,7 @@ export class RebusEngine {
     this.remainingTimeMs = this.totalTimeMs;
 
     this.setState('intro');
+    this.audioEngine.playRoundStart();
     this.events.onPuzzleStarted?.(this.currentPuzzle, this.roundNumber, this.totalRounds);
 
     if (this.config.ttsEnabled) {
@@ -129,35 +132,37 @@ export class RebusEngine {
   }
 
   private selectNextPuzzle(): RebusPuzzle | null {
-    let pool = this.allPuzzles.filter((p) => !this.historyIds.includes(p.id));
-    if (pool.length === 0) {
-      this.historyIds = [];
-      pool = this.allPuzzles;
-    }
-    if (pool.length === 0) return null;
+    // If deck is empty, refill from verified image puzzles and shuffle
+    if (this.puzzleDeck.length === 0) {
+      const candidates = this.allPuzzles.filter((p) => !!p.image);
+      if (candidates.length === 0) return null;
 
-    let selected: RebusPuzzle;
-    // Show CẨU THẢ first on round 1 if available
-    if (this.roundNumber === 1) {
-      const first = pool.find((p) => p.id === 'dhbc-0001');
-      selected = first ? { ...first } : { ...pool[0] };
-    } else {
-      const randomIndex = Math.floor(Math.random() * pool.length);
-      selected = { ...pool[randomIndex] };
+      // Fisher-Yates shuffle
+      const shuffled = [...candidates];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      this.puzzleDeck = shuffled;
     }
 
-    this.historyIds.push(selected.id);
+    const selected = this.puzzleDeck.pop();
+    if (!selected) return null;
+
+    const puzzleCopy: RebusPuzzle = { ...selected };
+
+    this.historyIds.push(puzzleCopy.id);
     if (this.historyIds.length > 50) {
       this.historyIds.shift();
     }
 
     if (this.config.mode === 'speed8') {
-      selected.durationSec = 8;
+      puzzleCopy.durationSec = 8;
     } else if (this.config.mode === 'boss') {
-      selected.durationSec = 24;
+      puzzleCopy.durationSec = 24;
     }
 
-    return selected;
+    return puzzleCopy;
   }
 
   private startGuessing(): void {
@@ -305,6 +310,7 @@ export class RebusEngine {
     this.clearTimers();
     this.setState('locked');
     this.audioEngine.playLock();
+    this.audioEngine.playRoundEnd();
 
     this.stateTimerHandle = setTimeout(() => {
       this.revealPuzzle();

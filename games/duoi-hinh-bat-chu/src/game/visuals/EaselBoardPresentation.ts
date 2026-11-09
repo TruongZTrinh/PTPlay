@@ -180,7 +180,9 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
   }
 
   private createStageBackground(): void {
-    const bgKey = this.scene.textures.exists('bg_classroom_day')
+    const bgKey = this.scene.textures.exists('bg_classroom_ai')
+      ? 'bg_classroom_ai'
+      : this.scene.textures.exists('bg_classroom_day')
       ? 'bg_classroom_day'
       : this.scene.textures.exists('bg_resort')
       ? 'bg_resort'

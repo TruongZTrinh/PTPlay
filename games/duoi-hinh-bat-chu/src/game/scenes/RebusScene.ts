@@ -93,20 +93,39 @@ export class RebusScene extends Phaser.Scene {
 
   private setupAudioUnlock(): void {
     const unlockBtn = document.getElementById('audio-unlock-overlay');
-    if (unlockBtn) {
-      const unlockAudio = () => {
-        this.audioEngine.unlock();
+    let unlocked = false;
+
+    const unlockAudio = () => {
+      if (unlocked) return;
+      unlocked = true;
+
+      this.audioEngine.unlock();
+
+      if (unlockBtn) {
+        unlockBtn.style.transition = 'opacity 0.3s ease';
         unlockBtn.style.opacity = '0';
         setTimeout(() => {
           unlockBtn.style.display = 'none';
         }, 300);
-        window.removeEventListener('click', unlockAudio);
-        window.removeEventListener('keydown', unlockAudio);
-      };
+      }
+
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      document.removeEventListener('pointerdown', unlockAudio);
+      this.input.off('pointerdown', unlockAudio);
+    };
+
+    if (unlockBtn) {
       unlockBtn.addEventListener('click', unlockAudio);
-      window.addEventListener('click', unlockAudio, { once: true });
-      window.addEventListener('keydown', unlockAudio, { once: true });
     }
+    window.addEventListener('click', unlockAudio, { once: true });
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
+    window.addEventListener('touchstart', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
+    document.addEventListener('pointerdown', unlockAudio, { once: true });
+    this.input.once('pointerdown', unlockAudio);
   }
 
   private renderInitialStudents(): void {

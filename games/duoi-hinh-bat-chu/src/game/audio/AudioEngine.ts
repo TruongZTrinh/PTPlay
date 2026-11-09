@@ -43,28 +43,36 @@ export class AudioEngine {
   public bgmEnabled: boolean = true;
   public bgmVolume: number = 0.35;
   private currentTrackIndex: number = 0;
-  private basePath: string = 'assets/rebus-v1/audio/bgm';
+  private basePath: string = '/assets/rebus-v1/audio/bgm';
 
   constructor() {}
 
-  public init(): void {
-    if (this.ctx) return;
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      this.ctx = new AudioCtx();
-      this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(this.soundVolume, this.ctx.currentTime);
-      this.masterGain.connect(this.ctx.destination);
-    } catch {
-      // AudioContext unavailable
+  public ensureContext(): boolean {
+    if (!this.ctx && typeof window !== 'undefined') {
+      try {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.setValueAtTime(this.soundVolume, this.ctx.currentTime);
+          this.masterGain.connect(this.ctx.destination);
+        }
+      } catch {
+        return false;
+      }
     }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      void this.ctx.resume().catch(() => {});
+    }
+    return !!this.ctx;
+  }
+
+  public init(): void {
+    this.ensureContext();
   }
 
   public unlock(): void {
-    this.init();
-    if (this.ctx && this.ctx.state === 'suspended') {
-      void this.ctx.resume();
-    }
+    this.ensureContext();
     if (this.bgmEnabled) {
       this.playBGM();
     }
@@ -187,7 +195,7 @@ export class AudioEngine {
   }
 
   private playTone(freq: number, type: OscillatorType, duration: number, delay: number = 0, gainLevel: number = 0.2): void {
-    if (!this.ctx || !this.masterGain) return;
+    if (!this.ensureContext() || !this.ctx || !this.masterGain) return;
     try {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
@@ -208,6 +216,19 @@ export class AudioEngine {
     } catch {
       // ignore
     }
+  }
+
+  public playRoundStart(): void {
+    // Upbeat 3-note ascending game-show chime (G4 -> C5 -> E5)
+    this.playTone(392.0, 'sine', 0.12, 0.0, 0.22);
+    this.playTone(523.25, 'triangle', 0.14, 0.09, 0.25);
+    this.playTone(659.25, 'triangle', 0.28, 0.18, 0.28);
+  }
+
+  public playRoundEnd(): void {
+    // 2-tone gentle buzzer/gong (Eb4 -> Bb3) indicating round timeout or completion
+    this.playTone(311.13, 'sawtooth', 0.18, 0.0, 0.15);
+    this.playTone(233.08, 'triangle', 0.32, 0.12, 0.2);
   }
 
   public playTick(): void {

@@ -68,6 +68,7 @@ export class BootScene extends Phaser.Scene {
     this.load.image('props_board', `${assetPath}/props/chalkboard.png`);
 
     // 4. Backgrounds
+    this.load.image('bg_classroom_ai', `${assetPath}/backgrounds/classroom_ai_stage.png`);
     this.load.image('bg_resort', `${assetPath}/backgrounds/classroom_day.png`);
     this.load.image('bg_classroom_day', `${assetPath}/backgrounds/classroom_day.png`);
     this.load.image('bg_classroom_evening', `${assetPath}/backgrounds/classroom_evening.png`);

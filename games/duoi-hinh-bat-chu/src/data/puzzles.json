@@ -2252,866 +2252,122 @@
   },
   {
     "id": "dhbc-0125",
-    "category": "Ghép từ",
-    "answer": "Cá vàng",
-    "aliases": [],
-    "clues": [
-      "fish",
-      "gold"
+    "category": "Đuổi hình bắt chữ",
+    "answer": "HỒNG TÂM",
+    "aliases": [
+      "hong tam"
     ],
-    "hint": "Một loài cá thường được nuôi làm cảnh.",
-    "explanation": "Cá + vàng = cá vàng.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Một loài cá thường được nuôi làm cảnh.",
-    "hint2": "Chữ cái đầu: C..."
+    "clues": [
+      "hồng",
+      "tâm"
+    ],
+    "image": "dhbc_extra_hongtam.jpg",
+    "hint1": "Câu đố gồm 7 chữ cái: H...",
+    "hint2": "Gợi ý: Trái tim màu hồng hoặc hồng tâm bia bắn",
+    "explanation": "Trái tim màu hồng phấn ở ngay tâm điểm = HỒNG TÂM",
+    "durationSec": 20,
+    "difficulty": 1,
+    "mode": "word",
+    "verified": true
   },
   {
     "id": "dhbc-0126",
-    "category": "Ghép từ",
-    "answer": "Mặt trời",
-    "aliases": [],
-    "clues": [
-      "face",
-      "sun"
+    "category": "Đuổi hình bắt chữ",
+    "answer": "KIẾM CHUYỆN",
+    "aliases": [
+      "kiem chuyen"
     ],
-    "hint": "Nguồn sáng lớn trên bầu trời ban ngày.",
-    "explanation": "Mặt + trời = mặt trời.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Nguồn sáng lớn trên bầu trời ban ngày.",
-    "hint2": "Chữ cái đầu: M..."
+    "clues": [
+      "kiếm",
+      "chuyện"
+    ],
+    "image": "dhbc_extra_kiemchuyen.jpg",
+    "hint1": "Câu đố gồm 10 chữ cái: K...",
+    "hint2": "Gợi ý: Cây thanh kiếm đặt cạnh cuốn truyện",
+    "explanation": "Cây thanh kiếm cắm cạnh cuốn truyện (chuyện) = KIẾM CHUYỆN",
+    "durationSec": 20,
+    "difficulty": 1,
+    "mode": "word",
+    "verified": true
   },
   {
     "id": "dhbc-0127",
-    "category": "Ghép từ",
-    "answer": "Hoa hồng",
-    "aliases": [],
-    "clues": [
-      "flower",
-      "rose"
+    "category": "Đuổi hình bắt chữ",
+    "answer": "SÁT CÁT",
+    "aliases": [
+      "sat cat"
     ],
-    "hint": "Một loại hoa có gai, thường tặng để bày tỏ tình cảm.",
-    "explanation": "Hoa + hồng = hoa hồng.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Một loại hoa có gai, thường tặng để bày tỏ tình cảm.",
-    "hint2": "Chữ cái đầu: H..."
+    "clues": [
+      "sát",
+      "cát"
+    ],
+    "image": "dhbc_extra_satcat.png",
+    "hint1": "Câu đố gồm 6 chữ cái: S...",
+    "hint2": "Gợi ý: Chữ SÁT nằm sát bên đống cát vàng",
+    "explanation": "Chữ Sát nằm áp sát bãi cát vàng = SÁT CÁT",
+    "durationSec": 20,
+    "difficulty": 1,
+    "mode": "word",
+    "verified": true
   },
   {
     "id": "dhbc-0128",
-    "category": "Ghép từ",
-    "answer": "Nước mắt",
-    "aliases": [],
-    "clues": [
-      "water",
-      "eye"
+    "category": "Đuổi hình bắt chữ",
+    "answer": "TÍCH PHÂN",
+    "aliases": [
+      "tich phan"
     ],
-    "hint": "Xuất hiện khi khóc.",
-    "explanation": "Nước + mắt = nước mắt.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Xuất hiện khi khóc.",
-    "hint2": "Chữ cái đầu: N..."
+    "clues": [
+      "tích",
+      "phân"
+    ],
+    "image": "dhbc_extra_tichphan.jpg",
+    "hint1": "Câu đố gồm 8 chữ cái: T...",
+    "hint2": "Gợi ý: Dấu tích xanh v đặt cạnh đống phân",
+    "explanation": "Dấu tích chữ V đặt cạnh đống phân = TÍCH PHÂN",
+    "durationSec": 20,
+    "difficulty": 1,
+    "mode": "word",
+    "verified": true
   },
   {
     "id": "dhbc-0129",
-    "category": "Ghép từ",
-    "answer": "Bàn tay",
-    "aliases": [],
-    "clues": [
-      "book",
-      "hand"
+    "category": "Đuổi hình bắt chữ",
+    "answer": "TRANH THỦ",
+    "aliases": [
+      "tranh thu"
     ],
-    "hint": "Bộ phận có năm ngón.",
-    "explanation": "Chữ bàn gợi từ bàn; tay = bàn tay.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Bộ phận có năm ngón.",
-    "hint2": "Chữ cái đầu: B..."
+    "clues": [
+      "tranh",
+      "thủ"
+    ],
+    "image": "dhbc_extra_tranhthu.jpg",
+    "hint1": "Câu đố gồm 8 chữ cái: T...",
+    "hint2": "Gợi ý: Bức tranh phong cảnh vẽ con thú rừng",
+    "explanation": "Bức tranh sơn dầu vẽ loài thú rừng = TRANH THỦ",
+    "durationSec": 20,
+    "difficulty": 1,
+    "mode": "word",
+    "verified": true
   },
   {
     "id": "dhbc-0130",
-    "category": "Ghép từ",
-    "answer": "Chân trời",
-    "aliases": [],
-    "clues": [
-      "foot",
-      "sun"
+    "category": "Đuổi hình bắt chữ",
+    "answer": "XÀ KÉP",
+    "aliases": [
+      "xa kep"
     ],
-    "hint": "Đường tưởng tượng nơi trời và đất như gặp nhau.",
-    "explanation": "Chân + trời = chân trời.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Đường tưởng tượng nơi trời và đất như gặp nhau.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0131",
-    "category": "Ghép từ",
-    "answer": "Trái tim",
-    "aliases": [],
     "clues": [
-      "fruit",
-      "heart"
+      "xà",
+      "kép"
     ],
-    "hint": "Biểu tượng của tình yêu.",
-    "explanation": "Trái + tim = trái tim.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Biểu tượng của tình yêu.",
-    "hint2": "Chữ cái đầu: T..."
-  },
-  {
-    "id": "dhbc-0132",
-    "category": "Ghép từ",
-    "answer": "Sao biển",
-    "aliases": [],
-    "clues": [
-      "star",
-      "sea"
-    ],
-    "hint": "Động vật biển có thân dạng sao.",
-    "explanation": "Sao + biển = sao biển.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Động vật biển có thân dạng sao.",
-    "hint2": "Chữ cái đầu: S..."
-  },
-  {
-    "id": "dhbc-0133",
-    "category": "Ghép từ",
-    "answer": "Cửa sổ",
-    "aliases": [],
-    "clues": [
-      "door",
-      "window"
-    ],
-    "hint": "Ô thoáng trên tường nhà.",
-    "explanation": "Cửa + sổ = cửa sổ.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Ô thoáng trên tường nhà.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0134",
-    "category": "Ghép từ",
-    "answer": "Chuông gió",
-    "aliases": [],
-    "clues": [
-      "bell",
-      "wind"
-    ],
-    "hint": "Vật trang trí kêu leng keng khi có gió.",
-    "explanation": "Chuông + gió = chuông gió.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Vật trang trí kêu leng keng khi có gió.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0135",
-    "category": "Ghép từ",
-    "answer": "Mắt kính",
-    "aliases": [],
-    "clues": [
-      "eye",
-      "glasses"
-    ],
-    "hint": "Vật giúp bạn nhìn rõ hơn khi bị cận.",
-    "explanation": "Mắt + kính = mắt kính.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Vật giúp bạn nhìn rõ hơn khi bị cận.",
-    "hint2": "Chữ cái đầu: M..."
-  },
-  {
-    "id": "dhbc-0136",
-    "category": "Ghép từ",
-    "answer": "Lửa trại",
-    "aliases": [],
-    "clues": [
-      "fire",
-      "house"
-    ],
-    "hint": "Ngọn lửa đốt trong sinh hoạt ngoài trời.",
-    "explanation": "Lửa + trại = lửa trại.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Ngọn lửa đốt trong sinh hoạt ngoài trời.",
-    "hint2": "Chữ cái đầu: L..."
-  },
-  {
-    "id": "dhbc-0137",
-    "category": "Ghép từ",
-    "answer": "Bánh xe",
-    "aliases": [],
-    "clues": [
-      "cake",
-      "car"
-    ],
-    "hint": "Bộ phận tròn giúp xe lăn.",
-    "explanation": "Bánh + xe = bánh xe.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Bộ phận tròn giúp xe lăn.",
-    "hint2": "Chữ cái đầu: B..."
-  },
-  {
-    "id": "dhbc-0138",
-    "category": "Ghép từ",
-    "answer": "Trăng sao",
-    "aliases": [],
-    "clues": [
-      "moon",
-      "star"
-    ],
-    "hint": "Hai thứ thường nhìn thấy trên trời đêm.",
-    "explanation": "Trăng + sao = trăng sao.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Hai thứ thường nhìn thấy trên trời đêm.",
-    "hint2": "Chữ cái đầu: T..."
-  },
-  {
-    "id": "dhbc-0139",
-    "category": "Ghép từ",
-    "answer": "Nón lá",
-    "aliases": [],
-    "clues": [
-      "hat",
-      "leaf"
-    ],
-    "hint": "Vật dụng đội đầu truyền thống Việt Nam.",
-    "explanation": "Nón + lá = nón lá.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Vật dụng đội đầu truyền thống Việt Nam.",
-    "hint2": "Chữ cái đầu: N..."
-  },
-  {
-    "id": "dhbc-0140",
-    "category": "Ghép từ",
-    "answer": "Răng cưa",
-    "aliases": [],
-    "clues": [
-      "tooth",
-      "saw"
-    ],
-    "hint": "Hình dạng rìa răng nhỏ như lưỡi cưa.",
-    "explanation": "Răng + cưa = răng cưa.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Hình dạng rìa răng nhỏ như lưỡi cưa.",
-    "hint2": "Chữ cái đầu: R..."
-  },
-  {
-    "id": "dhbc-0141",
-    "category": "Ghép từ",
-    "answer": "Đèn đỏ",
-    "aliases": [],
-    "clues": [
-      "lamp",
-      "red"
-    ],
-    "hint": "Tín hiệu giao thông báo dừng.",
-    "explanation": "Đèn + đỏ = đèn đỏ.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Tín hiệu giao thông báo dừng.",
-    "hint2": "Chữ cái đầu: Đ..."
-  },
-  {
-    "id": "dhbc-0142",
-    "category": "Ghép từ",
-    "answer": "Mây trắng",
-    "aliases": [],
-    "clues": [
-      "cloud",
-      "white"
-    ],
-    "hint": "Thứ bồng bềnh trên bầu trời.",
-    "explanation": "Mây + trắng = mây trắng.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Thứ bồng bềnh trên bầu trời.",
-    "hint2": "Chữ cái đầu: M..."
-  },
-  {
-    "id": "dhbc-0143",
-    "category": "Ghép từ",
-    "answer": "Biển xanh",
-    "aliases": [],
-    "clues": [
-      "sea",
-      "blue"
-    ],
-    "hint": "Bãi nước rộng màu xanh.",
-    "explanation": "Biển + xanh = biển xanh.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Bãi nước rộng màu xanh.",
-    "hint2": "Chữ cái đầu: B..."
-  },
-  {
-    "id": "dhbc-0144",
-    "category": "Ghép từ",
-    "answer": "Mắt mèo",
-    "aliases": [],
-    "clues": [
-      "eye",
-      "cat"
-    ],
-    "hint": "Hình dáng đôi mắt của loài vật nuôi rất phổ biến.",
-    "explanation": "Mắt + mèo = mắt mèo.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Hình dáng đôi mắt của loài vật nuôi rất phổ biến.",
-    "hint2": "Chữ cái đầu: M..."
-  },
-  {
-    "id": "dhbc-0145",
-    "category": "Ghép từ",
-    "answer": "Cây cầu",
-    "aliases": [],
-    "clues": [
-      "tree",
-      "bridge"
-    ],
-    "hint": "Công trình bắc qua sông.",
-    "explanation": "Cây + cầu = cây cầu.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Công trình bắc qua sông.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0146",
-    "category": "Ghép từ",
-    "answer": "Nhà cây",
-    "aliases": [],
-    "clues": [
-      "house",
-      "tree"
-    ],
-    "hint": "Nơi ở nhỏ làm trên cây.",
-    "explanation": "Nhà + cây = nhà cây.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Nơi ở nhỏ làm trên cây.",
-    "hint2": "Chữ cái đầu: N..."
-  },
-  {
-    "id": "dhbc-0147",
-    "category": "Ghép từ",
-    "answer": "Hoa tuyết",
-    "aliases": [],
-    "clues": [
-      "flower",
-      "snow"
-    ],
-    "hint": "Tinh thể trắng rơi khi trời lạnh.",
-    "explanation": "Hoa + tuyết = hoa tuyết.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Tinh thể trắng rơi khi trời lạnh.",
-    "hint2": "Chữ cái đầu: H..."
-  },
-  {
-    "id": "dhbc-0148",
-    "category": "Ghép từ",
-    "answer": "Sông băng",
-    "aliases": [],
-    "clues": [
-      "river",
-      "ice"
-    ],
-    "hint": "Khối băng lớn chuyển động chậm.",
-    "explanation": "Sông + băng = sông băng.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Khối băng lớn chuyển động chậm.",
-    "hint2": "Chữ cái đầu: S..."
-  },
-  {
-    "id": "dhbc-0149",
-    "category": "Ghép từ",
-    "answer": "Trời mưa",
-    "aliases": [],
-    "clues": [
-      "sun",
-      "rain"
-    ],
-    "hint": "Thời tiết khiến bạn cần mang ô.",
-    "explanation": "Trời + mưa = trời mưa.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Thời tiết khiến bạn cần mang ô.",
-    "hint2": "Chữ cái đầu: T..."
-  },
-  {
-    "id": "dhbc-0150",
-    "category": "Ghép từ",
-    "answer": "Bông hoa",
-    "aliases": [],
-    "clues": [
-      "cloud",
-      "flower"
-    ],
-    "hint": "Thứ nhiều màu nở trên cây.",
-    "explanation": "Bông + hoa = bông hoa.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Thứ nhiều màu nở trên cây.",
-    "hint2": "Chữ cái đầu: B..."
-  },
-  {
-    "id": "dhbc-0151",
-    "category": "Ghép từ",
-    "answer": "Mưa sao băng",
-    "aliases": [],
-    "clues": [
-      "rain",
-      "star"
-    ],
-    "hint": "Nhiều vệt sáng trên bầu trời đêm.",
-    "explanation": "Mưa + sao băng = mưa sao băng.",
-    "durationSec": 18,
-    "difficulty": "easy",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Nhiều vệt sáng trên bầu trời đêm.",
-    "hint2": "Chữ cái đầu: M..."
-  },
-  {
-    "id": "dhbc-0152",
-    "category": "Thành ngữ",
-    "answer": "Thùng rỗng kêu to",
-    "aliases": [],
-    "clues": [
-      "cup",
-      "bell"
-    ],
-    "hint": "Nói nhiều nhưng hiểu ít.",
-    "explanation": "Hình chiếc thùng rỗng và tiếng kêu gợi thành ngữ.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Nói nhiều nhưng hiểu ít.",
-    "hint2": "Chữ cái đầu: T..."
-  },
-  {
-    "id": "dhbc-0153",
-    "category": "Thành ngữ",
-    "answer": "Ếch ngồi đáy giếng",
-    "aliases": [],
-    "clues": [
-      "frog",
-      "well"
-    ],
-    "hint": "Chỉ người có tầm nhìn hạn hẹp.",
-    "explanation": "Ếch + giếng = ếch ngồi đáy giếng.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Chỉ người có tầm nhìn hạn hẹp.",
-    "hint2": "Chữ cái đầu: Ế..."
-  },
-  {
-    "id": "dhbc-0154",
-    "category": "Thành ngữ",
-    "answer": "Đầu voi đuôi chuột",
-    "aliases": [],
-    "clues": [
-      "elephant",
-      "mouse"
-    ],
-    "hint": "Khởi đầu hoành tráng nhưng kết thúc không như mong đợi.",
-    "explanation": "Đầu voi + đuôi chuột.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Khởi đầu hoành tráng nhưng kết thúc không như mong đợi.",
-    "hint2": "Chữ cái đầu: Đ..."
-  },
-  {
-    "id": "dhbc-0155",
-    "category": "Thành ngữ",
-    "answer": "Cưỡi ngựa xem hoa",
-    "aliases": [],
-    "clues": [
-      "horse",
-      "flower"
-    ],
-    "hint": "Nhìn qua loa, không tìm hiểu kỹ.",
-    "explanation": "Ngựa + hoa = cưỡi ngựa xem hoa.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Nhìn qua loa, không tìm hiểu kỹ.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0156",
-    "category": "Thành ngữ",
-    "answer": "Bắt cá hai tay",
-    "aliases": [],
-    "clues": [
-      "fish",
-      "hand"
-    ],
-    "hint": "Muốn nắm giữ hai phía cùng lúc.",
-    "explanation": "Cá + hai tay = bắt cá hai tay.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Muốn nắm giữ hai phía cùng lúc.",
-    "hint2": "Chữ cái đầu: B..."
-  },
-  {
-    "id": "dhbc-0157",
-    "category": "Thành ngữ",
-    "answer": "Nước chảy đá mòn",
-    "aliases": [],
-    "clues": [
-      "river",
-      "rock"
-    ],
-    "hint": "Kiên trì lâu ngày có thể tạo thay đổi.",
-    "explanation": "Dòng nước bào mòn đá.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Kiên trì lâu ngày có thể tạo thay đổi.",
-    "hint2": "Chữ cái đầu: N..."
-  },
-  {
-    "id": "dhbc-0158",
-    "category": "Thành ngữ",
-    "answer": "Cá chép hóa rồng",
-    "aliases": [],
-    "clues": [
-      "fish",
-      "dragon"
-    ],
-    "hint": "Biểu tượng cho nỗ lực vượt khó, thành công.",
-    "explanation": "Cá + rồng = cá chép hóa rồng.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Biểu tượng cho nỗ lực vượt khó, thành công.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0159",
-    "category": "Thành ngữ",
-    "answer": "Vạch lá tìm sâu",
-    "aliases": [],
-    "clues": [
-      "leaf",
-      "caterpillar"
-    ],
-    "hint": "Cố tìm lỗi của người khác.",
-    "explanation": "Lá + sâu = vạch lá tìm sâu.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Cố tìm lỗi của người khác.",
-    "hint2": "Chữ cái đầu: V..."
-  },
-  {
-    "id": "dhbc-0160",
-    "category": "Thành ngữ",
-    "answer": "Con sâu làm rầu nồi canh",
-    "aliases": [],
-    "clues": [
-      "caterpillar",
-      "soup"
-    ],
-    "hint": "Một người xấu làm ảnh hưởng cả tập thể.",
-    "explanation": "Sâu + nồi canh.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Một người xấu làm ảnh hưởng cả tập thể.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0161",
-    "category": "Thành ngữ",
-    "answer": "Cháy nhà ra mặt chuột",
-    "aliases": [],
-    "clues": [
-      "fire",
-      "mouse"
-    ],
-    "hint": "Có biến cố mới lộ điều bị giấu.",
-    "explanation": "Lửa cháy nhà + chuột.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Có biến cố mới lộ điều bị giấu.",
-    "hint2": "Chữ cái đầu: C..."
-  },
-  {
-    "id": "dhbc-0162",
-    "category": "Thành ngữ",
-    "answer": "Được voi đòi tiên",
-    "aliases": [],
-    "clues": [
-      "elephant",
-      "fairy"
-    ],
-    "hint": "Được một điều rồi lại đòi thêm điều lớn hơn.",
-    "explanation": "Voi + tiên = được voi đòi tiên.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Được một điều rồi lại đòi thêm điều lớn hơn.",
-    "hint2": "Chữ cái đầu: Đ..."
-  },
-  {
-    "id": "dhbc-0163",
-    "category": "Thành ngữ",
-    "answer": "Nước đến chân mới nhảy",
-    "aliases": [],
-    "clues": [
-      "water",
-      "foot"
-    ],
-    "hint": "Để sát hạn mới bắt đầu làm.",
-    "explanation": "Nước + chân = nước đến chân mới nhảy.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Để sát hạn mới bắt đầu làm.",
-    "hint2": "Chữ cái đầu: N..."
-  },
-  {
-    "id": "dhbc-0164",
-    "category": "Thành ngữ",
-    "answer": "Một mũi tên trúng hai đích",
-    "aliases": [],
-    "clues": [
-      "arrow",
-      "target"
-    ],
-    "hint": "Một việc đạt được hai mục tiêu.",
-    "explanation": "Mũi tên + hai đích.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Một việc đạt được hai mục tiêu.",
-    "hint2": "Chữ cái đầu: M..."
-  },
-  {
-    "id": "dhbc-0165",
-    "category": "Thành ngữ",
-    "answer": "Trâu chậm uống nước đục",
-    "aliases": [],
-    "clues": [
-      "buffalo",
-      "water"
-    ],
-    "hint": "Chậm chân thường chịu phần bất lợi.",
-    "explanation": "Trâu + nước đục.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Chậm chân thường chịu phần bất lợi.",
-    "hint2": "Chữ cái đầu: T..."
-  },
-  {
-    "id": "dhbc-0166",
-    "category": "Thành ngữ",
-    "answer": "Treo đầu dê bán thịt chó",
-    "aliases": [],
-    "clues": [
-      "goat",
-      "dog"
-    ],
-    "hint": "Quảng cáo một đằng bán một nẻo.",
-    "explanation": "Đầu dê + thịt chó.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Quảng cáo một đằng bán một nẻo.",
-    "hint2": "Chữ cái đầu: T..."
-  },
-  {
-    "id": "dhbc-0167",
-    "category": "Thành ngữ",
-    "answer": "Ăn quả nhớ kẻ trồng cây",
-    "aliases": [],
-    "clues": [
-      "fruit",
-      "tree"
-    ],
-    "hint": "Biết ơn người tạo điều tốt cho mình.",
-    "explanation": "Quả + cây = ăn quả nhớ kẻ trồng cây.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Biết ơn người tạo điều tốt cho mình.",
-    "hint2": "Chữ cái đầu: Ă..."
-  },
-  {
-    "id": "dhbc-0168",
-    "category": "Thành ngữ",
-    "answer": "Lá lành đùm lá rách",
-    "aliases": [],
-    "clues": [
-      "leaf",
-      "leaf"
-    ],
-    "hint": "Giúp đỡ người gặp khó khăn.",
-    "explanation": "Lá lành và lá rách.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Giúp đỡ người gặp khó khăn.",
-    "hint2": "Chữ cái đầu: L..."
-  },
-  {
-    "id": "dhbc-0169",
-    "category": "Thành ngữ",
-    "answer": "Đánh trống bỏ dùi",
-    "aliases": [],
-    "clues": [
-      "bell",
-      "hand"
-    ],
-    "hint": "Làm việc dang dở rồi bỏ.",
-    "explanation": "Đánh nhạc cụ rồi bỏ dùi.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Làm việc dang dở rồi bỏ.",
-    "hint2": "Chữ cái đầu: Đ..."
-  },
-  {
-    "id": "dhbc-0170",
-    "category": "Thành ngữ",
-    "answer": "Gần mực thì đen",
-    "aliases": [],
-    "clues": [
-      "pen",
-      "mask"
-    ],
-    "hint": "Môi trường có thể tác động tính cách.",
-    "explanation": "Mực và màu đen gợi câu tục ngữ.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Môi trường có thể tác động tính cách.",
-    "hint2": "Chữ cái đầu: G..."
-  },
-  {
-    "id": "dhbc-0171",
-    "category": "Thành ngữ",
-    "answer": "Gậy ông đập lưng ông",
-    "aliases": [],
-    "clues": [
-      "sword",
-      "hand"
-    ],
-    "hint": "Mưu hại người lại tự hại mình.",
-    "explanation": "Vũ khí quay lại hại người dùng.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Mưu hại người lại tự hại mình.",
-    "hint2": "Chữ cái đầu: G..."
-  },
-  {
-    "id": "dhbc-0172",
-    "category": "Thành ngữ",
-    "answer": "Rồng bay phượng múa",
-    "aliases": [],
-    "clues": [
-      "dragon",
-      "butterfly"
-    ],
-    "hint": "Chữ viết uốn lượn đẹp.",
-    "explanation": "Rồng bay kết hợp hình ảnh chim bay.",
-    "durationSec": 24,
-    "difficulty": "medium",
-    "status": "editor_review_required",
-    "verified": true,
-    "hint1": "Chữ viết uốn lượn đẹp.",
-    "hint2": "Chữ cái đầu: R..."
+    "image": "dhbc_extra_xakep.jpg",
+    "hint1": "Câu đố gồm 5 chữ cái: X...",
+    "hint2": "Gợi ý: Hai con rắn (xà) bò song song trên xà đơn kép",
+    "explanation": "Hai con rắn (xà) bò kép trên thanh xà = XÀ KÉP",
+    "durationSec": 20,
+    "difficulty": 1,
+    "mode": "word",
+    "verified": true
   }
 ]
