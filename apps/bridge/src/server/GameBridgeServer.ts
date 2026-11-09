@@ -1442,6 +1442,8 @@ export class GameBridgeServer {
             'force_end_round',
             'boss_ability',
             'tts_speak',
+            'set_volume',
+            'switch_music',
           ];
           if (!allowed.includes(json.action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -1561,6 +1563,7 @@ export class GameBridgeServer {
             'cat_cafe.box',
             'cat_cafe.bath',
             'cat_cafe.tts_speak',
+            'cat_cafe.switch_music',
             'tts_speak',
           ];
           if (!allowedCat.includes(action)) {
@@ -1651,6 +1654,8 @@ export class GameBridgeServer {
             'english_class.follow',
             'english_class.reset',
             'english_class.tts_speak',
+            'english_class.set_volume',
+            'english_class.switch_music',
             'tts_speak',
           ];
           if (!allowedEnglish.includes(action)) {
@@ -1741,6 +1746,8 @@ export class GameBridgeServer {
             'quiz_show.follow',
             'quiz_show.reset',
             'quiz_show.tts_speak',
+            'quiz_show.set_volume',
+            'quiz_show.switch_music',
             'tts_speak',
           ];
           if (!allowedQuiz.includes(action)) {
@@ -1831,6 +1838,8 @@ export class GameBridgeServer {
             'rebus.follow',
             'rebus.reset',
             'rebus.tts_speak',
+            'rebus.set_volume',
+            'rebus.switch_music',
             'tts_speak',
           ];
           if (!allowedRebus.includes(action)) {
@@ -1852,6 +1861,40 @@ export class GameBridgeServer {
           this.eventQueue.push(cmd);
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/music/control') {
+          const game = String(json.game || 'all');
+          const action = String(json.action || 'set_volume'); // 'set_volume' | 'switch_music' | 'mute'
+          const volume = json.volume !== undefined ? Number(json.volume) : undefined;
+          const trackId = json.trackId ? String(json.trackId) : undefined;
+          const cue = json.cue ? String(json.cue) : undefined;
+          const mute = json.mute !== undefined ? Boolean(json.mute) : undefined;
+
+          const targetGames = game === 'all'
+            ? ['mini-war', 'cat-cafe', 'english-class-live', 'quiz-show', 'duoi-hinh-bat-chu']
+            : [game];
+
+          for (const g of targetGames) {
+            let cmdAction = 'music.control';
+            if (g === 'cat-cafe') cmdAction = action === 'set_volume' ? 'cat_cafe.set_volume' : 'cat_cafe.switch_music';
+            else if (g === 'english-class-live' || g === 'english-class') cmdAction = action === 'set_volume' ? 'english_class.set_volume' : 'english_class.switch_music';
+            else if (g === 'quiz-show') cmdAction = action === 'set_volume' ? 'quiz_show.set_volume' : 'quiz_show.switch_music';
+            else if (g === 'duoi-hinh-bat-chu') cmdAction = action === 'set_volume' ? 'rebus.set_volume' : 'rebus.switch_music';
+            else cmdAction = action === 'set_volume' ? 'set_volume' : 'switch_music';
+
+            const cmd: GameCommand = {
+              id: `cmd_music_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              action: cmdAction as any,
+              metadata: { volume, bgm: volume, trackId, cue, mute },
+              timestamp: Date.now(),
+            };
+            this.broadcastToGame(cmd);
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, game, action, volume, trackId, cue }));
           return;
         }
 

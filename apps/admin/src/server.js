@@ -595,13 +595,49 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // 6. Proxy all other Bridge APIs to 8088
+  // 6. Shared Music Catalog API
+  if (pathname === '/api/music/catalog' && req.method === 'GET') {
+    const catalogPath = path.join(PLATFORM_DIR, 'PTPlay_Music_Library_Kit', 'music-catalog.json');
+    if (fs.existsSync(catalogPath)) {
+      try {
+        const raw = fs.readFileSync(catalogPath, 'utf8');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(raw);
+        return;
+      } catch (e) {}
+    }
+  }
+
+  // 7. Shared Music Static Audio Streaming (/shared-music/...)
+  if (pathname.startsWith('/shared-music/')) {
+    const subPath = pathname.replace('/shared-music/', '');
+    const musicFilePath = path.normalize(path.join(PLATFORM_DIR, 'shared-music', subPath));
+    const sharedMusicDir = path.resolve(PLATFORM_DIR, 'shared-music');
+    if (musicFilePath.startsWith(sharedMusicDir) && fs.existsSync(musicFilePath) && fs.statSync(musicFilePath).isFile()) {
+      const ext = path.extname(musicFilePath).toLowerCase();
+      const audioMime = {
+        '.mp3': 'audio/mpeg',
+        '.ogg': 'audio/ogg',
+        '.wav': 'audio/wav',
+        '.flac': 'audio/flac',
+      }[ext] || 'application/octet-stream';
+      res.writeHead(200, {
+        'Content-Type': audioMime,
+        'Cache-Control': 'public, max-age=86400',
+        'Accept-Ranges': 'bytes',
+      });
+      fs.createReadStream(musicFilePath).pipe(res);
+      return;
+    }
+  }
+
+  // 8. Proxy all other Bridge APIs to 8088
   if (pathname.startsWith('/api/')) {
     proxyToBridge(req, res, req.url || pathname);
     return;
   }
 
-  // 7. Static Assets
+  // 9. Static Assets
   let targetFile = pathname === '/' ? 'index.html' : pathname.replace(/^\//, '');
   const safePath = path.normalize(path.join(PUBLIC_DIR, targetFile));
 

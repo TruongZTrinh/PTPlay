@@ -23,6 +23,7 @@ export type CatCafeAction =
   | 'cat_cafe.set_purrs'
   | 'cat_cafe.set_level'
   | 'cat_cafe.set_volume'
+  | 'cat_cafe.switch_music'
   | 'cat_cafe.add_cat'
   | 'cat_cafe.clear_cats';
 

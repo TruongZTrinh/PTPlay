@@ -202,4 +202,81 @@ test('11. Centralized Gift Management Center: Shared Catalog, Per-Game Mappings,
   assert.ok(css.includes('.pipeline-flow-diagram'));
 });
 
+test('12. Shared Music Manager & Livestream Audio Mixer: Dedicated tab, Master volume bar, 5-game sliders and track switchers', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  // Navigation and main container
+  assert.ok(html.includes('data-tab="musicmanager"'));
+  assert.ok(html.includes('id="panel-musicmanager"'));
+
+  // Master Volume Controls & Presets
+  assert.ok(html.includes('id="slider-master-bgm"'));
+  assert.ok(html.includes('id="lbl-master-bgm"'));
+  assert.ok(html.includes('id="btn-master-mute"'));
+  assert.ok(html.includes('adjustMasterVolume('));
+  assert.ok(html.includes('setMasterBgmVolume(0.35)'));
+  assert.ok(html.includes('resetAllVolumesToDefault()'));
+
+  // 5 Games Live Mixers and Music Switchers
+  const gameKeys = ['cat-cafe', 'mini-war', 'english-class', 'quiz-show', 'duoi-hinh-bat-chu'];
+  for (const g of gameKeys) {
+    assert.ok(html.includes(`id="slider-vol-${g}"`), `Missing slider for ${g}`);
+    assert.ok(html.includes(`id="lbl-vol-${g}"`), `Missing volume label for ${g}`);
+    assert.ok(html.includes(`id="btn-mute-${g}"`), `Missing mute button for ${g}`);
+    assert.ok(html.includes(`id="select-music-${g}"`), `Missing music select for ${g}`);
+    assert.ok(html.includes(`switchGameMusic('${g}')`), `Missing switch music trigger for ${g}`);
+  }
+
+  // Streamer PC Echo Protection & Preview Player
+  assert.ok(html.includes('id="chk-obs-only-audio"'));
+  assert.ok(html.includes('toggleObsAudioProtection'));
+  assert.ok(html.includes('id="admin-audio-player"'));
+  assert.ok(html.includes('id="slider-preview-volume"'));
+  assert.ok(html.includes('testMusicDucking()'));
+
+  // Server support for catalog and audio streaming
+  const serverCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'server.js'), 'utf-8');
+  assert.ok(serverCode.includes('/api/music/catalog'));
+  assert.ok(serverCode.includes('/shared-music/'));
+
+  // CSS classes
+  const css = fs.readFileSync(path.join(ROOT_DIR, 'public', 'styles.css'), 'utf-8');
+  assert.ok(css.includes('.mixer-grid'));
+  assert.ok(css.includes('.mixer-card'));
+  assert.ok(css.includes('.volume-control-box'));
+  assert.ok(css.includes('.vol-btn-step'));
+  assert.ok(css.includes('.vol-percent-badge'));
+  assert.ok(css.includes('.music-selector-box'));
+});
+
+test('13. Shared Music Manager: Controller methods, volume adjustment, music switching and TTS balance', () => {
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  // Initialization & Volume API
+  assert.ok(appJs.includes('initAdminMusic'));
+  assert.ok(appJs.includes('sendMusicControl'));
+  assert.ok(appJs.includes('setMasterBgmVolume'));
+  assert.ok(appJs.includes('adjustMasterVolume'));
+  assert.ok(appJs.includes('toggleMasterMute'));
+  assert.ok(appJs.includes('resetAllVolumesToDefault'));
+
+  // Per-game controls
+  assert.ok(appJs.includes('setGameVolume'));
+  assert.ok(appJs.includes('adjustGameVolume'));
+  assert.ok(appJs.includes('toggleGameMute'));
+  assert.ok(appJs.includes('switchGameMusic'));
+  assert.ok(appJs.includes('playGameMusicCue'));
+
+  // Preview & Ducking test
+  assert.ok(appJs.includes('previewTrack'));
+  assert.ok(appJs.includes('stopMusicPreview'));
+  assert.ok(appJs.includes('setPreviewVolume'));
+  assert.ok(appJs.includes('toggleObsAudioProtection'));
+  assert.ok(appJs.includes('testMusicDucking'));
+
+  // Balanced TTS Speech Volume (not overpower BGM)
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('value="80"')); // Default TTS slider set to 80%
+  assert.ok(appJs.includes("value || '80'"));
+});
+
+
 

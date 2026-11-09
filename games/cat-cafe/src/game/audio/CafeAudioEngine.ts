@@ -1,11 +1,13 @@
 import { ProgressionManager } from '../progression/ProgressionManager';
 import { RoomId, WeatherType, TimeOfDay } from '../config/CafeConfig';
+import { SharedMusicManager } from '@ptplay/game-sdk';
 
 export class CafeAudioEngine {
   private static instance: CafeAudioEngine;
   private ctx: AudioContext | null = null;
   public isUnlocked = false;
   public onUnlocked?: () => void;
+  private sharedMusic = SharedMusicManager.getInstance({ gameId: 'cat-cafe' });
 
   // Master Gain Nodes
   private masterGain: GainNode | null = null;
@@ -93,6 +95,7 @@ export class CafeAudioEngine {
 
       const finishUnlock = () => {
         this.isUnlocked = true;
+        this.sharedMusic.unlock();
         this.applySettings();
         if (!this.bgmTimer) {
           this.startBgm(this.currentTrack);
@@ -100,7 +103,7 @@ export class CafeAudioEngine {
         this.startAmbience(this.currentWeather);
         void this.loadRealCatSounds();
         this.onUnlocked?.();
-        console.log('🎵 [CafeAudioEngine] Web Audio Synthesizer Engine Unlocked & Running');
+        console.log('🎵 [CafeAudioEngine] Web Audio & Shared Music Manager Unlocked & Running');
       };
 
       if (this.ctx.state === 'suspended') {
@@ -218,12 +221,22 @@ export class CafeAudioEngine {
     this.bgmGain.gain.value = Math.max(0, Math.min(1, s.bgmVolume));
     this.sfxGain.gain.value = Math.max(0, Math.min(1, s.sfxVolume));
     this.ambienceGain.gain.value = Math.max(0, Math.min(1, s.ambienceVolume));
+
+    // Synchronize to Shared Music Manager
+    this.sharedMusic.setVolume(s.bgmVolume);
+    this.sharedMusic.setMute(s.muted);
   }
 
   /**
    * Duck background music volume during speech synthesis announcements.
    */
   public setDucking(isDucking: boolean): void {
+    if (isDucking) {
+      this.sharedMusic.startDucking();
+    } else {
+      this.sharedMusic.stopDucking();
+    }
+
     if (!this.bgmGain || !this.ctx) return;
     const s = ProgressionManager.getInstance().data.settings;
     const baseBgm = s.muted ? 0 : Math.max(0, Math.min(1, s.bgmVolume));
@@ -247,9 +260,17 @@ export class CafeAudioEngine {
     return true;
   }
 
-  // --- COZY PROCEDURAL LOFI CHORD ENGINE ---
+  // --- COZY PROCEDURAL LOFI CHORD ENGINE & SHARED MUSIC CUES ---
   public startBgm(theme: 'day' | 'rainy' | 'night'): void {
     this.currentTrack = theme;
+
+    // Trigger Shared Music cue (playlist rotation between Cat caffe, A cup of tea, Chill lofi)
+    if (theme === 'rainy' || theme === 'night') {
+      this.sharedMusic.playCue('nap');
+    } else {
+      this.sharedMusic.playCue('gameplay');
+    }
+
     if (this.bgmTimer) {
       window.clearInterval(this.bgmTimer);
       this.bgmTimer = null;

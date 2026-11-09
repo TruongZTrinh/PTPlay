@@ -1,3 +1,5 @@
+import { SharedMusicManager } from '@ptplay/game-sdk';
+
 export class AudioEngine {
   private ctx: AudioContext | null = null;
   private isUnlocked = false;
@@ -6,6 +8,7 @@ export class AudioEngine {
   private masterGain: GainNode | null = null;
   private bgmTimer: ReturnType<typeof setInterval> | null = null;
   private isPartyBgm = false;
+  private sharedMusic = SharedMusicManager.getInstance({ gameId: 'english-class' });
 
   public sfxVolume = 0.7;
   public bgmVolume = 0.35;
@@ -39,6 +42,7 @@ export class AudioEngine {
       this.sfxGain.connect(this.masterGain);
 
       this.isUnlocked = true;
+      this.sharedMusic.unlock();
       this.startLofiBgm();
       return true;
     } catch (e) {
@@ -51,6 +55,7 @@ export class AudioEngine {
     this.sfxVolume = Math.max(0, Math.min(1, sfx));
     this.bgmVolume = Math.max(0, Math.min(1, bgm));
     this.normalBgmGain = this.bgmVolume;
+    this.sharedMusic.setVolume(this.bgmVolume);
 
     if (this.ctx && this.sfxGain && this.bgmGain) {
       const now = this.ctx.currentTime;
@@ -61,7 +66,10 @@ export class AudioEngine {
     }
   }
 
-  public duckBgm(durationMs = 2500, duckFactor = 0.2): void {
+  public duckBgm(durationMs = 2500, duckFactor = 0.38): void {
+    // Duck Shared Music Manager (smooth -10 to -12 dB, keeps BGM clearly audible)
+    this.sharedMusic.duck(durationMs, duckFactor);
+
     if (!this.ctx || !this.bgmGain || this.bgmVolume === 0) return;
     this.isDucked = true;
     const now = this.ctx.currentTime;
@@ -244,6 +252,7 @@ export class AudioEngine {
   // --- Procedural BGM Generation ---
 
   public startLofiBgm(): void {
+    this.sharedMusic.playCue('question');
     if (this.bgmTimer) {
       clearInterval(this.bgmTimer);
       this.bgmTimer = null;
@@ -289,6 +298,12 @@ export class AudioEngine {
   public setPartyBgm(active: boolean): void {
     if (active === this.isPartyBgm) return;
     this.isPartyBgm = active;
+
+    if (active) {
+      this.sharedMusic.playCue('celebration');
+    } else {
+      this.sharedMusic.playCue('question');
+    }
 
     if (this.bgmTimer) {
       clearInterval(this.bgmTimer);

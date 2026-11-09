@@ -1,8 +1,11 @@
+import { SharedMusicManager } from '@ptplay/game-sdk';
+
 export class AudioEngine {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private soundVolume: number = 0.8;
   private isDucked: boolean = false;
+  private sharedMusic = SharedMusicManager.getInstance({ gameId: 'quiz-show' });
 
   constructor() {
     // Initialized on first user gesture or unlock call
@@ -26,10 +29,17 @@ export class AudioEngine {
     if (this.ctx && this.ctx.state === 'suspended') {
       void this.ctx.resume();
     }
+    this.sharedMusic.unlock();
+    this.sharedMusic.playCue('lobby');
+  }
+
+  public playCue(cue: string): void {
+    this.sharedMusic.playCue(cue);
   }
 
   public setVolume(vol: number): void {
     this.soundVolume = Math.max(0, Math.min(1, vol));
+    this.sharedMusic.setVolume(this.soundVolume);
     if (this.masterGain && this.ctx) {
       const targetGain = this.isDucked ? this.soundVolume * 0.25 : this.soundVolume;
       this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
@@ -38,6 +48,11 @@ export class AudioEngine {
 
   public setDucking(ducked: boolean): void {
     this.isDucked = ducked;
+    if (ducked) {
+      this.sharedMusic.startDucking();
+    } else {
+      this.sharedMusic.stopDucking();
+    }
     if (this.masterGain && this.ctx) {
       const targetGain = ducked ? this.soundVolume * 0.25 : this.soundVolume;
       this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);

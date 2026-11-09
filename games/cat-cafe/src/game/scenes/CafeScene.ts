@@ -363,7 +363,7 @@ export class CafeScene extends Phaser.Scene {
       }
 
       case 'cat_cafe.set_volume': {
-        const bgm = cmd.metadata?.bgm !== undefined ? Number(cmd.metadata.bgm) : undefined;
+        const bgm = cmd.metadata?.bgm !== undefined ? Number(cmd.metadata.bgm) : (cmd.metadata?.volume !== undefined ? Number(cmd.metadata.volume) : undefined);
         const sfx = cmd.metadata?.sfx !== undefined ? Number(cmd.metadata.sfx) : undefined;
         const amb = cmd.metadata?.ambience !== undefined ? Number(cmd.metadata.ambience) : undefined;
         const pm = ProgressionManager.getInstance();
@@ -371,7 +371,15 @@ export class CafeScene extends Phaser.Scene {
         if (sfx !== undefined) pm.data.settings.sfxVolume = sfx;
         if (amb !== undefined) pm.data.settings.ambienceVolume = amb;
         pm.save();
+        CafeAudioEngine.getInstance().applySettings();
         this.game.events.emit('toast_message', '🔊 Đã cập nhật âm lượng');
+        break;
+      }
+
+      case 'cat_cafe.switch_music': {
+        const cue = cmd.metadata?.cue;
+        const trackId = cmd.metadata?.trackId;
+        if (cue) CafeAudioEngine.getInstance().startBgm(cue === 'nap' ? 'night' : 'day');
         break;
       }
 

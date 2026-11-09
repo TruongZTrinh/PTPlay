@@ -113,6 +113,7 @@ export class QuizShowEngine {
 
   private startAsking(): void {
     this.setState('asking');
+    this.audioEngine.playCue('question');
     const intervalMs = 200;
 
     this.timerHandle = setInterval(() => {
@@ -208,6 +209,7 @@ export class QuizShowEngine {
 
   private celebrateAndContinue(): void {
     this.setState('celebrate');
+    this.audioEngine.playCue('celebration');
 
     this.stateTimerHandle = setTimeout(() => {
       this.nextRound();

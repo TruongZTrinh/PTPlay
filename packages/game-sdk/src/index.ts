@@ -3,4 +3,5 @@ export * from '@ptplay/shared-config';
 export * from './client.js';
 export * from './sanitizer.js';
 export * from './tts.js';
+export * from './music/index.js';
 

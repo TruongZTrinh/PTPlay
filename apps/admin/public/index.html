@@ -107,6 +107,11 @@
           <span class="tab-label">TTS Studio & Giọng Đọc</span>
           <span class="tab-pill" id="pill-nav-tts" style="background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4);">Ready</span>
         </button>
+        <button class="tab-btn" data-tab="musicmanager">
+          <span class="tab-icon">🎵</span>
+          <span class="tab-label">Thư Viện Nhạc (CC0 BGM)</span>
+          <span class="tab-pill" id="pill-nav-music" style="background: rgba(139,92,246,0.2); color: #a78bfa; border: 1px solid rgba(139,92,246,0.4);">15 Tracks</span>
+        </button>
         <button class="tab-btn" data-tab="simulator">
           <span class="tab-icon">🧪</span>
           <span class="tab-label">TikTok LIVE Studio</span>
@@ -2048,10 +2053,10 @@
                 <!-- Volume -->
                 <div>
                   <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-                    <span>Âm Lượng (Volume):</span>
-                    <strong id="val-tts-volume" style="color: #10b981;">90%</strong>
+                    <span>Âm Lượng (Volume - Cân Bằng BGM):</span>
+                    <strong id="val-tts-volume" style="color: #10b981;">80%</strong>
                   </div>
-                  <input type="range" id="slider-tts-volume" min="0" max="100" step="5" value="90" style="width: 100%;" oninput="updateTtsSliderLabel('volume')">
+                  <input type="range" id="slider-tts-volume" min="0" max="100" step="5" value="80" style="width: 100%;" oninput="updateTtsSliderLabel('volume')">
                 </div>
               </div>
             </div>
@@ -2292,6 +2297,618 @@
               </div>
 
             </div>
+          </div>
+
+        </section>
+
+        <!-- ==================== TAB: SHARED MUSIC LIBRARY & BGM MANAGER ==================== -->
+        <section id="panel-musicmanager" class="tab-panel">
+          
+          <!-- BANNER & STATUS -->
+          <div class="card server-banner">
+            <div class="card-header">
+              <div class="card-title">
+                <span>🎵 Thư Viện Nhạc Dùng Chung & Bộ Điều Khiển BGM (Shared Music Manager)</span>
+                <span id="badge-music-status" class="badge badge-green">15/15 TRACKS CC0 VERIFIED</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-gold" id="btn-toggle-global-bgm" onclick="toggleGlobalBgm()">🔊 Bật / Tắt Toàn Bộ BGM</button>
+                <button class="btn-outline" onclick="testMusicDucking()">🎙️ Thử Nghiệm Ducking BGM (-12dB)</button>
+                <button class="btn-outline" onclick="stopMusicPreview()">⏹ Dừng Nghe Thử</button>
+              </div>
+            </div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
+              <div>Kho nhạc: <strong style="color: #a78bfa;">15 bản nhạc tuyển chọn OpenGameArt</strong></div>
+              <div>Giấy phép bản quyền: <strong style="color: #10b981;">CC0 (Public Domain / Miễn phí thương mại)</strong></div>
+              <div>Audio Ducking: <strong style="color: #38bdf8;">Tự giảm ~10-15 dB khi TTS nói (không làm mất BGM)</strong></div>
+              <div>Độ lớn giọng TTS: <strong style="color: #f59e0b;">Cân bằng (0.80) — Tránh lấn át nhạc nền</strong></div>
+            </div>
+          </div>
+
+          <!-- STREAMER PC ECHO PROTECTION ALERT -->
+          <div class="card" style="border-left: 4px solid #38bdf8; background: rgba(56, 189, 248, 0.05); margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h4 style="margin: 0 0 4px 0; color: #38bdf8; font-size: 14px;">🛡️ Chế Độ Chống Tiếng Vọng Khi Livestream (OBS vs Chrome Double Audio)</h4>
+                <p style="margin: 0; font-size: 12px; color: var(--text-secondary);">
+                  Khi mở game trên cả Google Chrome (để theo dõi) và OBS Browser Source (để stream), âm thanh có thể bị phát trùng lặp gây tiếng vọng (echo). Bật chế độ dưới đây để tắt âm thanh trên trình duyệt kiểm tra, chỉ phát duy nhất trong OBS Studio.
+                </p>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                  <input type="checkbox" id="chk-obs-only-audio" onchange="toggleObsAudioProtection(this.checked)">
+                  <span style="font-weight: 600; color: #f59e0b;">Chỉ phát âm thanh trong OBS (Mute Chrome Preview)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- NOW PLAYING PREVIEW BAR -->
+          <div class="card" style="margin-bottom: 14px; background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(139, 92, 246, 0.3);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-size: 24px;" id="icon-preview-playing">🎧</div>
+                <div>
+                  <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #a78bfa;" id="lbl-preview-game">ĐANG NGHE THỬ</div>
+                  <div style="font-size: 14px; font-weight: 700; color: #fff;" id="lbl-preview-title">Chọn một bản nhạc bất kỳ bên dưới để nghe thử</div>
+                  <div style="font-size: 11px; color: var(--text-muted);" id="lbl-preview-meta">Tác giả: TAD · Giấy phép: CC0 · Định dạng: MP3/OGG</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <audio id="admin-audio-player" controls style="height: 36px; max-width: 320px;"></audio>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 11px; color: var(--text-muted);">Âm lượng:</span>
+                  <input type="range" id="slider-preview-volume" min="0" max="1" step="0.05" value="0.3" style="width: 80px;" oninput="setPreviewVolume(this.value)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 1. MASTER LIVESTREAM AUDIO MIXER ==================== -->
+          <div class="card" style="margin-bottom: 14px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);">
+            <div class="card-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 10px; margin-bottom: 12px;">
+              <div class="card-title">
+                <span style="font-size: 16px;">🎛️ Bảng Điều Khiển Âm Lượng Livestream (Master BGM & Game Audio Mixer)</span>
+                <span id="badge-master-status" class="badge badge-blue">MASTER LIVE MIXER</span>
+              </div>
+              <div class="btn-group">
+                <button id="btn-master-mute" class="btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="toggleMasterMute()">🔊 Bật Toàn Bộ BGM</button>
+                <button class="btn-gold" style="font-size: 11px; padding: 4px 10px;" onclick="resetAllVolumesToDefault()">🔄 Reset Chuẩn Livestream</button>
+              </div>
+            </div>
+
+            <!-- Master Volume Controls & Quick Presets -->
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+              <div style="flex: 1; min-width: 280px; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                <span style="font-size: 12px; font-weight: 700; color: #38bdf8; min-width: 130px;">Master BGM (Tất cả game):</span>
+                <button class="vol-btn-step" onclick="adjustMasterVolume(-0.05)" title="Giảm 5%">−</button>
+                <input type="range" id="slider-master-bgm" min="0" max="100" step="1" value="35" style="flex: 1;" oninput="onMasterVolumeInput(this.value)" onchange="onMasterVolumeChange(this.value)">
+                <button class="vol-btn-step" onclick="adjustMasterVolume(0.05)" title="Tăng 5%">+</button>
+                <span id="lbl-master-bgm" class="vol-percent-badge">35%</span>
+              </div>
+
+              <!-- Quick Presets -->
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 11px; color: var(--text-muted); margin-right: 4px;">Preset Live:</span>
+                <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.20)">20% (Nói nhiều)</button>
+                <button class="btn-green" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.35)">35% (Chuẩn Livestream)</button>
+                <button class="btn-gold" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.50)">50% (Sôi động)</button>
+                <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.70)">70% (Cao trào)</button>
+              </div>
+            </div>
+
+            <!-- Voice & Ducking Balance Notice -->
+            <div style="display: flex; gap: 12px; align-items: center; margin-top: 10px; font-size: 11.5px; color: var(--text-secondary); background: rgba(56, 189, 248, 0.08); padding: 8px 12px; border-radius: 6px; border: 1px dashed rgba(56, 189, 248, 0.3);">
+              <span style="font-size: 18px;">🎙️</span>
+              <div>
+                <strong style="color: #38bdf8;">Độ Lớn Giọng Đọc & Tự Động Ducking:</strong> Giọng cô giáo / MC được cân bằng ở mức <strong>80%</strong> để không lấn át nhạc. Khi có tiếng đọc, BGM tự động <strong>hạ ~10–12 dB</strong> (duck factor 0.35–0.38) giúp lời thoại rõ mồn một mà nhạc nền vẫn nghe êm tai phía dưới, không bị tắt đột ngột!
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 2. PER-GAME VOLUME & MUSIC SWITCHER GRID ==================== -->
+          <div class="mixer-grid">
+
+            <!-- GAME 1: CAFÉ MÒE -->
+            <div class="mixer-card cat-cafe">
+              <div class="mixer-card-header">
+                <div class="mixer-card-title">
+                  <span style="font-size: 18px;">🐱</span>
+                  <span>Café Mòe LIVE</span>
+                </div>
+                <span id="badge-vol-cat-cafe" class="badge badge-purple">Port 5174</span>
+              </div>
+
+              <!-- Volume Control -->
+              <div class="volume-control-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                  <span>Âm Lượng Game:</span>
+                  <button id="btn-mute-cat-cafe" class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="toggleGameMute('cat-cafe')">🔊 Mute</button>
+                </div>
+                <div class="volume-control-row">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('cat-cafe', -0.05)" title="Giảm 5%">−</button>
+                  <input type="range" id="slider-vol-cat-cafe" min="0" max="100" step="1" value="28" style="flex: 1;" oninput="onGameVolumeInput('cat-cafe', this.value)" onchange="onGameVolumeChange('cat-cafe', this.value)">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('cat-cafe', 0.05)" title="Tăng 5%">+</button>
+                  <span id="lbl-vol-cat-cafe" class="vol-percent-badge">28%</span>
+                </div>
+              </div>
+
+              <!-- Music Switcher -->
+              <div class="music-selector-box">
+                <div style="font-size: 11px; font-weight: 600; color: #a78bfa;">Chọn Bản Nhạc / Chế Độ:</div>
+                <div class="music-selector-row">
+                  <select id="select-music-cat-cafe">
+                    <option value="cue:gameplay">🎵 Playlist Chính (Cat caffe / Cup of tea)</option>
+                    <option value="cue:nap">💤 Chế Độ Mèo Ngủ (Chill lofi loop)</option>
+                    <option value="track:cat-cafe-main_bgm">🐱 Bài 1: Cat caffe (TAD)</option>
+                    <option value="track:cat-cafe-alternate_bgm">☕ Bài 2: A cup of tea (TAD)</option>
+                    <option value="track:cat-cafe-nap_bgm">🛌 Bài 3: Chill lofi inspired (qubodup)</option>
+                  </select>
+                  <button class="btn-green" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;" onclick="switchGameMusic('cat-cafe')">🔀 Đổi Nhạc</button>
+                </div>
+              </div>
+
+              <div class="music-status-pill">
+                <span>Trạng thái:</span>
+                <strong id="status-music-cat-cafe" style="color: #a78bfa;">🎵 Cat caffe (Lofi)</strong>
+              </div>
+            </div>
+
+            <!-- GAME 2: MINI WAR ARENA -->
+            <div class="mixer-card mini-war">
+              <div class="mixer-card-header">
+                <div class="mixer-card-title">
+                  <span style="font-size: 18px;">⚔️</span>
+                  <span>Mini War Arena</span>
+                </div>
+                <span id="badge-vol-mini-war" class="badge badge-gold">Port 5173</span>
+              </div>
+
+              <!-- Volume Control -->
+              <div class="volume-control-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                  <span>Âm Lượng Game:</span>
+                  <button id="btn-mute-mini-war" class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="toggleGameMute('mini-war')">🔊 Mute</button>
+                </div>
+                <div class="volume-control-row">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('mini-war', -0.05)" title="Giảm 5%">−</button>
+                  <input type="range" id="slider-vol-mini-war" min="0" max="100" step="1" value="32" style="flex: 1;" oninput="onGameVolumeInput('mini-war', this.value)" onchange="onGameVolumeChange('mini-war', this.value)">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('mini-war', 0.05)" title="Tăng 5%">+</button>
+                  <span id="lbl-vol-mini-war" class="vol-percent-badge">32%</span>
+                </div>
+              </div>
+
+              <!-- Music Switcher -->
+              <div class="music-selector-box">
+                <div style="font-size: 11px; font-weight: 600; color: #f59e0b;">Chọn Bản Nhạc / Chế Độ:</div>
+                <div class="music-selector-row">
+                  <select id="select-music-mini-war">
+                    <option value="cue:battle">⚔️ Trận Chiến Thường (Heartfelt Battle)</option>
+                    <option value="cue:boss">👑 Triệu Hồi Boss (Epic Boss Battle)</option>
+                    <option value="cue:final_boss">🔥 Boss Cao Trào (Boss Battle Theme)</option>
+                    <option value="track:mini-war-arena-battle_bgm">⚔️ Bài 1: Heartfelt Battle (request)</option>
+                    <option value="track:mini-war-arena-boss_bgm">👑 Bài 2: Epic Boss Battle (SubspaceAudio)</option>
+                    <option value="track:mini-war-arena-final_boss_bgm">🔥 Bài 3: Boss Battle Theme (Cleyton Kauffman)</option>
+                  </select>
+                  <button class="btn-green" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;" onclick="switchGameMusic('mini-war')">🔀 Đổi Nhạc</button>
+                </div>
+              </div>
+
+              <div class="music-status-pill">
+                <span>Trạng thái:</span>
+                <strong id="status-music-mini-war" style="color: #f59e0b;">⚔️ Heartfelt Battle</strong>
+              </div>
+            </div>
+
+            <!-- GAME 3: ENGLISH CLASS LIVE -->
+            <div class="mixer-card english-class">
+              <div class="mixer-card-header">
+                <div class="mixer-card-title">
+                  <span style="font-size: 18px;">🎓</span>
+                  <span>English Class LIVE</span>
+                </div>
+                <span id="badge-vol-english-class" class="badge badge-blue">Port 5175</span>
+              </div>
+
+              <!-- Volume Control -->
+              <div class="volume-control-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                  <span>Âm Lượng Game:</span>
+                  <button id="btn-mute-english-class" class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="toggleGameMute('english-class')">🔊 Mute</button>
+                </div>
+                <div class="volume-control-row">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('english-class', -0.05)" title="Giảm 5%">−</button>
+                  <input type="range" id="slider-vol-english-class" min="0" max="100" step="1" value="26" style="flex: 1;" oninput="onGameVolumeInput('english-class', this.value)" onchange="onGameVolumeChange('english-class', this.value)">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('english-class', 0.05)" title="Tăng 5%">+</button>
+                  <span id="lbl-vol-english-class" class="vol-percent-badge">26%</span>
+                </div>
+              </div>
+
+              <!-- Music Switcher -->
+              <div class="music-selector-box">
+                <div style="font-size: 11px; font-weight: 600; color: #38bdf8;">Chọn Bản Nhạc / Chế Độ:</div>
+                <div class="music-selector-row">
+                  <select id="select-music-english-class">
+                    <option value="cue:question">❓ Đọc Câu Hỏi (In-Game 1 Bossa)</option>
+                    <option value="cue:lobby">🏫 Sảnh Vào Lớp (Cozy Stage Select)</option>
+                    <option value="cue:celebration">🎉 Ăn Mừng / Kết Quả (Happy Party Loop)</option>
+                    <option value="track:english-class-lobby_bgm">🏫 Bài 1: Stage Select (MintoDog)</option>
+                    <option value="track:english-class-question_bgm">❓ Bài 2: In-Game 1 (MintoDog)</option>
+                    <option value="track:english-class-results_bgm">🎉 Bài 3: Party & Gameover (gilzoide)</option>
+                  </select>
+                  <button class="btn-green" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;" onclick="switchGameMusic('english-class')">🔀 Đổi Nhạc</button>
+                </div>
+              </div>
+
+              <div class="music-status-pill">
+                <span>Trạng thái:</span>
+                <strong id="status-music-english-class" style="color: #38bdf8;">❓ In-Game 1 (Bossa)</strong>
+              </div>
+            </div>
+
+            <!-- GAME 4: ĐỐ VUI CÓ THƯỞNG -->
+            <div class="mixer-card quiz-show">
+              <div class="mixer-card-header">
+                <div class="mixer-card-title">
+                  <span style="font-size: 18px;">🏆</span>
+                  <span>Đố Vui Có Thưởng</span>
+                </div>
+                <span id="badge-vol-quiz-show" class="badge badge-purple">Port 5176</span>
+              </div>
+
+              <!-- Volume Control -->
+              <div class="volume-control-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                  <span>Âm Lượng Game:</span>
+                  <button id="btn-mute-quiz-show" class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="toggleGameMute('quiz-show')">🔊 Mute</button>
+                </div>
+                <div class="volume-control-row">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('quiz-show', -0.05)" title="Giảm 5%">−</button>
+                  <input type="range" id="slider-vol-quiz-show" min="0" max="100" step="1" value="28" style="flex: 1;" oninput="onGameVolumeInput('quiz-show', this.value)" onchange="onGameVolumeChange('quiz-show', this.value)">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('quiz-show', 0.05)" title="Tăng 5%">+</button>
+                  <span id="lbl-vol-quiz-show" class="vol-percent-badge">28%</span>
+                </div>
+              </div>
+
+              <!-- Music Switcher -->
+              <div class="music-selector-box">
+                <div style="font-size: 11px; font-weight: 600; color: #ec4899;">Chọn Bản Nhạc / Chế Độ:</div>
+                <div class="music-selector-row">
+                  <select id="select-music-quiz-show">
+                    <option value="cue:question">🎸 Nhịp Câu Hỏi (Funked Up)</option>
+                    <option value="cue:celebration">🪩 Sân Khấu Disco (Funky Disco Beats)</option>
+                    <option value="cue:lobby">🎺 Nhạc Chờ Swing (Catchy Swing)</option>
+                    <option value="track:quiz-show-main_bgm">🪩 Bài 1: Funky Disco Beats (Fupi)</option>
+                    <option value="track:quiz-show-question_bgm">🎸 Bài 2: Funked Up (Joth)</option>
+                    <option value="track:quiz-show-lobby_bgm">🎺 Bài 3: Catchy Swing (Doge)</option>
+                  </select>
+                  <button class="btn-green" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;" onclick="switchGameMusic('quiz-show')">🔀 Đổi Nhạc</button>
+                </div>
+              </div>
+
+              <div class="music-status-pill">
+                <span>Trạng thái:</span>
+                <strong id="status-music-quiz-show" style="color: #ec4899;">🎸 Funked Up</strong>
+              </div>
+            </div>
+
+            <!-- GAME 5: ĐUỔI HÌNH BẮT CHỮ -->
+            <div class="mixer-card duoi-hinh">
+              <div class="mixer-card-header">
+                <div class="mixer-card-title">
+                  <span style="font-size: 18px;">🧩</span>
+                  <span>Đuổi Hình Bắt Chữ</span>
+                </div>
+                <span id="badge-vol-duoi-hinh-bat-chu" class="badge badge-green">Port 5177</span>
+              </div>
+
+              <!-- Volume Control -->
+              <div class="volume-control-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                  <span>Âm Lượng Game:</span>
+                  <button id="btn-mute-duoi-hinh-bat-chu" class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="toggleGameMute('duoi-hinh-bat-chu')">🔊 Mute</button>
+                </div>
+                <div class="volume-control-row">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('duoi-hinh-bat-chu', -0.05)" title="Giảm 5%">−</button>
+                  <input type="range" id="slider-vol-duoi-hinh-bat-chu" min="0" max="100" step="1" value="28" style="flex: 1;" oninput="onGameVolumeInput('duoi-hinh-bat-chu', this.value)" onchange="onGameVolumeChange('duoi-hinh-bat-chu', this.value)">
+                  <button class="vol-btn-step" onclick="adjustGameVolume('duoi-hinh-bat-chu', 0.05)" title="Tăng 5%">+</button>
+                  <span id="lbl-vol-duoi-hinh-bat-chu" class="vol-percent-badge">28%</span>
+                </div>
+              </div>
+
+              <!-- Music Switcher -->
+              <div class="music-selector-box">
+                <div style="font-size: 11px; font-weight: 600; color: #10b981;">Chọn Bản Nhạc / Chế Độ:</div>
+                <div class="music-selector-row">
+                  <select id="select-music-duoi-hinh-bat-chu">
+                    <option value="cue:lobby">🔍 Hiện Hình Gợi Ý (Magic Puzzle 1)</option>
+                    <option value="cue:thinking">🤔 Khán Giả Suy Nghĩ (Cozy Puzzle 3)</option>
+                    <option value="cue:transition">🎊 Giải Mã Thành Công (Music Loops)</option>
+                    <option value="track:duoi-hinh-bat-chu-main_bgm">🔍 Bài 1: Magic Puzzle 1 (MintoDog)</option>
+                    <option value="track:duoi-hinh-bat-chu-thinking_bgm">🤔 Bài 2: Cozy Puzzle 3 (MintoDog)</option>
+                    <option value="track:duoi-hinh-bat-chu-round_transition">🎊 Bài 3: Music Loops (pauliuw)</option>
+                  </select>
+                  <button class="btn-green" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;" onclick="switchGameMusic('duoi-hinh-bat-chu')">🔀 Đổi Nhạc</button>
+                </div>
+              </div>
+
+              <div class="music-status-pill">
+                <span>Trạng thái:</span>
+                <strong id="status-music-duoi-hinh-bat-chu" style="color: #10b981;">🔍 Magic Puzzle 1</strong>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 5 GAMES MUSIC SOUNDBOARD & REFERENCE -->
+          <div class="card-title" style="margin-bottom: 10px; font-size: 14px;">
+            <span>🎼 Chi Tiết 15 Bản Nhạc CC0 & Bảng Nghe Thử Từng Bài</span>
+          </div>
+          <div class="grid-2" style="margin-bottom: 14px;">
+
+            <!-- 1. CAFÉ MÒE -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <span>🐱 Café Mòe — Lofi, Chill & Thư Giãn</span>
+                  <span class="badge badge-purple">Playlist Luân Phiên</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('cat-cafe', 'gameplay')">🎵 Phát Nhạc Chính</button>
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('cat-cafe', 'nap')">💤 Mèo Ngủ (Loop)</button>
+                </div>
+              </div>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">
+                Phong cách: Lofi hip-hop, tiếng guitar, piano nhẹ, không khí quán cà phê ấm cúng. Tự động luân phiên bài để tránh nhàm chán suốt 8 giờ live.
+              </p>
+              
+              <div class="soundboard-grid" style="grid-template-columns: 1fr; gap: 8px;">
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #38bdf8;">1. Cat caffe</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Main BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: TAD · Lofi Compilation · BPM ~80</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/cat-cafe/cat_caffe.mp3', 'Cat caffe', 'TAD', 'Café Mòe')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/lofi-compilation" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #38bdf8;">2. A cup of tea</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Alternate BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: TAD · Quán trà đêm thanh tịnh · BPM ~75</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/cat-cafe/cup_of_tea.mp3', 'A cup of tea', 'TAD', 'Café Mòe')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/lofi-compilation" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #38bdf8;">3. Chill lofi inspired [loop edit]</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Nap / Sleep</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: qubodup / omfgdude · Vòng lặp liền mạch khi mèo ngủ</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/cat-cafe/chill_lofi_loop.ogg', 'Chill lofi inspired', 'qubodup', 'Café Mòe')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/chill-lofi-inspired-loop-edit" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. MINI WAR ARENA -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <span>⚔️ Mini War Arena — Fantasy Battle & Boss</span>
+                  <span class="badge badge-gold">Tự Đổi Nhạc Boss</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('mini-war-arena', 'battle')">⚔️ Chiến Thường</button>
+                  <button class="btn-gold" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('mini-war-arena', 'boss')">👑 Triệu Hồi Boss</button>
+                </div>
+              </div>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">
+                Phong cách: Trống trận hào hùng, dàn nhạc fantasy, tự chuyển sang Epic Boss khi Infernal Warlord xuất trận!
+              </p>
+              
+              <div class="soundboard-grid" style="grid-template-columns: 1fr; gap: 8px;">
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #f59e0b;">1. Heartfelt Battle</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Battle BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: request · Fantasy Strings & Piano · Loopable</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/mini-war-arena/heartfelt_battle.ogg', 'Heartfelt Battle', 'request', 'Mini War Arena')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/heartfelt-battle-loopable-fantasy-stringspianohorn" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #f59e0b;">2. Epic Boss Battle</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Boss Battle</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: SubspaceAudio / Juhani Junkala · Seamlessly Looping</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/mini-war-arena/epic_boss_battle.wav', 'Epic Boss Battle', 'SubspaceAudio', 'Mini War Arena')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/boss-battle-music" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #f59e0b;">3. Boss Battle Theme</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Climax Theme</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: Cleyton Kauffman · JRPG Battle Climax</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/mini-war-arena/boss_battle_theme.ogg', 'Boss Battle Theme', 'Cleyton Kauffman', 'Mini War Arena')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/boss-battle-theme" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. ENGLISH CLASS LIVE -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <span>🎓 English Class LIVE — Lớp Học Vui Nhộn</span>
+                  <span class="badge badge-blue">Ducking Rõ Tiếng Cô Giáo</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('english-class', 'lobby')">🏫 Sảnh Vào Lớp</button>
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('english-class', 'question')">❓ Đặt Câu Hỏi</button>
+                  <button class="btn-gold" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('english-class', 'celebration')">🎉 Ăn Mừng</button>
+                </div>
+              </div>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">
+                Phong cách: Trong sáng, tươi vui, tiếng sáo và bossa nova dịu nhẹ giúp nghe rõ 100% phát âm tiếng Anh và tiếng Việt của cô giáo.
+              </p>
+              
+              <div class="soundboard-grid" style="grid-template-columns: 1fr; gap: 8px;">
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #38bdf8;">1. Cozy Puzzle Stage Select</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Lobby BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: MintoDog · Ấm áp đón học sinh vào lớp · BPM 100</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/english-class/stage_select.ogg', 'Cozy Puzzle Stage Select', 'MintoDog', 'English Class LIVE')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/cozy-puzzle-stage-select" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #38bdf8;">2. Cozy Puzzle In-Game 1</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Question BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: MintoDog · Bossa nova sáo nhẹ khi đọc câu hỏi · BPM 118</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/english-class/in_game_1.ogg', 'Cozy Puzzle In-Game 1', 'MintoDog', 'English Class LIVE')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/cozy-puzzle-in-game-1" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #38bdf8;">3. Party and Gameover Loop</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Results / Celebration</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: gilzoide · Tổng kết vòng thi và vinh danh thủ khoa</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/english-class/happy_party_loop.ogg', 'Party and Gameover Loop', 'gilzoide', 'English Class LIVE')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/party-and-gameover-loop" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. ĐỐ VUI CÓ THƯỞNG -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <span>🏆 Đố Vui Có Thưởng — TV Gameshow Neon</span>
+                  <span class="badge badge-gold">Funk & Disco</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('quiz-show', 'lobby')">🎺 Nhạc Chờ Swing</button>
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('quiz-show', 'question')">🎸 Nhịp Câu Hỏi</button>
+                  <button class="btn-gold" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('quiz-show', 'celebration')">🪩 Sân Khấu Disco</button>
+                </div>
+              </div>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">
+                Phong cách: Funk, disco, swing sôi động như trường quay truyền hình. Giữ nhịp nghẹt thở trong đếm ngược 12 giây!
+              </p>
+              
+              <div class="soundboard-grid" style="grid-template-columns: 1fr; gap: 8px;">
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #ec4899;">1. Funky Disco Beats</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Main Stage BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: Fupi · Disco sôi động sân khấu và ăn mừng chiến thắng</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/quiz-show/funky_disco_beats.ogg', 'Funky Disco Beats', 'Fupi', 'Đố Vui Có Thưởng')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/funky-disco-beats-to-boogiewoogie-to" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #ec4899;">2. Funked Up</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Question BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: Joth · Giữ nhịp rộn ràng trong các vòng trả lời</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/quiz-show/funked_up.mp3', 'Funked Up', 'Joth', 'Đố Vui Có Thưởng')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/funked-up" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #ec4899;">3. Catchy Swing</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Lobby / Intermission</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: Doge · Nhạc chờ vui tươi, lôi cuốn khi chuyển vòng</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/quiz-show/catchy_swing.ogg', 'Catchy Swing', 'Doge', 'Đố Vui Có Thưởng')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/catchy-swing" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. ĐUỔI HÌNH BẮT CHỮ -->
+            <div class="card" style="grid-column: 1 / -1;">
+              <div class="card-header">
+                <div class="card-title">
+                  <span>🧩 Đuổi Hình Bắt Chữ — Trinh Thám & Giải Đố Dí Dỏm</span>
+                  <span class="badge badge-green">Mystery & Focus</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('duoi-hinh-bat-chu', 'lobby')">🔍 Hiện Hình Gợi Ý</button>
+                  <button class="btn-outline" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('duoi-hinh-bat-chu', 'thinking')">🤔 Khán Giả Suy Nghĩ</button>
+                  <button class="btn-gold" style="font-size: 10px; padding: 2px 8px;" onclick="playGameMusicCue('duoi-hinh-bat-chu', 'transition')">🎊 Chúc Mừng & Chuyển Vòng</button>
+                </div>
+              </div>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">
+                Phong cách: Tò mò, bí ẩn, vui tươi khi giải đố thành công. Nhạc nền êm ái kích thích khán giả bình luận đáp án.
+              </p>
+              
+              <div class="soundboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px;">
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #10b981;">1. Magic Puzzle In-Game 1</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Main BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: MintoDog · Bí ẩn ma thuật khi hiện hình câu đố · BPM 110</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/duoi-hinh-bat-chu/magic_puzzle_1.ogg', 'Magic Puzzle In-Game 1', 'MintoDog', 'Đuổi Hình Bắt Chữ')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/magic-puzzle-in-game-1" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #10b981;">2. Cozy Puzzle In-Game 3</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Thinking BGM</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: MintoDog · Thư giãn tập trung khi suy nghĩ đáp án · BPM 108</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/duoi-hinh-bat-chu/cozy_puzzle_3.ogg', 'Cozy Puzzle In-Game 3', 'MintoDog', 'Đuổi Hình Bắt Chữ')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/cozy-puzzle-in-game-3" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+
+                <div class="soundboard-btn" style="text-align: left; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #10b981;">3. Music Loops (four_loop)</strong> <span class="badge badge-green" style="font-size: 9px;">CC0 · Transition</span>
+                    <div style="font-size: 10px; color: var(--text-muted);">Tác giả: pauliuw · Vòng lặp chuyển tiếp giải mã thành công</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-gold" style="font-size: 10px; padding: 3px 8px;" onclick="previewTrack('/shared-music/duoi-hinh-bat-chu/music_loops_four.mp3', 'Music Loops', 'pauliuw', 'Đuổi Hình Bắt Chữ')">▶ Nghe thử</button>
+                    <a href="https://opengameart.org/content/music-loops" target="_blank" class="btn-outline" style="font-size: 10px; padding: 3px 6px; text-decoration: none;">🔗 Nguồn</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </section>

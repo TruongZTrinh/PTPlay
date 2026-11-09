@@ -1,4 +1,4 @@
-import { PTPlayGameClient } from '@ptplay/game-sdk';
+import { PTPlayGameClient, SharedMusicManager } from '@ptplay/game-sdk';
 import { GameCommand } from '@ptplay/live-contracts';
 import { QuizShowEngine } from '../systems/QuizShowEngine';
 import { StudentRoster } from '../systems/StudentRoster';
@@ -94,6 +94,23 @@ export class QuizShowLiveEventRouter {
         if (text) {
           this.tts?.speak(text, true);
         }
+        break;
+      }
+
+      case 'quiz_show.set_volume':
+      case 'set_volume': {
+        const vol = Number(cmd.metadata?.volume ?? cmd.metadata?.bgm ?? 0.3);
+        SharedMusicManager.getInstance({ gameId: 'quiz-show' }).setVolume(vol);
+        break;
+      }
+
+      case 'quiz_show.switch_music':
+      case 'switch_music': {
+        const cue = cmd.metadata?.cue ? String(cmd.metadata.cue) : undefined;
+        const trackId = cmd.metadata?.trackId ? String(cmd.metadata.trackId) : undefined;
+        const mgr = SharedMusicManager.getInstance({ gameId: 'quiz-show' });
+        if (cue) mgr.playCue(cue);
+        else if (trackId) mgr.playTrack(trackId);
         break;
       }
     }

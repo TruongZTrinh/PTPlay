@@ -96,6 +96,7 @@ const TAB_BREADCRUMBS = {
   spectators: { cat: 'Audience & CRM', name: 'Khán Giả & Đội Ngũ' },
   economy: { cat: 'Audience & CRM', name: 'PTPlay Gift Control Center (Quà Tặng & Mappings)' },
   ttsstudio: { cat: 'Operations & Control', name: 'Phòng Thí Nghiệm TTS & Giọng Đọc Đa Năng' },
+  musicmanager: { cat: 'Operations & Control', name: 'Thư Viện Nhạc Dùng Chung & BGM Mixer' },
   simulator: { cat: 'Operations & Control', name: 'TikTok LIVE Studio & Giả Lập' },
   logs: { cat: 'Operations & Control', name: 'Nhật Ký & Soi RAW JSON' },
   queue: { cat: 'Operations & Control', name: 'Hàng Đợi & Quá Tải' },
@@ -1842,7 +1843,7 @@ function updateTtsSliderLabel(type) {
     const lbl = document.getElementById('val-tts-pitch');
     if (lbl) lbl.innerText = val;
   } else if (type === 'volume') {
-    const val = document.getElementById('slider-tts-volume')?.value || '90';
+    const val = document.getElementById('slider-tts-volume')?.value || '80';
     const lbl = document.getElementById('val-tts-volume');
     if (lbl) lbl.innerText = `${val}%`;
   }
@@ -1856,7 +1857,7 @@ function resetTtsSliders() {
 
   if (rateInput) rateInput.value = '1.05';
   if (pitchInput) pitchInput.value = '1.0';
-  if (volumeInput) volumeInput.value = '90';
+  if (volumeInput) volumeInput.value = '80';
 
   updateTtsSliderLabel('rate');
   updateTtsSliderLabel('pitch');
@@ -1920,11 +1921,11 @@ function playLocalAdminTts(text, customLang = undefined) {
   // Sliders
   const rateVal = parseFloat(document.getElementById('slider-tts-rate')?.value || '1.05');
   const pitchVal = parseFloat(document.getElementById('slider-tts-pitch')?.value || '1.0');
-  const volumeVal = parseFloat(document.getElementById('slider-tts-volume')?.value || '90') / 100;
+  const volumeVal = parseFloat(document.getElementById('slider-tts-volume')?.value || '80') / 100;
 
   utterance.rate = isNaN(rateVal) ? 1.05 : rateVal;
   utterance.pitch = isNaN(pitchVal) ? 1.0 : pitchVal;
-  utterance.volume = isNaN(volumeVal) ? 0.9 : volumeVal;
+  utterance.volume = isNaN(volumeVal) ? 0.8 : volumeVal;
 
   utterance.onstart = () => {
     showToast(`🔊 Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
@@ -2045,6 +2046,329 @@ async function runDiagnosticProbe() {
   } catch (e) {
     if (alertBox) alertBox.innerText = `Lỗi probe: ${e.message}`;
   }
+}
+
+// --- 10.5 Shared Music Manager & Livestream Audio Mixer ---
+let isGlobalBgmMuted = false;
+let gameMuteStates = {
+  'cat-cafe': false,
+  'mini-war': false,
+  'english-class': false,
+  'quiz-show': false,
+  'duoi-hinh-bat-chu': false,
+};
+
+const DEFAULT_VOLUMES = {
+  master: 0.35,
+  'cat-cafe': 0.28,
+  'mini-war': 0.32,
+  'english-class': 0.26,
+  'quiz-show': 0.28,
+  'duoi-hinh-bat-chu': 0.28,
+};
+
+const GAME_MUSIC_NAMES = {
+  'cat-cafe': 'Café Mòe',
+  'mini-war': 'Mini War Arena',
+  'english-class': 'English Class LIVE',
+  'quiz-show': 'Đố Vui Có Thưởng',
+  'duoi-hinh-bat-chu': 'Đuổi Hình Bắt Chữ',
+};
+
+async function sendMusicControl(payload) {
+  try {
+    const res = await fetch('/api/music/control', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    console.error('[MusicControl] Request failed:', err);
+    return null;
+  }
+}
+
+function initAdminMusic() {
+  // 1. Restore Master Volume
+  const savedMaster = localStorage.getItem('ptplay_master_bgm_vol');
+  const masterVal = savedMaster ? Number(savedMaster) / 100 : DEFAULT_VOLUMES.master;
+  const masterSlider = document.getElementById('slider-master-bgm');
+  const masterLbl = document.getElementById('lbl-master-bgm');
+  if (masterSlider) masterSlider.value = Math.round(masterVal * 100);
+  if (masterLbl) masterLbl.innerText = `${Math.round(masterVal * 100)}%`;
+
+  // 2. Restore Game Volumes
+  const gameIds = ['cat-cafe', 'mini-war', 'english-class', 'quiz-show', 'duoi-hinh-bat-chu'];
+  for (const g of gameIds) {
+    const saved = localStorage.getItem('ptplay_vol_' + g);
+    const vol = saved ? Number(saved) / 100 : (DEFAULT_VOLUMES[g] || 0.3);
+    const slider = document.getElementById(`slider-vol-${g}`);
+    const lbl = document.getElementById(`lbl-vol-${g}`);
+    if (slider) slider.value = Math.round(vol * 100);
+    if (lbl) lbl.innerText = `${Math.round(vol * 100)}%`;
+  }
+
+  // 3. Restore OBS Audio Protection
+  const obsProtection = localStorage.getItem('ptplay_obs_only_audio') === 'true';
+  const obsChk = document.getElementById('chk-obs-only-audio');
+  if (obsChk) obsChk.checked = obsProtection;
+
+  // 4. Setup Preview Player
+  const player = document.getElementById('admin-audio-player');
+  if (player) {
+    player.volume = 0.3;
+    player.addEventListener('play', () => {
+      const icon = document.getElementById('icon-preview-playing');
+      if (icon) icon.innerText = '🔊';
+    });
+    player.addEventListener('pause', () => {
+      const icon = document.getElementById('icon-preview-playing');
+      if (icon) icon.innerText = '🎧';
+    });
+    player.addEventListener('ended', () => {
+      const icon = document.getElementById('icon-preview-playing');
+      if (icon) icon.innerText = '🎧';
+    });
+  }
+}
+
+// Master Volume Controls
+function onMasterVolumeInput(val) {
+  const lbl = document.getElementById('lbl-master-bgm');
+  if (lbl) lbl.innerText = `${val}%`;
+}
+
+async function onMasterVolumeChange(val) {
+  await setMasterBgmVolume(Number(val) / 100);
+}
+
+async function setMasterBgmVolume(volume) {
+  const clamped = Math.max(0, Math.min(1, Number(volume)));
+  const pct = Math.round(clamped * 100);
+
+  const slider = document.getElementById('slider-master-bgm');
+  const lbl = document.getElementById('lbl-master-bgm');
+  if (slider) slider.value = pct;
+  if (lbl) lbl.innerText = `${pct}%`;
+
+  localStorage.setItem('ptplay_master_bgm_vol', String(pct));
+  await sendMusicControl({ game: 'all', action: 'set_volume', volume: clamped });
+  showToast(`🔊 Master BGM: ${pct}%`, 'info');
+}
+
+async function adjustMasterVolume(delta) {
+  playSound('click');
+  const slider = document.getElementById('slider-master-bgm');
+  const curPct = slider ? Number(slider.value) : 35;
+  const newPct = Math.max(0, Math.min(100, Math.round(curPct + delta * 100)));
+  await setMasterBgmVolume(newPct / 100);
+}
+
+async function toggleMasterMute() {
+  playSound('click');
+  isGlobalBgmMuted = !isGlobalBgmMuted;
+  const btn = document.getElementById('btn-master-mute');
+  const btnGlobal = document.getElementById('btn-toggle-global-bgm');
+
+  if (isGlobalBgmMuted) {
+    if (btn) {
+      btn.innerText = '🔇 Đang Mute Tất Cả';
+      btn.classList.add('btn-red');
+    }
+    if (btnGlobal) btnGlobal.innerText = '🔇 Bật Lại BGM (Đang Mute)';
+    showToast('🔇 Đã tắt toàn bộ BGM', 'warning');
+  } else {
+    if (btn) {
+      btn.innerText = '🔊 Bật Toàn Bộ BGM';
+      btn.classList.remove('btn-red');
+    }
+    if (btnGlobal) btnGlobal.innerText = '🔊 Bật / Tắt Toàn Bộ BGM';
+    showToast('🔊 Đã bật lại toàn bộ BGM', 'success');
+  }
+
+  await sendMusicControl({ game: 'all', action: 'mute', mute: isGlobalBgmMuted });
+}
+
+function toggleGlobalBgm() {
+  toggleMasterMute();
+}
+
+async function resetAllVolumesToDefault() {
+  playSound('click');
+  await setMasterBgmVolume(DEFAULT_VOLUMES.master);
+  const gameIds = ['cat-cafe', 'mini-war', 'english-class', 'quiz-show', 'duoi-hinh-bat-chu'];
+  for (const g of gameIds) {
+    await setGameVolume(g, DEFAULT_VOLUMES[g] || 0.3);
+  }
+  showToast('🔄 Đã khôi phục mức âm lượng chuẩn livestream!', 'success');
+}
+
+// Per-Game Volume Controls
+function onGameVolumeInput(gameId, val) {
+  const lbl = document.getElementById(`lbl-vol-${gameId}`);
+  if (lbl) lbl.innerText = `${val}%`;
+}
+
+async function onGameVolumeChange(gameId, val) {
+  await setGameVolume(gameId, Number(val) / 100);
+}
+
+async function setGameVolume(gameId, volume) {
+  const clamped = Math.max(0, Math.min(1, Number(volume)));
+  const pct = Math.round(clamped * 100);
+
+  const slider = document.getElementById(`slider-vol-${gameId}`);
+  const lbl = document.getElementById(`lbl-vol-${gameId}`);
+  if (slider) slider.value = pct;
+  if (lbl) lbl.innerText = `${pct}%`;
+
+  localStorage.setItem('ptplay_vol_' + gameId, String(pct));
+  const gameName = GAME_MUSIC_NAMES[gameId] || gameId;
+
+  await sendMusicControl({ game: gameId, action: 'set_volume', volume: clamped });
+  showToast(`🎵 [${gameName}] Âm lượng: ${pct}%`, 'info');
+}
+
+async function adjustGameVolume(gameId, delta) {
+  playSound('click');
+  const slider = document.getElementById(`slider-vol-${gameId}`);
+  const curPct = slider ? Number(slider.value) : 30;
+  const newPct = Math.max(0, Math.min(100, Math.round(curPct + delta * 100)));
+  await setGameVolume(gameId, newPct / 100);
+}
+
+async function toggleGameMute(gameId) {
+  playSound('click');
+  const isMuted = !gameMuteStates[gameId];
+  gameMuteStates[gameId] = isMuted;
+
+  const btn = document.getElementById(`btn-mute-${gameId}`);
+  const gameName = GAME_MUSIC_NAMES[gameId] || gameId;
+
+  if (btn) {
+    btn.innerText = isMuted ? '🔇 Muted' : '🔊 Mute';
+    if (isMuted) btn.classList.add('btn-red');
+    else btn.classList.remove('btn-red');
+  }
+
+  await sendMusicControl({ game: gameId, action: 'mute', mute: isMuted });
+  showToast(`${isMuted ? '🔇' : '🔊'} [${gameName}] ${isMuted ? 'Đã tắt tiếng' : 'Đã bật tiếng'}`, isMuted ? 'warning' : 'success');
+}
+
+// Music Switcher Controls
+async function switchGameMusic(gameId) {
+  playSound('click');
+  const select = document.getElementById(`select-music-${gameId}`);
+  if (!select) return;
+
+  const val = select.value || '';
+  const selectedText = select.options[select.selectedIndex]?.text || val;
+  const gameName = GAME_MUSIC_NAMES[gameId] || gameId;
+
+  let cue;
+  let trackId;
+
+  if (val.startsWith('cue:')) {
+    cue = val.slice(4);
+  } else if (val.startsWith('track:')) {
+    trackId = val.slice(6);
+  } else {
+    cue = val;
+  }
+
+  const payload = { game: gameId, action: 'switch_music', cue, trackId };
+  await sendMusicControl(payload);
+
+  const statusEl = document.getElementById(`status-music-${gameId}`);
+  if (statusEl) {
+    statusEl.innerText = selectedText.split('(')[0].trim();
+  }
+
+  showToast(`🔀 [${gameName}] Đã chuyển sang: ${selectedText}`, 'success');
+}
+
+async function playGameMusicCue(gameId, cueName) {
+  playSound('click');
+  const gameName = GAME_MUSIC_NAMES[gameId] || gameId;
+  await sendMusicControl({ game: gameId, action: 'switch_music', cue: cueName });
+
+  const select = document.getElementById(`select-music-${gameId}`);
+  if (select) {
+    for (let i = 0; i < select.options.length; i++) {
+      if (select.options[i].value === `cue:${cueName}`) {
+        select.selectedIndex = i;
+        const statusEl = document.getElementById(`status-music-${gameId}`);
+        if (statusEl) statusEl.innerText = select.options[i].text.split('(')[0].trim();
+        break;
+      }
+    }
+  }
+
+  showToast(`🎵 [${gameName}] Đang phát cue: ${cueName}`, 'success');
+}
+
+// Track Preview & Echo Protection
+function previewTrack(url, title, author, gameName) {
+  playSound('click');
+  const player = document.getElementById('admin-audio-player');
+  const lblGame = document.getElementById('lbl-preview-game');
+  const lblTitle = document.getElementById('lbl-preview-title');
+  const lblMeta = document.getElementById('lbl-preview-meta');
+
+  if (lblGame) lblGame.innerText = `ĐANG NGHE THỬ · ${gameName.toUpperCase()}`;
+  if (lblTitle) lblTitle.innerText = title;
+  if (lblMeta) lblMeta.innerText = `Tác giả: ${author} · Giấy phép: CC0 · Sẵn sàng cho livestream`;
+
+  if (player) {
+    player.src = url;
+    player.play().catch((err) => {
+      console.warn('[AudioPlayer] Autoplay prevented:', err);
+    });
+  }
+}
+
+function stopMusicPreview() {
+  playSound('click');
+  const player = document.getElementById('admin-audio-player');
+  if (player) player.pause();
+  const icon = document.getElementById('icon-preview-playing');
+  if (icon) icon.innerText = '🎧';
+  showToast('⏹ Đã dừng nghe thử', 'info');
+}
+
+function setPreviewVolume(val) {
+  const player = document.getElementById('admin-audio-player');
+  if (player) player.volume = Number(val);
+}
+
+function toggleObsAudioProtection(checked) {
+  playSound('click');
+  localStorage.setItem('ptplay_obs_only_audio', checked ? 'true' : 'false');
+  if (checked) {
+    showToast('🛡️ Đã bật Chống Vọng: Âm thanh chỉ phát qua OBS Browser Source!', 'warning');
+  } else {
+    showToast('🔊 Đã tắt Chống Vọng: Phát âm thanh trên cả Chrome và OBS', 'info');
+  }
+}
+
+async function testMusicDucking() {
+  playSound('click');
+  const player = document.getElementById('admin-audio-player');
+  if (!player.src || player.paused) {
+    previewTrack('/shared-music/cat-cafe/cat_caffe.mp3', 'Cat caffe', 'TAD', 'Café Mòe');
+  }
+
+  showToast('🎙️ Bắt đầu mô phỏng: TTS nói, BGM tự hạ ~10-12dB...', 'info');
+  const originalVol = player.volume || 0.3;
+  // Duck by factor 0.36 (-11 dB)
+  player.volume = originalVol * 0.36;
+
+  setTimeout(() => {
+    player.volume = originalVol;
+    showToast('🎵 TTS đọc xong: BGM tự động khôi phục 100% âm lượng ban đầu!', 'success');
+  }, 3500);
 }
 
 // --- 11. Multiview 9:16 Preview ---
@@ -2245,6 +2569,23 @@ const COMMAND_ITEMS = [
   { label: '🔍 Chạy kiểm tra TikFinity Diagnostic Probe', badge: 'Probe', action: () => { switchTab('simulator'); runDiagnosticProbe(); } },
   { label: '⚡ Bật/Tắt Auto Simulator ngẫu nhiên', badge: 'Sim', action: () => toggleAutoSim() },
   { label: '🧹 Xóa sạch nhật ký RAW Logs', badge: 'Logs', action: () => clearRawLogs() },
+
+  // BGM & Shared Music Manager Actions
+  { label: '🎵 Đi tới: Thư Viện Nhạc & BGM Mixer', badge: 'Music', action: () => switchTab('musicmanager') },
+  { label: '🔊 BGM: Tăng 5% âm lượng Master', badge: 'Audio', action: () => adjustMasterVolume(0.05) },
+  { label: '🔉 BGM: Giảm 5% âm lượng Master', badge: 'Audio', action: () => adjustMasterVolume(-0.05) },
+  { label: '🔇 BGM: Bật / Tắt Toàn Bộ BGM (Mute All)', badge: 'Audio', action: () => toggleMasterMute() },
+  { label: '🔄 BGM: Reset âm lượng chuẩn Livestream (35%)', badge: 'Audio', action: () => resetAllVolumesToDefault() },
+  { label: '👑 Mini War: Chuyển nhạc sang Epic Boss Battle', badge: 'Music', action: () => playGameMusicCue('mini-war', 'boss') },
+  { label: '⚔️ Mini War: Chuyển nhạc về Heartfelt Battle', badge: 'Music', action: () => playGameMusicCue('mini-war', 'battle') },
+  { label: '💤 Café Mòe: Chuyển nhạc sang Mèo Ngủ (Chill Lofi)', badge: 'Music', action: () => playGameMusicCue('cat-cafe', 'nap') },
+  { label: '🎵 Café Mòe: Chuyển nhạc sang Cat Caffe (Main Lofi)', badge: 'Music', action: () => playGameMusicCue('cat-cafe', 'gameplay') },
+  { label: '❓ English Class: Chuyển nhạc sang Câu Hỏi (In-Game 1)', badge: 'Music', action: () => playGameMusicCue('english-class', 'question') },
+  { label: '🎉 English Class: Chuyển nhạc sang Ăn Mừng (Party Loop)', badge: 'Music', action: () => playGameMusicCue('english-class', 'celebration') },
+  { label: '🎸 Quiz Show: Chuyển nhạc sang Funked Up', badge: 'Music', action: () => playGameMusicCue('quiz-show', 'question') },
+  { label: '🪩 Quiz Show: Chuyển nhạc sang Funky Disco Beats', badge: 'Music', action: () => playGameMusicCue('quiz-show', 'celebration') },
+  { label: '🔍 Đuổi Hình: Chuyển nhạc sang Magic Puzzle', badge: 'Music', action: () => playGameMusicCue('duoi-hinh-bat-chu', 'lobby') },
+  { label: '🤔 Đuổi Hình: Chuyển nhạc sang Cozy Thinking', badge: 'Music', action: () => playGameMusicCue('duoi-hinh-bat-chu', 'thinking') },
 ];
 
 function openCmdPalette() {
@@ -2368,6 +2709,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   initTabs();
   initAdminTts();
+  initAdminMusic();
   initKeyboardShortcuts();
   setInterval(updateClockAndUptime, 1000);
   updateClockAndUptime();

@@ -20,6 +20,8 @@ export interface GameCommandMessage {
     | 'set_round'
     | 'force_end_round'
     | 'boss_ability'
+    | 'set_volume'
+    | 'switch_music'
     | 'tts_speak';
   team?: Team;
   unitType?: UnitType;

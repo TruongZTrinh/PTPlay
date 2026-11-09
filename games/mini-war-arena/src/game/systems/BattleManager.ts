@@ -53,6 +53,7 @@ export class BattleManager {
           const bossName = victim.team === 'red' ? GAME_CONFIG.BOSSES.red.vietnameseName : GAME_CONFIG.BOSSES.blue.vietnameseName;
           this.tts.announceBossDefeated(bossName, killerTeam);
           this.activeBoss = null;
+          this.audio.bossDefeated();
         }
       },
       (breachingTeam, damage) => {
@@ -104,6 +105,7 @@ export class BattleManager {
     }
     this.units = [];
     this.activeBoss = null;
+    this.audio.bossDefeated();
     this.effects.clear();
 
     this.roundManager.startRound(increment);
@@ -197,6 +199,7 @@ export class BattleManager {
           const lane = 1; // Middle lane for epic boss clash
           const boss = this.spawnSystem.spawnUnit(cmd.team, 'boss', lane, nick);
           this.activeBoss = boss;
+          this.audio.summonBoss();
 
           const bossTitle = cmd.team === 'red' ? GAME_CONFIG.BOSSES.red.vietnameseName : GAME_CONFIG.BOSSES.blue.vietnameseName;
           this.ui.showAnnouncement(`⚡ ${bossTitle.toUpperCase()} XUẤT TRẬN! ⚡`, cmd.team === 'red' ? GAME_CONFIG.COLORS.RED_PRIMARY : GAME_CONFIG.COLORS.BLUE_PRIMARY);
@@ -317,6 +320,19 @@ export class BattleManager {
           this.combatSystem.executeBossAoESkill(this.activeBoss, this.units);
           this.ui.showAnnouncement('⚡ KÍCH HOẠT TUYỆT KỸ ĐẠI TƯỚNG! ⚡', GAME_CONFIG.COLORS.GOLD);
         }
+        break;
+      }
+
+      case 'set_volume': {
+        const vol = Number(cmd.metadata?.volume ?? cmd.metadata?.bgm ?? 0.4);
+        this.audio.setVolumes(undefined, vol);
+        break;
+      }
+
+      case 'switch_music': {
+        const cue = String(cmd.metadata?.cue || '');
+        if (cue === 'boss') this.audio.summonBoss();
+        else this.audio.bossDefeated();
         break;
       }
     }

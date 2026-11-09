@@ -1,0 +1,92 @@
+[
+  {
+    "id": "cat-cafe-main_bgm",
+    "file": "downloaded\\cat-cafe\\Cat caffe_0.mp3",
+    "downloadUrl": "https://opengameart.org/sites/default/files/Cat%20caffe_0.mp3",
+    "sourcePage": "https://opengameart.org/content/lofi-compilation"
+  },
+  {
+    "id": "cat-cafe-alternate_bgm",
+    "file": "downloaded\\cat-cafe\\A cup of tea_0.mp3",
+    "downloadUrl": "https://opengameart.org/sites/default/files/A%20cup%20of%20tea_0.mp3",
+    "sourcePage": "https://opengameart.org/content/lofi-compilation"
+  },
+  {
+    "id": "cat-cafe-nap_bgm",
+    "file": "downloaded\\cat-cafe\\chilllofir-loop.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/chilllofir-loop.ogg",
+    "sourcePage": "https://opengameart.org/content/chill-lofi-inspired-loop-edit"
+  },
+  {
+    "id": "mini-war-arena-battle_bgm",
+    "file": "downloaded\\mini-war-arena\\heartfelt-battle_loop.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/heartfelt-battle_loop.ogg",
+    "sourcePage": "https://opengameart.org/content/heartfelt-battle-loopable-fantasy-stringspianohorn"
+  },
+  {
+    "id": "mini-war-arena-boss_bgm",
+    "file": "downloaded\\mini-war-arena\\Juhani Junkala - Epic Boss Battle _Seamlessly Looping_.wav",
+    "downloadUrl": "https://opengameart.org/sites/default/files/Juhani%20Junkala%20-%20Epic%20Boss%20Battle%20%5BSeamlessly%20Looping%5D.wav",
+    "sourcePage": "https://opengameart.org/content/boss-battle-music"
+  },
+  {
+    "id": "mini-war-arena-final_boss_bgm",
+    "file": "downloaded\\mini-war-arena\\CleytonRX - Battle RPG Theme Var_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/CleytonRX%20-%20Battle%20RPG%20Theme%20Var_0.ogg",
+    "sourcePage": "https://opengameart.org/content/boss-battle-theme"
+  },
+  {
+    "id": "english-class-lobby_bgm",
+    "file": "downloaded\\english-class\\cozy_puzzle_stage_select_bpm100_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/cozy_puzzle_stage_select_bpm100_0.ogg",
+    "sourcePage": "https://opengameart.org/content/cozy-puzzle-stage-select"
+  },
+  {
+    "id": "english-class-question_bgm",
+    "file": "downloaded\\english-class\\cozy_puzzle_in-game_1_bpm118_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/cozy_puzzle_in-game_1_bpm118_0.ogg",
+    "sourcePage": "https://opengameart.org/content/cozy-puzzle-in-game-1"
+  },
+  {
+    "id": "english-class-results_bgm",
+    "file": "downloaded\\english-class\\happy_theme_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/happy_theme_0.ogg",
+    "sourcePage": "https://opengameart.org/content/party-and-gameover-loop"
+  },
+  {
+    "id": "quiz-show-main_bgm",
+    "file": "downloaded\\quiz-show\\funkydiscobeatstoboogieslashwoogieto_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/funkydiscobeatstoboogieslashwoogieto_0.ogg",
+    "sourcePage": "https://opengameart.org/content/funky-disco-beats-to-boogiewoogie-to"
+  },
+  {
+    "id": "quiz-show-question_bgm",
+    "file": "downloaded\\quiz-show\\Funked Up.mp3",
+    "downloadUrl": "https://opengameart.org/sites/default/files/Funked%20Up.mp3",
+    "sourcePage": "https://opengameart.org/content/funked-up"
+  },
+  {
+    "id": "quiz-show-lobby_bgm",
+    "file": "downloaded\\quiz-show\\catchyswing.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/catchyswing.ogg",
+    "sourcePage": "https://opengameart.org/content/catchy-swing"
+  },
+  {
+    "id": "duoi-hinh-bat-chu-main_bgm",
+    "file": "downloaded\\duoi-hinh-bat-chu\\magic_puzzle_in-game_1_bpm110_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/magic_puzzle_in-game_1_bpm110_0.ogg",
+    "sourcePage": "https://opengameart.org/content/magic-puzzle-in-game-1"
+  },
+  {
+    "id": "duoi-hinh-bat-chu-thinking_bgm",
+    "file": "downloaded\\duoi-hinh-bat-chu\\cozy_puzzle_in-game_3_bpm108_0.ogg",
+    "downloadUrl": "https://opengameart.org/sites/default/files/cozy_puzzle_in-game_3_bpm108_0.ogg",
+    "sourcePage": "https://opengameart.org/content/cozy-puzzle-in-game-3"
+  },
+  {
+    "id": "duoi-hinh-bat-chu-round_transition",
+    "file": "downloaded\\duoi-hinh-bat-chu\\four_loop.mp3",
+    "downloadUrl": "https://opengameart.org/sites/default/files/four_loop.mp3",
+    "sourcePage": "https://opengameart.org/content/music-loops"
+  }
+]

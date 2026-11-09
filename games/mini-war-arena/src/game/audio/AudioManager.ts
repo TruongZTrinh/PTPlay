@@ -1,3 +1,5 @@
+import { SharedMusicManager } from '@ptplay/game-sdk';
+
 /**
  * PTPlay Mini War Arena - Procedural Web Audio Engine
  * Pure synthesized audio (zero external asset dependencies, zero copyright risks)
@@ -9,6 +11,7 @@ export class AudioManager {
   private musicGain?: GainNode;
   private sfxGain?: GainNode;
   private compressor?: DynamicsCompressorNode;
+  private sharedMusic = SharedMusicManager.getInstance({ gameId: 'mini-war-arena' });
 
   public enabled = true;
   private masterVolume = 0.8;
@@ -54,6 +57,8 @@ export class AudioManager {
     if (this.ctx && this.ctx.state === 'suspended') {
       void this.ctx.resume();
     }
+    this.sharedMusic.unlock();
+    this.sharedMusic.playCue('battle');
   }
 
   public toggle(): boolean {
@@ -61,13 +66,17 @@ export class AudioManager {
     if (this.enabled) {
       this.unlock();
     }
+    this.sharedMusic.setMute(!this.enabled);
     this.applyVolumes();
     return this.enabled;
   }
 
   public setVolumes(master?: number, music?: number, sfx?: number): void {
     if (master !== undefined) this.masterVolume = Math.max(0, Math.min(1, master));
-    if (music !== undefined) this.musicVolume = Math.max(0, Math.min(1, music));
+    if (music !== undefined) {
+      this.musicVolume = Math.max(0, Math.min(1, music));
+      this.sharedMusic.setVolume(this.musicVolume);
+    }
     if (sfx !== undefined) this.sfxVolume = Math.max(0, Math.min(1, sfx));
     this.applyVolumes();
   }
@@ -96,6 +105,12 @@ export class AudioManager {
   /** Duck battle background music volume during Vietnamese shoutcaster announcements */
   public setDucking(isDucking: boolean): void {
     this.isDucked = isDucking;
+    if (isDucking) {
+      this.sharedMusic.startDucking();
+    } else {
+      this.sharedMusic.stopDucking();
+    }
+
     if (!this.ctx || !this.musicGain) return;
     const now = this.ctx.currentTime;
     const target = isDucking ? this.musicVolume * 0.12 : this.musicVolume * 0.35;
@@ -213,6 +228,9 @@ export class AudioManager {
 
   public summonBoss(): void {
     this.unlock();
+    // Seamlessly crossfade to Epic Boss Battle theme
+    this.sharedMusic.playCue('boss');
+
     // Epic war horn + sub bass
     this.tone(140, 0.7, 'sawtooth', 0.12, 0.85);
     this.tone(210, 0.65, 'triangle', 0.11, 1.1);
@@ -220,6 +238,11 @@ export class AudioManager {
     setTimeout(() => {
       this.tone(280, 0.8, 'sawtooth', 0.14, 1.2);
     }, 240);
+  }
+
+  public bossDefeated(): void {
+    // Crossfade back to standard fantasy battle music
+    this.sharedMusic.playCue('battle');
   }
 
   public bossAttack(): void {

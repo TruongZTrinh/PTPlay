@@ -1,3 +1,5 @@
+import { SharedMusicManager } from '@ptplay/game-sdk';
+
 export interface BGMTrack {
   id: string;
   title: string;
@@ -8,26 +10,26 @@ export interface BGMTrack {
 export const BGM_TRACKS: BGMTrack[] = [
   {
     id: 'funny_monkeys',
-    title: 'Khỉ Tinh Nghịch (Monkeys Spinning)',
-    filename: 'bgm_funny_monkeys.mp3',
-    genre: 'Hài hước / Viral TikTok',
+    title: 'Magic Puzzle (Đuổi Hình Bắt Chữ)',
+    filename: 'magic_puzzle_1.ogg',
+    genre: 'Bí ẩn & Tò mò',
   },
   {
     id: 'silly_cartoon',
-    title: 'Hoạt Hình Nhí Nhố (Fluffing a Duck)',
-    filename: 'bgm_silly_cartoon.mp3',
-    genre: 'Hoạt hình vui nhộn',
+    title: 'Cozy Puzzle (Suy Nghĩ & Gợi Ý)',
+    filename: 'cozy_puzzle_3.ogg',
+    genre: 'Tập trung & Thư giãn',
   },
   {
     id: 'sneaky_detective',
-    title: 'Thám Tử Lém Lỉnh (Sneaky Snitch)',
-    filename: 'bgm_sneaky_detective.mp3',
-    genre: 'Trinh thám dí dỏm',
+    title: 'Music Loops (Vui Vẻ Chúc Mừng)',
+    filename: 'music_loops_four.mp3',
+    genre: 'Chuyển vòng hào hứng',
   },
   {
     id: 'chill_carefree',
     title: 'Thảnh Thơi Yêu Đời (Carefree)',
-    filename: 'bgm_chill_carefree.mp3',
+    filename: 'magic_puzzle_1.ogg',
     genre: 'Chill & Thư giãn',
   },
 ];
@@ -37,13 +39,14 @@ export class AudioEngine {
   private masterGain: GainNode | null = null;
   private soundVolume: number = 0.8;
   private isDucked: boolean = false;
+  private sharedMusic = SharedMusicManager.getInstance({ gameId: 'duoi-hinh-bat-chu' });
 
   // Background Music (BGM)
   private bgmAudio: HTMLAudioElement | null = null;
   public bgmEnabled: boolean = true;
   public bgmVolume: number = 0.35;
   private currentTrackIndex: number = 0;
-  private basePath: string = '/assets/rebus-v1/audio/bgm';
+  private basePath: string = '/shared-music/duoi-hinh-bat-chu';
 
   constructor() {}
 
@@ -73,92 +76,46 @@ export class AudioEngine {
 
   public unlock(): void {
     this.ensureContext();
+    this.sharedMusic.unlock();
     if (this.bgmEnabled) {
-      this.playBGM();
+      this.sharedMusic.playCue('lobby');
     }
+  }
+
+  public playCue(cue: string): void {
+    this.sharedMusic.playCue(cue);
   }
 
   // --- BGM Controls ---
 
   public playBGM(trackId?: string): void {
-    if (!this.bgmEnabled || typeof window === 'undefined' || typeof Audio === 'undefined') return;
-
-    if (trackId) {
-      const idx = BGM_TRACKS.findIndex((t) => t.id === trackId);
-      if (idx !== -1) {
-        this.currentTrackIndex = idx;
-      }
-    }
-
-    const track = BGM_TRACKS[this.currentTrackIndex];
-    if (!track) return;
-
-    const audioSrc = `${this.basePath}/${track.filename}`;
-
-    try {
-      if (!this.bgmAudio) {
-        this.bgmAudio = new Audio(audioSrc);
-      } else if (!this.bgmAudio.src.endsWith(track.filename)) {
-        this.bgmAudio.src = audioSrc;
-      }
-
-      this.bgmAudio.loop = true;
-      const targetVolume = this.isDucked ? this.bgmVolume * 0.2 : this.bgmVolume;
-      this.bgmAudio.volume = targetVolume;
-
-      const playPromise = this.bgmAudio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Awaiting user interaction
-        });
-      }
-    } catch {
-      // Audio element not supported
-    }
+    if (!this.bgmEnabled) return;
+    this.sharedMusic.playCue('lobby');
   }
 
   public stopBGM(): void {
-    if (this.bgmAudio) {
-      try {
-        this.bgmAudio.pause();
-        this.bgmAudio.currentTime = 0;
-      } catch {}
-    }
+    this.sharedMusic.pause();
   }
 
   public pauseBGM(): void {
-    if (this.bgmAudio) {
-      try {
-        this.bgmAudio.pause();
-      } catch {}
-    }
+    this.sharedMusic.pause();
   }
 
   public resumeBGM(): void {
-    if (this.bgmEnabled && this.bgmAudio) {
-      try {
-        this.bgmAudio.play().catch(() => {});
-      } catch {}
-    } else if (this.bgmEnabled) {
-      this.playBGM();
+    if (this.bgmEnabled) {
+      this.sharedMusic.resume();
     }
   }
 
   public toggleBGM(): boolean {
     this.bgmEnabled = !this.bgmEnabled;
-    if (this.bgmEnabled) {
-      this.playBGM();
-    } else {
-      this.pauseBGM();
-    }
+    this.sharedMusic.setMute(!this.bgmEnabled);
     return this.bgmEnabled;
   }
 
   public nextBGMTrack(): BGMTrack {
+    this.sharedMusic.nextTrack();
     this.currentTrackIndex = (this.currentTrackIndex + 1) % BGM_TRACKS.length;
-    if (this.bgmEnabled) {
-      this.playBGM();
-    }
     return BGM_TRACKS[this.currentTrackIndex];
   }
 
@@ -168,13 +125,12 @@ export class AudioEngine {
 
   public setBGMVolume(vol: number): void {
     this.bgmVolume = Math.max(0, Math.min(1, vol));
-    if (this.bgmAudio) {
-      this.bgmAudio.volume = this.isDucked ? this.bgmVolume * 0.2 : this.bgmVolume;
-    }
+    this.sharedMusic.setVolume(this.bgmVolume);
   }
 
   public setVolume(vol: number): void {
     this.soundVolume = Math.max(0, Math.min(1, vol));
+    this.sharedMusic.setVolume(this.soundVolume);
     if (this.masterGain && this.ctx) {
       const targetGain = this.isDucked ? this.soundVolume * 0.25 : this.soundVolume;
       this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
@@ -183,14 +139,14 @@ export class AudioEngine {
 
   public setDucking(ducked: boolean): void {
     this.isDucked = ducked;
+    if (ducked) {
+      this.sharedMusic.startDucking();
+    } else {
+      this.sharedMusic.stopDucking();
+    }
     if (this.masterGain && this.ctx) {
       const targetGain = ducked ? this.soundVolume * 0.25 : this.soundVolume;
       this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
-    }
-    if (this.bgmAudio) {
-      // Duck BGM during TTS announcements so voice is 100% intelligible
-      const targetVolume = ducked ? this.bgmVolume * 0.2 : this.bgmVolume;
-      this.bgmAudio.volume = targetVolume;
     }
   }
 

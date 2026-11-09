@@ -1736,6 +1736,8 @@ footer.app-footer {
   }
 }
 
+
+
 /* Breakpoint 3: Split-screen / Half-monitor view (<= 990px)
    Hide header telemetry center to guarantee all critical action buttons stay visible */
 @media (max-width: 990px) {
@@ -1782,4 +1784,162 @@ footer.app-footer {
   .cmd-palette-btn {
     padding: 5px 8px;
   }
+}
+
+
+
+/* ==========================================================================
+   SHARED MUSIC MANAGER & LIVESTREAM AUDIO MIXER
+   ========================================================================== */
+.mixer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.mixer-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+.mixer-card:hover {
+  border-color: rgba(139, 92, 246, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.mixer-card.cat-cafe {
+  border-left: 4px solid #a78bfa;
+}
+
+.mixer-card.mini-war {
+  border-left: 4px solid #f59e0b;
+}
+
+.mixer-card.english-class {
+  border-left: 4px solid #38bdf8;
+}
+
+.mixer-card.quiz-show {
+  border-left: 4px solid #ec4899;
+}
+
+.mixer-card.duoi-hinh {
+  border-left: 4px solid #10b981;
+}
+
+.mixer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.mixer-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #fff;
+}
+
+.volume-control-box {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.volume-control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vol-btn-step {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border-radius: 5px;
+  width: 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease-in-out;
+}
+
+.vol-btn-step:hover {
+  background: rgba(56, 189, 248, 0.3);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.vol-btn-step:active {
+  transform: translateY(1px);
+}
+
+.vol-percent-badge {
+  font-size: 14px;
+  font-weight: 800;
+  color: #38bdf8;
+  min-width: 48px;
+  text-align: right;
+  font-family: monospace;
+}
+
+.music-selector-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.music-selector-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.music-selector-row select {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.music-selector-row select:focus {
+  border-color: #38bdf8;
+  outline: none;
+}
+
+.music-status-pill {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
