@@ -1,7 +1,6 @@
 import http from 'node:http';
 import crypto from 'node:crypto';
 import { WebSocketServer, WebSocket } from 'ws';
-import { getDashboardHtml } from './DashboardHtml.js';
 import { LiveEventProvider } from '../providers/LiveEventProvider.js';
 import { MockProvider } from '../providers/MockProvider.js';
 import { TikFinityProvider } from '../providers/TikFinityProvider.js';
@@ -988,10 +987,25 @@ export class GameBridgeServer {
       return;
     }
 
-    // Serve Dashboard with injected token
+    // Port 8088 is a dedicated background service - redirect browser visits to Central Admin (8080)
     if (pathname === '/' || pathname === '/admin') {
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-      res.end(getDashboardHtml(this.controlSecret));
+      const acceptsHtml = req.headers.accept?.includes('text/html');
+      if (acceptsHtml) {
+        res.writeHead(302, { Location: 'http://localhost:8080/' });
+        res.end();
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(
+        JSON.stringify({
+          service: 'PTPlay LIVE Bridge',
+          status: 'online',
+          port: this.port,
+          adminUrl: 'http://localhost:8080/',
+          activeGame: this.activeGame,
+          activeProvider: this.activeProvider.name,
+        })
+      );
       return;
     }
 
