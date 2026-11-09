@@ -23,10 +23,10 @@ if (shouldList) {
   process.exit(0);
 }
 
-const targetGameId = gameArg || config.defaultActiveGame || 'mini-war-arena';
-const selectedGame = config.games.find((g) => g.id === targetGameId);
+const targetGameId = gameArg;
+const selectedGame = targetGameId ? config.games.find((g) => g.id === targetGameId) : null;
 
-if (!selectedGame) {
+if (gameArg && !selectedGame) {
   console.error(`❌ Unknown game ID: "${targetGameId}". Use --list to see available games.`);
   process.exit(1);
 }
@@ -36,7 +36,13 @@ console.log('🚀 STARTING PTPLAY MULTI-GAME PLATFORM');
 console.log('========================================================');
 console.log(`• Authoritative LIVE Bridge: http://127.0.0.1:8088`);
 console.log(`• Central Admin Portal:     http://127.0.0.1:8080`);
-console.log(`• Selected Interactive Game: ${selectedGame.name} (Port ${selectedGame.port})`);
+if (shouldStartAll) {
+  console.log(`• Mode:                     Starting All Active Games`);
+} else if (selectedGame) {
+  console.log(`• Selected Interactive Game: ${selectedGame.name} (Port ${selectedGame.port})`);
+} else {
+  console.log(`• Mode:                     Admin & Bridge Ready (Bấm nút trên Admin để bật game)`);
+}
 console.log('========================================================\n');
 
 const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
@@ -77,7 +83,7 @@ startProcess(
   ['run', 'start']
 );
 
-// 3. Start Game(s)
+// 3. Start Game(s) (only if explicitly requested via --all or --game=<id>)
 if (shouldStartAll) {
   console.log('[Platform] Starting all active registered games...');
   for (const g of config.games) {
@@ -94,6 +100,8 @@ if (shouldStartAll) {
     npmCmd,
     ['run', 'dev']
   );
+} else {
+  console.log('[Platform] Sẵn sàng! Hãy truy cập http://127.0.0.1:8080 và bấm nút "Khởi Động" ở tựa game bạn muốn bật.');
 }
 
 function cleanup() {
