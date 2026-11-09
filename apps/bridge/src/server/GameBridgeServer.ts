@@ -1425,6 +1425,27 @@ export class GameBridgeServer {
           return;
         }
 
+        if (pathname === '/api/mock/follow' || pathname === '/api/rebus/mock/follow') {
+          const nick = String(json.nickname || 'FanMớiBấmFollow').slice(0, 40);
+          this.mockProvider.simulateFollow(nick);
+          if (this.activeProvider !== this.mockProvider) {
+            this.totalEventsReceived++;
+            const uId = `manual_user_${Date.now()}`;
+            this.processIncomingLiveEvent({
+              id: `manual_follow_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              type: 'follow',
+              provider: 'manual',
+              userId: uId,
+              uniqueId: `@${nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user'}`,
+              nickname: nick,
+              timestamp: Date.now(),
+            });
+          }
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, action: 'follow', nickname: nick }));
+          return;
+        }
+
         if (pathname === '/api/mock/streak') {
           const nick = String(json.nickname || 'Khán Giả').slice(0, 40);
           const gift = String(json.giftName || 'Rose').slice(0, 40);

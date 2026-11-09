@@ -304,14 +304,14 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       this.clueCard1.setVisible(false);
       this.plusSign.setVisible(false);
       this.clueCard2.setVisible(false);
-      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Follow: Mở Chữ Đầu!');
+      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Bấm Follow Kênh: Mở Chữ Đầu!');
       this.hintBannerText.setColor('#fde047');
     } else {
       this.singleImageContainer.setVisible(false);
       this.clueCard1.setVisible(true);
       this.plusSign.setVisible(true);
       this.clueCard2.setVisible(true);
-      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Follow: Mở Chữ Đầu!');
+      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Bấm Follow Kênh: Mở Chữ Đầu!');
       this.hintBannerText.setColor('#fde047');
 
       // Clue 1 icon
@@ -484,7 +484,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   public showHint2(hint2: string, firstChar: string, sponsorName?: string): void {
     const text = sponsorName
-      ? `➕ ${sponsorName} đã Follow: Chữ cái đầu là "${firstChar}"!`
+      ? `➕ ${sponsorName} đã Bấm Follow: Mở chữ cái đầu là "${firstChar}"!`
       : `💡 Chữ cái đầu tiên là "${firstChar}"!`;
     this.hintBannerText.setText(text);
     this.hintBannerText.setColor('#38bdf8');

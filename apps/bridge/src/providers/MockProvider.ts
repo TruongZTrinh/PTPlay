@@ -144,6 +144,22 @@ export class MockProvider extends LiveEventProvider {
     this.recordEvent(event);
   }
 
+  public simulateFollow(nickname = 'Khán Giả Follow', userId?: string, avatarUrl?: string): NormalizedLiveEvent {
+    const uId = userId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
+    const event: NormalizedLiveEvent = {
+      id: this.nextId(),
+      type: 'follow',
+      provider: 'mock',
+      userId: uId,
+      uniqueId: `@${uId}`,
+      nickname,
+      profilePictureUrl: avatarUrl,
+      timestamp: Date.now(),
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
   public simulateDuplicate(event: NormalizedLiveEvent): void {
     // Re-emits an exact duplicate with same ID to test deduplication system
     if (!this.connected) return;

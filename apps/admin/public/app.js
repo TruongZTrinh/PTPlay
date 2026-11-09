@@ -1575,6 +1575,26 @@ async function sendMockGift(gameType, giftName, count = 1, customNickname = unde
   } catch (e) {}
 }
 
+async function sendMockFollow(gameType = 'rebus', customNickname) {
+  playSound('click');
+  const nick = customNickname || (gameType === 'rebus' ? 'FanMớiBấmFollow' : 'KhánGiảBấmFollow');
+  try {
+    const res = await fetch('/api/mock/follow', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ game: gameType, nickname: nick }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`➕ [TikTok Follow] ${nick} vừa bấm Follow kênh!`, 'success');
+      fetchStatus();
+      fetchRawLogs();
+    }
+  } catch (e) {
+    showToast(`Lỗi: ${e.message}`, 'error');
+  }
+}
+
 async function sendCustomMockGift(gameType) {
   playSound('click');
   const nickInput = document.getElementById(`input-${gameType}-gift-nick`);

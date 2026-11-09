@@ -1377,7 +1377,7 @@
               <div class="btn-group">
                 <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Đổi Sang Câu Đố Khác</button>
                 <button class="btn-primary" onclick="sendRebusCommand('add_time', { seconds: 10 })">🌹 Tăng Thời Gian (+10s)</button>
-                <button class="btn-blue" onclick="sendRebusCommand('follow', { nickname: 'FanCungTikTok' })">➕ Follow (Mở Chữ Đầu)</button>
+                <button class="btn-blue" onclick="sendMockFollow('rebus', 'FanCứngBấmFollow')">➕ Bấm Follow Kênh (Mở Chữ Đầu)</button>
                 <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua Câu Này</button>
                 <button class="btn-red" onclick="sendRebusCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
               </div>
@@ -1413,10 +1413,10 @@
               <div class="card-header"><div class="card-title">🔍 Thám Tử Chibi Vào Bàn & Đoán Từ (Có/Không Dấu)</div></div>
               
               <div style="margin-bottom: 12px;">
-                <label style="font-size: 11px; color: var(--text-muted);">Khán Giả Vào Lớp (Lệnh JOIN) & Follow:</label>
+                <label style="font-size: 11px; color: var(--text-muted);">Khán Giả Vào Lớp (Lệnh JOIN) & Bấm Follow Kênh:</label>
                 <div class="btn-group" style="margin-top: 4px;">
                   <button class="btn-green" onclick="sendMockChat('rebus', 'Phan Khánh', 'JOIN')">🙋 1 Thám Tử (JOIN)</button>
-                  <button class="btn-purple" onclick="sendMockChat('rebus', 'FanCungTikTok', 'FL')">➕ Chat "FL" (Follow Mở Chữ Đầu)</button>
+                  <button class="btn-blue" onclick="sendMockFollow('rebus', 'KhánGiảBấmFollow')">➕ Khán Giả Bấm Follow Kênh</button>
                   <button class="btn-green" onclick="['Cường Bo', 'Mai Trang', 'Hồng Nhung'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">👥 3 Thám Tử Vào Bàn</button>
                   <button class="btn-gold" onclick="['Bé Na', 'Minh Quân', 'Lan Anh', 'Huy', 'Khánh Vy'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">🏫 5 Bàn Thám Tử Đầy Đủ</button>
                 </div>
