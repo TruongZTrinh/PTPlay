@@ -79,3 +79,4 @@ export interface RebusConfig {
   theme: StageTheme;
   mode: RebusMode;
 }
+

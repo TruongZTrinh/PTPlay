@@ -217,8 +217,27 @@ export function getDashboardHtml(controlToken = ''): string {
       </div>
 
       <div class="status-pill">
+        <div id="dot-port-5175" class="status-dot offline"></div>
+        <span>Lớp Học (5175): <strong id="val-port-5175">Checking...</strong></span>
+      </div>
+
+      <div class="status-pill">
+        <div id="dot-port-5176" class="status-dot offline"></div>
+        <span>Đố Vui (5176): <strong id="val-port-5176">Checking...</strong></span>
+      </div>
+
+      <div class="status-pill">
+        <div id="dot-port-5177" class="status-dot offline"></div>
+        <span>Đuổi Hình (5177): <strong id="val-port-5177">Checking...</strong></span>
+      </div>
+
+      <div class="status-pill">
         <div id="dot-tikfinity" class="status-dot offline"></div>
         <span>TikFinity: <strong id="val-tikfinity">Checking...</strong></span>
+      </div>
+
+      <div class="status-pill clickable" onclick="window.open('http://localhost:8080', '_blank')" style="border-color: var(--primary-gold); color: var(--primary-gold);" title="Mở PTPlay Central Admin (Cổng 8080)">
+        <span>⚙️ <strong>Central Admin (8080)</strong> ↗</span>
       </div>
     </div>
   </header>
@@ -254,6 +273,15 @@ export function getDashboardHtml(controlToken = ''): string {
           <button class="btn-green" onclick="switchActiveGame('cat-cafe')" style="padding: 10px 18px;">
             🐱 Tiếp Nhận Luồng Cho: Café Mòe (Cổng 5174)
           </button>
+          <button class="btn-gold" onclick="switchActiveGame('english-class')" style="padding: 10px 18px;">
+            🎓 Tiếp Nhận Luồng Cho: Lớp Học Vui (Cổng 5175)
+          </button>
+          <button class="btn-purple" style="background:#8b5cf6; color:white; border:none; padding: 10px 18px; border-radius:4px; cursor:pointer;" onclick="switchActiveGame('quiz-show')">
+            🏆 Tiếp Nhận Luồng Cho: Đố Vui (Cổng 5176)
+          </button>
+          <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; border:none; padding: 10px 18px; border-radius:4px; cursor:pointer;" onclick="switchActiveGame('duoi-hinh-bat-chu')">
+            💡 Tiếp Nhận Luồng Cho: Đuổi Hình (Cổng 5177)
+          </button>
         </div>
       </div>
 
@@ -264,12 +292,14 @@ export function getDashboardHtml(controlToken = ''): string {
           <div class="game-hero">
             <div class="game-hero-icon" style="color: #60a5fa;">⚔️</div>
             <div class="game-hero-info">
-              <h3>Mini War Arena V1.0</h3>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="margin: 0;">Mini War Arena V1.0</h3>
+                <span id="badge-mw-status" class="brand-badge" style="background:#0f6645; color:#34d399;">ONLINE</span>
+              </div>
               <p>Chiến đấu tự động Đỏ vs Xanh · Tỷ lệ 9:16 dọc</p>
             </div>
           </div>
           <p class="card-desc">
-            <strong>Thư mục:</strong> <code>C:\\Workspace\\PTPlay-Mini-War-Arena</code><br>
             <strong>Cổng phát sóng:</strong> <code>http://localhost:5173</code>
           </p>
           <div class="stat-row">
@@ -279,6 +309,8 @@ export function getDashboardHtml(controlToken = ''): string {
             <div class="stat-item"><div class="stat-label">CĐV XANH</div><div id="stat-mw-supporters-blue" class="stat-val" style="color:#7cb8ff;">0</div></div>
           </div>
           <div class="btn-group">
+            <button class="btn-green" onclick="toggleGameProcess('mini-war', 'start')">▶ Bật Game</button>
+            <button class="btn-red" onclick="toggleGameProcess('mini-war', 'stop')">⏹ Tắt Game</button>
             <button class="btn-outline" onclick="window.open('http://localhost:5173', '_blank')">🌐 Mở Tab 5173</button>
             <button class="btn-gold" onclick="switchTab('miniwar')">🎮 Bảng Điều Khiển</button>
             <button class="btn-outline" onclick="setPreviewMode('mini-war'); switchTab('preview');">📺 Xem 9:16</button>
@@ -291,12 +323,14 @@ export function getDashboardHtml(controlToken = ''): string {
           <div class="game-hero">
             <div class="game-hero-icon" style="color: #34d399;">🐱</div>
             <div class="game-hero-info">
-              <h3>Café Mòe (Cat Café LIVE)</h3>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="margin: 0;">Café Mòe (Cat Café LIVE)</h3>
+                <span id="badge-cat-status" class="brand-badge" style="background:#0f6645; color:#34d399;">ONLINE</span>
+              </div>
               <p>Nuôi mèo tương tác thư giãn · Lofi Audio Synthesis · Tỷ lệ 9:16 dọc</p>
             </div>
           </div>
           <p class="card-desc">
-            <strong>Thư mục:</strong> <code>C:\\Workspace\\PTPlay-Cat-Cafe</code><br>
             <strong>Cổng phát sóng:</strong> <code>http://localhost:5174</code>
           </p>
           <div class="stat-row">
@@ -306,9 +340,104 @@ export function getDashboardHtml(controlToken = ''): string {
             <div class="stat-item"><div class="stat-label">Lệnh TikTok</div><div class="stat-val" style="font-size:13px; color:#60a5fa;">8 Lệnh Chuẩn</div></div>
           </div>
           <div class="btn-group">
+            <button class="btn-green" onclick="toggleGameProcess('cat-cafe', 'start')">▶ Bật Game</button>
+            <button class="btn-red" onclick="toggleGameProcess('cat-cafe', 'stop')">⏹ Tắt Game</button>
             <button class="btn-outline" onclick="window.open('http://localhost:5174', '_blank')">🌐 Mở Tab 5174</button>
             <button class="btn-gold" onclick="switchTab('catcafe')">🐾 Bảng Điều Khiển</button>
             <button class="btn-outline" onclick="setPreviewMode('cat-cafe'); switchTab('preview');">📺 Xem 9:16</button>
+          </div>
+        </div>
+
+        <!-- GAME 3: ENGLISH CLASS -->
+        <div id="game-card-englishclass" class="card game-card">
+          <div class="active-banner">ĐANG NHẬN LIVE</div>
+          <div class="game-hero">
+            <div class="game-hero-icon" style="color: #ffd700;">🎓</div>
+            <div class="game-hero-info">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="margin: 0;">Lớp Học Vui (English Class LIVE)</h3>
+                <span id="badge-ec-status" class="brand-badge" style="background:#8a192f; color:#ff8b8b;">STOPPED</span>
+              </div>
+              <p>Lớp học tiếng Anh Chibi 9:16 · Trả lời A/B/C/D · TTS Song Ngữ</p>
+            </div>
+          </div>
+          <p class="card-desc">
+            <strong>Cổng phát sóng:</strong> <code>http://localhost:5175</code>
+          </p>
+          <div class="stat-row">
+            <div class="stat-item"><div class="stat-label">25 Bàn Học</div><div class="stat-val" style="font-size:13px; color:#ffd700;">5x5 Grid</div></div>
+            <div class="stat-item"><div class="stat-label">8 Chế Độ</div><div class="stat-val" style="font-size:13px; color:#38bdf8;">Quick, Team, Boss</div></div>
+            <div class="stat-item"><div class="stat-label">500+ Câu Hỏi</div><div class="stat-val" style="font-size:13px; color:#34d399;">Song ngữ Anh/Việt</div></div>
+            <div class="stat-item"><div class="stat-label">Lệnh TikTok</div><div class="stat-val" style="font-size:13px; color:#60a5fa;">VÀO, A/B/C/D...</div></div>
+          </div>
+          <div class="btn-group">
+            <button class="btn-green" onclick="toggleGameProcess('english-class', 'start')">▶ Bật Game</button>
+            <button class="btn-red" onclick="toggleGameProcess('english-class', 'stop')">⏹ Tắt Game</button>
+            <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab 5175</button>
+            <button class="btn-gold" onclick="window.open('http://localhost:8080', '_blank')">🎓 Quản Lý Lớp</button>
+            <button class="btn-outline" onclick="setPreviewMode('english-class'); switchTab('preview');">📺 Xem 9:16</button>
+          </div>
+        </div>
+
+        <!-- GAME 4: QUIZ SHOW -->
+        <div id="game-card-quizshow" class="card game-card">
+          <div class="active-banner">ĐANG NHẬN LIVE</div>
+          <div class="game-hero">
+            <div class="game-hero-icon" style="color: #a855f7;">🏆</div>
+            <div class="game-hero-info">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="margin: 0;">PTPlay Quiz Show (Đố Vui)</h3>
+                <span id="badge-qs-status" class="brand-badge" style="background:#8a192f; color:#ff8b8b;">STOPPED</span>
+              </div>
+              <p>Gameshow Đố Vui Neon 9:16 · Trả Lời A/B/C/D · TTS Song Ngữ</p>
+            </div>
+          </div>
+          <p class="card-desc">
+            <strong>Cổng phát sóng:</strong> <code>http://localhost:5176</code>
+          </p>
+          <div class="stat-row">
+            <div class="stat-item"><div class="stat-label">529 Câu Hỏi</div><div class="stat-val" style="font-size:13px; color:#34d399;">Đời sống / Khoa học</div></div>
+            <div class="stat-item"><div class="stat-label">8 Chế Độ</div><div class="stat-val" style="font-size:13px; color:#38bdf8;">Quick, Team, Boss</div></div>
+            <div class="stat-item"><div class="stat-label">Top 3 & Streak</div><div class="stat-val" style="font-size:13px; color:#ffd700;">Huy hiệu rực rỡ</div></div>
+            <div class="stat-item"><div class="stat-label">Lệnh TikTok</div><div class="stat-val" style="font-size:13px; color:#60a5fa;">THAM GIA, A/B/C/D</div></div>
+          </div>
+          <div class="btn-group">
+            <button class="btn-green" onclick="toggleGameProcess('quiz-show', 'start')">▶ Bật Game</button>
+            <button class="btn-red" onclick="toggleGameProcess('quiz-show', 'stop')">⏹ Tắt Game</button>
+            <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab 5176</button>
+            <button class="btn-gold" onclick="window.open('http://localhost:8080', '_blank')">🏆 Quản Lý Gameshow</button>
+            <button class="btn-outline" onclick="setPreviewMode('quiz-show'); switchTab('preview');">📺 Xem 9:16</button>
+          </div>
+        </div>
+
+        <!-- GAME 5: DUOI HINH BAT CHU -->
+        <div id="game-card-duoihinh" class="card game-card">
+          <div class="active-banner">ĐANG NHẬN LIVE</div>
+          <div class="game-hero">
+            <div class="game-hero-icon" style="color: #f59e0b;">💡</div>
+            <div class="game-hero-info">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="margin: 0;">Đuổi Hình Bắt Chữ LIVE</h3>
+                <span id="badge-dh-status" class="brand-badge" style="background:#8a192f; color:#ff8b8b;">STOPPED</span>
+              </div>
+              <p>Giải Đố Hình Ảnh Thành Ngữ Tiếng Việt · Ô Chữ Dọc 9:16</p>
+            </div>
+          </div>
+          <p class="card-desc">
+            <strong>Cổng phát sóng:</strong> <code>http://localhost:5177</code>
+          </p>
+          <div class="stat-row">
+            <div class="stat-item"><div class="stat-label">666 Câu Đố</div><div class="stat-val" style="font-size:13px; color:#34d399;">Hình ảnh & ô chữ</div></div>
+            <div class="stat-item"><div class="stat-label">Gợi Ý Mở</div><div class="stat-val" style="font-size:13px; color:#38bdf8;">Tại 60% & 85% giờ</div></div>
+            <div class="stat-item"><div class="stat-label">Tiếng Việt</div><div class="stat-val" style="font-size:13px; color:#ffd700;">Nhận cả có/không dấu</div></div>
+            <div class="stat-item"><div class="stat-label">Lệnh TikTok</div><div class="stat-val" style="font-size:13px; color:#60a5fa;">ĐOÁN, CHƠI, GOIY</div></div>
+          </div>
+          <div class="btn-group">
+            <button class="btn-green" onclick="toggleGameProcess('duoi-hinh-bat-chu', 'start')">▶ Bật Game</button>
+            <button class="btn-red" onclick="toggleGameProcess('duoi-hinh-bat-chu', 'stop')">⏹ Tắt Game</button>
+            <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab 5177</button>
+            <button class="btn-gold" onclick="window.open('http://localhost:8080', '_blank')">💡 Quản Lý Đoán Chữ</button>
+            <button class="btn-outline" onclick="setPreviewMode('duoi-hinh-bat-chu'); switchTab('preview');">📺 Xem 9:16</button>
           </div>
         </div>
       </div>
@@ -446,6 +575,9 @@ export function getDashboardHtml(controlToken = ''): string {
           <div class="btn-group">
             <button class="btn-outline preview-mode-btn active" data-mode="mini-war" onclick="setPreviewMode('mini-war')">⚔️ Mini War (5173)</button>
             <button class="btn-outline preview-mode-btn" data-mode="cat-cafe" onclick="setPreviewMode('cat-cafe')">🐱 Café Mòe (5174)</button>
+            <button class="btn-outline preview-mode-btn" data-mode="english-class" onclick="setPreviewMode('english-class')">🎓 Lớp Học (5175)</button>
+            <button class="btn-outline preview-mode-btn" data-mode="quiz-show" onclick="setPreviewMode('quiz-show')">🏆 Đố Vui (5176)</button>
+            <button class="btn-outline preview-mode-btn" data-mode="duoi-hinh-bat-chu" onclick="setPreviewMode('duoi-hinh-bat-chu')">💡 Đuổi Hình (5177)</button>
             <button class="btn-outline preview-mode-btn" data-mode="dual" onclick="setPreviewMode('dual')">👥 Xem Song Song (Dual)</button>
             <button id="btn-toggle-safe-zone" class="btn-outline" onclick="toggleSafeZoneOverlay()">🛡️ Vạch An Toàn TikTok</button>
             <button class="btn-outline" onclick="reloadPreviews()">🔄 Tải Lại Màn Hình</button>
@@ -468,6 +600,33 @@ export function getDashboardHtml(controlToken = ''): string {
           <div class="safe-zone-overlay">
             <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
             <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (CAFÉ STAGE)</div>
+            <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
+          </div>
+        </div>
+
+        <div id="wrapper-preview-ec" class="phone-mockup" style="display: none;">
+          <iframe id="preview-frame-ec" src="http://localhost:5175" title="English Class LIVE"></iframe>
+          <div class="safe-zone-overlay">
+            <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
+            <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (CLASSROOM STAGE)</div>
+            <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
+          </div>
+        </div>
+
+        <div id="wrapper-preview-qs" class="phone-mockup" style="display: none;">
+          <iframe id="preview-frame-qs" src="http://localhost:5176" title="PTPlay Quiz Show"></iframe>
+          <div class="safe-zone-overlay">
+            <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
+            <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (QUIZ SHOW STAGE)</div>
+            <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
+          </div>
+        </div>
+
+        <div id="wrapper-preview-dh" class="phone-mockup" style="display: none;">
+          <iframe id="preview-frame-dh" src="http://localhost:5177" title="Đuổi Hình Bắt Chữ"></iframe>
+          <div class="safe-zone-overlay">
+            <div class="sz-top-header">TIKTOK TOP HEADER & AVATAR (VÙNG NGUY HIỂM)</div>
+            <div class="sz-safe-area">VÙNG HIỂN THỊ AN TOÀN (REBUS STAGE)</div>
             <div class="sz-bottom-chat">KHUNG CHAT & NÚT QUÀ TIKTOK LIVE (VÙNG BỊ CHE)</div>
           </div>
         </div>
@@ -559,10 +718,13 @@ export function getDashboardHtml(controlToken = ''): string {
       <div class="card">
         <div class="card-header"><div class="card-title">⚙️ Cấu Hình Cổng & Hệ Sinh Thái PTPlay</div></div>
         <div class="stat-row">
-          <div class="stat-item" style="text-align: left;"><div class="stat-label">Admin Web Hub</div><div class="stat-val" style="font-size: 13px; color: var(--primary-gold);">Port 8080 (http://localhost:8080)</div></div>
-          <div class="stat-item" style="text-align: left;"><div class="stat-label">PTPlay Live Bridge</div><div class="stat-val" style="font-size: 13px; color: #60a5fa;">Port 8088 (http://localhost:8088/admin)</div></div>
-          <div class="stat-item" style="text-align: left;"><div class="stat-label">Mini War Arena</div><div class="stat-val" style="font-size: 13px; color: #ff6b84;">Port 5173 (C:\\Workspace\\PTPlay-Mini-War-Arena)</div></div>
-          <div class="stat-item" style="text-align: left;"><div class="stat-label">Café Mòe</div><div class="stat-val" style="font-size: 13px; color: #34d399;">Port 5174 (C:\\Workspace\\PTPlay-Cat-Cafe)</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">Admin Web Hub</div><div class="stat-val" style="font-size: 13px; color: var(--primary-gold);">Port 8080</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">LIVE Bridge</div><div class="stat-val" style="font-size: 13px; color: #60a5fa;">Port 8088</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">Mini War Arena</div><div class="stat-val" style="font-size: 13px; color: #ff6b84;">Port 5173</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">Café Mòe</div><div class="stat-val" style="font-size: 13px; color: #34d399;">Port 5174</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">Lớp Học Vui</div><div class="stat-val" style="font-size: 13px; color: #ffd700;">Port 5175</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">Đố Vui (Quiz)</div><div class="stat-val" style="font-size: 13px; color: #a855f7;">Port 5176</div></div>
+          <div class="stat-item" style="text-align: left;"><div class="stat-label">Đuổi Hình Bắt Chữ</div><div class="stat-val" style="font-size: 13px; color: #f59e0b;">Port 5177</div></div>
         </div>
       </div>
     </section>
@@ -572,7 +734,7 @@ export function getDashboardHtml(controlToken = ''): string {
   <div id="toast-container"></div>
 
   <footer class="app-footer">
-    <div>PTPlay Live Interactive Ecosystem · Mini War Arena V1.0 & Quán Mèo Moe V1.0</div>
+    <div>PTPlay Multi-Game Interactive Platform · 5 Tựa Game TikTok LIVE</div>
     <div id="val-queue-total">Hàng đợi: 0 lệnh</div>
   </footer>
 
@@ -678,27 +840,127 @@ export function getDashboardHtml(controlToken = ''): string {
         if (val5174) val5174.innerText = p.catCafePort.open ? 'Online (5174)' : 'Offline';
         if (dot5174) dot5174.className = 'status-dot ' + (p.catCafePort.open ? 'online' : 'offline');
 
+        const val5175 = document.getElementById('val-port-5175');
+        const dot5175 = document.getElementById('dot-port-5175');
+        const pEcOpen = p.englishClassPort ? p.englishClassPort.open : false;
+        if (val5175) val5175.innerText = pEcOpen ? 'Online (5175)' : 'Offline';
+        if (dot5175) dot5175.className = 'status-dot ' + (pEcOpen ? 'online' : 'offline');
+
+        const val5176 = document.getElementById('val-port-5176');
+        const dot5176 = document.getElementById('dot-port-5176');
+        const pQsOpen = p.quizShowPort ? p.quizShowPort.open : false;
+        if (val5176) val5176.innerText = pQsOpen ? 'Online (5176)' : 'Offline';
+        if (dot5176) dot5176.className = 'status-dot ' + (pQsOpen ? 'online' : 'offline');
+
+        const val5177 = document.getElementById('val-port-5177');
+        const dot5177 = document.getElementById('dot-port-5177');
+        const pDhOpen = p.duoiHinhPort ? p.duoiHinhPort.open : false;
+        if (val5177) val5177.innerText = pDhOpen ? 'Online (5177)' : 'Offline';
+        if (dot5177) dot5177.className = 'status-dot ' + (pDhOpen ? 'online' : 'offline');
+
         const valTk = document.getElementById('val-tikfinity');
         const dotTk = document.getElementById('dot-tikfinity');
         if (valTk) valTk.innerText = p.tikfinityPort.open ? 'Online (21213)' : 'Disconnected';
         if (dotTk) dotTk.className = 'status-dot ' + (p.tikfinityPort.open ? 'online' : 'offline');
+
+        const badgeMw = document.getElementById('badge-mw-status');
+        if (badgeMw) {
+          badgeMw.innerText = p.miniWarPort.open ? 'ONLINE' : 'STOPPED';
+          badgeMw.style.background = p.miniWarPort.open ? '#0f6645' : '#8a192f';
+          badgeMw.style.color = p.miniWarPort.open ? '#34d399' : '#ff8b8b';
+        }
+        const badgeCat = document.getElementById('badge-cat-status');
+        if (badgeCat) {
+          badgeCat.innerText = p.catCafePort.open ? 'ONLINE' : 'STOPPED';
+          badgeCat.style.background = p.catCafePort.open ? '#0f6645' : '#8a192f';
+          badgeCat.style.color = p.catCafePort.open ? '#34d399' : '#ff8b8b';
+        }
+        const badgeEc = document.getElementById('badge-ec-status');
+        if (badgeEc) {
+          badgeEc.innerText = pEcOpen ? 'ONLINE' : 'STOPPED';
+          badgeEc.style.background = pEcOpen ? '#0f6645' : '#8a192f';
+          badgeEc.style.color = pEcOpen ? '#34d399' : '#ff8b8b';
+        }
+        const badgeQs = document.getElementById('badge-qs-status');
+        if (badgeQs) {
+          badgeQs.innerText = pQsOpen ? 'ONLINE' : 'STOPPED';
+          badgeQs.style.background = pQsOpen ? '#0f6645' : '#8a192f';
+          badgeQs.style.color = pQsOpen ? '#34d399' : '#ff8b8b';
+        }
+        const badgeDh = document.getElementById('badge-dh-status');
+        if (badgeDh) {
+          badgeDh.innerText = pDhOpen ? 'ONLINE' : 'STOPPED';
+          badgeDh.style.background = pDhOpen ? '#0f6645' : '#8a192f';
+          badgeDh.style.color = pDhOpen ? '#34d399' : '#ff8b8b';
+        }
       } catch (e) {}
+    }
+
+    async function toggleGameProcess(serviceKey, action) {
+      const names = {
+        'mini-war': 'Mini War Arena',
+        'cat-cafe': 'Café Mòe',
+        'english-class': 'Lớp Học Vui',
+        'quiz-show': 'PTPlay Quiz Show',
+        'duoi-hinh-bat-chu': 'Đuổi Hình Bắt Chữ'
+      };
+      const label = names[serviceKey] || serviceKey;
+      const isStart = action === 'start';
+      try {
+        showToast((isStart ? '⏳ Đang khởi động ' : '⏳ Đang tắt ') + label + '...', 'info');
+        const res = await fetch('http://localhost:8080/api/process/' + action + '/' + serviceKey, { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast((isStart ? '✅ Đã BẬT ' : '⏹ Đã TẮT ') + label + ' thành công!', 'success');
+          setTimeout(fetchPorts, 1200);
+        } else {
+          showToast('⚠️ Lỗi: ' + (data.error || 'Thao tác không thành công'), 'warn');
+        }
+      } catch (e) {
+        showToast('❌ Không kết nối được PTPlay Central Admin (Cổng 8080): ' + e.message, 'error');
+      }
     }
 
     function updateActiveGameUI(game) {
       currentActiveGame = game;
       const isMini = game === 'mini-war';
+      const isCat = game === 'cat-cafe';
+      const isEc = game === 'english-class' || game === 'english-class-live';
+      const isQs = game === 'quiz-show' || game === 'ptplay-quiz-show';
+      const isDh = game === 'duoi-hinh-bat-chu' || game === 'ptplay-duoi-hinh-bat-chu' || game === 'rebus';
+
       const cardMw = document.getElementById('game-card-miniwar');
       const cardCat = document.getElementById('game-card-catcafe');
+      const cardEc = document.getElementById('game-card-englishclass');
+      const cardQs = document.getElementById('game-card-quizshow');
+      const cardDh = document.getElementById('game-card-duoihinh');
+
       if (cardMw) cardMw.classList.toggle('active-live', isMini);
-      if (cardCat) cardCat.classList.toggle('active-live', !isMini);
+      if (cardCat) cardCat.classList.toggle('active-live', isCat);
+      if (cardEc) cardEc.classList.toggle('active-live', isEc);
+      if (cardQs) cardQs.classList.toggle('active-live', isQs);
+      if (cardDh) cardDh.classList.toggle('active-live', isDh);
+
       const pillText = document.getElementById('val-active-game');
-      if (pillText) pillText.innerText = isMini ? 'Mini War Arena' : 'Café Mòe';
+      if (pillText) {
+        if (isMini) pillText.innerText = 'Mini War Arena';
+        else if (isCat) pillText.innerText = 'Café Mòe';
+        else if (isEc) pillText.innerText = 'Lớp Học Vui';
+        else if (isQs) pillText.innerText = 'Đố Vui (Quiz Show)';
+        else if (isDh) pillText.innerText = 'Đuổi Hình Bắt Chữ';
+      }
     }
 
     async function switchActiveGame(target) {
       if (target === currentActiveGame) return;
-      const targetName = target === 'mini-war' ? 'Mini War Arena' : 'Café Mòe';
+      const names = {
+        'mini-war': 'Mini War Arena (5173)',
+        'cat-cafe': 'Café Mòe (5174)',
+        'english-class': 'Lớp Học Vui (5175)',
+        'quiz-show': 'Đố Vui Có Thưởng (5176)',
+        'duoi-hinh-bat-chu': 'Đuổi Hình Bắt Chữ (5177)'
+      };
+      const targetName = names[target] || target;
       if (!confirm('Xác nhận đổi game tiếp nhận luồng sự kiện TikTok LIVE sang: ' + targetName + '?')) return;
       try {
         const res = await fetch('/api/active_game', {
@@ -861,17 +1123,23 @@ export function getDashboardHtml(controlToken = ''): string {
     function setPreviewMode(mode) {
       currentPreviewMode = mode;
       document.querySelectorAll('.preview-mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
-      const mwWrapper = document.getElementById('wrapper-preview-mw');
-      const catWrapper = document.getElementById('wrapper-preview-cat');
-      if (mode === 'mini-war') {
-        if (mwWrapper) mwWrapper.style.display = 'block';
-        if (catWrapper) catWrapper.style.display = 'none';
-      } else if (mode === 'cat-cafe') {
-        if (mwWrapper) mwWrapper.style.display = 'none';
-        if (catWrapper) catWrapper.style.display = 'block';
-      } else if (mode === 'dual') {
-        if (mwWrapper) mwWrapper.style.display = 'block';
-        if (catWrapper) catWrapper.style.display = 'block';
+      const wrappers = {
+        'mini-war': document.getElementById('wrapper-preview-mw'),
+        'cat-cafe': document.getElementById('wrapper-preview-cat'),
+        'english-class': document.getElementById('wrapper-preview-ec'),
+        'quiz-show': document.getElementById('wrapper-preview-qs'),
+        'duoi-hinh-bat-chu': document.getElementById('wrapper-preview-dh'),
+      };
+      if (mode === 'dual') {
+        if (wrappers['mini-war']) wrappers['mini-war'].style.display = 'block';
+        if (wrappers['cat-cafe']) wrappers['cat-cafe'].style.display = 'block';
+        if (wrappers['english-class']) wrappers['english-class'].style.display = 'none';
+        if (wrappers['quiz-show']) wrappers['quiz-show'].style.display = 'none';
+        if (wrappers['duoi-hinh-bat-chu']) wrappers['duoi-hinh-bat-chu'].style.display = 'none';
+      } else {
+        for (const [k, w] of Object.entries(wrappers)) {
+          if (w) w.style.display = (k === mode) ? 'block' : 'none';
+        }
       }
     }
 
@@ -886,10 +1154,10 @@ export function getDashboardHtml(controlToken = ''): string {
     }
 
     function reloadPreviews() {
-      const mwFrame = document.getElementById('preview-frame-mw');
-      const catFrame = document.getElementById('preview-frame-cat');
-      if (mwFrame) mwFrame.src = mwFrame.src;
-      if (catFrame) catFrame.src = catFrame.src;
+      ['preview-frame-mw', 'preview-frame-cat', 'preview-frame-ec', 'preview-frame-qs', 'preview-frame-dh'].forEach(id => {
+        const frame = document.getElementById(id);
+        if (frame) frame.src = frame.src;
+      });
       showToast('🔄 Đã tải lại màn hình xem trước', 'info');
     }
 

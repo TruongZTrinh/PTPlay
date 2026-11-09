@@ -259,3 +259,4 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.hintBannerText.setColor(solved ? '#10b981' : '#f87171');
   }
 }
+

@@ -79,7 +79,8 @@ export class RebusScene extends Phaser.Scene {
       this.rebusEngine,
       this.studentRoster,
       this.giftController,
-      this.scoreboard
+      this.scoreboard,
+      this.ttsController
     );
     this.liveRouter.start();
 
@@ -198,3 +199,4 @@ export class RebusScene extends Phaser.Scene {
     this.ttsController?.cancel();
   }
 }
+

@@ -118,6 +118,19 @@ export class ArenaScene extends Phaser.Scene {
       this.battleManager.ui.showAnnouncement(active ? '♫ ÂM THANH: BẬT' : '♪ ÂM THANH: TẮT');
     });
 
+    // Toggle Vietnamese TTS Shoutcaster (Key V)
+    kb.on('keydown-V', () => {
+      const tts = this.battleManager.tts;
+      tts.setEnabled(!tts.enabled);
+      this.battleManager.ui.showAnnouncement(tts.enabled ? '🗣️ TTS TIẾNG VIỆT: BẬT' : '🔇 TTS TIẾNG VIỆT: TẮT');
+    });
+
+    // Test Vietnamese Voice (Key K)
+    kb.on('keydown-K', () => {
+      this.battleManager.tts.testVoice();
+      this.battleManager.ui.showAnnouncement('🎙️ PHÁT THỬ GIỌNG BLV TIẾNG VIỆT');
+    });
+
     // Cycle Arena Environment
     kb.on('keydown-T', () => {
       const nextTheme = this.battleManager.roundManager.rotateTheme();

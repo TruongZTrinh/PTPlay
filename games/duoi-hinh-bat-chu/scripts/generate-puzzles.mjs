@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const samplePath = 'C:/Workspace/PTPlay_Two_Quiz_Games_Complete_Pack/PTPlay_Duoi_Hinh_Bat_Chu_Full_Pack/data/puzzles.sample.json';
+const samplePath = path.join(__dirname, '..', 'src', 'data', 'puzzles.sample.json');
 const outPath = path.join(__dirname, '..', 'src', 'data', 'puzzles.json');
 
 const samplePuzzles = JSON.parse(fs.readFileSync(samplePath, 'utf-8'));

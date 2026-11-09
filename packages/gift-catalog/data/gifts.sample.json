@@ -1,0 +1,385 @@
+{
+  "formatVersion": 1,
+  "description": "Sample verified NAME/COINS records from BeetGames VN catalog, not complete and not TikTok official.",
+  "source": "https://beetgames.com/vi/tiktok-gifts/vn/",
+  "gifts": [
+    {
+      "referenceKey": "a-shard-of-hope@1",
+      "giftId": null,
+      "name": "A Shard of Hope",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "birthday-cake@1",
+      "giftId": null,
+      "name": "Birthday Cake",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "blow-a-kiss@1",
+      "giftId": null,
+      "name": "Blow a kiss",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "blue-lightning@1",
+      "giftId": null,
+      "name": "Blue Lightning",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "club-cheers@1",
+      "giftId": null,
+      "name": "Club Cheers",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "community-gift@1",
+      "giftId": null,
+      "name": "Community Gift",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "community-heart@1",
+      "giftId": null,
+      "name": "Community Heart",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "gg@1",
+      "giftId": null,
+      "name": "GG",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "glow-stick@1",
+      "giftId": null,
+      "name": "Glow Stick",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "heart@1",
+      "giftId": null,
+      "name": "Heart",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": "https://beetgames.com/images/gifts/heart.webp",
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "heart-me@1",
+      "giftId": null,
+      "name": "Heart Me",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "ice-cream-cone@1",
+      "giftId": null,
+      "name": "Ice Cream Cone",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "music-album@1",
+      "giftId": null,
+      "name": "Music Album",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "my-first-rose@1",
+      "giftId": null,
+      "name": "My First Rose",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "rose@1",
+      "giftId": null,
+      "name": "Rose",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": "https://beetgames.com/images/gifts/rose.webp",
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "tiktok@1",
+      "giftId": null,
+      "name": "TikTok",
+      "coins": 1,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "finger-heart@5",
+      "giftId": null,
+      "name": "Finger Heart",
+      "coins": 5,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "brown-paw@5",
+      "giftId": null,
+      "name": "Brown Paw",
+      "coins": 5,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "black-paw@10",
+      "giftId": null,
+      "name": "Black Paw",
+      "coins": 10,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "perfume@20",
+      "giftId": null,
+      "name": "Perfume",
+      "coins": 20,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": "https://beetgames.com/images/gifts/perfume.webp",
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "doughnut@30",
+      "giftId": null,
+      "name": "Doughnut",
+      "coins": 30,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": "https://beetgames.com/images/gifts/doughnut.webp",
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "hat-and-mustache@99",
+      "giftId": null,
+      "name": "Hat and Mustache",
+      "coins": 99,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "sunglasses@199",
+      "giftId": null,
+      "name": "Sunglasses",
+      "coins": 199,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "cat@222",
+      "giftId": null,
+      "name": "Cat",
+      "coins": 222,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "money-gun@500",
+      "giftId": null,
+      "name": "Money Gun",
+      "coins": 500,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": null,
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "galaxy@1000",
+      "giftId": null,
+      "name": "Galaxy",
+      "coins": 1000,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": "https://beetgames.com/images/gifts/galaxy.webp",
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    },
+    {
+      "referenceKey": "lion@29999",
+      "giftId": null,
+      "name": "Lion",
+      "coins": 29999,
+      "regions": [
+        "VN"
+      ],
+      "iconUrl": "https://beetgames.com/images/gifts/lion.webp",
+      "localIcon": null,
+      "priceStatus": "third-party-reference",
+      "idStatus": "unverified",
+      "source": "https://beetgames.com/vi/tiktok-gifts/vn/"
+    }
+  ]
+}

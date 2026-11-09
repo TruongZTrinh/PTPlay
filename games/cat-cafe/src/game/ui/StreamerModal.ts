@@ -458,7 +458,7 @@ export class StreamerModal {
     y += 58;
 
     // Test Sounds Section
-    const testTitle = this.scene.add.text(0, y, 'Bàn Thử Nghiệm 12 Âm Thanh Mèo & Hiệu Ứng Thực Tế:', {
+    const testTitle = this.scene.add.text(0, y, 'Bàn Thử Nghiệm 24 Âm Thanh, Hành Động Hài Hước & Giọng Đọc TTS:', {
       fontFamily: 'Segoe UI, sans-serif',
       fontSize: '13px',
       fontStyle: 'bold',
@@ -476,35 +476,47 @@ export class StreamerModal {
       { label: '🥣 Bát Ăn Sứ', fn: () => CafeAudioEngine.getInstance().playBowlClink() },
       { label: '🧶 Chuông Chơi', fn: () => CafeAudioEngine.getInstance().playYarnJingle() },
       { label: '🪵 Cào Móng', fn: () => CafeAudioEngine.getInstance().playScratch() },
+      { label: '😾 Tiếng Khè', fn: () => CafeAudioEngine.getInstance().playHiss() },
+      { label: '💢 Meo Cáu', fn: () => CafeAudioEngine.getInstance().playGrumpyMeow() },
+      { label: '⚡ Zoomies', fn: () => CafeAudioEngine.getInstance().playZoomies() },
+      { label: '💃 Nhạc Quẩy', fn: () => CafeAudioEngine.getInstance().playDanceJingle() },
       { label: '💖 Nổ Bóng Tim', fn: () => CafeAudioEngine.getInstance().playHeartPop() },
       { label: '✨ Quà Lấp Lánh', fn: () => CafeAudioEngine.getInstance().playSparkleShower() },
       { label: '🔔 Chuông Cửa', fn: () => CafeAudioEngine.getInstance().playDoorbell() },
-      { label: '🗣️ TTS Chào Mừng', fn: () => TTSController.getInstance().welcomeNewViewer('KhánGiảVIP', 'Mèo Vàng Cam') },
+      { label: '🎙️ Thử Giọng Quán', fn: () => TTSController.getInstance().testVoice() },
+      { label: '🗣️ TTS Chào Mới', fn: () => TTSController.getInstance().welcomeNewViewer('KhánGiảVIP', 'Mèo Vàng Cam') },
+      { label: '😾 TTS Dỗi', fn: () => TTSController.getInstance().announceAngry('MèoMướp') },
+      { label: '💃 TTS Quẩy', fn: () => TTSController.getInstance().announceDance('MèoMướp') },
+      { label: '⚡ TTS Ngáo', fn: () => TTSController.getInstance().announceZoomies('MèoMướp') },
+      { label: '📦 TTS Chui Hộp', fn: () => TTSController.getInstance().announceBox('MèoMướp') },
+      { label: '🧼 TTS Tắm Rửa', fn: () => TTSController.getInstance().announceBath('MèoMướp') },
+      { label: '🎁 TTS Tặng Quà', fn: () => TTSController.getInstance().announceGift('KhánGiảVIP', 'Hoa Hồng', 10) },
+      { label: '👑 TTS Lion', fn: () => TTSController.getInstance().announceGift('ĐạiGia', 'Sư Tử', 1) },
     ];
 
     testButtons.forEach((btn, i) => {
       const row = Math.floor(i / 4);
       const col = i % 4;
       const bx = col * 115;
-      const by = y + row * 34;
+      const by = y + row * 32;
 
       const bg = this.scene.add.graphics();
       bg.fillStyle(0x0284C7, 0.95);
-      bg.fillRoundedRect(bx, by, 108, 28, 6);
+      bg.fillRoundedRect(bx, by, 108, 26, 6);
       bg.lineStyle(1.2, 0x38BDF8, 0.8);
-      bg.strokeRoundedRect(bx, by, 108, 28, 6);
+      bg.strokeRoundedRect(bx, by, 108, 26, 6);
       this.contentContainer.add(bg);
 
-      const label = this.scene.add.text(bx + 54, by + 14, btn.label, {
+      const label = this.scene.add.text(bx + 54, by + 13, btn.label, {
         fontFamily: 'Segoe UI, sans-serif',
-        fontSize: '10px',
+        fontSize: '9.5px',
         fontStyle: 'bold',
         color: '#FFFFFF',
       });
       label.setOrigin(0.5, 0.5);
       this.contentContainer.add(label);
 
-      const zone = this.scene.add.zone(bx + 54, by + 14, 108, 28);
+      const zone = this.scene.add.zone(bx + 54, by + 13, 108, 26);
       zone.setInteractive({ useHandCursor: true });
       zone.on('pointerdown', () => {
         CafeAudioEngine.getInstance().unlock();
@@ -512,7 +524,7 @@ export class StreamerModal {
       });
       this.contentContainer.add(zone);
     });
-    y += 114;
+    y += Math.ceil(testButtons.length / 4) * 32 + 12;
 
     // Streamer Overlays
     const overlayTitle = this.scene.add.text(0, y, 'Tùy Chọn Màn Hình Livestream:', {

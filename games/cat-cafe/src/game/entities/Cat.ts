@@ -16,7 +16,12 @@ export type CatState =
   | 'play'
   | 'react'
   | 'call'
-  | 'social';
+  | 'social'
+  | 'angry'
+  | 'dance'
+  | 'zoomies'
+  | 'box'
+  | 'bath';
 
 export interface CatInitData {
   id: string;
@@ -216,8 +221,14 @@ export class Cat extends Phaser.GameObjects.Container {
       this.currentState === 'stretch' ||
       this.currentState === 'groom' ||
       this.currentState === 'call' ||
-      this.currentState === 'social'
+      this.currentState === 'social' ||
+      this.currentState === 'angry' ||
+      this.currentState === 'dance' ||
+      this.currentState === 'zoomies' ||
+      this.currentState === 'box' ||
+      this.currentState === 'bath'
     ) {
+      this.catSprite.clearTint();
       this.transitionTo('idle');
       this.scheduleNextAction(Random.range(3, 7));
       return;
@@ -482,6 +493,201 @@ export class Cat extends Phaser.GameObjects.Container {
     });
   }
 
+  public becomeAngry(onComplete?: () => void): void {
+    if (this.isRoyal) return;
+    this.transitionTo('angry');
+    this.setActionPose('meow');
+    this.catSprite.setTint(0xFF6B6B);
+    this.showEmote('emote_angry', 3200);
+
+    const audio = CafeAudioEngine.getInstance();
+    audio.playHiss();
+    this.scene.time.delayedCall(400, () => audio.playGrumpyMeow());
+
+    const angryLines = [
+      'Trẫm đang dỗi! Mau dỗ bằng cá nướng đi! 😾💢',
+      'Hờn cả thế giới rồi! Không thèm ngó ai nữa! 😾',
+      'Khè khè! Đừng đụng vào trẫm lúc này nha! 😾',
+      'Sen đâu rồi? Phục vụ kiểu này là trẫm quạu nha! 💢',
+    ];
+    this.showSpeechBubble(Random.choice(angryLines), 3500);
+
+    this.scene.tweens.add({
+      targets: this.catSprite,
+      x: { from: -6, to: 6 },
+      duration: 65,
+      yoyo: true,
+      repeat: 10,
+      onComplete: () => {
+        this.catSprite.x = 0;
+        this.catSprite.clearTint();
+        this.happiness = Math.max(10, this.happiness - 15);
+        this.scheduleNextAction(4);
+        if (onComplete) onComplete();
+      },
+    });
+  }
+
+  public doDance(onComplete?: () => void): void {
+    if (this.isRoyal) return;
+    this.transitionTo('dance');
+    this.setActionPose('party');
+    this.showEmote('emote_dance', 3200);
+    CafeAudioEngine.getInstance().playDanceJingle();
+
+    const danceLines = [
+      'Lên nhạc là quẩy! Meo meo lắc mông! 💃✨',
+      'Nhạc căng đét! Quán mèo thành vũ trường rồi! 🪩🎶',
+      'Bật chế độ quẩy tưng bừng! Nhảy cực sung luôn! 🕺',
+    ];
+    this.showSpeechBubble(Random.choice(danceLines), 3500);
+
+    this.scene.tweens.add({
+      targets: this.catSprite,
+      angle: { from: -14, to: 14 },
+      scaleY: { from: 0.22, to: 0.27 },
+      duration: 180,
+      yoyo: true,
+      repeat: 8,
+      ease: 'Sine.easeInOut',
+      onComplete: () => {
+        this.catSprite.angle = 0;
+        this.catSprite.scaleY = 0.24;
+        this.happiness = Math.min(100, this.happiness + 25);
+        this.setActionPose('idle');
+        this.scheduleNextAction(4);
+        if (onComplete) onComplete();
+      },
+    });
+  }
+
+  public doZoomies(onComplete?: () => void): void {
+    if (this.isRoyal) return;
+    if (this.moveTween) {
+      this.moveTween.stop();
+      this.moveTween = null;
+    }
+    if (this.walkAnimTimer) {
+      this.walkAnimTimer.remove();
+      this.walkAnimTimer = null;
+    }
+
+    this.transitionTo('zoomies');
+    this.setActionPose('jump');
+    this.showEmote('emote_zoomies', 3000);
+    CafeAudioEngine.getInstance().playZoomies();
+
+    const zoomLines = [
+      'Năng lượng 3 giờ sáng! Tránh đường cho trẫm phi! 🏎️💨',
+      'Bật số turbo! Mèo ngáo xuất kích! ⚡🚀',
+      'Không có phanh đâu! Đâm trúng là ráng chịu nha! 🌪️',
+    ];
+    this.showSpeechBubble(Random.choice(zoomLines), 3000);
+
+    // Fast zigzag waypoints across the cafe floor
+    const p1 = { x: Random.range(130, 200), y: Random.range(490, 680) };
+    const p2 = { x: Random.range(310, 420), y: Random.range(500, 710) };
+    const p3 = { x: Random.range(180, 340), y: Random.range(530, 660) };
+
+    this.turnToward(p1.x);
+    this.moveTween = this.scene.tweens.add({
+      targets: this,
+      x: p1.x,
+      y: p1.y,
+      duration: 380,
+      ease: 'Cubic.easeOut',
+      onComplete: () => {
+        this.turnToward(p2.x);
+        this.setActionPose('walk_2');
+        this.moveTween = this.scene.tweens.add({
+          targets: this,
+          x: p2.x,
+          y: p2.y,
+          duration: 400,
+          ease: 'Cubic.easeInOut',
+          onComplete: () => {
+            this.turnToward(p3.x);
+            this.setActionPose('jump');
+            this.moveTween = this.scene.tweens.add({
+              targets: this,
+              x: p3.x,
+              y: p3.y,
+              duration: 360,
+              ease: 'Back.easeOut',
+              onComplete: () => {
+                this.moveTween = null;
+                this.energy = Math.max(10, this.energy - 20);
+                this.happiness = Math.min(100, this.happiness + 20);
+                this.setActionPose('idle');
+                this.scheduleNextAction(Random.range(3, 5));
+                if (onComplete) onComplete();
+              },
+            });
+          },
+        });
+      },
+    });
+  }
+
+  public hideInBox(onComplete?: () => void): void {
+    if (this.isRoyal) return;
+    this.transitionTo('box');
+    this.setActionPose('box');
+    this.showEmote('emote_box', 3500);
+    CafeAudioEngine.getInstance().playScratch();
+
+    const boxLines = [
+      'Hộp carton là chân ái! Pháo đài bất khả xâm phạm! 📦👑',
+      'Nếu trẫm vừa, trẫm sẽ ngồi! Giường đắt tiền vứt xó! 📦',
+      'Trong hộp này, trẫm là bá chủ vũ trụ! Miễn tiếp khách! 📦✨',
+    ];
+    this.showSpeechBubble(Random.choice(boxLines), 3500);
+
+    this.scene.tweens.add({
+      targets: this.catSprite,
+      y: { from: 0, to: -8 },
+      duration: 320,
+      yoyo: true,
+      repeat: 3,
+      onComplete: () => {
+        this.catSprite.y = 0;
+        this.happiness = Math.min(100, this.happiness + 15);
+        this.scheduleNextAction(Random.range(4, 7));
+        if (onComplete) onComplete();
+      },
+    });
+  }
+
+  public takeBath(onComplete?: () => void): void {
+    if (this.isRoyal) return;
+    this.transitionTo('bath');
+    this.setActionPose('bath');
+    this.showEmote('emote_bath', 3200);
+    CafeAudioEngine.getInstance().playPurr();
+
+    const bathLines = [
+      'Liếm lông sạch sẽ, tút lại nhan sắc đón triệu view! ✨🧼',
+      'Spa cao cấp 5 sao tại gia! Phải thơm tho mới có nhiều fan! 💅',
+      'Lông mượt óng ả thế này ai mà không mê cho được! 🧼✨',
+    ];
+    this.showSpeechBubble(Random.choice(bathLines), 3500);
+
+    this.scene.tweens.add({
+      targets: this.catSprite,
+      angle: { from: -7, to: 7 },
+      duration: 250,
+      yoyo: true,
+      repeat: 5,
+      onComplete: () => {
+        this.catSprite.angle = 0;
+        this.happiness = Math.min(100, this.happiness + 15);
+        this.setActionPose('idle');
+        this.scheduleNextAction(Random.range(3, 6));
+        if (onComplete) onComplete();
+      },
+    });
+  }
+
   public callToFront(onComplete?: () => void): void {
     this.transitionTo('call');
     this.setActionPose('call');
@@ -603,7 +809,18 @@ export class Cat extends Phaser.GameObjects.Container {
       this.setActionPose('stretch');
     } else if (newState === 'groom') {
       this.setActionPose('groom');
+    } else if (newState === 'angry') {
+      this.setActionPose('meow');
+    } else if (newState === 'dance') {
+      this.setActionPose('party');
+    } else if (newState === 'zoomies') {
+      this.setActionPose('jump');
+    } else if (newState === 'box') {
+      this.setActionPose('box');
+    } else if (newState === 'bath') {
+      this.setActionPose('bath');
     } else {
+      this.catSprite.clearTint();
       this.setActionPose('idle');
     }
 

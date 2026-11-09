@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const samplePath = path.resolve(__dirname, '../../PTPlay_English_Class_Full_Antigravity_Pack/data/questions.sample.json');
+const samplePath = path.resolve(__dirname, '../games/english-class-live/src/data/questions.sample.json');
 const outputPath = path.resolve(__dirname, '../games/english-class-live/src/data/questions.json');
 
 const sampleQuestions = JSON.parse(fs.readFileSync(samplePath, 'utf-8'));

@@ -1,0 +1,17 @@
+{
+  "$comment": "Examples only. Existing PTPlay LIVE Bridge GiftMapper is authoritative. No price purchases needed to join games.",
+  "cat-cafe": [
+    {"match": {"giftName": "Rose"}, "action": "spawn_grilled_fish"},
+    {"match": {"giftName": "Heart"}, "action": "heart_rain"},
+    {"match": {"giftName": "Lion"}, "action": "royal_cat_celebration"},
+    {"match": {"giftName": "TikTok Universe"}, "action": "cosmic_cat_party"}
+  ],
+  "mini-war-arena": [
+    {"match": {"giftName": "Rose"}, "action": "summon_warrior"},
+    {"match": {"giftName": "Lion"}, "action": "summon_boss"}
+  ],
+  "english-class": [
+    {"match": {"giftName": "Rose"}, "action": "classroom_confetti"},
+    {"match": {"giftName": "Heart"}, "action": "teacher_heart"}
+  ]
+}

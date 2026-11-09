@@ -9,12 +9,14 @@ import { SpawnSystem } from './SpawnSystem';
 import { CombatSystem } from './CombatSystem';
 import { UnitAI } from './UnitAI';
 import { GameEventClient, GameCommandMessage } from '../events/GameEventClient';
+import { TTSController } from './TTSController';
 
 export class BattleManager {
   private scene: Phaser.Scene;
 
   // Subsystems
   public audio: AudioManager;
+  public tts: TTSController;
   public effects: EffectsManager;
   public ui: UIManager;
   public roundManager: RoundManager;
@@ -30,6 +32,7 @@ export class BattleManager {
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.audio = new AudioManager();
+    this.tts = new TTSController(this.audio);
     this.effects = new EffectsManager(scene);
     this.ui = new UIManager(scene);
     this.roundManager = new RoundManager();
@@ -47,12 +50,15 @@ export class BattleManager {
       (killerTeam, victim) => {
         this.roundManager.recordKill(killerTeam);
         if (victim === this.activeBoss) {
+          const bossName = victim.team === 'red' ? GAME_CONFIG.BOSSES.red.vietnameseName : GAME_CONFIG.BOSSES.blue.vietnameseName;
+          this.tts.announceBossDefeated(bossName, killerTeam);
           this.activeBoss = null;
         }
       },
       (breachingTeam, damage) => {
         const targetTeam = breachingTeam === 'red' ? 'blue' : 'red';
         this.roundManager.damageCore(targetTeam, damage);
+        this.tts.announceCoreBreach(targetTeam);
       }
     );
 
@@ -107,6 +113,7 @@ export class BattleManager {
     this.ui.drawBattlefield(theme);
     this.effects.setupAmbientParticles(theme);
     this.ui.showRoundIntro(this.roundManager.round, theme.vietnameseName);
+    this.tts.announceMatchStart(this.roundManager.round);
 
     // Initial deployment: 2 warriors per lane for each team after intro
     this.scene.time.delayedCall(800, () => {
@@ -158,6 +165,7 @@ export class BattleManager {
           const teamName = cmd.team === 'red' ? 'ĐỘI ĐỎ' : 'ĐỘI XANH';
           this.roundManager.recordSupporter(cmd.user.nickname, cmd.team, 'Gia nhập đội');
           this.ui.showViewerTicker(`🎉 [${cmd.user.nickname}] vừa tham gia ${teamName}!`);
+          this.tts.announceTeamJoin(cmd.user.nickname, cmd.team);
         }
         break;
 
@@ -178,6 +186,7 @@ export class BattleManager {
             const unitDef = GAME_CONFIG.UNITS[type];
             this.roundManager.recordSupporter(nick, cmd.team, `Triệu hồi ${count} ${unitDef.name}`);
             this.ui.showViewerTicker(`🎁 [${nick}] gọi ${count} ${unitDef.name} cho ĐỘI ${teamCol}!`);
+            this.tts.announceSummon(cmd.team, unitDef.name, count, nick);
           }
         }
         break;
@@ -195,6 +204,7 @@ export class BattleManager {
             this.roundManager.recordSupporter(nick, cmd.team, `Triệu hồi ${bossTitle}`);
             this.ui.showViewerTicker(`👑 [${nick}] TRIỆU HỒI ${bossTitle.toUpperCase()}!`);
           }
+          this.tts.announceBossSpawn(cmd.team, bossTitle, nick);
         }
         break;
 
@@ -206,6 +216,7 @@ export class BattleManager {
           const teamCol = cmd.team === 'red' ? 'ĐỎ' : 'XANH';
           if (cmd.user?.nickname) {
             this.roundManager.recordSupporter(cmd.user.nickname, cmd.team, `Hồi +${amount} HP thành trì`);
+            this.tts.announceHeal(cmd.user.nickname, cmd.team, amount);
           }
           this.ui.showAnnouncement(`+${amount} HP THÀNH TRÌ ${teamCol}!`, GAME_CONFIG.COLORS.GOLD);
         }
@@ -224,6 +235,7 @@ export class BattleManager {
           if (cmd.user?.nickname) {
             this.roundManager.recordSupporter(cmd.user.nickname, cmd.team, 'Cổ vũ tinh thần');
             this.ui.showViewerTicker(`🔥 [${cmd.user.nickname}] CỔ VŨ NHIỆT LIỆT CHO ${teamName}!`);
+            this.tts.announceBoost(cmd.user.nickname, cmd.team);
           }
           this.ui.showAnnouncement(`⚡ TĂNG TỐC & SÁT THƯƠNG ĐỘI ${cmd.team.toUpperCase()}! ⚡`, GAME_CONFIG.COLORS.GOLD);
         }
@@ -289,6 +301,14 @@ export class BattleManager {
       case 'force_end_round': {
         this.roundManager.setPhase('ROUND_RESULT');
         this.ui.showAnnouncement('KẾT THÚC VÒNG ĐẤU THEO LỆNH ADMIN', GAME_CONFIG.COLORS.GOLD);
+        break;
+      }
+
+      case 'tts_speak': {
+        const text = cmd.metadata?.text as string;
+        if (text) {
+          this.tts.speak(text, true);
+        }
         break;
       }
 
@@ -411,6 +431,7 @@ export class BattleManager {
     const winner = this.roundManager.determineWinner(liveRed, liveBlue);
 
     this.audio.win();
+    this.tts.announceVictory(winner);
 
     // Set surviving units of winning team to victory celebration
     for (const u of this.units) {
@@ -442,6 +463,7 @@ export class BattleManager {
 
   public destroy(): void {
     this.eventClient.disconnect();
+    this.tts.destroy();
     this.effects.clear();
     for (const u of this.units) {
       u.destroy();

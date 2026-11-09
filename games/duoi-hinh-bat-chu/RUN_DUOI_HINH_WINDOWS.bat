@@ -8,3 +8,4 @@ cd /d "%~dp0..\.."
 echo Starting PTPlay Duoi Hinh Bat Chu on Port 5177...
 npm run dev -w @ptplay/duoi-hinh-bat-chu
 pause
+

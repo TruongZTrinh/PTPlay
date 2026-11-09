@@ -88,3 +88,4 @@ export class MCCharacter extends Phaser.GameObjects.Container {
     });
   }
 }
+

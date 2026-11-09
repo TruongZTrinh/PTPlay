@@ -1,4 +1,5 @@
 import { AudioEngine } from '../audio/AudioEngine.js';
+import { VietnameseVoiceHelper } from '@ptplay/game-sdk';
 
 export type SpeechPriority = 0 | 1 | 2 | 3;
 
@@ -43,8 +44,8 @@ export class TTSController {
 
     // Auto-select best Vietnamese and English voices
     if (!this.viVoiceName) {
-      const vi = this.availableVoices.find((v) => v.lang.toLowerCase().startsWith('vi'));
-      if (vi) this.viVoiceName = vi.name;
+      const bestVi = VietnameseVoiceHelper.selectBestVietnameseVoice(this.availableVoices, 'female');
+      if (bestVi) this.viVoiceName = bestVi.name;
     }
     if (!this.enVoiceName) {
       const en = this.availableVoices.find(
@@ -229,6 +230,11 @@ export class TTSController {
 
   public announceGift(nickname: string, giftName: string): void {
     this.speak(`Cảm ơn ${nickname} đã gửi tặng ${giftName} cổ vũ lớp học!`, 'vi-VN', 1, `gift_${nickname}_${giftName}`);
+  }
+
+  public testVoice(): void {
+    this.unlock();
+    this.speak('Xin chào cả lớp! Mình cùng luyện tiếng Anh nhé! Let us practice English together!', 'vi-VN', 3);
   }
 
   public stop(): void {

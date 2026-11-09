@@ -9,6 +9,7 @@ import { SyntheticWebhookProvider } from '../providers/SyntheticWebhookProvider.
 import { TeamManager } from '../systems/TeamManager.js';
 import { GiftStreakHandler } from '../systems/GiftStreakHandler.js';
 import { GiftMapper } from '../systems/GiftMapper.js';
+import { GiftCatalogService } from '@ptplay/gift-catalog';
 import { EventQueue } from '../systems/EventQueue.js';
 import { ActiveGame, ErrorLogItem, GameCommand, NormalizedLiveEvent, NormalizedChatEvent, OverflowPolicy } from '../types/events.js';
 import { TikFinityProber } from '../utils/TikFinityProber.js';
@@ -29,6 +30,7 @@ export class GameBridgeServer {
   public teamManager = new TeamManager();
   public streakHandler = new GiftStreakHandler();
   public giftMapper = new GiftMapper();
+  public giftCatalog = GiftCatalogService.getInstance();
   public eventQueue = new EventQueue();
 
   // Providers & Provider Registry
@@ -604,6 +606,10 @@ export class GameBridgeServer {
           return;
         }
 
+        const isMock = (event.id && (event.id.startsWith('mock_') || event.id.startsWith('manual_'))) || event.provider === 'mock' || this.activeProvider === this.mockProvider;
+        const lookup = this.giftCatalog.resolveGiftEvent(event.giftId, event.giftName);
+        const rule = this.giftCatalog.findMatchingRule('mini-war', event.giftName, event.giftId);
+
         // Mini War Arena gift summon
         const team = this.teamManager.resolveUserTeam(
           { userId: event.userId, uniqueId: event.uniqueId, nickname: event.nickname },
@@ -611,12 +617,31 @@ export class GameBridgeServer {
           this.eventQueue.currentUnitsBlue
         );
 
+        let executed = false;
         if (team) {
           const mapResult = this.giftMapper.mapGiftToCommand(event, team, streakResult.deltaCount);
           if (mapResult.command) {
             this.eventQueue.push(mapResult.command);
+            executed = true;
           }
         }
+
+        this.giftCatalog.recordPipelineEvent({
+          id: `pipe_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          timestamp: Date.now(),
+          source: isMock ? 'mock' : 'real',
+          giftName: event.giftName,
+          giftId: event.giftId != null ? String(event.giftId) : undefined,
+          count: streakResult.deltaCount,
+          diamondCount: event.diamondCount,
+          viewerNick: event.nickname,
+          activeGame: this.activeGame,
+          targetGame: 'mini-war',
+          resolvedStatus: lookup.status,
+          mappingMatched: !!rule,
+          actionExecuted: executed ? (rule?.action || 'spawn_unit') : undefined,
+          pipelineStatus: executed ? 'executed' : (lookup.status === 'unresolved' ? 'unknown_gift' : 'queued'),
+        });
       }
     } else if (this.activeGame === 'cat-cafe') {
       if (event.type === 'chat') {
@@ -630,9 +655,13 @@ export class GameBridgeServer {
         if (streakResult.isDuplicate || streakResult.deltaCount <= 0) {
           return;
         }
+        const isMock = (event.id && (event.id.startsWith('mock_') || event.id.startsWith('manual_'))) || event.provider === 'mock' || this.activeProvider === this.mockProvider;
+        const lookup = this.giftCatalog.resolveGiftEvent(event.giftId, event.giftName);
+        const rule = this.giftCatalog.findMatchingRule('cat-cafe', event.giftName, event.giftId);
+
         const catGiftCmd: GameCommand = {
           id: `cmd_cat_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-          action: 'cat_cafe.gift_effect',
+          action: (rule?.action as any) || 'cat_cafe.gift_effect',
           user: {
             userId: event.userId,
             uniqueId: event.uniqueId,
@@ -640,12 +669,31 @@ export class GameBridgeServer {
           },
           metadata: {
             giftName: event.giftName,
+            giftId: event.giftId,
             count: streakResult.deltaCount,
             diamondCount: event.diamondCount,
+            ...(rule?.params || {}),
           },
           timestamp: Date.now(),
         };
         this.eventQueue.push(catGiftCmd);
+
+        this.giftCatalog.recordPipelineEvent({
+          id: `pipe_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          timestamp: Date.now(),
+          source: isMock ? 'mock' : 'real',
+          giftName: event.giftName,
+          giftId: event.giftId != null ? String(event.giftId) : undefined,
+          count: streakResult.deltaCount,
+          diamondCount: event.diamondCount,
+          viewerNick: event.nickname,
+          activeGame: this.activeGame,
+          targetGame: 'cat-cafe',
+          resolvedStatus: lookup.status,
+          mappingMatched: !!rule,
+          actionExecuted: rule?.action || 'cat_cafe.gift_effect',
+          pipelineStatus: lookup.status === 'unresolved' ? 'unknown_gift' : 'executed',
+        });
       } else if (event.type === 'like') {
         const catLikeCmd: GameCommand = {
           id: `cmd_cat_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -671,9 +719,13 @@ export class GameBridgeServer {
         if (streakResult.isDuplicate || streakResult.deltaCount <= 0) {
           return;
         }
+        const isMock = (event.id && (event.id.startsWith('mock_') || event.id.startsWith('manual_'))) || event.provider === 'mock' || this.activeProvider === this.mockProvider;
+        const lookup = this.giftCatalog.resolveGiftEvent(event.giftId, event.giftName);
+        const rule = this.giftCatalog.findMatchingRule('english-class', event.giftName, event.giftId);
+
         const engGiftCmd: GameCommand = {
           id: `cmd_eng_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-          action: 'english_class.gift',
+          action: (rule?.action as any) || 'english_class.gift',
           user: {
             userId: event.userId,
             uniqueId: event.uniqueId,
@@ -685,10 +737,28 @@ export class GameBridgeServer {
             count: streakResult.deltaCount,
             diamondCount: event.diamondCount,
             profilePictureUrl: event.profilePictureUrl,
+            ...(rule?.params || {}),
           },
           timestamp: Date.now(),
         };
         this.eventQueue.push(engGiftCmd);
+
+        this.giftCatalog.recordPipelineEvent({
+          id: `pipe_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          timestamp: Date.now(),
+          source: isMock ? 'mock' : 'real',
+          giftName: event.giftName,
+          giftId: event.giftId != null ? String(event.giftId) : undefined,
+          count: streakResult.deltaCount,
+          diamondCount: event.diamondCount,
+          viewerNick: event.nickname,
+          activeGame: this.activeGame,
+          targetGame: 'english-class',
+          resolvedStatus: lookup.status,
+          mappingMatched: !!rule,
+          actionExecuted: rule?.action || 'english_class.gift',
+          pipelineStatus: lookup.status === 'unresolved' ? 'unknown_gift' : 'executed',
+        });
       } else if (event.type === 'like') {
         const engLikeCmd: GameCommand = {
           id: `cmd_eng_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -722,9 +792,13 @@ export class GameBridgeServer {
       } else if (event.type === 'gift') {
         const streakResult = this.streakHandler.processGift(event);
         if (streakResult.isDuplicate || streakResult.deltaCount <= 0) return;
+        const isMock = (event.id && (event.id.startsWith('mock_') || event.id.startsWith('manual_'))) || event.provider === 'mock' || this.activeProvider === this.mockProvider;
+        const lookup = this.giftCatalog.resolveGiftEvent(event.giftId, event.giftName);
+        const rule = this.giftCatalog.findMatchingRule('quiz-show', event.giftName, event.giftId);
+
         const qsGiftCmd: GameCommand = {
           id: `cmd_qs_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-          action: 'quiz_show.gift',
+          action: (rule?.action as any) || 'quiz_show.gift',
           user: {
             userId: event.userId,
             uniqueId: event.uniqueId,
@@ -736,10 +810,28 @@ export class GameBridgeServer {
             count: streakResult.deltaCount,
             diamondCount: event.diamondCount,
             profilePictureUrl: event.profilePictureUrl,
+            ...(rule?.params || {}),
           },
           timestamp: Date.now(),
         };
         this.eventQueue.push(qsGiftCmd);
+
+        this.giftCatalog.recordPipelineEvent({
+          id: `pipe_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          timestamp: Date.now(),
+          source: isMock ? 'mock' : 'real',
+          giftName: event.giftName,
+          giftId: event.giftId != null ? String(event.giftId) : undefined,
+          count: streakResult.deltaCount,
+          diamondCount: event.diamondCount,
+          viewerNick: event.nickname,
+          activeGame: this.activeGame,
+          targetGame: 'quiz-show',
+          resolvedStatus: lookup.status,
+          mappingMatched: !!rule,
+          actionExecuted: rule?.action || 'quiz_show.gift',
+          pipelineStatus: lookup.status === 'unresolved' ? 'unknown_gift' : 'executed',
+        });
       } else if (event.type === 'like') {
         const qsLikeCmd: GameCommand = {
           id: `cmd_qs_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -773,9 +865,13 @@ export class GameBridgeServer {
       } else if (event.type === 'gift') {
         const streakResult = this.streakHandler.processGift(event);
         if (streakResult.isDuplicate || streakResult.deltaCount <= 0) return;
+        const isMock = (event.id && (event.id.startsWith('mock_') || event.id.startsWith('manual_'))) || event.provider === 'mock' || this.activeProvider === this.mockProvider;
+        const lookup = this.giftCatalog.resolveGiftEvent(event.giftId, event.giftName);
+        const rule = this.giftCatalog.findMatchingRule('duoi-hinh-bat-chu', event.giftName, event.giftId);
+
         const rebusGiftCmd: GameCommand = {
           id: `cmd_rebus_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-          action: 'rebus.gift',
+          action: (rule?.action as any) || 'rebus.gift',
           user: {
             userId: event.userId,
             uniqueId: event.uniqueId,
@@ -787,10 +883,28 @@ export class GameBridgeServer {
             count: streakResult.deltaCount,
             diamondCount: event.diamondCount,
             profilePictureUrl: event.profilePictureUrl,
+            ...(rule?.params || {}),
           },
           timestamp: Date.now(),
         };
         this.eventQueue.push(rebusGiftCmd);
+
+        this.giftCatalog.recordPipelineEvent({
+          id: `pipe_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          timestamp: Date.now(),
+          source: isMock ? 'mock' : 'real',
+          giftName: event.giftName,
+          giftId: event.giftId != null ? String(event.giftId) : undefined,
+          count: streakResult.deltaCount,
+          diamondCount: event.diamondCount,
+          viewerNick: event.nickname,
+          activeGame: this.activeGame,
+          targetGame: 'duoi-hinh-bat-chu',
+          resolvedStatus: lookup.status,
+          mappingMatched: !!rule,
+          actionExecuted: rule?.action || 'rebus.gift',
+          pipelineStatus: lookup.status === 'unresolved' ? 'unknown_gift' : 'executed',
+        });
       } else if (event.type === 'like') {
         const rebusLikeCmd: GameCommand = {
           id: `cmd_rebus_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -917,6 +1031,50 @@ export class GameBridgeServer {
     if (pathname === '/api/mapping' && req.method === 'GET') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(this.giftMapper.getAllRules()));
+      return;
+    }
+
+    if (pathname === '/api/catalog/gifts' && req.method === 'GET') {
+      const q = url.searchParams.get('q') || '';
+      const region = url.searchParams.get('region') || 'VN';
+      const tier = (url.searchParams.get('tier') || 'all') as any;
+      const limit = Number(url.searchParams.get('limit')) || 60;
+      const offset = Number(url.searchParams.get('offset')) || 0;
+      const result = this.giftCatalog.searchGifts({ query: q, region, tier, limit, offset });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, ...result }));
+      return;
+    }
+
+    if (pathname === '/api/catalog/stats' && req.method === 'GET') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, ...this.giftCatalog.getStats() }));
+      return;
+    }
+
+    if (pathname === '/api/gift-mappings' && req.method === 'GET') {
+      const gameType = url.searchParams.get('gameType') || undefined;
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, rules: this.giftCatalog.getMappings(gameType) }));
+      return;
+    }
+
+    if (pathname === '/api/gift-mappings/actions' && req.method === 'GET') {
+      const gameType = url.searchParams.get('gameType') || 'mini-war';
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, actions: this.giftCatalog.getGameActions(gameType) }));
+      return;
+    }
+
+    if (pathname === '/api/gift-mappings/export' && req.method === 'GET') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, rules: this.giftCatalog.getMappings() }));
+      return;
+    }
+
+    if (pathname === '/api/gift-analytics' && req.method === 'GET') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, ...this.giftCatalog.getAnalytics() }));
       return;
     }
 
@@ -1153,6 +1311,19 @@ export class GameBridgeServer {
           const nick = String(json.nickname || 'Khán Giả').slice(0, 40);
           const comm = String(json.comment || 'ĐỎ').slice(0, 150);
           this.mockProvider.simulateChat(nick, comm);
+          if (this.activeProvider !== this.mockProvider) {
+            this.totalEventsReceived++;
+            this.processIncomingLiveEvent({
+              id: `manual_chat_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              type: 'chat',
+              provider: 'manual',
+              userId: `manual_${Date.now()}`,
+              uniqueId: nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user',
+              nickname: nick,
+              comment: comm,
+              timestamp: Date.now(),
+            });
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
           return;
@@ -1163,6 +1334,24 @@ export class GameBridgeServer {
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
           this.mockProvider.simulateGift(nick, gift, count);
+          if (this.activeProvider !== this.mockProvider) {
+            this.totalEventsReceived++;
+            this.processIncomingLiveEvent({
+              id: `manual_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              type: 'gift',
+              provider: 'manual',
+              userId: `manual_${Date.now()}`,
+              uniqueId: nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user',
+              nickname: nick,
+              giftId: `gift_${gift.toLowerCase()}`,
+              giftName: gift,
+              repeatCount: count,
+              deltaCount: count,
+              diamondCount: 1,
+              repeatEnd: true,
+              timestamp: Date.now(),
+            });
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
           return;
@@ -1202,6 +1391,7 @@ export class GameBridgeServer {
             'set_round',
             'force_end_round',
             'boss_ability',
+            'tts_speak',
           ];
           if (!allowed.includes(json.action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -1229,6 +1419,19 @@ export class GameBridgeServer {
           const nick = String(json.nickname || 'Khán Giả Mèo').slice(0, 40);
           const comm = String(json.comment || 'MÈO').slice(0, 150);
           this.mockProvider.simulateChat(nick, comm);
+          if (this.activeProvider !== this.mockProvider) {
+            this.totalEventsReceived++;
+            this.processIncomingLiveEvent({
+              id: `manual_chat_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              type: 'chat',
+              provider: 'manual',
+              userId: `manual_${Date.now()}`,
+              uniqueId: nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user',
+              nickname: nick,
+              comment: comm,
+              timestamp: Date.now(),
+            });
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
           return;
@@ -1239,6 +1442,24 @@ export class GameBridgeServer {
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
           this.mockProvider.simulateGift(nick, gift, count);
+          if (this.activeProvider !== this.mockProvider) {
+            this.totalEventsReceived++;
+            this.processIncomingLiveEvent({
+              id: `manual_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              type: 'gift',
+              provider: 'manual',
+              userId: `manual_${Date.now()}`,
+              uniqueId: nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user',
+              nickname: nick,
+              giftId: `gift_${gift.toLowerCase()}`,
+              giftName: gift,
+              repeatCount: count,
+              deltaCount: count,
+              diamondCount: 1,
+              repeatEnd: true,
+              timestamp: Date.now(),
+            });
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
           return;
@@ -1266,6 +1487,13 @@ export class GameBridgeServer {
             'cat_cafe.gift_effect',
             'cat_cafe.reset',
             'cat_cafe.demo_spawn',
+            'cat_cafe.angry',
+            'cat_cafe.dance',
+            'cat_cafe.zoomies',
+            'cat_cafe.box',
+            'cat_cafe.bath',
+            'cat_cafe.tts_speak',
+            'tts_speak',
           ];
           if (!allowedCat.includes(action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -1320,6 +1548,8 @@ export class GameBridgeServer {
             'english_class.like',
             'english_class.follow',
             'english_class.reset',
+            'english_class.tts_speak',
+            'tts_speak',
           ];
           if (!allowedEnglish.includes(action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -1374,6 +1604,8 @@ export class GameBridgeServer {
             'quiz_show.like',
             'quiz_show.follow',
             'quiz_show.reset',
+            'quiz_show.tts_speak',
+            'tts_speak',
           ];
           if (!allowedQuiz.includes(action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -1428,6 +1660,8 @@ export class GameBridgeServer {
             'rebus.like',
             'rebus.follow',
             'rebus.reset',
+            'rebus.tts_speak',
+            'tts_speak',
           ];
           if (!allowedRebus.includes(action)) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -1481,6 +1715,65 @@ export class GameBridgeServer {
 
         if (pathname === '/api/spectators/clear') {
           this.teamManager.clear();
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/catalog/sync') {
+          this.giftCatalog.reloadAll();
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, stats: this.giftCatalog.getStats() }));
+          return;
+        }
+
+        if (pathname === '/api/catalog/observe') {
+          const events = Array.isArray(json.events) ? json.events : (json.event ? [json.event] : []);
+          const resObserve = this.giftCatalog.importObservedEvents(events);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, ...resObserve, stats: this.giftCatalog.getStats() }));
+          return;
+        }
+
+        if (pathname === '/api/gift-mappings' || pathname === '/api/gift-mappings/save') {
+          const rule = json.rule || json;
+          if (rule && rule.giftName && rule.action) {
+            const saved = this.giftCatalog.saveMapping(rule);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, rule: saved, rules: this.giftCatalog.getMappings(rule.gameType) }));
+            return;
+          }
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid rule payload: giftName and action required' }));
+          return;
+        }
+
+        if (pathname === '/api/gift-mappings/delete') {
+          const id = String(json.id || '');
+          const deleted = this.giftCatalog.deleteMapping(id);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: deleted, rules: this.giftCatalog.getMappings() }));
+          return;
+        }
+
+        if (pathname === '/api/gift-mappings/toggle') {
+          const id = String(json.id || '');
+          const enabled = this.giftCatalog.toggleMapping(id);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, enabled, rules: this.giftCatalog.getMappings() }));
+          return;
+        }
+
+        if (pathname === '/api/gift-mappings/import') {
+          const rules = Array.isArray(json.rules) ? json.rules : [];
+          const count = this.giftCatalog.importMappings(rules);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, count, rules: this.giftCatalog.getMappings() }));
+          return;
+        }
+
+        if (pathname === '/api/gift-analytics/reset') {
+          this.giftCatalog.resetAnalytics();
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
           return;

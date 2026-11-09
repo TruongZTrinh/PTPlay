@@ -2,6 +2,9 @@ import assert from 'node:assert';
 import { GAME_CONFIG, Team, UnitType, ArenaThemeId } from '../src/game/config/GameConfig.js';
 import { RoundManager } from '../src/game/systems/RoundManager.js';
 import { TeamManager } from '../../../apps/bridge/src/systems/TeamManager.js';
+import { AudioManager } from '../src/game/audio/AudioManager.js';
+import { TTSController } from '../src/game/systems/TTSController.js';
+import { VietnameseVoiceHelper } from '@ptplay/game-sdk';
 
 console.log('========================================================');
 console.log('🧪 RUNNING PTPLAY MINI WAR ARENA FULL V1.0 TEST SUITE');
@@ -212,6 +215,46 @@ async function runTests() {
     const dtSuspendedMs = 15000; // 15 seconds in background tab
     const clampedDelta = Math.min(dtSuspendedMs / 1000, 0.05);
     assert.strictEqual(clampedDelta, 0.05, 'Must clamp dt to 0.05s maximum');
+  });
+
+  // --- 7. VIETNAMESE TTS SHOUTCASTER & ANNOUNCER ---
+  test('7.1 TTS Controller: Initializes with Vietnamese voice configuration and ducking', () => {
+    const audio = new AudioManager();
+    const tts = new TTSController(audio);
+    assert.strictEqual(tts.enabled, true);
+    assert.strictEqual(tts.rate >= 1.0, true);
+    assert.strictEqual(tts.pitch >= 1.0, true);
+
+    tts.setEnabled(false);
+    assert.strictEqual(tts.enabled, false);
+    tts.setEnabled(true);
+    assert.strictEqual(tts.enabled, true);
+  });
+
+  test('7.2 TTS Voice Helper: Detects and prioritizes Vietnamese voices accurately', () => {
+    const mockVoices = [
+      { name: 'Microsoft David Desktop - English (United States)', lang: 'en-US' },
+      { name: 'Microsoft Zira Desktop - English (United States)', lang: 'en-US' },
+      { name: 'Microsoft An - Vietnamese (Vietnam)', lang: 'vi-VN' },
+      { name: 'Microsoft HoaiMy Online (Natural) - Vietnamese (Vietnam)', lang: 'vi-VN' },
+    ] as SpeechSynthesisVoice[];
+
+    const viVoices = VietnameseVoiceHelper.getVietnameseVoices(mockVoices);
+    assert.strictEqual(viVoices.length, 2);
+
+    const bestVoice = VietnameseVoiceHelper.selectBestVietnameseVoice(mockVoices);
+    assert.strictEqual(bestVoice?.name, 'Microsoft HoaiMy Online (Natural) - Vietnamese (Vietnam)');
+
+    const maleVoice = VietnameseVoiceHelper.selectBestVietnameseVoice(mockVoices, 'male');
+    assert.strictEqual(maleVoice?.name, 'Microsoft An - Vietnamese (Vietnam)');
+  });
+
+  test('7.3 TTS Text Sanitizer: Cleans symbols and limits length for Vietnamese speech', () => {
+    const dirty = '<script>alert("hack")</script> **Chào mừng** các bạn đã đến với #ĐấuTrườngChiếnBinh!';
+    const cleaned = VietnameseVoiceHelper.sanitizeTTSText(dirty);
+    assert.strictEqual(cleaned.includes('<script>'), false);
+    assert.strictEqual(cleaned.includes('**'), false);
+    assert.strictEqual(cleaned.includes('Chào mừng các bạn đã đến với'), true);
   });
 
   console.log('\n========================================================');

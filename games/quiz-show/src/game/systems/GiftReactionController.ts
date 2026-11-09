@@ -17,11 +17,11 @@ export class GiftReactionController {
       this.playRoseReaction();
     } else if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
       this.playHeartReaction();
-    } else if (cleanGift.includes('donut') || cleanGift.includes('banh')) {
+    } else if (cleanGift.includes('donut') || cleanGift.includes('cake') || cleanGift.includes('banh')) {
       this.playDonutReaction();
-    } else if (cleanGift.includes('lion') || cleanGift.includes('su tu')) {
+    } else if (cleanGift.includes('lion') || cleanGift.includes('su tu') || cleanGift.includes('crown') || cleanGift.includes('vuong mien')) {
       this.playLionReaction(donorNick);
-    } else if (cleanGift.includes('universe') || cleanGift.includes('vu tru') || cleanGift.includes('galaxy')) {
+    } else if (cleanGift.includes('universe') || cleanGift.includes('vu tru') || cleanGift.includes('galaxy') || cleanGift.includes('firework') || cleanGift.includes('phao')) {
       this.playUniverseReaction();
     } else {
       // Default sparkle burst
@@ -186,3 +186,4 @@ export class GiftReactionController {
     this.audioEngine.playGiftHeart();
   }
 }
+

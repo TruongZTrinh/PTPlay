@@ -86,7 +86,8 @@ export class QuizShowScene extends Phaser.Scene {
       this.quizEngine,
       this.studentRoster,
       this.giftController,
-      this.scoreboard
+      this.scoreboard,
+      this.ttsController
     );
     this.liveRouter.start();
 

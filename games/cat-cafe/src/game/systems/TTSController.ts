@@ -1,5 +1,6 @@
 import { CafeAudioEngine } from '../audio/CafeAudioEngine';
 import { TextSanitizer } from '../utils/TextSanitizer';
+import { VietnameseVoiceHelper } from '@ptplay/game-sdk';
 
 export interface TTSOptions {
   enabled?: boolean;
@@ -15,10 +16,12 @@ export class TTSController {
   private queue: Array<{ text: string; priority?: boolean }> = [];
   private isSpeaking: boolean = false;
   private lastSpeakTime: number = 0;
-  private cooldownMs: number = 1200;
+  private cooldownMs: number = 1100;
   private rate: number = 1.05;
   private pitch: number = 1.15; // Cheerful, warm cafe host tone
   private recentWelcomeViewers: Set<string> = new Set();
+  private recentKeys: Map<string, number> = new Map();
+  private cleanupVoiceLoader?: () => void;
 
   private constructor() {
     this.initVoices();
@@ -33,23 +36,20 @@ export class TTSController {
 
   private initVoices(): void {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      // Prioritize Vietnamese voices (e.g. Microsoft HoaiMy, NamMinh, Google Tiếng Việt)
-      const viVoice = voices.find((v) => v.lang.toLowerCase().includes('vi'));
-      if (viVoice) {
-        this.selectedVoice = viVoice;
-      } else {
-        // Fallback to English or default system voice
-        const enVoice = voices.find((v) => v.lang.toLowerCase().startsWith('en'));
-        this.selectedVoice = enVoice || voices[0] || null;
-      }
-    };
 
-    loadVoices();
-    if (window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
+    this.cleanupVoiceLoader = VietnameseVoiceHelper.setupVoiceLoader((voices) => {
+      // Prioritize warm female cafe host voice (e.g. HoaiMy, Google Tiếng Việt, Linh)
+      const bestVoice =
+        VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
+        VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'any');
+      if (bestVoice) {
+        this.selectedVoice = bestVoice;
+      }
+    });
+  }
+
+  public unlock(): boolean {
+    return VietnameseVoiceHelper.unlockAudioContext();
   }
 
   public setEnabled(enabled: boolean): void {
@@ -128,20 +128,142 @@ export class TTSController {
     return text;
   }
 
-  public speak(text: string, priority: boolean = false): void {
+  /**
+   * Announces viewer gift donations with delightful cat-themed commentary.
+   */
+  public announceGift(nickname: string, giftName: string, count: number = 1): void {
+    const cleanNick = TextSanitizer.sanitizeNickname(nickname);
+    if (!cleanNick) return;
+
+    const lower = giftName.toLowerCase();
+    let text = '';
+    let priority = false;
+
+    if (lower.includes('lion') || lower.includes('su tu') || lower.includes('sư tử')) {
+      text = `Đại lễ hoàng gia! Bạn ${cleanNick} vừa tặng Sư Tử x${count}, bé mèo chính thức đăng quang Hoàng Gia!`;
+      priority = true;
+    } else if (lower.includes('universe') || lower.includes('vũ trụ')) {
+      text = `Đại tiệc vũ trụ! Bạn ${cleanNick} vừa tặng Vũ Trụ x${count}, cả quán mèo mở hội tưng bừng!`;
+      priority = true;
+    } else if (lower.includes('rose') || lower.includes('hoa') || lower.includes('cá') || lower.includes('fish')) {
+      text = `Cảm ơn bạn ${cleanNick} đã tặng ${giftName} x${count}! Quán thưởng ngay một bữa cá thơm ngon cho các bé mèo!`;
+    } else if (lower.includes('heart') || lower.includes('tim')) {
+      text = `Cơn mưa tim ngập tràn từ bạn ${cleanNick}! Cả quán mèo meo meo cảm ơn bạn!`;
+    } else if (lower.includes('cake') || lower.includes('bánh')) {
+      text = `Cảm ơn bạn ${cleanNick} đã gửi tặng Bánh Kem x${count} mở tiệc sinh nhật ngọt ngào cho các bé mèo!`;
+    } else if (lower.includes('yarn') || lower.includes('len')) {
+      text = `Cảm ơn bạn ${cleanNick} đã tặng Cuộn Len x${count}! Các bé mèo thích mê luôn!`;
+    } else if (lower.includes('fireworks') || lower.includes('pháo')) {
+      text = `Pháo hoa rực rỡ! Cảm ơn bạn ${cleanNick} đã bắn Pháo Hoa x${count} chúc mừng quán mèo!`;
+    } else if (lower.includes('coffee') || lower.includes('cà phê')) {
+      text = `Cảm ơn bạn ${cleanNick} đã gửi tặng Cà Phê x${count} tiếp năng lượng cho streamer và các bé mèo!`;
+    } else {
+      text = `Cảm ơn bạn ${cleanNick} đã gửi tặng ${giftName} x${count} mở tiệc cho cả quán mèo!`;
+    }
+
+    this.speak(text, priority, `gift_${cleanNick}_${giftName}`);
+  }
+
+  /**
+   * Announces cafe level progression milestone.
+   */
+  public announceLevelUp(newLevel: number): void {
+    const text = `Chúc mừng quán Café Mòe đã chính thức thăng cấp lên Cấp ${newLevel}! Cảm ơn cả nhà đã chung tay chăm sóc các bé mèo!`;
+    this.speak(text, true);
+  }
+
+  /**
+   * Announces humorous cat reaction states.
+   */
+  public announceAngry(nickname: string): string {
+    const cleanNick = TextSanitizer.sanitizeNickname(nickname);
+    if (!cleanNick) return '';
+    const lines = [
+      `Úi chà! Bé mèo của bạn ${cleanNick} đang giận dỗi tím người kìa! Mau nựng hoặc cho ăn cá để dỗ hoàng thượng đi nào!`,
+      `Căng thẳng rồi! Bé mèo của ${cleanNick} đang khè và quạu quọ rồi! Cần cấp cứu bằng cá nướng gấp!`,
+      `Hoàng thượng của ${cleanNick} hờn cả thế giới rồi! Ai làm bé giận thì mau vào xin lỗi đi nhé!`,
+    ];
+    const text = lines[Math.floor(Math.random() * lines.length)];
+    this.speak(text, false, `angry_${cleanNick}`);
+    return text;
+  }
+
+  public announceDance(nickname: string): string {
+    const cleanNick = TextSanitizer.sanitizeNickname(nickname);
+    if (!cleanNick) return '';
+    const lines = [
+      `Bé mèo của ${cleanNick} đang bật chế độ quẩy tưng bừng! Nhảy cực sung luôn!`,
+      `Lên nhạc là quẩy! Bé mèo của ${cleanNick} đang lắc mông siêu dẻo kìa cả nhà ơi!`,
+    ];
+    const text = lines[Math.floor(Math.random() * lines.length)];
+    this.speak(text, false, `dance_${cleanNick}`);
+    return text;
+  }
+
+  public announceZoomies(nickname: string): string {
+    const cleanNick = TextSanitizer.sanitizeNickname(nickname);
+    if (!cleanNick) return '';
+    const lines = [
+      `Bé mèo của ${cleanNick} bị ngáo ba giờ sáng rồi, đang phóng bạt mạng khắp quán kìa!`,
+      `Né đường gấp! Bé mèo của ${cleanNick} đang bật số tua-bô chạy không phanh!`,
+    ];
+    const text = lines[Math.floor(Math.random() * lines.length)];
+    this.speak(text, false, `zoom_${cleanNick}`);
+    return text;
+  }
+
+  public announceBox(nickname: string): string {
+    const cleanNick = TextSanitizer.sanitizeNickname(nickname);
+    if (!cleanNick) return '';
+    const lines = [
+      `Bé mèo của ${cleanNick} chui tọt vào hộp các-tông ngồi tự kỷ rồi, đúng là pháo đài bất khả xâm phạm!`,
+      `Giường êm không nằm, bé mèo của ${cleanNick} lại thích chui thùng các-tông ngộ ghê!`,
+    ];
+    const text = lines[Math.floor(Math.random() * lines.length)];
+    this.speak(text, false, `box_${cleanNick}`);
+    return text;
+  }
+
+  public announceBath(nickname: string): string {
+    const cleanNick = TextSanitizer.sanitizeNickname(nickname);
+    if (!cleanNick) return '';
+    const lines = [
+      `Bé mèo của ${cleanNick} đang tắm rửa liếm lông siêu điệu đà, xinh xắn quá đi thôi!`,
+      `Xì-pa thư giãn! Bé mèo của ${cleanNick} đang tút lại nhan sắc chuẩn bị lên hình triệu view!`,
+    ];
+    const text = lines[Math.floor(Math.random() * lines.length)];
+    this.speak(text, false, `bath_${cleanNick}`);
+    return text;
+  }
+
+  public testVoice(): void {
+    this.unlock();
+    this.speak('Meo meo! Quán Café Mòe xin chào! Giọng đọc tiếng Việt đã sẵn sàng phục vụ quý khách!', true);
+  }
+
+  public speak(text: string, priority: boolean = false, dedupeKey?: string): void {
     if (!this.isEnabled || !text.trim()) return;
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
+    const now = Date.now();
+    if (dedupeKey) {
+      const last = this.recentKeys.get(dedupeKey) || 0;
+      if (now - last < 8000) return;
+      this.recentKeys.set(dedupeKey, now);
+    }
+
+    const cleanText = VietnameseVoiceHelper.sanitizeTTSText(text, 200);
+    if (!cleanText) return;
+
     if (priority) {
       window.speechSynthesis.cancel();
-      this.queue = [{ text, priority: true }];
+      this.queue = [{ text: cleanText, priority: true }];
       this.isSpeaking = false;
     } else {
-      // Discard stale greetings if queue builds up during busy stream traffic
       if (this.queue.length >= 3) {
         this.queue.shift();
       }
-      this.queue.push({ text });
+      this.queue.push({ text: cleanText });
     }
 
     this.processQueue();
@@ -163,28 +285,36 @@ export class TTSController {
     this.isSpeaking = true;
     CafeAudioEngine.getInstance().setDucking(true);
 
-    const utterance = new SpeechSynthesisUtterance(item.text);
-    if (this.selectedVoice) {
-      utterance.voice = this.selectedVoice;
-    }
-    utterance.rate = this.rate;
-    utterance.pitch = this.pitch;
+    const utterance = VietnameseVoiceHelper.createVietnameseUtterance(item.text, {
+      voice: this.selectedVoice,
+      rate: this.rate,
+      pitch: this.pitch,
+    });
 
-    utterance.onend = () => {
+    if (!utterance) {
+      this.isSpeaking = false;
+      CafeAudioEngine.getInstance().setDucking(false);
+      return;
+    }
+
+    let finished = false;
+    const cleanup = () => {
+      if (finished) return;
+      finished = true;
       this.isSpeaking = false;
       this.lastSpeakTime = Date.now();
       CafeAudioEngine.getInstance().setDucking(false);
       setTimeout(() => this.processQueue(), 300);
     };
 
-    utterance.onerror = () => {
-      this.isSpeaking = false;
-      this.lastSpeakTime = Date.now();
-      CafeAudioEngine.getInstance().setDucking(false);
-      setTimeout(() => this.processQueue(), 200);
-    };
+    utterance.onend = cleanup;
+    utterance.onerror = cleanup;
 
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      cleanup();
+    }
   }
 
   public cancel(): void {

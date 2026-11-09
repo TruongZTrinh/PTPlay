@@ -69,3 +69,4 @@ export class AvatarManager {
     return this.scene.textures.exists(key);
   }
 }
+

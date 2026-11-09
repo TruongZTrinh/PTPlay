@@ -77,8 +77,16 @@ startProcess(
   ['run', 'start']
 );
 
-// 3. Start Game
-if (selectedGame.active) {
+// 3. Start Game(s)
+if (shouldStartAll) {
+  console.log('[Platform] Starting all active registered games...');
+  for (const g of config.games) {
+    if (g.active) {
+      const gDir = path.join(ROOT_DIR, g.workspace);
+      startProcess(`${g.name} (Port ${g.port})`, gDir, npmCmd, ['run', 'dev']);
+    }
+  }
+} else if (selectedGame && selectedGame.active) {
   const gameDir = path.join(ROOT_DIR, selectedGame.workspace);
   startProcess(
     `${selectedGame.name} (Port ${selectedGame.port})`,

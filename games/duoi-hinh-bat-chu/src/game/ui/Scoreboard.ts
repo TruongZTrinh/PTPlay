@@ -78,3 +78,4 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     this.chatTickerText.setText(`💬 ${nickname}: ${comment}`);
   }
 }
+

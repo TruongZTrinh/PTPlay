@@ -1,0 +1,2225 @@
+[
+  {
+    "id": "qz-0001",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Con vật nào có chiếc vòi dài?",
+    "options": {
+      "A": "Ngựa",
+      "B": "Thỏ",
+      "C": "Voi",
+      "D": "Hổ"
+    },
+    "correct": "C",
+    "explanation": "Voi dùng vòi để ngửi, hút nước và cầm thức ăn.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0002",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Loài nào có thể bay và là động vật có vú?",
+    "options": {
+      "A": "Đại bàng",
+      "B": "Dơi",
+      "C": "Bướm",
+      "D": "Chim sẻ"
+    },
+    "correct": "B",
+    "explanation": "Dơi là động vật có vú có khả năng bay chủ động.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0003",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Con vật nào sống dưới nước và có tám cánh tay?",
+    "options": {
+      "A": "Bạch tuộc",
+      "B": "Cua",
+      "C": "Sao biển",
+      "D": "Cá mập"
+    },
+    "correct": "A",
+    "explanation": "Bạch tuộc có tám cánh tay với nhiều giác hút.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0004",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Loài nào nổi tiếng thay đổi màu da để ngụy trang?",
+    "options": {
+      "A": "Chó",
+      "B": "Tắc kè hoa",
+      "C": "Cá vàng",
+      "D": "Ngựa"
+    },
+    "correct": "B",
+    "explanation": "Tắc kè hoa có thể thay đổi màu sắc da do nhiều yếu tố.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0005",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Ong thường lấy chất gì từ hoa?",
+    "options": {
+      "A": "Nước muối",
+      "B": "Dầu ăn",
+      "C": "Mật hoa",
+      "D": "Sữa"
+    },
+    "correct": "C",
+    "explanation": "Ong lấy mật hoa để làm nguồn thức ăn và chế biến mật ong.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0006",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Bộ phận nào giúp cá thở trong nước?",
+    "options": {
+      "A": "Lông",
+      "B": "Sừng",
+      "C": "Cánh",
+      "D": "Mang"
+    },
+    "correct": "D",
+    "explanation": "Cá trao đổi khí nhờ mang.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0007",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Cây thường hấp thụ khí nào khi quang hợp?",
+    "options": {
+      "A": "Heli",
+      "B": "Neon",
+      "C": "Hydro",
+      "D": "Carbon dioxide"
+    },
+    "correct": "D",
+    "explanation": "Quang hợp dùng CO₂ cùng nước và năng lượng ánh sáng.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0008",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Bộ phận nào của cây hấp thụ nước chủ yếu?",
+    "options": {
+      "A": "Rễ",
+      "B": "Hoa",
+      "C": "Hạt",
+      "D": "Quả"
+    },
+    "correct": "A",
+    "explanation": "Rễ hấp thụ nước và chất khoáng từ đất.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0009",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Quả nào thường có vỏ màu vàng khi chín?",
+    "options": {
+      "A": "Nho tím",
+      "B": "Chuối",
+      "C": "Dâu tây",
+      "D": "Thanh long ruột đỏ"
+    },
+    "correct": "B",
+    "explanation": "Nhiều giống chuối chuyển màu vàng khi chín.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0010",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Hành tinh nào được gọi là hành tinh đỏ?",
+    "options": {
+      "A": "Sao Mộc",
+      "B": "Sao Thổ",
+      "C": "Sao Kim",
+      "D": "Sao Hỏa"
+    },
+    "correct": "D",
+    "explanation": "Bụi giàu oxit sắt khiến Sao Hỏa có màu đỏ đặc trưng.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0011",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Nước đóng băng ở bao nhiêu độ C tại áp suất khí quyển tiêu chuẩn?",
+    "options": {
+      "A": "50°C",
+      "B": "0°C",
+      "C": "10°C",
+      "D": "100°C"
+    },
+    "correct": "B",
+    "explanation": "Nước tinh khiết thường đóng băng ở khoảng 0°C ở áp suất tiêu chuẩn.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0012",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Đơn vị đo nhiệt độ phổ biến tại Việt Nam là gì?",
+    "options": {
+      "A": "Kilôgam",
+      "B": "Độ C",
+      "C": "Lít",
+      "D": "Mét"
+    },
+    "correct": "B",
+    "explanation": "Độ C (°C) được sử dụng phổ biến.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0013",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Vật nào thường hút nam châm?",
+    "options": {
+      "A": "Tờ giấy",
+      "B": "Cục gỗ",
+      "C": "Đinh sắt",
+      "D": "Ly thủy tinh"
+    },
+    "correct": "C",
+    "explanation": "Sắt là vật liệu sắt từ, bị nam châm hút.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0014",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Mặt Trời là một...?",
+    "options": {
+      "A": "Ngôi sao",
+      "B": "Tiểu hành tinh",
+      "C": "Vệ tinh",
+      "D": "Hành tinh"
+    },
+    "correct": "A",
+    "explanation": "Mặt Trời là ngôi sao ở trung tâm Hệ Mặt Trời.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0015",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Chất nào tạo thành phần lớn đại dương?",
+    "options": {
+      "A": "Nước",
+      "B": "Đường",
+      "C": "Dầu ăn",
+      "D": "Cát"
+    },
+    "correct": "A",
+    "explanation": "Đại dương chứa nước mặn.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0016",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Âm thanh truyền được qua môi trường nào?",
+    "options": {
+      "A": "Bóng tối",
+      "B": "Không khí",
+      "C": "Ánh sáng",
+      "D": "Chân không tuyệt đối"
+    },
+    "correct": "B",
+    "explanation": "Âm thanh cần môi trường vật chất để lan truyền.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0017",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Cầu vồng liên quan đến hiện tượng nào?",
+    "options": {
+      "A": "Đất quay nhanh",
+      "B": "Khúc xạ và phản xạ ánh sáng trong giọt nước",
+      "C": "Mây rơi xuống",
+      "D": "Gió đổi hướng"
+    },
+    "correct": "B",
+    "explanation": "Giọt nước làm lệch và tách màu ánh sáng.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0018",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Một năm nhuận dương lịch thường có bao nhiêu ngày?",
+    "options": {
+      "A": "367",
+      "B": "366",
+      "C": "365",
+      "D": "364"
+    },
+    "correct": "B",
+    "explanation": "Năm nhuận dương lịch thường có thêm ngày 29/2.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0019",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Loại năng lượng nào đến trực tiếp từ Mặt Trời?",
+    "options": {
+      "A": "Năng lượng địa nhiệt",
+      "B": "Năng lượng thủy triều",
+      "C": "Năng lượng mặt trời",
+      "D": "Năng lượng hạt nhân từ lò phản ứng"
+    },
+    "correct": "C",
+    "explanation": "Ánh sáng và nhiệt từ Mặt Trời có thể được khai thác.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0020",
+    "category": "Thiên nhiên",
+    "level": 2,
+    "question": "Con non của ếch thường được gọi là gì?",
+    "options": {
+      "A": "Gà con",
+      "B": "Ấu trùng muỗi",
+      "C": "Sâu bướm",
+      "D": "Nòng nọc"
+    },
+    "correct": "D",
+    "explanation": "Nòng nọc phát triển rồi biến thái thành ếch.",
+    "durationSec": 12,
+    "tags": [
+      "thiên-nhiên"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0021",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Đèn giao thông đỏ thường có ý nghĩa gì?",
+    "options": {
+      "A": "Tăng tốc",
+      "B": "Bấm còi",
+      "C": "Dừng lại",
+      "D": "Rẽ bất kỳ"
+    },
+    "correct": "C",
+    "explanation": "Đèn đỏ yêu cầu dừng theo quy định giao thông.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0022",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Trước khi ăn, thói quen nào giúp phòng bệnh?",
+    "options": {
+      "A": "Uống nước ngọt",
+      "B": "Hát lớn",
+      "C": "Chạy thật nhanh",
+      "D": "Rửa tay"
+    },
+    "correct": "D",
+    "explanation": "Rửa tay với xà phòng giúp giảm lây truyền mầm bệnh.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0023",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Vật nào dùng để che mưa?",
+    "options": {
+      "A": "Ô",
+      "B": "Kéo",
+      "C": "Bàn chải",
+      "D": "Thước kẻ"
+    },
+    "correct": "A",
+    "explanation": "Ô hay dù giúp chắn mưa.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0024",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Một tuần có bao nhiêu ngày?",
+    "options": {
+      "A": "8",
+      "B": "7",
+      "C": "6",
+      "D": "5"
+    },
+    "correct": "B",
+    "explanation": "Một tuần gồm bảy ngày.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0025",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Một giờ có bao nhiêu phút?",
+    "options": {
+      "A": "50",
+      "B": "100",
+      "C": "60",
+      "D": "30"
+    },
+    "correct": "C",
+    "explanation": "Một giờ bằng 60 phút.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0026",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Một phút có bao nhiêu giây?",
+    "options": {
+      "A": "30",
+      "B": "60",
+      "C": "90",
+      "D": "100"
+    },
+    "correct": "B",
+    "explanation": "Một phút bằng 60 giây.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0027",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Loại phương tiện nào thường chạy trên đường ray?",
+    "options": {
+      "A": "Xe đạp",
+      "B": "Máy bay",
+      "C": "Tàu hỏa",
+      "D": "Thuyền buồm"
+    },
+    "correct": "C",
+    "explanation": "Tàu hỏa di chuyển trên đường ray.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0028",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Thiết bị nào dùng để chụp ảnh?",
+    "options": {
+      "A": "Bàn là",
+      "B": "Nồi cơm",
+      "C": "Quạt điện",
+      "D": "Máy ảnh"
+    },
+    "correct": "D",
+    "explanation": "Máy ảnh dùng để ghi lại hình ảnh.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0029",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Vật nào dùng để viết lên giấy?",
+    "options": {
+      "A": "Áo",
+      "B": "Bút",
+      "C": "Chén",
+      "D": "Muỗng"
+    },
+    "correct": "B",
+    "explanation": "Bút là dụng cụ dùng để viết.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0030",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Món ăn nào thường làm từ gạo nấu chín?",
+    "options": {
+      "A": "Phô mai",
+      "B": "Cơm",
+      "C": "Bơ",
+      "D": "Sữa chua"
+    },
+    "correct": "B",
+    "explanation": "Cơm được nấu từ gạo với nước.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0031",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Trong cầu lông, dụng cụ đánh quả cầu là gì?",
+    "options": {
+      "A": "Gậy bóng chày",
+      "B": "Vợt",
+      "C": "Xẻng",
+      "D": "Chổi"
+    },
+    "correct": "B",
+    "explanation": "Người chơi cầu lông dùng vợt.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0032",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Trên bàn cờ vua, quân nào có thể đi theo hình chữ L?",
+    "options": {
+      "A": "Vua",
+      "B": "Mã",
+      "C": "Hậu",
+      "D": "Tượng"
+    },
+    "correct": "B",
+    "explanation": "Quân mã đi theo dạng chữ L.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0033",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Bóng đá sân 11 người có bao nhiêu cầu thủ mỗi đội trên sân khi đủ người?",
+    "options": {
+      "A": "12",
+      "B": "11",
+      "C": "9",
+      "D": "7"
+    },
+    "correct": "B",
+    "explanation": "Mỗi đội có tối đa 11 cầu thủ trên sân trong bóng đá 11 người.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0034",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Một tam giác có bao nhiêu cạnh?",
+    "options": {
+      "A": "6",
+      "B": "4",
+      "C": "3",
+      "D": "5"
+    },
+    "correct": "C",
+    "explanation": "Tam giác là hình gồm ba cạnh.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0035",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Hình vuông có bao nhiêu góc vuông?",
+    "options": {
+      "A": "4",
+      "B": "5",
+      "C": "2",
+      "D": "3"
+    },
+    "correct": "A",
+    "explanation": "Hình vuông có bốn góc vuông.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0036",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Đồ vật nào có kim chỉ giờ và phút?",
+    "options": {
+      "A": "Đồng hồ kim",
+      "B": "Bút lông",
+      "C": "Đĩa ăn",
+      "D": "Cặp sách"
+    },
+    "correct": "A",
+    "explanation": "Đồng hồ kim có kim giờ và kim phút.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0037",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Trong điện thoại, chức năng nào dùng để gửi tin nhắn?",
+    "options": {
+      "A": "Ứng dụng nhắn tin",
+      "B": "Máy tính bỏ túi",
+      "C": "Đèn pin",
+      "D": "Máy ghi âm"
+    },
+    "correct": "A",
+    "explanation": "Ứng dụng nhắn tin dùng để gửi và nhận nội dung.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0038",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Khi qua đường nên làm gì?",
+    "options": {
+      "A": "Nhắm mắt chạy",
+      "B": "Quan sát và tuân thủ tín hiệu giao thông",
+      "C": "Mải nhìn điện thoại",
+      "D": "Chạy bất ngờ"
+    },
+    "correct": "B",
+    "explanation": "Cần quan sát để đảm bảo an toàn.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0039",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Vật nào giúp bảo vệ đầu khi đi xe máy?",
+    "options": {
+      "A": "Mũ bảo hiểm",
+      "B": "Tai nghe",
+      "C": "Khăn giấy",
+      "D": "Mũ len mỏng"
+    },
+    "correct": "A",
+    "explanation": "Mũ bảo hiểm đạt chuẩn giúp giảm nguy cơ chấn thương.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0040",
+    "category": "Đời sống",
+    "level": 2,
+    "question": "Kính nào giúp người cận thị nhìn rõ hơn?",
+    "options": {
+      "A": "Kính cận phù hợp",
+      "B": "Kính đồ chơi",
+      "C": "Kính 3D",
+      "D": "Kính bơi tối màu"
+    },
+    "correct": "A",
+    "explanation": "Kính đúng độ giúp điều chỉnh tật khúc xạ.",
+    "durationSec": 12,
+    "tags": [
+      "đời-sống"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0041",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào trái nghĩa với \"cao\"?",
+    "options": {
+      "A": "Xa",
+      "B": "Rộng",
+      "C": "Dài",
+      "D": "Thấp"
+    },
+    "correct": "D",
+    "explanation": "Cao và thấp là cặp từ trái nghĩa.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0042",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào trái nghĩa với \"nóng\"?",
+    "options": {
+      "A": "Lạnh",
+      "B": "Cũ",
+      "C": "Nhanh",
+      "D": "Xa"
+    },
+    "correct": "A",
+    "explanation": "Nóng và lạnh là cặp từ trái nghĩa.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0043",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào đồng nghĩa gần nhất với \"vui vẻ\"?",
+    "options": {
+      "A": "Sợ hãi",
+      "B": "Tức giận",
+      "C": "Hân hoan",
+      "D": "Buồn bã"
+    },
+    "correct": "C",
+    "explanation": "Hân hoan thể hiện niềm vui.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0044",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào chỉ hoạt động đọc?",
+    "options": {
+      "A": "Chạy bộ",
+      "B": "Bơi lội",
+      "C": "Nấu ăn",
+      "D": "Đọc sách"
+    },
+    "correct": "D",
+    "explanation": "Đọc sách là hành động tiếp nhận văn bản.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0045",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Câu nào là câu hỏi?",
+    "options": {
+      "A": "Hãy ngồi xuống.",
+      "B": "Tôi đang đọc sách.",
+      "C": "Trời đẹp quá!",
+      "D": "Bạn tên là gì?"
+    },
+    "correct": "D",
+    "explanation": "Câu hỏi yêu cầu thông tin và thường có dấu hỏi.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0046",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Dấu nào thường kết thúc một câu hỏi?",
+    "options": {
+      "A": "?",
+      "B": ",",
+      "C": ";",
+      "D": "."
+    },
+    "correct": "A",
+    "explanation": "Dấu chấm hỏi thường đặt cuối câu hỏi.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0047",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Trong tiếng Việt, \"bút\" là danh từ chỉ gì?",
+    "options": {
+      "A": "Màu sắc",
+      "B": "Đồ dùng học tập",
+      "C": "Món ăn",
+      "D": "Loài cây"
+    },
+    "correct": "B",
+    "explanation": "Bút là một đồ dùng để viết.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0048",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào viết đúng chính tả?",
+    "options": {
+      "A": "nghĩ ngơi (khi muốn nói nghỉ)",
+      "B": "nghỉ ngơi",
+      "C": "ngĩ ngơi",
+      "D": "nghỉ nghơi"
+    },
+    "correct": "B",
+    "explanation": "\"Nghỉ ngơi\" là cách viết đúng với nghĩa thư giãn.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0049",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ \"chăm chỉ\" gần nghĩa với từ nào?",
+    "options": {
+      "A": "Lười biếng",
+      "B": "Mệt mỏi",
+      "C": "Siêng năng",
+      "D": "Chậm chạp"
+    },
+    "correct": "C",
+    "explanation": "Siêng năng nghĩa là chăm chỉ.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0050",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào trái nghĩa với \"đậm\" trong nghĩa màu sắc?",
+    "options": {
+      "A": "Đỏ",
+      "B": "Nhạt",
+      "C": "Rực",
+      "D": "Sắc"
+    },
+    "correct": "B",
+    "explanation": "Màu đậm và màu nhạt đối lập về độ đậm sắc.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0051",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Một chữ cái nào đứng đầu bảng chữ cái tiếng Việt?",
+    "options": {
+      "A": "D",
+      "B": "B",
+      "C": "A",
+      "D": "C"
+    },
+    "correct": "C",
+    "explanation": "Bảng chữ cái tiếng Việt bắt đầu bằng A.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0052",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Bài thơ thường được chia thành các...?",
+    "options": {
+      "A": "Lớp học",
+      "B": "Trang tính",
+      "C": "Tệp nén",
+      "D": "Dòng thơ"
+    },
+    "correct": "D",
+    "explanation": "Bài thơ thường gồm các dòng thơ.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0053",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào chỉ con vật?",
+    "options": {
+      "A": "Bông hoa",
+      "B": "Bàn ghế",
+      "C": "Chim sẻ",
+      "D": "Ngôi nhà"
+    },
+    "correct": "C",
+    "explanation": "Chim sẻ là loài động vật.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0054",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào chỉ màu sắc?",
+    "options": {
+      "A": "Xanh lá",
+      "B": "Bay",
+      "C": "Mềm mại",
+      "D": "Ngủ"
+    },
+    "correct": "A",
+    "explanation": "Xanh lá là tên màu.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0055",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào có nghĩa gần với \"nhanh nhẹn\"?",
+    "options": {
+      "A": "Lặng lẽ",
+      "B": "Chậm rãi",
+      "C": "Lanh lợi",
+      "D": "Nặng nề"
+    },
+    "correct": "C",
+    "explanation": "Lanh lợi thể hiện khả năng phản ứng nhanh.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0056",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Cụm từ nào thể hiện lời cảm ơn?",
+    "options": {
+      "A": "Cảm ơn bạn",
+      "B": "Không biết",
+      "C": "Đi ngay",
+      "D": "Đứng lại"
+    },
+    "correct": "A",
+    "explanation": "Cảm ơn bạn thể hiện sự biết ơn.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0057",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ trái nghĩa với \"sáng\" là gì?",
+    "options": {
+      "A": "Nhỏ",
+      "B": "Tối",
+      "C": "Rộng",
+      "D": "Dài"
+    },
+    "correct": "B",
+    "explanation": "Trong ngữ cảnh ánh sáng, sáng đối lập với tối.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0058",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ đồng nghĩa gần nhất với \"hiền lành\"?",
+    "options": {
+      "A": "Nóng nảy",
+      "B": "Hiền hậu",
+      "C": "Cộc cằn",
+      "D": "Hung dữ"
+    },
+    "correct": "B",
+    "explanation": "Hiền hậu gần nghĩa với hiền lành.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0059",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Đại từ xưng hô nào thường dùng khi nói về chính mình?",
+    "options": {
+      "A": "Nó",
+      "B": "Họ",
+      "C": "Tôi",
+      "D": "Bạn ấy"
+    },
+    "correct": "C",
+    "explanation": "\"Tôi\" thường là đại từ ngôi thứ nhất.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0060",
+    "category": "Ngôn ngữ",
+    "level": 2,
+    "question": "Từ nào trái nghĩa với \"đầy\"?",
+    "options": {
+      "A": "Nhanh",
+      "B": "Vơi",
+      "C": "Đẹp",
+      "D": "Chắc"
+    },
+    "correct": "B",
+    "explanation": "Đầy và vơi là cặp từ đối lập về lượng.",
+    "durationSec": 12,
+    "tags": [
+      "ngôn-ngữ"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0061",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Châu lục nào có Việt Nam?",
+    "options": {
+      "A": "Châu Âu",
+      "B": "Châu Á",
+      "C": "Châu Mỹ",
+      "D": "Châu Phi"
+    },
+    "correct": "B",
+    "explanation": "Việt Nam nằm ở Đông Nam Á.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0062",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Đại dương lớn nhất Trái Đất là gì?",
+    "options": {
+      "A": "Đại Tây Dương",
+      "B": "Ấn Độ Dương",
+      "C": "Bắc Băng Dương",
+      "D": "Thái Bình Dương"
+    },
+    "correct": "D",
+    "explanation": "Thái Bình Dương có diện tích lớn nhất.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0063",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Kim tự tháp Giza thuộc quốc gia nào?",
+    "options": {
+      "A": "Ai Cập",
+      "B": "Việt Nam",
+      "C": "Nhật Bản",
+      "D": "Canada"
+    },
+    "correct": "A",
+    "explanation": "Quần thể kim tự tháp Giza nằm ở Ai Cập.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0064",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Tháp Eiffel nằm ở thành phố nào?",
+    "options": {
+      "A": "Rome",
+      "B": "Paris",
+      "C": "London",
+      "D": "Tokyo"
+    },
+    "correct": "B",
+    "explanation": "Tháp Eiffel là biểu tượng nổi tiếng của Paris.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0065",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Nước nào gắn với biểu tượng hoa anh đào nổi tiếng?",
+    "options": {
+      "A": "Ai Cập",
+      "B": "Na Uy",
+      "C": "Brazil",
+      "D": "Nhật Bản"
+    },
+    "correct": "D",
+    "explanation": "Hoa anh đào gắn với văn hóa Nhật Bản.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0066",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Vịnh Hạ Long nằm ở nước nào?",
+    "options": {
+      "A": "Việt Nam",
+      "B": "Lào",
+      "C": "Hàn Quốc",
+      "D": "Thái Lan"
+    },
+    "correct": "A",
+    "explanation": "Vịnh Hạ Long nằm ở Việt Nam.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0067",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Sông Nile chảy qua châu lục nào?",
+    "options": {
+      "A": "Châu Phi",
+      "B": "Châu Úc",
+      "C": "Châu Âu",
+      "D": "Nam Cực"
+    },
+    "correct": "A",
+    "explanation": "Sông Nile là một hệ thống sông lớn ở châu Phi.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0068",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Vạn Lý Trường Thành nằm ở nước nào?",
+    "options": {
+      "A": "Ấn Độ",
+      "B": "Nepal",
+      "C": "Hàn Quốc",
+      "D": "Trung Quốc"
+    },
+    "correct": "D",
+    "explanation": "Vạn Lý Trường Thành nằm ở Trung Quốc.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0069",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Quốc gia nào có thành phố Sydney?",
+    "options": {
+      "A": "Úc",
+      "B": "Thái Lan",
+      "C": "Mỹ",
+      "D": "Pháp"
+    },
+    "correct": "A",
+    "explanation": "Sydney là thành phố ở Úc.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0070",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Núi Phú Sĩ (Fuji) nằm ở quốc gia nào?",
+    "options": {
+      "A": "Thụy Sĩ",
+      "B": "Chile",
+      "C": "Nepal",
+      "D": "Nhật Bản"
+    },
+    "correct": "D",
+    "explanation": "Núi Phú Sĩ là biểu tượng của Nhật Bản.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0071",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Thành phố Venice nổi tiếng với điều gì?",
+    "options": {
+      "A": "Rừng nhiệt đới",
+      "B": "Kênh đào",
+      "C": "Sa mạc rộng",
+      "D": "Đảo núi lửa"
+    },
+    "correct": "B",
+    "explanation": "Venice nổi tiếng với mạng lưới kênh đào.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0072",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Nơi nào là sa mạc?",
+    "options": {
+      "A": "Sông Mê Kông",
+      "B": "Vịnh Hạ Long",
+      "C": "Amazon",
+      "D": "Sahara"
+    },
+    "correct": "D",
+    "explanation": "Sahara là sa mạc lớn ở Bắc Phi.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0073",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Vùng nào lạnh nhất trong các lựa chọn?",
+    "options": {
+      "A": "Vịnh Thái Lan",
+      "B": "Đồng bằng sông Cửu Long",
+      "C": "Nam Cực",
+      "D": "Sa mạc Sahara"
+    },
+    "correct": "C",
+    "explanation": "Nam Cực là vùng rất lạnh.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0074",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Thành phố nào nổi tiếng với đấu trường Colosseum?",
+    "options": {
+      "A": "Sydney",
+      "B": "Bangkok",
+      "C": "Hà Nội",
+      "D": "Rome"
+    },
+    "correct": "D",
+    "explanation": "Colosseum nằm tại Rome, Ý.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0075",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Quốc gia nào có tượng Nữ thần Tự do ở New York?",
+    "options": {
+      "A": "Đức",
+      "B": "Hoa Kỳ",
+      "C": "Ý",
+      "D": "Ấn Độ"
+    },
+    "correct": "B",
+    "explanation": "Tượng Nữ thần Tự do ở New York, Hoa Kỳ.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0076",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Thành phố nào gắn với tháp đồng hồ Big Ben?",
+    "options": {
+      "A": "Hà Nội",
+      "B": "Berlin",
+      "C": "Osaka",
+      "D": "London"
+    },
+    "correct": "D",
+    "explanation": "Big Ben nằm tại Cung điện Westminster ở London.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0077",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Loài động vật nào là biểu tượng quen thuộc của Úc?",
+    "options": {
+      "A": "Hươu cao cổ",
+      "B": "Kangaroo",
+      "C": "Lạc đà hai bướu",
+      "D": "Gấu Bắc Cực"
+    },
+    "correct": "B",
+    "explanation": "Kangaroo là động vật biểu tượng của Úc.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0078",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Sông Amazon thuộc khu vực nào?",
+    "options": {
+      "A": "Nam Mỹ",
+      "B": "Trung Đông",
+      "C": "Bắc Âu",
+      "D": "Đông Á"
+    },
+    "correct": "A",
+    "explanation": "Lưu vực Amazon nằm ở Nam Mỹ.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0079",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Quốc gia nào nổi tiếng với điệu nhảy flamenco?",
+    "options": {
+      "A": "Nhật Bản",
+      "B": "Ai Cập",
+      "C": "Mông Cổ",
+      "D": "Tây Ban Nha"
+    },
+    "correct": "D",
+    "explanation": "Flamenco có nguồn gốc gắn với Tây Ban Nha.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0080",
+    "category": "Thế giới",
+    "level": 2,
+    "question": "Nước nào có thủ đô là Tokyo?",
+    "options": {
+      "A": "Nhật Bản",
+      "B": "Lào",
+      "C": "Thái Lan",
+      "D": "Hàn Quốc"
+    },
+    "correct": "A",
+    "explanation": "Tokyo là thủ đô Nhật Bản.",
+    "durationSec": 12,
+    "tags": [
+      "thế-giới"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0081",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "23 - 13 = ?",
+    "options": {
+      "A": "9",
+      "B": "11",
+      "C": "10",
+      "D": "12"
+    },
+    "correct": "C",
+    "explanation": "23 trừ 13 bằng 10.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0082",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "4 × 4 = ?",
+    "options": {
+      "A": "20",
+      "B": "23",
+      "C": "16",
+      "D": "12"
+    },
+    "correct": "C",
+    "explanation": "4 nhân 4 bằng 16.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0083",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "25 ÷ 5 = ?",
+    "options": {
+      "A": "5",
+      "B": "7",
+      "C": "4",
+      "D": "6"
+    },
+    "correct": "A",
+    "explanation": "25 chia 5 bằng 5.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0084",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "31 + 15 = ?",
+    "options": {
+      "A": "46",
+      "B": "45",
+      "C": "49",
+      "D": "47"
+    },
+    "correct": "A",
+    "explanation": "31 cộng 15 bằng 46.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0085",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "64 - 26 = ?",
+    "options": {
+      "A": "39",
+      "B": "38",
+      "C": "40",
+      "D": "37"
+    },
+    "correct": "B",
+    "explanation": "64 trừ 26 bằng 38.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0086",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "8 × 8 = ?",
+    "options": {
+      "A": "64",
+      "B": "72",
+      "C": "56",
+      "D": "71"
+    },
+    "correct": "A",
+    "explanation": "8 nhân 8 bằng 64.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0087",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "18 ÷ 2 = ?",
+    "options": {
+      "A": "8",
+      "B": "11",
+      "C": "10",
+      "D": "9"
+    },
+    "correct": "D",
+    "explanation": "18 chia 2 bằng 9.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0088",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "12 + 28 = ?",
+    "options": {
+      "A": "41",
+      "B": "39",
+      "C": "40",
+      "D": "43"
+    },
+    "correct": "C",
+    "explanation": "12 cộng 28 bằng 40.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0089",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "27 - 8 = ?",
+    "options": {
+      "A": "18",
+      "B": "19",
+      "C": "21",
+      "D": "20"
+    },
+    "correct": "B",
+    "explanation": "27 trừ 8 bằng 19.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0090",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "12 × 3 = ?",
+    "options": {
+      "A": "39",
+      "B": "24",
+      "C": "36",
+      "D": "48"
+    },
+    "correct": "C",
+    "explanation": "12 nhân 3 bằng 36.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0091",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "78 ÷ 6 = ?",
+    "options": {
+      "A": "12",
+      "B": "15",
+      "C": "13",
+      "D": "14"
+    },
+    "correct": "C",
+    "explanation": "78 chia 6 bằng 13.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0092",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "40 + 10 = ?",
+    "options": {
+      "A": "51",
+      "B": "49",
+      "C": "50",
+      "D": "53"
+    },
+    "correct": "C",
+    "explanation": "40 cộng 10 bằng 50.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0093",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "68 - 21 = ?",
+    "options": {
+      "A": "47",
+      "B": "46",
+      "C": "49",
+      "D": "48"
+    },
+    "correct": "A",
+    "explanation": "68 trừ 21 bằng 47.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0094",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "5 × 7 = ?",
+    "options": {
+      "A": "42",
+      "B": "40",
+      "C": "30",
+      "D": "35"
+    },
+    "correct": "D",
+    "explanation": "5 nhân 7 bằng 35.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0095",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "9 ÷ 3 = ?",
+    "options": {
+      "A": "5",
+      "B": "3",
+      "C": "4",
+      "D": "2"
+    },
+    "correct": "B",
+    "explanation": "9 chia 3 bằng 3.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0096",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "21 + 23 = ?",
+    "options": {
+      "A": "45",
+      "B": "47",
+      "C": "43",
+      "D": "44"
+    },
+    "correct": "D",
+    "explanation": "21 cộng 23 bằng 44.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0097",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "31 - 3 = ?",
+    "options": {
+      "A": "27",
+      "B": "30",
+      "C": "28",
+      "D": "29"
+    },
+    "correct": "C",
+    "explanation": "31 trừ 3 bằng 28.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0098",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "9 × 2 = ?",
+    "options": {
+      "A": "27",
+      "B": "18",
+      "C": "20",
+      "D": "9"
+    },
+    "correct": "B",
+    "explanation": "9 nhân 2 bằng 18.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0099",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "49 ÷ 7 = ?",
+    "options": {
+      "A": "9",
+      "B": "6",
+      "C": "8",
+      "D": "7"
+    },
+    "correct": "D",
+    "explanation": "49 chia 7 bằng 7.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0100",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "49 + 5 = ?",
+    "options": {
+      "A": "53",
+      "B": "54",
+      "C": "55",
+      "D": "57"
+    },
+    "correct": "B",
+    "explanation": "49 cộng 5 bằng 54.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0101",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "25 - 16 = ?",
+    "options": {
+      "A": "11",
+      "B": "9",
+      "C": "8",
+      "D": "10"
+    },
+    "correct": "B",
+    "explanation": "25 trừ 16 bằng 9.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0102",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "2 × 6 = ?",
+    "options": {
+      "A": "10",
+      "B": "12",
+      "C": "14",
+      "D": "18"
+    },
+    "correct": "B",
+    "explanation": "2 nhân 6 bằng 12.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0103",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "44 ÷ 4 = ?",
+    "options": {
+      "A": "13",
+      "B": "10",
+      "C": "12",
+      "D": "11"
+    },
+    "correct": "D",
+    "explanation": "44 chia 4 bằng 11.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0104",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "30 + 18 = ?",
+    "options": {
+      "A": "51",
+      "B": "47",
+      "C": "48",
+      "D": "49"
+    },
+    "correct": "C",
+    "explanation": "30 cộng 18 bằng 48.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0105",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "66 - 29 = ?",
+    "options": {
+      "A": "37",
+      "B": "39",
+      "C": "38",
+      "D": "36"
+    },
+    "correct": "A",
+    "explanation": "66 trừ 29 bằng 37.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0106",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "6 × 10 = ?",
+    "options": {
+      "A": "60",
+      "B": "54",
+      "C": "70",
+      "D": "66"
+    },
+    "correct": "A",
+    "explanation": "6 nhân 10 bằng 60.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0107",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "120 ÷ 8 = ?",
+    "options": {
+      "A": "16",
+      "B": "14",
+      "C": "15",
+      "D": "17"
+    },
+    "correct": "C",
+    "explanation": "120 chia 8 bằng 15.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0108",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "11 + 31 = ?",
+    "options": {
+      "A": "41",
+      "B": "43",
+      "C": "42",
+      "D": "45"
+    },
+    "correct": "C",
+    "explanation": "11 cộng 31 bằng 42.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0109",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "29 - 11 = ?",
+    "options": {
+      "A": "17",
+      "B": "20",
+      "C": "19",
+      "D": "18"
+    },
+    "correct": "D",
+    "explanation": "29 trừ 11 bằng 18.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0110",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "10 × 5 = ?",
+    "options": {
+      "A": "60",
+      "B": "40",
+      "C": "55",
+      "D": "50"
+    },
+    "correct": "D",
+    "explanation": "10 nhân 5 bằng 50.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0112",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "39 + 13 = ?",
+    "options": {
+      "A": "52",
+      "B": "55",
+      "C": "53",
+      "D": "51"
+    },
+    "correct": "A",
+    "explanation": "39 cộng 13 bằng 52.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0113",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "70 - 24 = ?",
+    "options": {
+      "A": "45",
+      "B": "48",
+      "C": "46",
+      "D": "47"
+    },
+    "correct": "C",
+    "explanation": "70 trừ 24 bằng 46.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0114",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "3 × 9 = ?",
+    "options": {
+      "A": "36",
+      "B": "30",
+      "C": "24",
+      "D": "27"
+    },
+    "correct": "D",
+    "explanation": "3 nhân 9 bằng 27.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0116",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "20 + 26 = ?",
+    "options": {
+      "A": "47",
+      "B": "46",
+      "C": "49",
+      "D": "45"
+    },
+    "correct": "B",
+    "explanation": "20 cộng 26 bằng 46.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0117",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "33 - 6 = ?",
+    "options": {
+      "A": "28",
+      "B": "27",
+      "C": "26",
+      "D": "29"
+    },
+    "correct": "B",
+    "explanation": "33 trừ 6 bằng 27.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0118",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "7 × 4 = ?",
+    "options": {
+      "A": "35",
+      "B": "28",
+      "C": "21",
+      "D": "32"
+    },
+    "correct": "B",
+    "explanation": "7 nhân 4 bằng 28.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  },
+  {
+    "id": "qz-0120",
+    "category": "Toán nhanh",
+    "level": 1,
+    "question": "48 + 8 = ?",
+    "options": {
+      "A": "57",
+      "B": "55",
+      "C": "59",
+      "D": "56"
+    },
+    "correct": "D",
+    "explanation": "48 cộng 8 bằng 56.",
+    "durationSec": 12,
+    "tags": [
+      "toán-nhanh"
+    ],
+    "verified": "editor_review_required"
+  }
+]

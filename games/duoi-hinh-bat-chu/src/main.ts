@@ -25,3 +25,4 @@ const config: Phaser.Types.Core.GameConfig = {
 window.addEventListener('DOMContentLoaded', () => {
   new Phaser.Game(config);
 });
+

@@ -9,6 +9,11 @@ export type CatCafeAction =
   | 'cat_cafe.call'
   | 'cat_cafe.photo'
   | 'cat_cafe.garden'
+  | 'cat_cafe.angry'
+  | 'cat_cafe.dance'
+  | 'cat_cafe.zoomies'
+  | 'cat_cafe.box'
+  | 'cat_cafe.bath'
   | 'cat_cafe.gift_effect'
   | 'cat_cafe.reset'
   | 'cat_cafe.demo_spawn'
@@ -50,25 +55,7 @@ export class CafeCommandAdapter {
     const tokens = cleanNoAccent.split(/\s+/);
     const firstWord = tokens[0] || '';
 
-    // 1. Join / Call cat: MÈO / MEO / MEOW / CAT
-    if (
-      firstWord === 'MEO' ||
-      firstWord === 'MEOW' ||
-      firstWord === 'CAT' ||
-      cleanNoAccent.includes('XIN MEO') ||
-      cleanNoAccent.includes('NHAN MEO')
-    ) {
-      this.parsedCommandCount++;
-      return {
-        action: 'cat_cafe.join',
-        userId,
-        uniqueId,
-        nickname,
-        metadata: { originalComment: comment },
-      };
-    }
-
-    // 2. Feed: ĂN / AN / FEED / EAT
+    // 1. Feed: ĂN / AN / FEED / EAT
     if (
       firstWord === 'AN' ||
       firstWord === 'FEED' ||
@@ -186,6 +173,139 @@ export class CafeCommandAdapter {
       this.parsedCommandCount++;
       return {
         action: 'cat_cafe.garden',
+        userId,
+        uniqueId,
+        nickname,
+        metadata: { originalComment: comment },
+      };
+    }
+
+    // 9. Angry / Grumpy / Hiss: DỖI / CÁU / GIẬN / QUẠU / ANGRY / KHÈ / HISS
+    if (
+      firstWord === 'DOI' ||
+      firstWord === 'CAU' ||
+      firstWord === 'GIAN' ||
+      firstWord === 'QUAU' ||
+      firstWord === 'ANGRY' ||
+      firstWord === 'KHE' ||
+      firstWord === 'HISS' ||
+      firstWord === 'GRR' ||
+      firstWord === 'XU' ||
+      cleanNoAccent.includes('DOI') ||
+      cleanNoAccent.includes('CAU KINH') ||
+      cleanNoAccent.includes('TUC GIAN') ||
+      cleanNoAccent.includes('QUAU') ||
+      cleanNoAccent.includes('KHE KHE')
+    ) {
+      this.parsedCommandCount++;
+      return {
+        action: 'cat_cafe.angry',
+        userId,
+        uniqueId,
+        nickname,
+        metadata: { originalComment: comment },
+      };
+    }
+
+    // 10. Dance / Party: NHẢY / MÚA / QUẨY / DANCE / LẮC / PARTY
+    if (
+      firstWord === 'NHAY' ||
+      firstWord === 'MUA' ||
+      firstWord === 'QUAY' ||
+      firstWord === 'DANCE' ||
+      firstWord === 'LAC' ||
+      firstWord === 'PARTY' ||
+      cleanNoAccent.includes('NHAY MUA') ||
+      cleanNoAccent.includes('QUAY LEN') ||
+      cleanNoAccent.includes('LAC MONG')
+    ) {
+      this.parsedCommandCount++;
+      return {
+        action: 'cat_cafe.dance',
+        userId,
+        uniqueId,
+        nickname,
+        metadata: { originalComment: comment },
+      };
+    }
+
+    // 11. Zoomies / Crazy run: NGÁO / CHẠY / RUN / ZOOM / ZOOMIES / PHI / ĐUA
+    if (
+      firstWord === 'NGAO' ||
+      firstWord === 'CHAY' ||
+      firstWord === 'RUN' ||
+      firstWord === 'ZOOM' ||
+      firstWord === 'ZOOMIES' ||
+      firstWord === 'PHI' ||
+      firstWord === 'DUA' ||
+      cleanNoAccent.includes('CHAY DUA') ||
+      cleanNoAccent.includes('MEO NGAO') ||
+      cleanNoAccent.includes('PHONG')
+    ) {
+      this.parsedCommandCount++;
+      return {
+        action: 'cat_cafe.zoomies',
+        userId,
+        uniqueId,
+        nickname,
+        metadata: { originalComment: comment },
+      };
+    }
+
+    // 12. Cardboard Box: HỘP / THÙNG / BOX / TRỐN / HIDE
+    if (
+      firstWord === 'HOP' ||
+      firstWord === 'THUNG' ||
+      firstWord === 'BOX' ||
+      firstWord === 'TRON' ||
+      firstWord === 'HIDE' ||
+      cleanNoAccent.includes('CHUI HOP') ||
+      cleanNoAccent.includes('CHUI THUNG') ||
+      cleanNoAccent.includes('TRON HOP')
+    ) {
+      this.parsedCommandCount++;
+      return {
+        action: 'cat_cafe.box',
+        userId,
+        uniqueId,
+        nickname,
+        metadata: { originalComment: comment },
+      };
+    }
+
+    // 13. Bath / Groom / Clean: TẮM / BATH / LIẾM / ĐẸP / CLEAN / GÃI
+    if (
+      firstWord === 'TAM' ||
+      firstWord === 'BATH' ||
+      firstWord === 'LIEM' ||
+      firstWord === 'DEP' ||
+      firstWord === 'CLEAN' ||
+      firstWord === 'GAI' ||
+      cleanNoAccent.includes('TAM RUA') ||
+      cleanNoAccent.includes('LIEM LONG') ||
+      cleanNoAccent.includes('RUA MAT')
+    ) {
+      this.parsedCommandCount++;
+      return {
+        action: 'cat_cafe.bath',
+        userId,
+        uniqueId,
+        nickname,
+        metadata: { originalComment: comment },
+      };
+    }
+
+    // Join / Claim Cat: MÈO / MEO / MEOW / CAT / XIN MÈO / NHẬN MÈO
+    if (
+      firstWord === 'MEO' ||
+      firstWord === 'MEOW' ||
+      firstWord === 'CAT' ||
+      cleanNoAccent.includes('XIN MEO') ||
+      cleanNoAccent.includes('NHAN MEO')
+    ) {
+      this.parsedCommandCount++;
+      return {
+        action: 'cat_cafe.join',
         userId,
         uniqueId,
         nickname,

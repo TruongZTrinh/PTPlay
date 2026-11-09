@@ -633,5 +633,87 @@ export class ProceduralTextures {
       g.generateTexture('emote_camera', 36, 36);
       g.destroy();
     }
+
+    if (!scene.textures.exists('emote_angry')) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      // Red background bubble with white border
+      g.fillStyle(0xFFF1F2, 0.96);
+      g.fillCircle(18, 18, 16);
+      g.lineStyle(2, 0xEF4444, 1);
+      g.strokeCircle(18, 18, 16);
+      // Comic anger mark 💢 in crimson
+      g.fillStyle(0xDC2626, 1);
+      g.lineStyle(2.5, 0xDC2626, 1);
+      // 4 intersecting curved anger lines
+      g.lineBetween(13, 10, 13, 26);
+      g.lineBetween(23, 10, 23, 26);
+      g.lineBetween(10, 14, 26, 14);
+      g.lineBetween(10, 22, 26, 22);
+      g.generateTexture('emote_angry', 36, 36);
+      g.destroy();
+    }
+
+    if (!scene.textures.exists('emote_dance')) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0xFDF2F8, 0.96);
+      g.fillCircle(18, 18, 16);
+      g.lineStyle(2, 0xEC4899, 1);
+      g.strokeCircle(18, 18, 16);
+      // Music notes 🎵 in pink
+      g.fillStyle(0xDB2777, 1);
+      g.fillCircle(13, 22, 3.5);
+      g.fillCircle(22, 19, 3.5);
+      g.lineStyle(2, 0xDB2777, 1);
+      g.lineBetween(15, 22, 15, 11);
+      g.lineBetween(24, 19, 24, 8);
+      g.lineBetween(15, 11, 24, 8);
+      g.generateTexture('emote_dance', 36, 36);
+      g.destroy();
+    }
+
+    if (!scene.textures.exists('emote_zoomies')) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0xFEFCE8, 0.96);
+      g.fillCircle(18, 18, 16);
+      g.lineStyle(2, 0xEAB308, 1);
+      g.strokeCircle(18, 18, 16);
+      // Lightning bolt ⚡
+      g.fillStyle(0xCA8A04, 1);
+      g.fillTriangle(19, 8, 13, 19, 21, 18);
+      g.fillTriangle(21, 18, 15, 19, 17, 28);
+      g.generateTexture('emote_zoomies', 36, 36);
+      g.destroy();
+    }
+
+    if (!scene.textures.exists('emote_box')) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0xFFFAF0, 0.96);
+      g.fillCircle(18, 18, 16);
+      g.lineStyle(2, 0xD97706, 1);
+      g.strokeCircle(18, 18, 16);
+      // Cozy cardboard box with cat ears
+      g.fillStyle(0xB45309, 1);
+      g.fillRect(10, 15, 16, 12);
+      g.fillStyle(0x78350F, 1);
+      g.fillTriangle(12, 15, 14, 11, 16, 15);
+      g.fillTriangle(20, 15, 22, 11, 24, 15);
+      g.generateTexture('emote_box', 36, 36);
+      g.destroy();
+    }
+
+    if (!scene.textures.exists('emote_bath')) {
+      const g = scene.make.graphics({ x: 0, y: 0 });
+      g.fillStyle(0xF0F9FF, 0.96);
+      g.fillCircle(18, 18, 16);
+      g.lineStyle(2, 0x0EA5E9, 1);
+      g.strokeCircle(18, 18, 16);
+      // Clean soap bubbles
+      g.fillStyle(0x38BDF8, 0.8);
+      g.fillCircle(15, 15, 5);
+      g.fillCircle(22, 18, 4);
+      g.fillCircle(16, 23, 3);
+      g.generateTexture('emote_bath', 36, 36);
+      g.destroy();
+    }
   }
 }

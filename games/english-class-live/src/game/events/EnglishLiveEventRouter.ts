@@ -95,6 +95,16 @@ export class EnglishLiveEventRouter {
         this.engine.startRound('quick');
         break;
       }
+
+      case 'english_class.tts_speak':
+      case 'tts_speak': {
+        const text = String(cmd.metadata?.text || cmd.metadata?.message || '');
+        const lang = (cmd.metadata?.lang === 'en-US' || cmd.metadata?.lang === 'en-GB') ? cmd.metadata.lang : 'vi-VN';
+        if (text) {
+          this.tts.speak(text, lang, 2);
+        }
+        break;
+      }
     }
   }
 

@@ -153,3 +153,4 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     });
   }
 }
+

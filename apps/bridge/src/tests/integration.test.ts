@@ -810,6 +810,55 @@ async function runTests() {
     await server.stop();
   });
 
+  // --- 19. SHARED TIKTOK GIFT CATALOG & ANALYTICS PIPELINE ---
+  await test('19. Shared Gift Catalog: Service loads catalog, resolves gifts & separates real vs mock metrics', async () => {
+    const { GameBridgeServer } = await import('../server/GameBridgeServer.js');
+    const server = new GameBridgeServer(8097);
+    server.giftCatalog.resetAnalytics();
+
+    // Verify catalog integration
+    const stats = server.giftCatalog.getStats();
+    assert(stats.totalCatalog > 0, 'Catalog must load gift items');
+    assert(stats.totalMappings >= 10, 'Mappings must be configured for games');
+
+    // Search
+    const searchRes = server.giftCatalog.searchGifts({ query: 'Rose', region: 'ALL' });
+    assert(searchRes.total >= 1, 'Should find Rose in catalog');
+
+    // Mappings for games
+    const catMappings = server.giftCatalog.getMappings('cat-cafe');
+    assert(catMappings.length > 0, 'Cat Cafe mappings must exist');
+    assert(catMappings.some(m => m.giftName === 'Rose' && m.action === 'cat_cafe.gift_effect'));
+
+    const mwMappings = server.giftCatalog.getMappings('mini-war');
+    assert(mwMappings.some(m => m.giftName === 'Rose' && m.action === 'spawn_unit'));
+
+    // Process a gift event and check analytics
+    server.activeGame = 'cat-cafe';
+    server.processIncomingLiveEvent({
+      id: 'mock_test_rose_1',
+      provider: 'mock',
+      timestamp: Date.now(),
+      type: 'gift',
+      userId: 'tester_cat',
+      uniqueId: '@tester_cat',
+      nickname: 'SenIuMèo',
+      giftId: 'rose_gift',
+      giftName: 'Rose',
+      diamondCount: 1,
+      repeatCount: 1,
+      deltaCount: 1,
+      repeatEnd: true,
+    });
+
+    const analytics = server.giftCatalog.getAnalytics();
+    assert(analytics.mock.totalSimulatedGifts >= 1, 'Mock gift count must increment');
+    assert.strictEqual(analytics.real.totalGifts, 0, 'Real gift count must NOT increment on mock gifts');
+    assert(analytics.pipelineHistory.length > 0, 'Pipeline history must trace the event');
+
+    await server.stop();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

@@ -8,3 +8,4 @@ cd /d "%~dp0..\.."
 echo Starting PTPlay Quiz Show on Port 5176...
 npm run dev -w @ptplay/quiz-show
 pause
+

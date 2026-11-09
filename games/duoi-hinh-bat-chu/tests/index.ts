@@ -160,6 +160,36 @@ async function runTests() {
     engine.destroy();
   });
 
+  // 6. TTS CONTROLLER & VIETNAMESE ANNOUNCEMENTS
+  test('6. TTS Controller: Supports full Vietnamese host announcements and voice test', () => {
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    assert.strictEqual(tts.isEnabled, true);
+    assert.strictEqual(tts.rate >= 1.0, true);
+    assert.strictEqual(tts.pitch >= 1.0, true);
+
+    // Call voice announcements to verify execution
+    tts.announceShowWelcome();
+    tts.announcePlayerJoin('Thám Tử Lừng Danh');
+    tts.announceRoundStart(1);
+    tts.announceHint('Một hiện tượng thời tiết tự nhiên');
+    tts.announceFirstChar('C');
+    tts.announceTimeWarning();
+    tts.announceCorrect('Thám Tử Lừng Danh', 'Cầu Vồng');
+    tts.announceTimeout('Cầu Vồng', 'Cầu kết hợp với vồng');
+    tts.announceStreak('Thám Tử Lừng Danh', 3);
+    tts.announceGift('Thám Tử Lừng Danh', 'Hoa Hồng');
+    tts.announceChampion('Thám Tử Lừng Danh');
+
+    tts.setEnabled(false);
+    assert.strictEqual(tts.isEnabled, false);
+    tts.setEnabled(true);
+    assert.strictEqual(tts.isEnabled, true);
+
+    tts.destroy();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

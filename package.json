@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "start": "node scripts/start-platform.mjs",
+    "start:all": "node scripts/start-platform.mjs --all",
     "start:miniwar": "node scripts/start-platform.mjs --game=mini-war-arena",
     "start:catcafe": "node scripts/start-platform.mjs --game=cat-cafe",
     "start:english": "node scripts/start-platform.mjs --game=english-class-live",
@@ -26,6 +27,7 @@
     "dev:rebus": "npm run dev -w @ptplay/duoi-hinh-bat-chu",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:catalog": "npm test -w @ptplay/gift-catalog",
     "test:bridge": "npm run test -w @ptplay/bridge",
     "test:admin": "npm run test -w @ptplay/admin",
     "test:war": "npm run test -w @ptplay/mini-war-arena",

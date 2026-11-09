@@ -69,6 +69,66 @@ export class MockEventHarness {
     return cmd;
   }
 
+  public simulateAngry(customNick?: string): ParsedCafeCommand {
+    const nick = customNick || `MèoCon_${Math.max(1, this.userIndex - 1)}`;
+    const cmd: ParsedCafeCommand = {
+      action: 'cat_cafe.angry',
+      userId: `mock_user_${nick.toLowerCase()}`,
+      uniqueId: `@${nick.toLowerCase()}`,
+      nickname: nick,
+    };
+    (this.client as any).dispatchCommand(cmd);
+    return cmd;
+  }
+
+  public simulateDance(customNick?: string): ParsedCafeCommand {
+    const nick = customNick || `MèoCon_${Math.max(1, this.userIndex - 1)}`;
+    const cmd: ParsedCafeCommand = {
+      action: 'cat_cafe.dance',
+      userId: `mock_user_${nick.toLowerCase()}`,
+      uniqueId: `@${nick.toLowerCase()}`,
+      nickname: nick,
+    };
+    (this.client as any).dispatchCommand(cmd);
+    return cmd;
+  }
+
+  public simulateZoomies(customNick?: string): ParsedCafeCommand {
+    const nick = customNick || `MèoCon_${Math.max(1, this.userIndex - 1)}`;
+    const cmd: ParsedCafeCommand = {
+      action: 'cat_cafe.zoomies',
+      userId: `mock_user_${nick.toLowerCase()}`,
+      uniqueId: `@${nick.toLowerCase()}`,
+      nickname: nick,
+    };
+    (this.client as any).dispatchCommand(cmd);
+    return cmd;
+  }
+
+  public simulateBox(customNick?: string): ParsedCafeCommand {
+    const nick = customNick || `MèoCon_${Math.max(1, this.userIndex - 1)}`;
+    const cmd: ParsedCafeCommand = {
+      action: 'cat_cafe.box',
+      userId: `mock_user_${nick.toLowerCase()}`,
+      uniqueId: `@${nick.toLowerCase()}`,
+      nickname: nick,
+    };
+    (this.client as any).dispatchCommand(cmd);
+    return cmd;
+  }
+
+  public simulateBath(customNick?: string): ParsedCafeCommand {
+    const nick = customNick || `MèoCon_${Math.max(1, this.userIndex - 1)}`;
+    const cmd: ParsedCafeCommand = {
+      action: 'cat_cafe.bath',
+      userId: `mock_user_${nick.toLowerCase()}`,
+      uniqueId: `@${nick.toLowerCase()}`,
+      nickname: nick,
+    };
+    (this.client as any).dispatchCommand(cmd);
+    return cmd;
+  }
+
   public simulateLion(customNick?: string): ParsedCafeCommand {
     return this.simulateGift('Lion', 1, customNick);
   }

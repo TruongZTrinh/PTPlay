@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {normalizeName,resolveGift,extractGiftOnly,safeHTTPS} from '../src/gift-utils.mjs';
+const catalog=[{name:'Rose',coins:1,referenceKey:'rose@1'}, {name:'Heart',coins:1,referenceKey:'heart@1'}, {name:'Birthday Cake',coins:1,referenceKey:'birthday-cake@1'}, {name:'Birthday Cake',coins:300,referenceKey:'birthday-cake@300'}];
+test('normalize names',()=>assert.equal(normalizeName('  RoSE  '),'rose'));
+test('matches unique name without inventing gift id',()=>assert.equal(resolveGift({giftName:'Rose'},catalog).status,'name-only-unverified'));
+test('ambiguous name stays unresolved without price',()=>assert.equal(resolveGift({giftName:'Birthday Cake'},catalog).status,'ambiguous'));
+test('can narrow by price if event contains price',()=>assert.equal(resolveGift({giftName:'Birthday Cake',verifiedCoinPrice:300},catalog).record.coins,300));
+test('diamondCount does not determine coin price',()=>assert.equal(resolveGift({giftName:'Birthday Cake',diamondCount:300},catalog).status,'ambiguous'));
+test('observed id wins even with ambiguous names',()=>assert.equal(resolveGift({giftId:999,giftName:'Birthday Cake'},catalog,[{giftId:'999',name:'Rose'}]).record.name,'Rose'));
+test('does not store viewer PII',()=>{const v=extractGiftOnly({event:'gift',data:{giftId:5655,giftName:'Rose',uniqueId:'private-name',userId:'private-uid',giftPictureUrl:'https://example.com/rose.webp',repeatCount:4}});assert(!JSON.stringify(v).includes('private'));assert(!('repeatCount' in v));});
+test('rejects untrusted URL protocols',()=>{assert.equal(safeHTTPS('file:///etc/passwd'),null);assert.equal(safeHTTPS('javascript:alert(1)'),null)});
+test('skip non-gift events',()=>assert.equal(extractGiftOnly({event:'chat',data:{giftId:1,giftName:'X'}}),null));
+test('gift without ID is not promoted to known ID',()=>assert.equal(extractGiftOnly({event:'gift',data:{giftName:'Rose'}}),null));

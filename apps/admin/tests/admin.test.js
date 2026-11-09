@@ -98,3 +98,108 @@ test('7. Đuổi Hình Bắt Chữ: Admin console, port 5177 and controls integr
   assert.ok(serverCode.includes("'duoi-hinh-bat-chu'"));
 });
 
+test('8. TikTok Mock Gifts Simulation: UI supports quick presets and custom gift dispatchers', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes("sendMockGift('cat', 'Rose', 1)"));
+  assert.ok(html.includes("sendMockGift('cat', 'Lion', 1)"));
+  assert.ok(html.includes("sendMockGift('cat', 'Universe', 1)"));
+  assert.ok(html.includes("sendMockGift('cat', 'Cake', 1)"));
+  assert.ok(html.includes("sendCustomMockGift('cat')"));
+  assert.ok(html.includes("sendMockGift('mini-war', 'Rose', 1)"));
+  assert.ok(html.includes("sendMockGift('mini-war', 'Lion', 1)"));
+  assert.ok(html.includes("sendCustomMockGift('mini-war')"));
+
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  assert.ok(appJs.includes('sendMockGift'));
+  assert.ok(appJs.includes('sendCustomMockGift'));
+});
+
+test('9. Unified TTS Studio: Dedicated tab, voice selector, sliders and soundboard matrix', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('data-tab="ttsstudio"'));
+  assert.ok(html.includes('id="panel-ttsstudio"'));
+  assert.ok(html.includes('select-tts-voice'));
+  assert.ok(html.includes('select-tts-target-game'));
+  assert.ok(html.includes('select-tts-lang'));
+  assert.ok(html.includes('slider-tts-rate'));
+  assert.ok(html.includes('slider-tts-pitch'));
+  assert.ok(html.includes('slider-tts-volume'));
+  assert.ok(html.includes('input-tts-custom-text'));
+  assert.ok(html.includes('testLocalAdminTts()'));
+  assert.ok(html.includes('broadcastCurrentTts()'));
+  assert.ok(html.includes('playLocalAdminTts('));
+  assert.ok(html.includes('broadcastGameTts('));
+});
+
+test('10. Unified TTS Studio: Controller script handles local preview and multi-game broadcast', () => {
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  assert.ok(appJs.includes('initAdminTts'));
+  assert.ok(appJs.includes('refreshAdminVoices'));
+  assert.ok(appJs.includes('unlockAdminAudio'));
+  assert.ok(appJs.includes('playLocalAdminTts'));
+  assert.ok(appJs.includes('broadcastGameTts'));
+  assert.ok(appJs.includes('stopAdminTts'));
+  assert.ok(appJs.includes('VIETNAMESE_VOICE_PRIORITIES'));
+  assert.ok(appJs.includes('isVietnameseVoice'));
+});
+
+test('11. Centralized Gift Management Center: Shared Catalog, Per-Game Mappings, LIVE Analytics & Pipeline Monitor', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('id="panel-economy"'));
+  assert.ok(html.includes('id="badge-stat-total-catalog"'));
+  assert.ok(html.includes('id="badge-stat-vn-catalog"'));
+  assert.ok(html.includes('id="badge-stat-mappings"'));
+  assert.ok(html.includes('id="btn-gsub-catalog"'));
+  assert.ok(html.includes('id="btn-gsub-mappings"'));
+  assert.ok(html.includes('id="btn-gsub-analytics"'));
+  assert.ok(html.includes('id="btn-gsub-pipeline"'));
+  assert.ok(html.includes('id="gsubpanel-catalog"'));
+  assert.ok(html.includes('id="gsubpanel-mappings"'));
+  assert.ok(html.includes('id="gsubpanel-analytics"'));
+  assert.ok(html.includes('id="gsubpanel-pipeline"'));
+  assert.ok(html.includes('id="catalog-grid"'));
+  assert.ok(html.includes('id="mapping-tbody"'));
+  assert.ok(html.includes('id="kpi-real-gifts"'));
+  assert.ok(html.includes('id="kpi-real-actions"'));
+  assert.ok(html.includes('id="kpi-real-diamonds"'));
+  assert.ok(html.includes('id="kpi-mock-gifts"'));
+  assert.ok(html.includes('id="analytics-top-gifts-container"'));
+  assert.ok(html.includes('id="analytics-per-game-container"'));
+  assert.ok(html.includes('id="analytics-unknown-gifts-container"'));
+  assert.ok(html.includes('id="pipeline-tbody"'));
+  assert.ok(html.includes('pipeline-flow-diagram'));
+
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  assert.ok(appJs.includes('switchGiftSubtab'));
+  assert.ok(appJs.includes('fetchCatalogGifts'));
+  assert.ok(appJs.includes('renderCatalogGrid'));
+  assert.ok(appJs.includes('onCatalogSearchInput'));
+  assert.ok(appJs.includes('prefillMappingFromCatalog'));
+  assert.ok(appJs.includes('testGiftFromCatalog'));
+  assert.ok(appJs.includes('syncCatalogFromSource'));
+  assert.ok(appJs.includes('filterMappingsByGame'));
+  assert.ok(appJs.includes('onMappingGameChange'));
+  assert.ok(appJs.includes('fetchGiftMappings'));
+  assert.ok(appJs.includes('renderMappingsTable'));
+  assert.ok(appJs.includes('saveNewMappingRule'));
+  assert.ok(appJs.includes('toggleMappingRule'));
+  assert.ok(appJs.includes('deleteMappingRule'));
+  assert.ok(appJs.includes('testMappingAction'));
+  assert.ok(appJs.includes('exportMappingsJson'));
+  assert.ok(appJs.includes('importMappingsJson'));
+  assert.ok(appJs.includes('fetchGiftAnalytics'));
+  assert.ok(appJs.includes('renderPipelineHistory'));
+  assert.ok(appJs.includes('resetAnalyticsData'));
+  assert.ok(appJs.includes('fetchGiftControlData'));
+
+  const css = fs.readFileSync(path.join(ROOT_DIR, 'public', 'styles.css'), 'utf-8');
+  assert.ok(css.includes('.gift-subtabs'));
+  assert.ok(css.includes('.gift-subtab-btn'));
+  assert.ok(css.includes('.catalog-grid'));
+  assert.ok(css.includes('.catalog-card'));
+  assert.ok(css.includes('.kpi-grid'));
+  assert.ok(css.includes('.kpi-card'));
+  assert.ok(css.includes('.pipeline-flow-diagram'));
+});
+
+

@@ -19,7 +19,8 @@ export interface GameCommandMessage {
     | 'set_core_hp'
     | 'set_round'
     | 'force_end_round'
-    | 'boss_ability';
+    | 'boss_ability'
+    | 'tts_speak';
   team?: Team;
   unitType?: UnitType;
   count?: number;

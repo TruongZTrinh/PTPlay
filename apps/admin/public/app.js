@@ -94,7 +94,8 @@ const TAB_BREADCRUMBS = {
   duoihinh: { cat: 'Core Game Suite', name: 'PTPlay Đuổi Hình Bắt Chữ' },
   preview: { cat: 'Core Game Suite', name: 'Multiview Dọc 9:16' },
   spectators: { cat: 'Audience & CRM', name: 'Khán Giả & Đội Ngũ' },
-  economy: { cat: 'Audience & CRM', name: 'Quy Tắc Quà Tặng (Gifts)' },
+  economy: { cat: 'Audience & CRM', name: 'PTPlay Gift Control Center (Quà Tặng & Mappings)' },
+  ttsstudio: { cat: 'Operations & Control', name: 'Phòng Thí Nghiệm TTS & Giọng Đọc Đa Năng' },
   simulator: { cat: 'Operations & Control', name: 'TikTok LIVE Studio & Giả Lập' },
   logs: { cat: 'Operations & Control', name: 'Nhật Ký & Soi RAW JSON' },
   queue: { cat: 'Operations & Control', name: 'Hàng Đợi & Quá Tải' },
@@ -126,6 +127,10 @@ function switchTab(tabId) {
     const actEl = document.getElementById('crumb-active');
     if (catEl) catEl.innerText = crumbInfo.cat;
     if (actEl) actEl.innerText = crumbInfo.name;
+  }
+
+  if (tabId === 'economy') {
+    fetchGiftControlData();
   }
 }
 
@@ -394,6 +399,13 @@ function updateActiveGameUI(game) {
   if (badgeEc) badgeEc.style.display = isEnglish ? 'inline-block' : 'none';
   if (badgeQs) badgeQs.style.display = isQuiz ? 'inline-block' : 'none';
   if (badgeDh) badgeDh.style.display = isDuoiHinh ? 'inline-block' : 'none';
+
+  // Synchronize TTS Studio Active Target Label
+  const optActive = document.querySelector('#select-tts-target-game option[value="active"]');
+  if (optActive) {
+    const gameName = isMini ? 'Mini War Arena' : (isCat ? 'Café Mòe' : (isEnglish ? 'Lớp Học Vui' : (isQuiz ? 'Quiz Show' : 'Đuổi Hình Bắt Chữ')));
+    optActive.textContent = `🎯 Game Đang Active Ở Header (${gameName})`;
+  }
 }
 
 async function switchActiveGame(target) {
@@ -624,84 +636,712 @@ async function clearSpectators() {
   fetchStatus();
 }
 
-// --- 8. Gift Economy Mapping ---
+// --- 8. PTPlay Gift Control Center (Catalog, Mappings, Analytics & Pipeline) ---
+let currentGiftSubtab = 'catalog';
+let currentMappingGameFilter = 'all';
+let catalogGiftsCache = [];
+let catalogStatsCache = null;
+let catalogSearchTimeout = null;
+let currentMappingsList = [];
+let gameActionsMapCache = {};
+let latestAnalyticsData = null;
+
+function switchGiftSubtab(tabName) {
+  currentGiftSubtab = tabName;
+  playSound('click');
+  document.querySelectorAll('.gift-subtab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `btn-gsub-${tabName}`);
+  });
+  document.querySelectorAll('.gift-subpanel').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `gsubpanel-${tabName}`);
+  });
+
+  if (tabName === 'catalog') {
+    if (catalogGiftsCache.length === 0) fetchCatalogGifts();
+  } else if (tabName === 'mappings') {
+    fetchGiftMappings();
+    if (Object.keys(gameActionsMapCache).length === 0) onMappingGameChange();
+  } else if (tabName === 'analytics' || tabName === 'pipeline') {
+    fetchGiftAnalytics();
+  }
+}
+
+async function fetchCatalogGifts() {
+  const searchInput = document.getElementById('input-catalog-search');
+  const regionSelect = document.getElementById('select-catalog-region');
+  const tierSelect = document.getElementById('select-catalog-tier');
+  const countBadge = document.getElementById('lbl-catalog-count');
+
+  const query = searchInput ? searchInput.value.trim() : '';
+  const region = regionSelect ? regionSelect.value : 'VN';
+  const tier = tierSelect ? tierSelect.value : 'all';
+
+  try {
+    const params = new URLSearchParams();
+    if (region) params.set('region', region);
+    if (tier && tier !== 'all') params.set('tier', tier);
+    if (query) params.set('q', query);
+
+    const [giftsRes, statsRes] = await Promise.all([
+      fetch(`/api/catalog/gifts?${params.toString()}`),
+      fetch('/api/catalog/stats').catch(() => null)
+    ]);
+
+    if (giftsRes.ok) {
+      catalogGiftsCache = await giftsRes.json();
+      renderCatalogGrid(catalogGiftsCache);
+      if (countBadge) countBadge.innerText = catalogGiftsCache.length.toLocaleString('vi-VN');
+    }
+
+    if (statsRes && statsRes.ok) {
+      catalogStatsCache = await statsRes.json();
+      const totBadge = document.getElementById('badge-stat-total-catalog');
+      const vnBadge = document.getElementById('badge-stat-vn-catalog');
+      if (totBadge) totBadge.innerText = `${catalogStatsCache.totalGifts.toLocaleString('vi-VN')} Quà`;
+      if (vnBadge) vnBadge.innerText = `${catalogStatsCache.vnGifts.toLocaleString('vi-VN')} Quà`;
+    }
+  } catch (err) {
+    console.error('Lỗi tải Catalog:', err);
+  }
+}
+
+function renderCatalogGrid(gifts) {
+  const container = document.getElementById('catalog-grid');
+  if (!container) return;
+
+  if (!gifts || gifts.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+        <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+        <div>Không tìm thấy quà tặng nào khớp với bộ lọc hiện tại.</div>
+        <small style="color: #64748b;">Hãy thử đổi từ khóa tìm kiếm hoặc chọn vùng "Tất Cả Khu Vực (Global)".</small>
+      </div>`;
+    return;
+  }
+
+  const displayList = gifts.slice(0, 120);
+
+  container.innerHTML = displayList.map(g => {
+    const iconUrl = g.iconUrl || g.localIcon || '';
+    const safeName = (g.name || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const cleanName = g.cleanName || g.name;
+    const diamonds = g.diamonds || 1;
+    const isVn = g.isVN || (g.regions && g.regions.includes('VN'));
+    const obsId = g.observedId || g.id;
+    const hasVerifiedId = !!g.observedId;
+
+    return `
+      <div class="catalog-card">
+        <div style="position: relative; width: 64px; height: 64px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); border-radius: 8px;">
+          <img src="${iconUrl}" 
+               alt="${cleanName}" 
+               loading="lazy"
+               style="max-width: 58px; max-height: 58px; object-fit: contain;" 
+               onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'48\\' height=\\'48\\' viewBox=\\'0 0 24 24\\'><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'central\\' text-anchor=\\'middle\\' font-size=\\'18\\'>🎁</text></svg>';">
+        </div>
+        <div class="catalog-card-name" title="${g.name}">${cleanName}</div>
+        <div class="catalog-card-meta">
+          <span class="badge badge-gold" title="Giá Xu tham khảo">💎 ${diamonds.toLocaleString()} Xu</span>
+          ${isVn ? '<span class="badge badge-blue">🇻🇳 VN</span>' : ''}
+          ${hasVerifiedId ? `<span class="badge badge-green" title="TikFinity Observed ID: ${obsId}">ID: ${obsId}</span>` : ''}
+        </div>
+        <div class="catalog-card-actions">
+          <button class="btn-outline" style="font-size: 10px; padding: 3px 6px;" onclick="prefillMappingFromCatalog('${safeName}', ${diamonds})">+ Ánh Xạ</button>
+          <button class="btn-gold" style="font-size: 10px; padding: 3px 6px;" onclick="testGiftFromCatalog('${safeName}')">🧪 Thử</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  if (gifts.length > 120) {
+    const extra = document.createElement('div');
+    extra.style.gridColumn = '1 / -1';
+    extra.style.textAlign = 'center';
+    extra.style.padding = '12px';
+    extra.style.color = '#94a3b8';
+    extra.style.fontSize = '12px';
+    extra.innerHTML = `<em>Đang hiển thị 120 / ${gifts.length} quà phù hợp. Dùng ô tìm kiếm để lọc đích danh món quà bạn cần.</em>`;
+    container.appendChild(extra);
+  }
+}
+
+function onCatalogSearchInput() {
+  if (catalogSearchTimeout) clearTimeout(catalogSearchTimeout);
+  catalogSearchTimeout = setTimeout(() => {
+    fetchCatalogGifts();
+  }, 250);
+}
+
+function prefillMappingFromCatalog(giftName, coins) {
+  switchGiftSubtab('mappings');
+  const inputGift = document.getElementById('input-map-gift');
+  const inputTts = document.getElementById('input-map-tts');
+  if (inputGift) {
+    inputGift.value = giftName;
+    inputGift.focus();
+    inputGift.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  if (inputTts && (!inputTts.value || inputTts.value.includes('{gift}'))) {
+    inputTts.value = `Cảm ơn {viewer} đã tặng {count} ${giftName}!`;
+  }
+  showToast(`🎯 Đã chọn '${giftName}'. Vui lòng cấu hình hành động cho game bên dưới.`, 'info');
+}
+
+function testGiftFromCatalog(giftName) {
+  playSound('click');
+  sendMockGift(currentActiveGame, giftName, 1);
+}
+
+async function syncCatalogFromSource() {
+  playSound('click');
+  showToast('🔄 Đang đồng bộ catalog từ nguồn chuẩn...', 'info');
+  try {
+    const res = await fetch('/api/catalog/sync', { method: 'POST', headers: authHeaders() });
+    if (res.ok) {
+      const data = await res.json();
+      showToast(`✅ Đã đồng bộ thành công ${data.count || 0} quà (${data.vnCount || 0} tại VN)!`, 'success');
+      fetchCatalogGifts();
+    } else {
+      showToast('⚠️ Không thể đồng bộ catalog lúc này', 'warn');
+    }
+  } catch (e) {
+    showToast('❌ Lỗi kết nối khi đồng bộ catalog', 'error');
+  }
+}
+
+function filterMappingsByGame(gameType) {
+  currentMappingGameFilter = gameType;
+  playSound('click');
+
+  const filterButtons = {
+    'all': 'btn-map-filter-all',
+    'mini-war': 'btn-map-filter-mw',
+    'cat-cafe': 'btn-map-filter-cat',
+    'english-class': 'btn-map-filter-ec',
+    'quiz-show': 'btn-map-filter-qs',
+    'duoi-hinh-bat-chu': 'btn-map-filter-dh'
+  };
+
+  Object.entries(filterButtons).forEach(([key, btnId]) => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      if (key === gameType) {
+        btn.classList.add('active-filter-btn');
+        btn.style.borderColor = 'var(--accent)';
+        btn.style.color = '#38bdf8';
+        btn.style.background = 'rgba(56, 189, 248, 0.15)';
+      } else {
+        btn.classList.remove('active-filter-btn');
+        btn.style.borderColor = '';
+        btn.style.color = '';
+        btn.style.background = '';
+      }
+    }
+  });
+
+  renderMappingsTable(currentMappingsList);
+}
+
+async function onMappingGameChange() {
+  const gameSelect = document.getElementById('select-map-game');
+  const actionSelect = document.getElementById('select-map-action');
+  const unitSelect = document.getElementById('select-map-unit');
+  if (!gameSelect || !actionSelect) return;
+
+  const game = gameSelect.value;
+  try {
+    if (!gameActionsMapCache[game]) {
+      const res = await fetch(`/api/gift-mappings/actions?gameType=${game}`);
+      if (res.ok) {
+        gameActionsMapCache[game] = await res.json();
+      }
+    }
+
+    const actions = gameActionsMapCache[game] || [];
+    if (actions.length > 0) {
+      actionSelect.innerHTML = actions.map(a => `<option value="${a.action}">${a.label} (${a.action})</option>`).join('');
+    }
+
+    if (unitSelect) {
+      if (game === 'mini-war') {
+        unitSelect.innerHTML = `
+          <option value="warrior">Chiến Binh (Warrior)</option>
+          <option value="archer">Cung Thủ (Archer)</option>
+          <option value="tank">Hộ Vệ Giáp Thép (Tank)</option>
+          <option value="mage">Pháp Sư (Mage)</option>
+          <option value="boss">Đại Tướng Boss</option>
+        `;
+        unitSelect.parentElement.style.display = 'block';
+      } else if (game === 'cat-cafe') {
+        unitSelect.innerHTML = `
+          <option value="fish">Cá Nướng Thơm</option>
+          <option value="fish_basket">Giỏ Cá Lớn</option>
+          <option value="yarn">Cuộn Len Vui Nhộn</option>
+          <option value="cake">Bánh Kem Sinh Nhật</option>
+          <option value="royal">Vương Miện Hoàng Gia</option>
+        `;
+        unitSelect.parentElement.style.display = 'block';
+      } else if (game === 'english-class') {
+        unitSelect.innerHTML = `
+          <option value="heart">Mưa Tim Khen Thưởng</option>
+          <option value="star">Ngôi Sao Điểm 10</option>
+          <option value="flower">Hoa Tặng Cô</option>
+          <option value="cake">Bánh Ngọt Liên Hoan</option>
+        `;
+        unitSelect.parentElement.style.display = 'block';
+      } else if (game === 'quiz-show') {
+        unitSelect.innerHTML = `
+          <option value="hint">Mở Gợi Ý Câu Hỏi</option>
+          <option value="extra_life">Thêm Mạng Đấu Trí</option>
+          <option value="bonus_points">Cộng Điểm Thưởng</option>
+          <option value="double_points">Nhân Đôi Điểm</option>
+        `;
+        unitSelect.parentElement.style.display = 'block';
+      } else if (game === 'duoi-hinh-bat-chu') {
+        unitSelect.innerHTML = `
+          <option value="reveal_char">Mở 1 Ký Tự Gợi Ý</option>
+          <option value="extra_time">Gia Hạn 15 Giây</option>
+          <option value="bonus_score">Cộng 50 Điểm Đội</option>
+          <option value="spotlight">Spotlight Top 1</option>
+        `;
+        unitSelect.parentElement.style.display = 'block';
+      }
+    }
+  } catch (e) {
+    console.error('Lỗi tải danh mục hành động:', e);
+  }
+}
+
 async function fetchGiftMappings() {
   try {
-    const res = await fetch('/api/mapping');
-    if (!res.ok) return;
-    const rules = await res.json();
-    const tbody = document.getElementById('mapping-tbody');
-    if (!tbody) return;
+    const res = await fetch('/api/gift-mappings');
+    if (!res.ok) {
+      const legacyRes = await fetch('/api/mapping');
+      if (legacyRes.ok) {
+        currentMappingsList = await legacyRes.json();
+      }
+    } else {
+      currentMappingsList = await res.json();
+    }
 
-    tbody.innerHTML = rules
-      .map((r) => {
-        const statusBadge = r.enabled
-          ? '<span class="badge badge-green">Bật</span>'
-          : '<span class="badge" style="background:#334155; color:#94a3b8;">Tắt</span>';
-        return `<tr>
-          <td><strong>${r.giftName}</strong></td>
-          <td><code>${r.action}</code></td>
-          <td><span class="badge badge-gold">${r.unitType || '–'}</span></td>
-          <td>x${r.multiplier}</td>
-          <td>${r.cooldownSec}s</td>
-          <td>${r.maxSpawnPerEvent}</td>
-          <td>${statusBadge}</td>
-          <td>
-            <button class="btn-outline" style="font-size:10px; padding:2px 6px;" onclick="toggleMappingRule('${r.id}')">Bật/Tắt</button>
-            <button class="btn-red" style="font-size:10px; padding:2px 6px;" onclick="deleteMappingRule('${r.id}')">Xóa</button>
-          </td>
-        </tr>`;
-      })
-      .join('');
-  } catch (e) {}
+    const badgeStat = document.getElementById('badge-stat-mappings');
+    if (badgeStat) {
+      badgeStat.innerText = `${currentMappingsList.length} Quy Tắc`;
+    }
+
+    renderMappingsTable(currentMappingsList);
+  } catch (e) {
+    console.error('Lỗi nạp danh sách mappings:', e);
+  }
 }
 
-async function toggleMappingRule(id) {
-  playSound('click');
-  await fetch('/api/mapping/toggle', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ id }) });
-  fetchGiftMappings();
-}
+function renderMappingsTable(rules) {
+  const tbody = document.getElementById('mapping-tbody');
+  if (!tbody) return;
 
-async function deleteMappingRule(id) {
-  if (!confirm('Xóa quy tắc mapping này?')) return;
-  playSound('warn');
-  await fetch('/api/mapping/delete', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ id }) });
-  fetchGiftMappings();
+  const filtered = (rules || []).filter(r => {
+    if (currentMappingGameFilter === 'all') return true;
+    return (r.gameType || 'mini-war') === currentMappingGameFilter;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#64748b; padding: 24px;">Không có quy tắc mapping nào cho bộ lọc này. Hãy bấm "Tạo Mapping" ở trên để bổ sung.</td></tr>`;
+    return;
+  }
+
+  const GAME_LABELS = {
+    'mini-war': '⚔️ Mini War',
+    'cat-cafe': '🐱 Café Mòe',
+    'english-class': '🎓 Lớp Học Vui',
+    'quiz-show': '🏆 Quiz Show',
+    'duoi-hinh-bat-chu': '💡 Đuổi Hình'
+  };
+
+  tbody.innerHTML = filtered.map(r => {
+    const game = r.gameType || 'mini-war';
+    const gameBadge = `<span class="badge" style="background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3);">${GAME_LABELS[game] || game}</span>`;
+    const statusBadge = r.enabled !== false
+      ? '<span class="badge badge-green">✓ Bật</span>'
+      : '<span class="badge" style="background:#334155; color:#94a3b8;">✕ Tắt</span>';
+    const maxVal = r.maxCountPerEvent || r.maxSpawnPerEvent || 10;
+    const cdVal = r.cooldownSec || 0;
+    const multVal = r.multiplier || 1;
+    const paramVal = r.unitType || (r.params ? JSON.stringify(r.params) : '–');
+    const safeGiftName = (r.giftName || '').replace(/'/g, "\\'");
+
+    return `<tr>
+      <td><strong>${r.giftName}</strong></td>
+      <td>${gameBadge}</td>
+      <td><code>${r.action}</code></td>
+      <td><span class="badge badge-gold">${paramVal}</span></td>
+      <td>x${multVal}</td>
+      <td>${cdVal}s / ${maxVal}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div style="display: flex; gap: 4px; align-items: center;">
+          <button class="btn-gold" style="font-size:10px; padding:2px 6px;" title="Thử quà mà không cần trừ xu" onclick="testMappingAction('${game}', '${r.id}', '${safeGiftName}')">🧪 Thử</button>
+          <button class="btn-outline" style="font-size:10px; padding:2px 6px;" onclick="toggleMappingRule('${r.id}')">Bật/Tắt</button>
+          <button class="btn-red" style="font-size:10px; padding:2px 6px;" onclick="deleteMappingRule('${r.id}')">Xóa</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 async function saveNewMappingRule() {
   const giftName = document.getElementById('input-map-gift').value.trim();
-  const action = document.getElementById('select-map-action').value;
-  const unitType = document.getElementById('select-map-unit').value || undefined;
-  const multiplier = Number(document.getElementById('input-map-mult').value) || 1;
-  const cooldownSec = Number(document.getElementById('input-map-cd').value) || 0;
-  const maxSpawn = Number(document.getElementById('input-map-max').value) || 10;
+  const gameSelect = document.getElementById('select-map-game');
+  const actionSelect = document.getElementById('select-map-action');
+  const unitSelect = document.getElementById('select-map-unit');
+  const multInput = document.getElementById('input-map-mult');
+  const cdInput = document.getElementById('input-map-cd');
+  const maxInput = document.getElementById('input-map-max');
+  const ttsInput = document.getElementById('input-map-tts');
+
+  const gameType = gameSelect ? gameSelect.value : 'mini-war';
+  const action = actionSelect ? actionSelect.value : 'spawn_unit';
+  const unitType = unitSelect ? unitSelect.value : undefined;
+  const multiplier = multInput ? Number(multInput.value) || 1 : 1;
+  const cooldownSec = cdInput ? Number(cdInput.value) || 0 : 0;
+  const maxCountPerEvent = maxInput ? Number(maxInput.value) || 10 : 10;
+  const ttsTemplate = ttsInput ? ttsInput.value.trim() : undefined;
 
   if (!giftName) {
-    showToast('Vui lòng nhập tên quà tặng', 'warn');
+    showToast('⚠️ Vui lòng nhập tên quà TikTok', 'warn');
     return;
   }
 
+  const cleanId = `map_${gameType}_${giftName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
   const rule = {
-    id: `rule_${giftName.toLowerCase().replace(/\s+/g, '_')}`,
+    id: cleanId,
+    gameType,
     giftName,
     action,
     unitType,
+    params: unitType ? { type: unitType } : {},
     multiplier,
     cooldownSec,
-    maxSpawnPerEvent: maxSpawn,
+    maxCountPerEvent,
+    maxSpawnPerEvent: maxCountPerEvent,
+    ttsTemplate,
     enabled: true,
-    description: `Triệu hồi ${unitType || action} x${multiplier}`,
+    description: `Quy tắc ${giftName} -> ${action} cho ${gameType}`,
   };
 
-  await fetch('/api/mapping/save', {
-    method: 'POST',
-    headers: authHeaders(),
-    body: JSON.stringify({ rule }),
+  playSound('click');
+  try {
+    const res = await fetch('/api/gift-mappings', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ rule }),
+    });
+
+    fetch('/api/mapping/save', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ rule }),
+    }).catch(() => {});
+
+    if (res.ok) {
+      showToast(`✅ Đã lưu mapping cho '${giftName}' (${gameType})`, 'success');
+      resetMappingForm();
+      fetchGiftMappings();
+    } else {
+      showToast('⚠️ Lưu mapping thất bại', 'warn');
+    }
+  } catch (e) {
+    showToast('❌ Lỗi kết nối khi lưu mapping', 'error');
+  }
+}
+
+function resetMappingForm() {
+  const inputGift = document.getElementById('input-map-gift');
+  const multInput = document.getElementById('input-map-mult');
+  const cdInput = document.getElementById('input-map-cd');
+  const maxInput = document.getElementById('input-map-max');
+  const ttsInput = document.getElementById('input-map-tts');
+
+  if (inputGift) inputGift.value = '';
+  if (multInput) multInput.value = '2';
+  if (cdInput) cdInput.value = '0';
+  if (maxInput) maxInput.value = '10';
+  if (ttsInput) ttsInput.value = '';
+}
+
+async function toggleMappingRule(id) {
+  playSound('click');
+  try {
+    await fetch('/api/gift-mappings/toggle', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ id }),
+    });
+    fetch('/api/mapping/toggle', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ id }),
+    }).catch(() => {});
+    showToast('⚙️ Đã chuyển trạng thái rule', 'info');
+    fetchGiftMappings();
+  } catch (e) {}
+}
+
+async function deleteMappingRule(id) {
+  if (!confirm('Bạn có chắc muốn xóa quy tắc mapping này?')) return;
+  playSound('warn');
+  try {
+    await fetch('/api/gift-mappings/delete', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ id }),
+    });
+    fetch('/api/mapping/delete', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ id }),
+    }).catch(() => {});
+    showToast('🗑️ Đã xóa quy tắc mapping', 'info');
+    fetchGiftMappings();
+  } catch (e) {}
+}
+
+function testMappingAction(gameType, ruleId, giftName) {
+  playSound('click');
+  sendMockGift(gameType, giftName || 'Rose', 1);
+  showToast(`🧪 Đã kích hoạt thử quà '${giftName}' cho [${gameType}]`, 'success');
+  setTimeout(fetchGiftAnalytics, 300);
+}
+
+async function exportMappingsJson() {
+  playSound('click');
+  try {
+    const res = await fetch('/api/gift-mappings/export');
+    let data;
+    if (res.ok) {
+      data = await res.json();
+    } else {
+      data = { version: '1.0', exportedAt: new Date().toISOString(), mappings: currentMappingsList };
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ptplay-gift-mappings-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('📥 Đã tải file cấu hình Mappings JSON!', 'success');
+  } catch (e) {
+    showToast('❌ Không thể xuất file mappings', 'error');
+  }
+}
+
+async function importMappingsJson(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const mappings = Array.isArray(parsed) ? parsed : (parsed.mappings || []);
+
+    if (!Array.isArray(mappings) || mappings.length === 0) {
+      showToast('⚠️ File JSON không chứa danh sách mappings hợp lệ', 'warn');
+      return;
+    }
+
+    const res = await fetch('/api/gift-mappings/import', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ mappings }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      showToast(`✅ Đã nhập thành công ${data.count || mappings.length} quy tắc!`, 'success');
+      fetchGiftMappings();
+    } else {
+      showToast('⚠️ Không thể lưu mappings nhập khẩu', 'warn');
+    }
+  } catch (err) {
+    showToast('❌ Lỗi định dạng file JSON', 'error');
+  } finally {
+    event.target.value = '';
+  }
+}
+
+async function fetchGiftAnalytics() {
+  try {
+    const res = await fetch('/api/gift-analytics');
+    if (!res.ok) return;
+    const data = await res.json();
+    latestAnalyticsData = data;
+
+    // 1. KPI Badges
+    const kpiReal = document.getElementById('kpi-real-gifts');
+    const kpiActions = document.getElementById('kpi-real-actions');
+    const kpiDiamonds = document.getElementById('kpi-real-diamonds');
+    const kpiMock = document.getElementById('kpi-mock-gifts');
+
+    if (kpiReal && data.summary) kpiReal.innerText = (data.summary.realGiftsReceived || 0).toLocaleString();
+    if (kpiActions && data.summary) kpiActions.innerText = (data.summary.executedActions || 0).toLocaleString();
+    if (kpiDiamonds && data.summary) kpiDiamonds.innerText = (data.summary.realDiamondsReceived || 0).toLocaleString();
+    if (kpiMock && data.summary) kpiMock.innerText = (data.summary.mockGiftsReceived || 0).toLocaleString();
+
+    // 2. Top 5 Gifts
+    const topGiftsContainer = document.getElementById('analytics-top-gifts-container');
+    if (topGiftsContainer) {
+      const topList = data.topGifts || [];
+      if (topList.length === 0) {
+        topGiftsContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có sự kiện quà tặng nào trong phiên</div>';
+      } else {
+        const maxVal = topList[0]?.count || 1;
+        topGiftsContainer.innerHTML = topList.slice(0, 5).map((g, idx) => {
+          const pct = Math.round((g.count / maxVal) * 100);
+          return `
+            <div style="margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 2px;">
+                <span><strong>#${idx + 1}</strong> 🎁 ${g.name}</span>
+                <span style="color: #38bdf8; font-weight: bold;">${g.count} lượt</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.08); height: 6px; border-radius: 3px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #38bdf8, #818cf8); width: ${pct}%; height: 100%;"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // 3. Per Game Stats
+    const perGameContainer = document.getElementById('analytics-per-game-container');
+    if (perGameContainer) {
+      const perGame = data.perGameStats || {};
+      const gameEntries = Object.entries(perGame);
+      if (gameEntries.length === 0) {
+        perGameContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có dữ liệu theo game</div>';
+      } else {
+        const GAME_ICONS = {
+          'mini-war': '⚔️ Mini War',
+          'cat-cafe': '🐱 Café Mòe',
+          'english-class': '🎓 Lớp Học Vui',
+          'quiz-show': '🏆 Quiz Show',
+          'duoi-hinh-bat-chu': '💡 Đuổi Hình'
+        };
+        perGameContainer.innerHTML = `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
+            ${gameEntries.map(([g, s]) => `
+              <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 6px; padding: 8px; text-align: center;">
+                <div style="font-size: 11px; font-weight: bold; color: #38bdf8; margin-bottom: 4px;">${GAME_ICONS[g] || g}</div>
+                <div style="font-size: 18px; font-weight: 700; color: #f8fafc;">${s.received || 0}</div>
+                <div style="font-size: 10px; color: #10b981;">⚡ ${s.executed || 0} thực thi</div>
+                ${s.failed > 0 ? `<div style="font-size: 10px; color: #ef4444;">✕ ${s.failed} lỗi</div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+
+    // 4. Unknown Gifts Alert
+    const unknownContainer = document.getElementById('analytics-unknown-gifts-container');
+    if (unknownContainer) {
+      const unknowns = data.unknownGifts || [];
+      if (unknowns.length === 0) {
+        unknownContainer.innerHTML = '<div style="color: #10b981; font-size: 12px; padding: 10px;">✓ Không phát hiện quà chưa rõ nào. Toàn bộ quà đã được nhận diện hoặc ánh xạ chuẩn xác!</div>';
+      } else {
+        unknownContainer.innerHTML = `
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${unknowns.map(u => `
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; padding: 8px 12px;">
+                <div>
+                  <strong style="color: #f87171;">⚠️ ${u.name}</strong>
+                  <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">(ID: ${u.giftId || 'Chưa biết'})</span>
+                  <span class="badge badge-red" style="margin-left: 8px;">${u.count} lần</span>
+                </div>
+                <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="prefillMappingFromCatalog('${(u.name || '').replace(/'/g, "\\'")}', 1)">+ Ánh Xạ Quà Này</button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+
+    // 5. Render Pipeline Trace
+    renderPipelineHistory(data.recentPipelineEvents);
+
+  } catch (e) {
+    console.error('Lỗi nạp thống kê quà:', e);
+  }
+}
+
+function renderPipelineHistory(events) {
+  const tbody = document.getElementById('pipeline-tbody');
+  if (!tbody) return;
+
+  const rawEvents = events || (latestAnalyticsData?.recentPipelineEvents) || [];
+  const filterSelect = document.getElementById('select-pipeline-filter-source');
+  const filterSource = filterSelect ? filterSelect.value : 'all';
+
+  const filtered = rawEvents.filter(ev => {
+    if (filterSource === 'real') return !ev.isMock;
+    if (filterSource === 'mock') return !!ev.isMock;
+    return true;
   });
 
-  showToast(`✅ Đã lưu mapping cho '${giftName}'`, 'success');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b; padding: 24px;">Chưa có sự kiện nào qua pipeline khớp với bộ lọc</td></tr>`;
+    return;
+  }
+
+  const STATUS_BADGES = {
+    'EXECUTED': '<span class="badge badge-green">✓ Đã Thực Thi</span>',
+    'FAILED': '<span class="badge badge-red">✕ Thất Bại</span>',
+    'IGNORED': '<span class="badge" style="background:#475569; color:#94a3b8;">Bỏ Qua (Khác Game)</span>',
+    'UNMAPPED': '<span class="badge badge-amber">Chưa Có Mapping</span>'
+  };
+
+  tbody.innerHTML = filtered.slice(0, 50).map(ev => {
+    const timeStr = new Date(ev.timestamp).toLocaleTimeString();
+    const sourceBadge = ev.isMock
+      ? '<span class="badge" style="background: rgba(192,132,252,0.15); color: #c084fc; border: 1px solid rgba(192,132,252,0.3);">🧪 Mock Sim</span>'
+      : '<span class="badge badge-green">🟢 Real LIVE</span>';
+    const statusHtml = STATUS_BADGES[ev.status] || `<span class="badge">${ev.status}</span>`;
+    const actionCode = ev.action ? `<code>${ev.action}</code>` : '<span style="color:#64748b;">–</span>';
+    const gameLabel = ev.gameType || '–';
+
+    return `<tr>
+      <td style="font-family: monospace; font-size: 11px; color: #94a3b8;">${timeStr}</td>
+      <td>${sourceBadge}</td>
+      <td><strong>${ev.sender || 'Khán giả'}</strong></td>
+      <td>🎁 <strong>${ev.giftName}</strong> <small style="color:#64748b;">(ID: ${ev.giftId || '?'})</small></td>
+      <td><span class="badge badge-gold">x${ev.count || 1}</span></td>
+      <td>${gameLabel} ➔ ${actionCode}</td>
+      <td>${statusHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function resetAnalyticsData() {
+  if (!confirm('Bạn có chắc muốn đặt lại toàn bộ thống kê quà và nhật ký pipeline của phiên này?')) return;
+  playSound('warn');
+  try {
+    const res = await fetch('/api/gift-analytics/reset', { method: 'POST', headers: authHeaders() });
+    if (res.ok) {
+      showToast('🔄 Đã đặt lại toàn bộ thống kê quà & pipeline', 'info');
+      fetchGiftAnalytics();
+    }
+  } catch (e) {
+    showToast('❌ Lỗi kết nối khi đặt lại thống kê', 'error');
+  }
+}
+
+function fetchGiftControlData() {
+  fetchCatalogGifts();
   fetchGiftMappings();
+  fetchGiftAnalytics();
+  onMappingGameChange();
 }
 
 // --- 9. Queue & Traffic Tuning ---
@@ -748,13 +1388,14 @@ async function sendMockChat(gameType, customNick, customComment) {
   } catch (e) {}
 }
 
-async function sendMockGift(gameType, giftName, count = 1) {
+async function sendMockGift(gameType, giftName, count = 1, customNickname = undefined) {
   const isEc = gameType === 'english' || gameType === 'english-class';
-  const isCat = gameType === 'cat';
+  const isCat = gameType === 'cat' || gameType === 'cat-cafe';
   const isQuiz = gameType === 'quiz' || gameType === 'quiz-show';
   const isRebus = gameType === 'rebus' || gameType === 'duoi-hinh-bat-chu';
 
-  const nick = isEc ? 'PhụHuynhVIP' : (isCat ? 'MèoMêĂn' : (isQuiz ? 'ĐạiGiaNeon' : (isRebus ? 'TrùmĐoánChữ' : 'ĐạiGiaTikTok')));
+  const defaultNick = isEc ? 'PhụHuynhVIP' : (isCat ? 'MèoMêĂn' : (isQuiz ? 'ĐạiGiaNeon' : (isRebus ? 'TrùmĐoánChữ' : 'ĐạiGiaTikTok')));
+  const nick = customNickname || defaultNick;
 
   let endpoint = '/api/mock/gift';
   if (isEc) endpoint = '/api/english/mock/gift';
@@ -771,7 +1412,19 @@ async function sendMockGift(gameType, giftName, count = 1) {
     showToast(`🎁 Tặng [${nick}]: ${count}x ${giftName}`, 'success');
     fetchStatus();
     fetchRawLogs();
+    fetchGiftAnalytics();
   } catch (e) {}
+}
+
+async function sendCustomMockGift(gameType) {
+  playSound('click');
+  const nickInput = document.getElementById(`input-${gameType}-gift-nick`);
+  const giftSelect = document.getElementById(`select-${gameType}-gift-name`);
+  const countInput = document.getElementById(`input-${gameType}-gift-count`);
+  const nick = (nickInput && nickInput.value.trim()) || 'ĐạiGiaVIP';
+  const gift = (giftSelect && giftSelect.value.trim()) || 'Rose';
+  const count = (countInput && parseInt(countInput.value, 10)) || 1;
+  await sendMockGift(gameType, gift, count, nick);
 }
 
 // --- 10.1 Quiz Show Specific Actions ---
@@ -869,6 +1522,333 @@ async function joinMockStudents(count = 5) {
   }
   showToast(`✅ Đã cho ${count} học sinh tham gia lớp học!`, 'success');
   fetchStatus();
+}
+
+// --- 10.4 Unified TTS Studio & Voice Testing System ---
+let adminTtsVoices = [];
+let adminAudioUnlocked = false;
+
+const VIETNAMESE_VOICE_PRIORITIES = [
+  'microsoft hoaimy online (natural)',
+  'microsoft namminh online (natural)',
+  'microsoft hoaimy',
+  'microsoft namminh',
+  'google tiếng việt',
+  'microsoft an',
+  'linh',
+];
+
+function isVietnameseVoice(voice) {
+  if (!voice || !voice.lang) return false;
+  const lang = voice.lang.toLowerCase();
+  const name = voice.name.toLowerCase();
+  return (
+    lang.startsWith('vi') ||
+    lang.includes('vi-vn') ||
+    lang.includes('vi_vn') ||
+    lang.includes('vie') ||
+    name.includes('vietnam') ||
+    name.includes('tiếng việt')
+  );
+}
+
+function initAdminTts() {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    const badge = document.getElementById('badge-tts-status');
+    if (badge) {
+      badge.className = 'badge badge-red';
+      badge.innerText = 'NO TTS SUPPORT';
+    }
+    return;
+  }
+
+  // Voice list loading
+  refreshAdminVoices();
+  window.speechSynthesis.onvoiceschanged = () => refreshAdminVoices();
+}
+
+function refreshAdminVoices() {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  adminTtsVoices = window.speechSynthesis.getVoices();
+
+  const select = document.getElementById('select-tts-voice');
+  const countEl = document.getElementById('lbl-voice-count');
+  const viNameEl = document.getElementById('lbl-vi-voice-name');
+
+  const viVoices = adminTtsVoices.filter(isVietnameseVoice);
+  const enVoices = adminTtsVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+  const otherVoices = adminTtsVoices.filter(v => !isVietnameseVoice(v) && (!v.lang || !v.lang.toLowerCase().startsWith('en')));
+
+  if (countEl) {
+    countEl.innerText = `${adminTtsVoices.length} giọng (${viVoices.length} Tiếng Việt, ${enVoices.length} English)`;
+  }
+
+  // Find best Vietnamese voice
+  let bestViVoice = null;
+  for (const pri of VIETNAMESE_VOICE_PRIORITIES) {
+    const found = viVoices.find(v => v.name.toLowerCase().includes(pri));
+    if (found) { bestViVoice = found; break; }
+  }
+  if (!bestViVoice && viVoices.length > 0) {
+    bestViVoice = viVoices[0];
+  }
+
+  if (viNameEl) {
+    if (bestViVoice) {
+      viNameEl.innerText = `✓ ${bestViVoice.name} (${bestViVoice.lang})`;
+      viNameEl.style.color = '#34d399';
+    } else {
+      viNameEl.innerText = '⚠️ Chưa cài giọng Tiếng Việt (dùng giọng mặc định vi-VN)';
+      viNameEl.style.color = '#fbbf24';
+    }
+  }
+
+  if (!select) return;
+  select.innerHTML = '';
+
+  if (viVoices.length > 0) {
+    const optGroupVi = document.createElement('optgroup');
+    optGroupVi.label = '🇻🇳 GIỌNG TIẾNG VIỆT (VIETNAMESE VOICES)';
+    viVoices.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v.name;
+      const isOnline = v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('online');
+      opt.textContent = `${v.name} ${isOnline ? '★ [Neural Online]' : ''} (${v.lang})`;
+      if (bestViVoice && v.name === bestViVoice.name) {
+        opt.selected = true;
+      }
+      optGroupVi.appendChild(opt);
+    });
+    select.appendChild(optGroupVi);
+  }
+
+  if (enVoices.length > 0) {
+    const optGroupEn = document.createElement('optgroup');
+    optGroupEn.label = '🇺🇸 GIỌNG TIẾNG ANH (ENGLISH VOICES)';
+    enVoices.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v.name;
+      opt.textContent = `${v.name} (${v.lang})`;
+      optGroupEn.appendChild(opt);
+    });
+    select.appendChild(optGroupEn);
+  }
+
+  if (otherVoices.length > 0) {
+    const optGroupOther = document.createElement('optgroup');
+    optGroupOther.label = '🌐 CÁC GIỌNG KHÁC (OTHER LANGUAGES)';
+    otherVoices.slice(0, 30).forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v.name;
+      opt.textContent = `${v.name} (${v.lang})`;
+      optGroupOther.appendChild(opt);
+    });
+    select.appendChild(optGroupOther);
+  }
+}
+
+function unlockAdminAudio() {
+  playSound('click');
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const primer = new SpeechSynthesisUtterance(' ');
+      primer.volume = 0.01;
+      primer.rate = 2.0;
+      window.speechSynthesis.speak(primer);
+    }
+    adminAudioUnlocked = true;
+    const lbl = document.getElementById('lbl-audio-unlocked');
+    if (lbl) {
+      lbl.innerText = '✓ Đã mở khóa hoàn toàn';
+      lbl.style.color = '#10b981';
+    }
+    showToast('🔓 Đã mở khóa âm thanh & Web Speech API thành công!', 'success');
+  } catch (e) {
+    showToast(`Không thể mở khóa Audio: ${e.message}`, 'warn');
+  }
+}
+
+function updateTtsSliderLabel(type) {
+  if (type === 'rate') {
+    const val = document.getElementById('slider-tts-rate')?.value || '1.05';
+    const lbl = document.getElementById('val-tts-rate');
+    if (lbl) lbl.innerText = `${val}x`;
+  } else if (type === 'pitch') {
+    const val = document.getElementById('slider-tts-pitch')?.value || '1.0';
+    const lbl = document.getElementById('val-tts-pitch');
+    if (lbl) lbl.innerText = val;
+  } else if (type === 'volume') {
+    const val = document.getElementById('slider-tts-volume')?.value || '90';
+    const lbl = document.getElementById('val-tts-volume');
+    if (lbl) lbl.innerText = `${val}%`;
+  }
+}
+
+function resetTtsSliders() {
+  playSound('click');
+  const rateInput = document.getElementById('slider-tts-rate');
+  const pitchInput = document.getElementById('slider-tts-pitch');
+  const volumeInput = document.getElementById('slider-tts-volume');
+
+  if (rateInput) rateInput.value = '1.05';
+  if (pitchInput) pitchInput.value = '1.0';
+  if (volumeInput) volumeInput.value = '90';
+
+  updateTtsSliderLabel('rate');
+  updateTtsSliderLabel('pitch');
+  updateTtsSliderLabel('volume');
+  showToast('↺ Đã đặt lại tham số âm thanh mặc định', 'info');
+}
+
+function setSampleTtsText(preset) {
+  playSound('click');
+  const txtArea = document.getElementById('input-tts-custom-text');
+  const langSelect = document.getElementById('select-tts-lang');
+  if (!txtArea) return;
+
+  if (preset === 'welcome') {
+    txtArea.value = 'Chào mừng quý khán giả thân yêu đã đến với phòng livestream PTPlay! Hãy cùng thả tim và bình luận để ủng hộ các người chơi nhé!';
+    if (langSelect) langSelect.value = 'vi-VN';
+  } else if (preset === 'gift') {
+    txtArea.value = 'Ôi tuyệt vời quá! Xin trân trọng cảm ơn đại gia đã gửi tặng Quả Cầu Vũ Trụ! Cả phòng livestream bùng nổ cùng đại tiệc!';
+    if (langSelect) langSelect.value = 'vi-VN';
+  } else if (preset === 'hype') {
+    txtArea.value = 'Thời khắc quyết định đã đến! Hai bên đang giằng co từng giây! Mau mau tương tác tiếp sức để giành chiến thắng nào!';
+    if (langSelect) langSelect.value = 'vi-VN';
+  } else if (preset === 'english') {
+    txtArea.value = 'Welcome everyone to our live classroom interactive show! Get ready for an amazing adventure!';
+    if (langSelect) langSelect.value = 'en-US';
+  }
+}
+
+function playLocalAdminTts(text, customLang = undefined) {
+  playSound('click');
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    showToast('Trình duyệt không hỗ trợ Web Speech Synthesis', 'error');
+    return;
+  }
+
+  const rawText = text || document.getElementById('input-tts-custom-text')?.value || '';
+  const cleanText = rawText.replace(/<[^>]*>/g, '').trim().slice(0, 300);
+  if (!cleanText) {
+    showToast('Vui lòng nhập nội dung cần đọc', 'warn');
+    return;
+  }
+
+  // Cancel any running speech
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+
+  // Language & Voice
+  const lang = customLang || document.getElementById('select-tts-lang')?.value || 'vi-VN';
+  utterance.lang = lang;
+
+  const voiceName = document.getElementById('select-tts-voice')?.value;
+  if (voiceName && adminTtsVoices.length > 0) {
+    const chosen = adminTtsVoices.find(v => v.name === voiceName);
+    if (chosen) utterance.voice = chosen;
+  } else if (lang.startsWith('vi')) {
+    const vi = adminTtsVoices.find(isVietnameseVoice);
+    if (vi) utterance.voice = vi;
+  }
+
+  // Sliders
+  const rateVal = parseFloat(document.getElementById('slider-tts-rate')?.value || '1.05');
+  const pitchVal = parseFloat(document.getElementById('slider-tts-pitch')?.value || '1.0');
+  const volumeVal = parseFloat(document.getElementById('slider-tts-volume')?.value || '90') / 100;
+
+  utterance.rate = isNaN(rateVal) ? 1.05 : rateVal;
+  utterance.pitch = isNaN(pitchVal) ? 1.0 : pitchVal;
+  utterance.volume = isNaN(volumeVal) ? 0.9 : volumeVal;
+
+  utterance.onstart = () => {
+    showToast(`🔊 Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
+  };
+
+  utterance.onerror = (e) => {
+    console.warn('[Admin TTS] Speak error:', e);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+async function broadcastGameTts(targetGame, text, customLang = undefined) {
+  playSound('click');
+  let game = targetGame;
+  if (!game || game === 'active') {
+    game = currentActiveGame;
+  }
+
+  const rawText = text || document.getElementById('input-tts-custom-text')?.value || '';
+  const cleanText = rawText.replace(/<[^>]*>/g, '').trim().slice(0, 300);
+  if (!cleanText) {
+    showToast('Vui lòng nhập nội dung cần phát', 'warn');
+    return;
+  }
+
+  const lang = customLang || document.getElementById('select-tts-lang')?.value || 'vi-VN';
+
+  try {
+    let endpoint = '/api/game/command';
+    let payload = { action: 'tts_speak', metadata: { text: cleanText, lang } };
+
+    if (game === 'cat-cafe' || game === 'cat') {
+      endpoint = '/api/catcafe/command';
+      payload = { action: 'cat_cafe.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+    } else if (game === 'english-class' || game === 'english') {
+      endpoint = '/api/english/command';
+      payload = { action: 'english_class.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+    } else if (game === 'quiz-show' || game === 'quiz') {
+      endpoint = '/api/quiz/command';
+      payload = { action: 'quiz_show.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+    } else if (game === 'duoi-hinh-bat-chu' || game === 'rebus') {
+      endpoint = '/api/rebus/command';
+      payload = { action: 'rebus.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+    }
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`🚀 [${game.toUpperCase()}] Đã phát giọng: "${cleanText.slice(0, 40)}..."`, 'success');
+      fetchRawLogs();
+    } else {
+      showToast(`Lỗi phát giọng: ${data.error || 'Thất bại'}`, 'error');
+    }
+  } catch (e) {
+    showToast(`Lỗi kết nối GameBridge: ${e.message}`, 'error');
+  }
+}
+
+function testLocalAdminTts() {
+  const txt = document.getElementById('input-tts-custom-text')?.value;
+  const lang = document.getElementById('select-tts-lang')?.value;
+  playLocalAdminTts(txt, lang);
+}
+
+function broadcastCurrentTts() {
+  const target = document.getElementById('select-tts-target-game')?.value || 'active';
+  const txt = document.getElementById('input-tts-custom-text')?.value;
+  const lang = document.getElementById('select-tts-lang')?.value;
+  broadcastGameTts(target, txt, lang);
+}
+
+function stopAdminTts() {
+  playSound('warn');
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  showToast('⏹ Đã dừng phát mọi giọng nói!', 'warn');
 }
 
 async function toggleAutoSim() {
@@ -1224,6 +2204,7 @@ function updateClockAndUptime() {
 // --- 15. Initial Setup ---
 window.addEventListener('DOMContentLoaded', () => {
   initTabs();
+  initAdminTts();
   initKeyboardShortcuts();
   setInterval(updateClockAndUptime, 1000);
   updateClockAndUptime();
@@ -1233,14 +2214,17 @@ window.addEventListener('DOMContentLoaded', () => {
     fetchStatus();
     fetchPorts();
     fetchSpectators();
-    fetchGiftMappings();
     fetchRawLogs();
+    if (document.getElementById('panel-economy')?.classList.contains('active')) {
+      fetchGiftAnalytics();
+      fetchGiftMappings();
+    }
   }, 1200);
 
   fetchProcessStatus();
   fetchStatus();
   fetchPorts();
   fetchSpectators();
-  fetchGiftMappings();
+  fetchGiftControlData();
   fetchRawLogs();
 });

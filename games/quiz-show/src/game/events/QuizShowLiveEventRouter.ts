@@ -5,6 +5,7 @@ import { StudentRoster } from '../systems/StudentRoster';
 import { GiftReactionController } from '../systems/GiftReactionController';
 import { Scoreboard } from '../ui/Scoreboard';
 import { ChoiceLetter } from '../types';
+import { TTSController } from '../systems/TTSController';
 
 export class QuizShowLiveEventRouter {
   private client: PTPlayGameClient;
@@ -12,17 +13,20 @@ export class QuizShowLiveEventRouter {
   private roster: StudentRoster;
   private giftController: GiftReactionController;
   private scoreboard: Scoreboard;
+  private tts?: TTSController;
 
   constructor(
     engine: QuizShowEngine,
     roster: StudentRoster,
     giftController: GiftReactionController,
-    scoreboard: Scoreboard
+    scoreboard: Scoreboard,
+    tts?: TTSController
   ) {
     this.engine = engine;
     this.roster = roster;
     this.giftController = giftController;
     this.scoreboard = scoreboard;
+    this.tts = tts;
 
     this.client = new PTPlayGameClient('quiz-show');
     this.client.onCommand((cmd: GameCommand) => this.handleCommand(cmd));
@@ -50,6 +54,7 @@ export class QuizShowLiveEventRouter {
       case 'quiz_show.join': {
         this.roster.registerOrGet(userId, nickname, avatarUrl);
         this.scoreboard.setChatTicker('vừa tham gia chương trình!', nickname);
+        this.tts?.announcePlayerJoin(nickname);
         break;
       }
 
@@ -74,11 +79,21 @@ export class QuizShowLiveEventRouter {
         this.roster.registerOrGet(userId, nickname, avatarUrl);
         this.giftController.triggerGiftReaction(giftName, nickname, avatarUrl);
         this.scoreboard.setChatTicker(`gửi tặng ${giftName}! 🎁`, nickname);
+        this.tts?.announceGift(nickname, giftName);
         break;
       }
 
       case 'quiz_show.reset': {
         this.engine.startShow();
+        break;
+      }
+
+      case 'quiz_show.tts_speak':
+      case 'tts_speak': {
+        const text = String(cmd.metadata?.text || cmd.metadata?.message || '');
+        if (text) {
+          this.tts?.speak(text, true);
+        }
         break;
       }
     }

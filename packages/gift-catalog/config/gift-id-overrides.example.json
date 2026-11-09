@@ -1,0 +1,4 @@
+{
+  "$comment": "Put VERIFIED giftId values here only after seeing a real TikFinity gift event. Do not assume name or catalog slug is the giftId.",
+  "overrides": []
+}

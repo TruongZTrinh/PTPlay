@@ -72,6 +72,9 @@ export class QuizShowEngine {
 
   public startShow(): void {
     this.roundNumber = 0;
+    if (this.config.ttsEnabled) {
+      this.ttsController.announceShowWelcome();
+    }
     this.nextRound();
   }
 
@@ -100,8 +103,7 @@ export class QuizShowEngine {
 
     // Host greets and asks question
     if (this.config.ttsEnabled) {
-      const introVoice = `Câu hỏi số ${this.roundNumber}! ${this.currentQuestion.question}`;
-      this.ttsController.speak(introVoice);
+      this.ttsController.announceQuestion(this.roundNumber, this.currentQuestion.question);
     }
 
     this.stateTimerHandle = setTimeout(() => {
@@ -117,6 +119,11 @@ export class QuizShowEngine {
       this.remainingTimeMs -= intervalMs;
       const secLeft = Math.ceil(this.remainingTimeMs / 1000);
       this.events.onTick?.(Math.max(0, secLeft), Math.ceil(this.totalTimeMs / 1000));
+
+      // Time warning at 5 seconds
+      if (this.remainingTimeMs <= 5000 && this.remainingTimeMs > 4800 && this.config.ttsEnabled) {
+        this.ttsController.announceTimeWarning();
+      }
 
       // Play clock tick audio
       if (this.remainingTimeMs > 0 && this.remainingTimeMs <= 4000 && this.remainingTimeMs % 1000 < intervalMs) {
@@ -191,8 +198,7 @@ export class QuizShowEngine {
 
     if (this.config.ttsEnabled) {
       const correctText = this.currentQuestion.options[correctChoice];
-      const revealVoice = `Đáp án chính xác là ${correctChoice}: ${correctText}. ${this.currentQuestion.explanation}`;
-      this.ttsController.speak(revealVoice);
+      this.ttsController.announceReveal(correctChoice, correctText, this.currentQuestion.explanation);
     }
 
     this.stateTimerHandle = setTimeout(() => {
@@ -217,7 +223,7 @@ export class QuizShowEngine {
     if (this.config.ttsEnabled) {
       const top3 = this.studentRoster.getTopPlayers(3);
       const champion = top3[0] ? top3[0].nickname : 'Cả lớp';
-      this.ttsController.speak(`Chúc mừng ${champion} đã xuất sắc đạt ngôi vô địch vòng chơi hôm nay!`);
+      this.ttsController.announceChampion(champion);
     }
 
     // After 15 seconds of ceremony, start next show round automatically
@@ -251,3 +257,4 @@ export class QuizShowEngine {
     this.clearTimers();
   }
 }
+

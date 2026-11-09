@@ -137,6 +137,41 @@ export class CafeScene extends Phaser.Scene {
         this.interactionController.handleGarden(cat.viewerId || 'admin', cat.nickname);
       }
     });
+    this.game.events.on('mock_angry', () => {
+      const cats = this.catManager.getAllCats();
+      if (cats.length > 0) {
+        const cat = cats[cats.length - 1];
+        this.interactionController.handleAngry(cat.viewerId || 'admin', cat.nickname);
+      }
+    });
+    this.game.events.on('mock_dance', () => {
+      const cats = this.catManager.getAllCats();
+      if (cats.length > 0) {
+        const cat = cats[cats.length - 1];
+        this.interactionController.handleDance(cat.viewerId || 'admin', cat.nickname);
+      }
+    });
+    this.game.events.on('mock_zoomies', () => {
+      const cats = this.catManager.getAllCats();
+      if (cats.length > 0) {
+        const cat = cats[cats.length - 1];
+        this.interactionController.handleZoomies(cat.viewerId || 'admin', cat.nickname);
+      }
+    });
+    this.game.events.on('mock_box', () => {
+      const cats = this.catManager.getAllCats();
+      if (cats.length > 0) {
+        const cat = cats[cats.length - 1];
+        this.interactionController.handleBox(cat.viewerId || 'admin', cat.nickname);
+      }
+    });
+    this.game.events.on('mock_bath', () => {
+      const cats = this.catManager.getAllCats();
+      if (cats.length > 0) {
+        const cat = cats[cats.length - 1];
+        this.interactionController.handleBath(cat.viewerId || 'admin', cat.nickname);
+      }
+    });
     this.game.events.on('mock_rose', () => this.mockHarness.simulateGift('Rose', 1));
     this.game.events.on('mock_heart', () => this.mockHarness.simulateGift('Heart', 1));
     this.game.events.on('mock_universe', () => this.mockHarness.simulateGift('Universe', 1));
@@ -182,6 +217,11 @@ export class CafeScene extends Phaser.Scene {
       this.input.keyboard.on('keydown-U', () => this.game.events.emit('mock_universe'));
       this.input.keyboard.on('keydown-O', () => this.game.events.emit('mock_lion'));
       this.input.keyboard.on('keydown-C', () => this.game.events.emit('mock_call'));
+      this.input.keyboard.on('keydown-A', () => this.game.events.emit('mock_angry'));
+      this.input.keyboard.on('keydown-D', () => this.game.events.emit('mock_dance'));
+      this.input.keyboard.on('keydown-Z', () => this.game.events.emit('mock_zoomies'));
+      this.input.keyboard.on('keydown-B', () => this.game.events.emit('mock_box'));
+      this.input.keyboard.on('keydown-T', () => this.game.events.emit('mock_bath'));
     }
   }
 
@@ -248,6 +288,26 @@ export class CafeScene extends Phaser.Scene {
 
       case 'cat_cafe.garden':
         this.interactionController.handleGarden(cmd.userId, cmd.nickname);
+        break;
+
+      case 'cat_cafe.angry':
+        this.interactionController.handleAngry(cmd.userId, cmd.nickname);
+        break;
+
+      case 'cat_cafe.dance':
+        this.interactionController.handleDance(cmd.userId, cmd.nickname);
+        break;
+
+      case 'cat_cafe.zoomies':
+        this.interactionController.handleZoomies(cmd.userId, cmd.nickname);
+        break;
+
+      case 'cat_cafe.box':
+        this.interactionController.handleBox(cmd.userId, cmd.nickname);
+        break;
+
+      case 'cat_cafe.bath':
+        this.interactionController.handleBath(cmd.userId, cmd.nickname);
         break;
 
       case 'cat_cafe.switch_room': {
@@ -331,16 +391,28 @@ export class CafeScene extends Phaser.Scene {
         const gx = cat ? cat.x : undefined;
         const gy = cat ? cat.y : undefined;
         const norm = giftName.toLowerCase();
-        if (norm.includes('rose') || norm.includes('hoa') || norm.includes('cá') || norm.includes('fish')) {
+        if (norm.includes('rose') || norm.includes('hoa') || norm.includes('grilled') || norm.includes('cá nướng')) {
           this.v3Visuals.play('rose', cat, gx, gy, count);
         } else if (norm.includes('heart') || norm.includes('tim')) {
           this.v3Visuals.play('heart', cat, gx, gy, count);
         } else if (norm.includes('universe') || norm.includes('vũ trụ')) {
           this.v3Visuals.play('universe', cat, gx, gy, count);
-        } else if (norm.includes('lion') || norm.includes('su tu')) {
+        } else if (norm.includes('lion') || norm.includes('su tu') || norm.includes('sư tử')) {
           this.v3Visuals.play('lion', cat, gx, gy, count);
         } else if (norm.includes('cake') || norm.includes('bánh')) {
           this.v3Visuals.play('cake', cat, gx, gy, count);
+        } else if (norm.includes('fish_basket') || norm.includes('giỏ cá') || norm.includes('basket')) {
+          this.v3Visuals.play('fish_basket', cat, gx, gy, count);
+        } else if (norm.includes('yarn') || norm.includes('len')) {
+          this.v3Visuals.play('yarn_ball', cat, gx, gy, count);
+        } else if (norm.includes('fireworks') || norm.includes('pháo')) {
+          this.v3Visuals.play('fireworks', cat, gx, gy, count);
+        } else if (norm.includes('perfume') || norm.includes('nước hoa')) {
+          this.v3Visuals.play('perfume', cat, gx, gy, count);
+        } else if (norm.includes('ice_cream') || norm.includes('kem')) {
+          this.v3Visuals.play('ice_cream', cat, gx, gy, count);
+        } else if (norm.includes('coffee') || norm.includes('cà phê')) {
+          this.v3Visuals.play('coffee', cat, gx, gy, count);
         } else {
           this.v3Visuals.play('rose', cat, gx, gy, count);
         }

@@ -55,3 +55,4 @@ export class TextNormalizer {
     return clean.length;
   }
 }
+

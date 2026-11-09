@@ -86,8 +86,25 @@ export class AudioManager {
     const now = this.ctx.currentTime;
     const effMaster = this.enabled ? this.masterVolume : 0;
     this.masterGain.gain.setValueAtTime(effMaster, now);
-    this.musicGain.gain.setValueAtTime(this.musicVolume * 0.35, now);
+    const musicEff = this.isDucked ? this.musicVolume * 0.15 : this.musicVolume * 0.35;
+    this.musicGain.gain.setValueAtTime(musicEff, now);
     this.sfxGain.gain.setValueAtTime(this.sfxVolume * 0.5, now);
+  }
+
+  private isDucked = false;
+
+  /** Duck battle background music volume during Vietnamese shoutcaster announcements */
+  public setDucking(isDucking: boolean): void {
+    this.isDucked = isDucking;
+    if (!this.ctx || !this.musicGain) return;
+    const now = this.ctx.currentTime;
+    const target = isDucking ? this.musicVolume * 0.12 : this.musicVolume * 0.35;
+    try {
+      this.musicGain.gain.cancelScheduledValues(now);
+      this.musicGain.gain.linearRampToValueAtTime(target, now + 0.12);
+    } catch {
+      this.musicGain.gain.value = target;
+    }
   }
 
   /** Rate limiter to avoid playing identical SFX dozens of times in the same frame */

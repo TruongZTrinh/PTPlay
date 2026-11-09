@@ -4,6 +4,7 @@ import { RebusEngine } from '../systems/RebusEngine';
 import { StudentRoster } from '../systems/StudentRoster';
 import { GiftReactionController } from '../systems/GiftReactionController';
 import { Scoreboard } from '../ui/Scoreboard';
+import { TTSController } from '../systems/TTSController';
 
 export class RebusLiveEventRouter {
   private client: PTPlayGameClient;
@@ -11,17 +12,20 @@ export class RebusLiveEventRouter {
   private roster: StudentRoster;
   private giftController: GiftReactionController;
   private scoreboard: Scoreboard;
+  private tts?: TTSController;
 
   constructor(
     engine: RebusEngine,
     roster: StudentRoster,
     giftController: GiftReactionController,
-    scoreboard: Scoreboard
+    scoreboard: Scoreboard,
+    tts?: TTSController
   ) {
     this.engine = engine;
     this.roster = roster;
     this.giftController = giftController;
     this.scoreboard = scoreboard;
+    this.tts = tts;
 
     this.client = new PTPlayGameClient('duoi-hinh-bat-chu');
     this.client.onCommand((cmd: GameCommand) => this.handleCommand(cmd));
@@ -49,6 +53,7 @@ export class RebusLiveEventRouter {
       case 'rebus.join': {
         this.roster.registerOrGet(userId, nickname, avatarUrl);
         this.scoreboard.setChatTicker('vừa tham gia phòng chơi!', nickname);
+        this.tts?.announcePlayerJoin(nickname);
         break;
       }
 
@@ -72,6 +77,7 @@ export class RebusLiveEventRouter {
         this.roster.registerOrGet(userId, nickname, avatarUrl);
         this.giftController.triggerGiftReaction(giftName, nickname, avatarUrl);
         this.scoreboard.setChatTicker(`gửi tặng ${giftName}! 🎁`, nickname);
+        this.tts?.announceGift(nickname, giftName);
         break;
       }
 
@@ -79,6 +85,16 @@ export class RebusLiveEventRouter {
         this.engine.startShow();
         break;
       }
+
+      case 'rebus.tts_speak':
+      case 'tts_speak': {
+        const text = String(cmd.metadata?.text || cmd.metadata?.message || '');
+        if (text) {
+          this.tts?.speak(text, true);
+        }
+        break;
+      }
     }
   }
 }
+

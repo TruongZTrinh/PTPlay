@@ -20,7 +20,8 @@
         "chatCommands": true,
         "giftStreaks": true,
         "teamBattles": true,
-        "bossSpawns": true
+        "bossSpawns": true,
+        "ttsHost": true
       }
     },
     {
@@ -40,7 +41,8 @@
         "chatCommands": true,
         "giftStreaks": true,
         "catInteractions": true,
-        "progression": true
+        "progression": true,
+        "ttsHost": true
       }
     },
     {

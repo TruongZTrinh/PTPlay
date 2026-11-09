@@ -142,7 +142,52 @@ async function runTests() {
     }
   });
 
-  await test('2.9 Unrelated Chat: Ignored cleanly and increments unknown counter', () => {
+  await test('2.9 Funny Cat Action Commands: Recognizes DỖI, CÁU, QUẠU, KHÈ, ANGRY (cat_cafe.angry)', () => {
+    const variants = ['DỖI', 'dỗi', 'CÁU', 'cáu', 'GIẬN', 'QUẠU', 'quạu', 'ANGRY', 'KHÈ', 'khè', 'hiss', 'grr'];
+    for (const v of variants) {
+      const res = adapter.parseComment('u1', '@u1', 'Nick', v);
+      assert(res !== null, `Variant '${v}' should be recognized as angry`);
+      assert.strictEqual(res.action, 'cat_cafe.angry');
+    }
+  });
+
+  await test('2.10 Funny Cat Action Commands: Recognizes QUẨY, NHẢY, MÚA, DANCE, PARTY (cat_cafe.dance)', () => {
+    const variants = ['QUẨY', 'quẩy', 'NHẢY', 'nhảy', 'MÚA', 'DANCE', 'dance', 'PARTY', 'lắc mông'];
+    for (const v of variants) {
+      const res = adapter.parseComment('u1', '@u1', 'Nick', v);
+      assert(res !== null, `Variant '${v}' should be recognized as dance`);
+      assert.strictEqual(res.action, 'cat_cafe.dance');
+    }
+  });
+
+  await test('2.11 Funny Cat Action Commands: Recognizes NGÁO, CHẠY, RUN, ZOOMIES, PHI (cat_cafe.zoomies)', () => {
+    const variants = ['NGÁO', 'ngáo', 'CHẠY', 'chạy', 'RUN', 'ZOOM', 'zoomies', 'PHI', 'mèo ngáo'];
+    for (const v of variants) {
+      const res = adapter.parseComment('u1', '@u1', 'Nick', v);
+      assert(res !== null, `Variant '${v}' should be recognized as zoomies`);
+      assert.strictEqual(res.action, 'cat_cafe.zoomies');
+    }
+  });
+
+  await test('2.12 Funny Cat Action Commands: Recognizes HỘP, THÙNG, BOX, TRỐN (cat_cafe.box)', () => {
+    const variants = ['HỘP', 'hộp', 'THÙNG', 'thùng', 'BOX', 'box', 'chui hộp', 'trốn'];
+    for (const v of variants) {
+      const res = adapter.parseComment('u1', '@u1', 'Nick', v);
+      assert(res !== null, `Variant '${v}' should be recognized as box`);
+      assert.strictEqual(res.action, 'cat_cafe.box');
+    }
+  });
+
+  await test('2.13 Funny Cat Action Commands: Recognizes TẮM, BATH, LIẾM, CLEAN, GÃI (cat_cafe.bath)', () => {
+    const variants = ['TẮM', 'tắm', 'BATH', 'bath', 'LIẾM', 'liếm lông', 'tắm rửa', 'clean'];
+    for (const v of variants) {
+      const res = adapter.parseComment('u1', '@u1', 'Nick', v);
+      assert(res !== null, `Variant '${v}' should be recognized as bath`);
+      assert.strictEqual(res.action, 'cat_cafe.bath');
+    }
+  });
+
+  await test('2.14 Unrelated Chat: Ignored cleanly and increments unknown counter', () => {
     const initialUnknown = adapter.unknownCommandCount;
     const res1 = adapter.parseComment('u1', '@u1', 'Nick', 'Xin chào shop');
     const res2 = adapter.parseComment('u1', '@u1', 'Nick', 'ĐỎ CỐ LÊN'); // Mini war command
@@ -369,6 +414,35 @@ async function runTests() {
     const returnMsg = tts.welcomeReturningViewer('MinhQuân');
     assert(returnMsg.length > 10, 'Must generate return greeting');
     assert(returnMsg.includes('MinhQuân'), 'Greeting must include returning nickname');
+  });
+
+  await test('8.4 TTS Controller: Supports gift and level up announcements in Vietnamese', () => {
+    const tts = TTSController.getInstance();
+    assert.strictEqual(tts.getEnabled(), true);
+    // announceGift and announceLevelUp should execute cleanly
+    tts.announceGift('LanAnh', 'Hoa Hồng', 5);
+    tts.announceGift('ĐạiGia', 'Sư Tử', 1);
+    tts.announceLevelUp(3);
+    assert.strictEqual(typeof tts.testVoice, 'function');
+  });
+
+  await test('8.5 TTS Controller: Generates hilarious commentary for angry, dance, zoomies, box, bath', () => {
+    const tts = TTSController.getInstance();
+    const angryMsg = tts.announceAngry('MèoMướp');
+    assert(angryMsg.includes('MèoMướp'), 'Angry announcement must include nickname');
+    assert(angryMsg.length > 15, 'Angry announcement must have non-empty text');
+
+    const danceMsg = tts.announceDance('MèoMướp');
+    assert(danceMsg.includes('MèoMướp'), 'Dance announcement must include nickname');
+
+    const zoomMsg = tts.announceZoomies('MèoMướp');
+    assert(zoomMsg.includes('MèoMướp'), 'Zoomies announcement must include nickname');
+
+    const boxMsg = tts.announceBox('MèoMướp');
+    assert(boxMsg.includes('MèoMướp'), 'Box announcement must include nickname');
+
+    const bathMsg = tts.announceBath('MèoMướp');
+    assert(bathMsg.includes('MèoMướp'), 'Bath announcement must include nickname');
   });
 
   console.log('\n========================================================');

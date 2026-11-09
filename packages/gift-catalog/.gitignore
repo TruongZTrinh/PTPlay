@@ -1,0 +1,9 @@
+# Large upstream snapshots and images; manage/version intentionally.
+data/tiktok-gifts.all.json
+data/tiktok-gifts.vn.json
+data/tiktok-gifts.all.csv
+data/tiktok-gifts.vn.csv
+data/gifts.observed-ids.json
+assets/tiktok-gift-icons.zip
+assets/transparent-icons/
+*.part

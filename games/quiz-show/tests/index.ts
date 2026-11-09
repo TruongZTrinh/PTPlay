@@ -147,6 +147,33 @@ async function runTests() {
     engine.destroy();
   });
 
+  // 6. TTS CONTROLLER & VIETNAMESE ANNOUNCEMENTS
+  test('7. TTS Controller: Supports full Vietnamese host announcements and voice test', () => {
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    assert.strictEqual(tts.isEnabled, true);
+    assert.strictEqual(tts.rate >= 1.0, true);
+    assert.strictEqual(tts.pitch >= 1.0, true);
+
+    // Call voice announcements to verify no exceptions
+    tts.announceShowWelcome();
+    tts.announcePlayerJoin('Minh Hằng');
+    tts.announceQuestion(1, 'Thủ đô của Việt Nam là gì?');
+    tts.announceTimeWarning();
+    tts.announceReveal('A', 'Hà Nội', 'Hà Nội là thủ đô của nước ta');
+    tts.announceStreak('Minh Hằng', 4);
+    tts.announceGift('Minh Hằng', 'Hoa Hồng');
+    tts.announceChampion('Minh Hằng');
+
+    tts.setEnabled(false);
+    assert.strictEqual(tts.isEnabled, false);
+    tts.setEnabled(true);
+    assert.strictEqual(tts.isEnabled, true);
+
+    tts.destroy();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');
@@ -158,3 +185,4 @@ async function runTests() {
 }
 
 void runTests();
+

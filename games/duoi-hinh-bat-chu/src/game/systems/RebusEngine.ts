@@ -84,6 +84,9 @@ export class RebusEngine {
 
   public startShow(): void {
     this.roundNumber = 0;
+    if (this.config.ttsEnabled) {
+      this.ttsController.announceShowWelcome();
+    }
     this.nextRound();
   }
 
@@ -115,7 +118,7 @@ export class RebusEngine {
     this.events.onPuzzleStarted?.(this.currentPuzzle, this.roundNumber, this.totalRounds);
 
     if (this.config.ttsEnabled) {
-      this.ttsController.speak(`Câu đố số ${this.roundNumber}! Hai hình ảnh ghép thành từ gì nào cả lớp!`);
+      this.ttsController.announceRoundStart(this.roundNumber);
     }
 
     this.stateTimerHandle = setTimeout(() => {
@@ -167,6 +170,11 @@ export class RebusEngine {
       // 2. Hint 2 at 85% elapsed time
       if (!this.hint2Given && elapsedRatio >= 0.85) {
         this.triggerHint2();
+      }
+
+      // Time warning at 5 seconds remaining
+      if (this.remainingTimeMs <= 5000 && this.remainingTimeMs > 4800 && this.config.ttsEnabled) {
+        this.ttsController.announceTimeWarning();
       }
 
       // Audio ticks
@@ -225,10 +233,7 @@ export class RebusEngine {
       }
 
       if (this.config.ttsEnabled && player) {
-        this.ttsController.speak(
-          `Chính xác! ${player.nickname} đã đoán đúng đáp án ${this.currentPuzzle.answer}!`,
-          true
-        );
+        this.ttsController.announceCorrect(player.nickname, this.currentPuzzle.answer);
       }
 
       this.stateTimerHandle = setTimeout(() => {
@@ -250,7 +255,7 @@ export class RebusEngine {
     this.events.onHint1Triggered?.(this.currentPuzzle.hint1);
 
     if (this.config.ttsEnabled) {
-      this.ttsController.speak(`Gợi ý: ${this.currentPuzzle.hint1}`);
+      this.ttsController.announceHint(this.currentPuzzle.hint1);
     }
   }
 
@@ -262,7 +267,7 @@ export class RebusEngine {
     this.events.onHint2Triggered?.(this.currentPuzzle.hint2, firstChar);
 
     if (this.config.ttsEnabled) {
-      this.ttsController.speak(`Gợi ý chữ cái đầu là chữ: ${firstChar}`);
+      this.ttsController.announceFirstChar(firstChar);
     }
   }
 
@@ -282,9 +287,7 @@ export class RebusEngine {
     this.events.onPuzzleRevealed?.(this.currentPuzzle, this.isSolvedInCurrentRound);
 
     if (!this.isSolvedInCurrentRound && this.config.ttsEnabled) {
-      this.ttsController.speak(
-        `Hết giờ! Đáp án chính xác là: ${this.currentPuzzle.answer}. ${this.currentPuzzle.explanation}`
-      );
+      this.ttsController.announceTimeout(this.currentPuzzle.answer, this.currentPuzzle.explanation);
     }
 
     this.stateTimerHandle = setTimeout(() => {
@@ -309,7 +312,7 @@ export class RebusEngine {
     if (this.config.ttsEnabled) {
       const top3 = this.studentRoster.getTopPlayers(3);
       const champion = top3[0] ? top3[0].nickname : 'Cả lớp';
-      this.ttsController.speak(`Vinh danh nhà vô địch Đuổi Hình Bắt Chữ hôm nay: ${champion}!`);
+      this.ttsController.announceChampion(champion);
     }
 
     this.stateTimerHandle = setTimeout(() => {

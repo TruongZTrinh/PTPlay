@@ -82,3 +82,4 @@ export class SeatAllocator {
     this.seats.forEach((s) => (s.assignedUserId = null));
   }
 }
+

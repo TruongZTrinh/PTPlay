@@ -126,11 +126,20 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       this.giftController.triggerGiftReaction('Lion', 'Đại Gia');
     });
 
-    this.createButton(270, 720, '🌌 Quà Universe Vũ Trụ', 0x6d28d9, () => {
+    this.createButton(140, 720, '🗣️ Bật/Tắt TTS', 0x059669, () => {
+      this.tts.setEnabled(!this.tts.isEnabled);
+    });
+
+    this.createButton(380, 720, '🎙️ Thử Giọng MC', 0x2563eb, () => {
+      this.tts.testVoice();
+    });
+
+    this.createButton(270, 765, '🌌 Quà Universe Vũ Trụ', 0x6d28d9, () => {
       this.giftController.triggerGiftReaction('Universe', 'Top 1 Fan');
     });
 
-    this.createButton(270, 800, '❌ Đóng Bảng Điều Khiển', 0x334155, () => this.toggle());
+    // Close button
+    this.createButton(270, 815, '❌ Đóng Bảng Điều Khiển', 0x334155, () => this.toggle());
   }
 
   private createButton(x: number, y: number, text: string, color: number, onClick: () => void): void {
@@ -161,3 +170,4 @@ export class StreamerModal extends Phaser.GameObjects.Container {
     this.setVisible(this.isModalVisible);
   }
 }
+

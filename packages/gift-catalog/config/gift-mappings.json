@@ -1,0 +1,320 @@
+{
+  "formatVersion": 1,
+  "updatedAt": "2026-11-09T05:18:32.416Z",
+  "total": 25,
+  "rules": [
+    {
+      "id": "mw_rose",
+      "gameType": "mini-war",
+      "giftName": "Rose",
+      "action": "spawn_unit",
+      "unitType": "warrior",
+      "multiplier": 2,
+      "cooldownSec": 0,
+      "maxPerEvent": 20,
+      "enabled": true,
+      "description": "Triệu hồi 2 Chiến Binh"
+    },
+    {
+      "id": "mw_heart",
+      "gameType": "mini-war",
+      "giftName": "Heart",
+      "action": "spawn_unit",
+      "unitType": "archer",
+      "multiplier": 2,
+      "cooldownSec": 0.5,
+      "maxPerEvent": 10,
+      "enabled": true,
+      "description": "Triệu hồi 2 Cung Thủ"
+    },
+    {
+      "id": "mw_fireworks",
+      "gameType": "mini-war",
+      "giftName": "Fireworks",
+      "action": "spawn_unit",
+      "unitType": "tank",
+      "multiplier": 1,
+      "cooldownSec": 2,
+      "maxPerEvent": 4,
+      "enabled": true,
+      "description": "Triệu hồi Hộ Vệ Giáp Thép"
+    },
+    {
+      "id": "mw_icecream",
+      "gameType": "mini-war",
+      "giftName": "Ice Cream",
+      "action": "spawn_unit",
+      "unitType": "mage",
+      "multiplier": 1,
+      "cooldownSec": 1,
+      "maxPerEvent": 6,
+      "enabled": true,
+      "description": "Triệu hồi Pháp Sư Lửa"
+    },
+    {
+      "id": "mw_lion",
+      "gameType": "mini-war",
+      "giftName": "Lion",
+      "action": "spawn_boss",
+      "unitType": "boss",
+      "multiplier": 1,
+      "cooldownSec": 10,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Triệu hồi ĐẠI TƯỚNG BOSS"
+    },
+    {
+      "id": "mw_universe",
+      "gameType": "mini-war",
+      "giftName": "TikTok Universe",
+      "action": "spawn_boss",
+      "unitType": "boss",
+      "multiplier": 1,
+      "cooldownSec": 10,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Triệu hồi Boss Vũ Trụ"
+    },
+    {
+      "id": "cat_rose",
+      "gameType": "cat-cafe",
+      "giftName": "Rose",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "grilled_fish"
+      },
+      "cooldownSec": 0,
+      "maxPerEvent": 20,
+      "enabled": true,
+      "description": "Thưởng Cá Nướng thơm lừng"
+    },
+    {
+      "id": "cat_heart",
+      "gameType": "cat-cafe",
+      "giftName": "Heart",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "heart_rain"
+      },
+      "cooldownSec": 0.5,
+      "maxPerEvent": 15,
+      "enabled": true,
+      "description": "Mưa tim hạnh phúc"
+    },
+    {
+      "id": "cat_lion",
+      "gameType": "cat-cafe",
+      "giftName": "Lion",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "royal_cat"
+      },
+      "cooldownSec": 5,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Mèo Hoàng Gia Đăng Quang"
+    },
+    {
+      "id": "cat_universe",
+      "gameType": "cat-cafe",
+      "giftName": "TikTok Universe",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "cosmic_party"
+      },
+      "cooldownSec": 10,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Đại Tiệc Mèo Vũ Trụ"
+    },
+    {
+      "id": "cat_cake",
+      "gameType": "cat-cafe",
+      "giftName": "Cake",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "cake_party"
+      },
+      "cooldownSec": 3,
+      "maxPerEvent": 2,
+      "enabled": true,
+      "description": "Tiệc Bánh Kem Sinh Nhật"
+    },
+    {
+      "id": "cat_yarn",
+      "gameType": "cat-cafe",
+      "giftName": "Yarn Ball",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "yarn_ball"
+      },
+      "cooldownSec": 1,
+      "maxPerEvent": 5,
+      "enabled": true,
+      "description": "Cuộn len đùa nghịch"
+    },
+    {
+      "id": "cat_fireworks",
+      "gameType": "cat-cafe",
+      "giftName": "Fireworks",
+      "action": "cat_cafe.gift_effect",
+      "params": {
+        "effect": "fireworks"
+      },
+      "cooldownSec": 3,
+      "maxPerEvent": 2,
+      "enabled": true,
+      "description": "Pháo hoa rực rỡ"
+    },
+    {
+      "id": "cat_dance",
+      "gameType": "cat-cafe",
+      "giftName": "Perfume",
+      "action": "cat_cafe.dance",
+      "cooldownSec": 4,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Mèo quẩy Disco tưng bừng"
+    },
+    {
+      "id": "ec_rose",
+      "gameType": "english-class",
+      "giftName": "Rose",
+      "action": "english_class.gift",
+      "params": {
+        "effect": "rose_petals"
+      },
+      "cooldownSec": 0,
+      "maxPerEvent": 10,
+      "enabled": true,
+      "description": "Mưa cánh hoa hồng"
+    },
+    {
+      "id": "ec_heart",
+      "gameType": "english-class",
+      "giftName": "Heart",
+      "action": "english_class.gift",
+      "params": {
+        "effect": "heart_rain"
+      },
+      "cooldownSec": 0.5,
+      "maxPerEvent": 10,
+      "enabled": true,
+      "description": "Mưa tim yêu thích lớp học"
+    },
+    {
+      "id": "ec_lion",
+      "gameType": "english-class",
+      "giftName": "Lion",
+      "action": "english_class.gift",
+      "params": {
+        "effect": "royal_spotlight"
+      },
+      "cooldownSec": 5,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Spotlight Vinh Danh Học Sinh"
+    },
+    {
+      "id": "ec_universe",
+      "gameType": "english-class",
+      "giftName": "TikTok Universe",
+      "action": "english_class.gift",
+      "params": {
+        "effect": "galaxy_party"
+      },
+      "cooldownSec": 8,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Đại Tiệc Dải Ngân Hà"
+    },
+    {
+      "id": "qs_rose",
+      "gameType": "quiz-show",
+      "giftName": "Rose",
+      "action": "quiz_show.gift",
+      "params": {
+        "effect": "rose"
+      },
+      "cooldownSec": 0,
+      "maxPerEvent": 10,
+      "enabled": true,
+      "description": "Hoa hồng cổ vũ thí sinh"
+    },
+    {
+      "id": "qs_heart",
+      "gameType": "quiz-show",
+      "giftName": "Heart",
+      "action": "quiz_show.gift",
+      "params": {
+        "effect": "heart"
+      },
+      "cooldownSec": 0.5,
+      "maxPerEvent": 10,
+      "enabled": true,
+      "description": "Thả tim khán đài"
+    },
+    {
+      "id": "qs_lion",
+      "gameType": "quiz-show",
+      "giftName": "Lion",
+      "action": "quiz_show.gift",
+      "params": {
+        "effect": "lion_spotlight"
+      },
+      "cooldownSec": 5,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Spotlight Đấu Trường Sư Tử"
+    },
+    {
+      "id": "qs_universe",
+      "gameType": "quiz-show",
+      "giftName": "TikTok Universe",
+      "action": "quiz_show.gift",
+      "params": {
+        "effect": "universe_galaxy"
+      },
+      "cooldownSec": 8,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Bão Vũ Trụ Sân Khấu"
+    },
+    {
+      "id": "dh_rose",
+      "gameType": "duoi-hinh-bat-chu",
+      "giftName": "Rose",
+      "action": "rebus.gift",
+      "params": {
+        "effect": "rose"
+      },
+      "cooldownSec": 0,
+      "maxPerEvent": 10,
+      "enabled": true,
+      "description": "Hoa hồng tặng thám tử"
+    },
+    {
+      "id": "dh_lion",
+      "gameType": "duoi-hinh-bat-chu",
+      "giftName": "Lion",
+      "action": "rebus.gift",
+      "params": {
+        "effect": "lion_spotlight"
+      },
+      "cooldownSec": 5,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Vinh quang Thám Tử Kỳ Tài"
+    },
+    {
+      "id": "dh_perfume",
+      "gameType": "duoi-hinh-bat-chu",
+      "giftName": "Perfume",
+      "action": "rebus.hint",
+      "cooldownSec": 6,
+      "maxPerEvent": 1,
+      "enabled": true,
+      "description": "Mở khóa gợi ý chữ cái đầu"
+    }
+  ]
+}

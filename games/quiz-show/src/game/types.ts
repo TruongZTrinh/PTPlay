@@ -78,3 +78,4 @@ export interface QuizShowConfig {
   theme: StageTheme;
   mode: QuizShowMode;
 }
+

@@ -28,3 +28,4 @@ export class TextSanitizer {
       .replace(/Đ/g, 'D');
   }
 }
+

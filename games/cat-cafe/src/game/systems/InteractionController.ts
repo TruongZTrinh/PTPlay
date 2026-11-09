@@ -240,6 +240,101 @@ export class InteractionController {
     return { success: true, action: 'cat_cafe.garden', messageVi: msg };
   }
 
+  public handleAngry(viewerId: string, nickname: string): InteractionResponse {
+    const cat = this.catManager.getCatByViewerId(viewerId);
+    if (!cat) {
+      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      this.notify(msg);
+      return { success: false, action: 'cat_cafe.angry', messageVi: msg };
+    }
+
+    if (this.isRateLimited(viewerId)) return { success: false, action: 'cat_cafe.angry', messageVi: 'Chờ chút nhé!' };
+
+    cat.becomeAngry();
+    TTSController.getInstance().announceAngry(cat.nickname);
+    ProgressionManager.getInstance().addPurrPoints(3);
+
+    const msg = `😾 @${cat.nickname} đang giận dỗi tím người kìa! Mau dỗ trẫm đi!`;
+    this.notify(msg);
+    return { success: true, action: 'cat_cafe.angry', messageVi: msg };
+  }
+
+  public handleDance(viewerId: string, nickname: string): InteractionResponse {
+    const cat = this.catManager.getCatByViewerId(viewerId);
+    if (!cat) {
+      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      this.notify(msg);
+      return { success: false, action: 'cat_cafe.dance', messageVi: msg };
+    }
+
+    if (this.isRateLimited(viewerId)) return { success: false, action: 'cat_cafe.dance', messageVi: 'Chờ chút nhé!' };
+
+    cat.doDance();
+    TTSController.getInstance().announceDance(cat.nickname);
+    ProgressionManager.getInstance().addPurrPoints(5);
+
+    const msg = `💃 @${cat.nickname} đang bật chế độ quẩy tưng bừng! Nhảy cực sung!`;
+    this.notify(msg);
+    return { success: true, action: 'cat_cafe.dance', messageVi: msg };
+  }
+
+  public handleZoomies(viewerId: string, nickname: string): InteractionResponse {
+    const cat = this.catManager.getCatByViewerId(viewerId);
+    if (!cat) {
+      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      this.notify(msg);
+      return { success: false, action: 'cat_cafe.zoomies', messageVi: msg };
+    }
+
+    if (this.isRateLimited(viewerId)) return { success: false, action: 'cat_cafe.zoomies', messageVi: 'Chờ chút nhé!' };
+
+    cat.doZoomies();
+    TTSController.getInstance().announceZoomies(cat.nickname);
+    ProgressionManager.getInstance().addPurrPoints(5);
+
+    const msg = `⚡ @${cat.nickname} bị ngáo ba giờ sáng, phóng bạt mạng không phanh!`;
+    this.notify(msg);
+    return { success: true, action: 'cat_cafe.zoomies', messageVi: msg };
+  }
+
+  public handleBox(viewerId: string, nickname: string): InteractionResponse {
+    const cat = this.catManager.getCatByViewerId(viewerId);
+    if (!cat) {
+      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      this.notify(msg);
+      return { success: false, action: 'cat_cafe.box', messageVi: msg };
+    }
+
+    if (this.isRateLimited(viewerId)) return { success: false, action: 'cat_cafe.box', messageVi: 'Chờ chút nhé!' };
+
+    cat.hideInBox();
+    TTSController.getInstance().announceBox(cat.nickname);
+    ProgressionManager.getInstance().addPurrPoints(4);
+
+    const msg = `📦 @${cat.nickname} đã chui tọt vào hộp các-tông ngồi tự kỷ!`;
+    this.notify(msg);
+    return { success: true, action: 'cat_cafe.box', messageVi: msg };
+  }
+
+  public handleBath(viewerId: string, nickname: string): InteractionResponse {
+    const cat = this.catManager.getCatByViewerId(viewerId);
+    if (!cat) {
+      const msg = `@${nickname} ơi: Gõ 'MÈO' để nhận mèo của bạn trước nhé! 🐾`;
+      this.notify(msg);
+      return { success: false, action: 'cat_cafe.bath', messageVi: msg };
+    }
+
+    if (this.isRateLimited(viewerId)) return { success: false, action: 'cat_cafe.bath', messageVi: 'Chờ chút nhé!' };
+
+    cat.takeBath();
+    TTSController.getInstance().announceBath(cat.nickname);
+    ProgressionManager.getInstance().addPurrPoints(4);
+
+    const msg = `🧼 @${cat.nickname} đang tắm rửa liếm lông siêu điệu đà, xinh xắn!`;
+    this.notify(msg);
+    return { success: true, action: 'cat_cafe.bath', messageVi: msg };
+  }
+
   public handleGift(viewerId: string, nickname: string, giftName: string, count = 1): InteractionResponse {
     const normalizedGift = giftName.toLowerCase().trim();
     let cat = this.catManager.getCatByViewerId(viewerId);
@@ -251,6 +346,9 @@ export class InteractionController {
 
     // Award bonus Purr Points for gifts
     ProgressionManager.getInstance().addPurrPoints(15 * Math.min(count, 10));
+
+    // Announce via Vietnamese TTS
+    TTSController.getInstance().announceGift(nickname, giftName, count);
 
     if (normalizedGift.includes('rose') || normalizedGift.includes('hoa') || normalizedGift.includes('cá') || normalizedGift.includes('fish')) {
       this.simulation.setSpecialFishBowl();
@@ -278,12 +376,39 @@ export class InteractionController {
       return { success: true, action: 'cat_cafe.gift_effect', messageVi: msg };
     }
 
-    if (normalizedGift.includes('lion') || normalizedGift.includes('su tu')) {
+    if (normalizedGift.includes('lion') || normalizedGift.includes('su tu') || normalizedGift.includes('sư tử')) {
       CafeAudioEngine.getInstance().playLevelUp();
       CafeAudioEngine.getInstance().playSparkleShower();
       this.effectManager.triggerCafeCelebration(`🦁 ĐẠI LỄ HOÀNG GIA: @${nickname} TẶNG LION! 👑`);
       if (cat) cat.becomeRoyal(8500);
       const msg = `👑 @${nickname} tặng LION x${count}! Mèo đăng quang Vua Hoàng Gia! 🦁`;
+      this.notify(msg);
+      return { success: true, action: 'cat_cafe.gift_effect', messageVi: msg };
+    }
+
+    if (normalizedGift.includes('cake') || normalizedGift.includes('bánh')) {
+      CafeAudioEngine.getInstance().playLevelUp();
+      CafeAudioEngine.getInstance().playSparkleShower();
+      if (cat) cat.eatFood();
+      const msg = `🎂 Quà Bánh Kem x${count} từ @${nickname}! Cả quán mèo ăn tiệc ngọt ngào!`;
+      this.notify(msg);
+      return { success: true, action: 'cat_cafe.gift_effect', messageVi: msg };
+    }
+
+    if (normalizedGift.includes('yarn') || normalizedGift.includes('len')) {
+      CafeAudioEngine.getInstance().playYarnJingle();
+      if (cat) cat.playWithToy();
+      const msg = `🧶 Quà Cuộn Len x${count} từ @${nickname}! Bé mèo đùa nghịch tưng bừng!`;
+      this.notify(msg);
+      return { success: true, action: 'cat_cafe.gift_effect', messageVi: msg };
+    }
+
+    if (normalizedGift.includes('fireworks') || normalizedGift.includes('pháo')) {
+      CafeAudioEngine.getInstance().playLevelUp();
+      CafeAudioEngine.getInstance().playSparkleShower();
+      this.effectManager.triggerCafeCelebration(`🎆 PHÁO HOA RỰC RỠ TỪ @${nickname}! ✨`);
+      if (cat) cat.becomeParty(4000);
+      const msg = `🎆 @${nickname} tặng Pháo Hoa x${count}! Rực sáng cả quán mèo!`;
       this.notify(msg);
       return { success: true, action: 'cat_cafe.gift_effect', messageVi: msg };
     }

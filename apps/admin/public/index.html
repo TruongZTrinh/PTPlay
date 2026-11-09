@@ -96,11 +96,17 @@
           <span class="tab-pill" id="pill-nav-specs">0</span>
         </button>
         <button class="tab-btn" data-tab="economy">
-          <span class="tab-icon">💎</span>
-          <span class="tab-label">Quy Tắc Quà Tặng</span>
+          <span class="tab-icon">🎁</span>
+          <span class="tab-label">Quà Tặng & Mappings</span>
+          <span class="tab-pill" id="pill-nav-gifts" style="background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid rgba(245,158,11,0.4);">727 VN</span>
         </button>
 
         <div class="nav-section-title">OPERATIONS & CONTROL</div>
+        <button class="tab-btn" data-tab="ttsstudio">
+          <span class="tab-icon">🗣️</span>
+          <span class="tab-label">TTS Studio & Giọng Đọc</span>
+          <span class="tab-pill" id="pill-nav-tts" style="background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4);">Ready</span>
+        </button>
         <button class="tab-btn" data-tab="simulator">
           <span class="tab-icon">🧪</span>
           <span class="tab-label">TikTok LIVE Studio</span>
@@ -679,6 +685,70 @@
             </div>
           </div>
 
+          <!-- MINI WAR TIKTOK GIFTS -->
+          <div class="card" style="border-top: 3px solid #ffcc00;">
+            <div class="card-header">
+              <div class="card-title">🎁 Quà Tặng TikTok Chiến Trường (Mini War Arena Gifts)</div>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà Tiếp Viện Chiến Trường:</label>
+              <div class="btn-group">
+                <button class="btn-red" onclick="sendMockGift('mini-war', 'Rose', 1)">🌹 1 Rose (1x Chiến Binh)</button>
+                <button class="btn-red" onclick="sendMockGift('mini-war', 'Rose', 5)">🌹 5 Roses (Đội Quân Hoa Hồng)</button>
+                <button class="btn-gold" onclick="sendMockGift('mini-war', 'Heart', 1)">❤️ 1 Heart (Hồi Máu Thành)</button>
+                <button class="btn-gold" onclick="sendMockGift('mini-war', 'Heart', 10)">💖 10 Hearts (Bão Hồi Máu)</button>
+                <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('mini-war', 'Lion', 1)">🦁 Lion (Triệu Hồi Siêu Trùm Boss)</button>
+                <button class="btn-blue" onclick="sendMockGift('mini-war', 'Universe', 1)">🌌 Universe (Đại Tiệc Thiên Hà - All Boost)</button>
+                <button class="btn-outline" onclick="sendMockGift('mini-war', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
+                <button class="btn-gold" onclick="sendMockGift('mini-war', 'Crown', 1)">👑 Vương Miện Chi Viện</button>
+              </div>
+            </div>
+
+            <!-- Custom Gift Sender for Mini War -->
+            <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px;">
+              <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Tiếp Viện Tùy Chỉnh:</label>
+              <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                <div>
+                  <label style="font-size: 10px;">Khán Giả / Viewer:</label>
+                  <input type="text" id="input-mini-war-gift-nick" value="TướngQuânVIP" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                </div>
+                <div>
+                  <label style="font-size: 10px;">Loại Quà (Gift):</label>
+                  <select id="select-mini-war-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                    <option value="Rose">🌹 Rose (Chiến Binh)</option>
+                    <option value="Heart">❤️ Heart (Hồi Máu / Cung Thủ)</option>
+                    <option value="Lion">🦁 Lion (Siêu Trùm Boss)</option>
+                    <option value="Universe">🌌 Universe (Thiên Hà)</option>
+                    <option value="Crown">👑 Crown (Vương Miện)</option>
+                    <option value="Fireworks">🎆 Fireworks (Pháo Hoa)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size: 10px;">Số Lượng (Count):</label>
+                  <input type="number" id="input-mini-war-gift-count" value="1" min="1" max="100" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                </div>
+                <div>
+                  <button class="btn-gold" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;" onclick="sendCustomMockGift('mini-war')">🎁 Gửi Quà</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="border-top: 3px solid var(--accent);">
+            <div class="card-header">
+              <div class="card-title">🗣️ Bình Luận Viên Tiếng Việt (Vietnamese TTS Shoutcaster)</div>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Phát Giọng BLV Chiến Trường Trực Tiếp:</label>
+              <div class="btn-group" style="margin-top: 4px;">
+                <button class="btn-green" onclick="sendMwCommand('tts_speak', undefined, undefined, 1, { text: 'Trận chiến bắt đầu! Phe Đỏ và Phe Xanh sẵn sàng!' })">🗣️ Bắt Đầu Vòng Đấu</button>
+                <button class="btn-red" onclick="sendMwCommand('tts_speak', undefined, undefined, 1, { text: 'Căn cứ phe Đỏ đang bị tấn công dữ dội!' })">⚠️ Cảnh Báo Phe Đỏ</button>
+                <button class="btn-blue" onclick="sendMwCommand('tts_speak', undefined, undefined, 1, { text: 'Căn cứ phe Xanh đang bị tấn công dữ dội!' })">⚠️ Cảnh Báo Phe Xanh</button>
+                <button class="btn-gold" onclick="sendMwCommand('tts_speak', undefined, undefined, 1, { text: 'Báo động! Trùm Hỏa Ngục khổng lồ đã xuất hiện trên chiến trường!' })">👑 Xuất Trận Boss</button>
+                <button class="btn-outline" onclick="sendMwCommand('tts_speak', undefined, undefined, 1, { text: 'Đấu Trường Chiến Binh xin chào! Giọng bình luận viên tiếng Việt sẵn sàng!' })">🎙️ Thử Giọng BLV</button>
+              </div>
+            </div>
+          </div>
+
         </section>
 
         <!-- ==================== TAB 3: CAT CAFÉ CONSOLE ==================== -->
@@ -820,10 +890,10 @@
             </div>
           </div>
 
-          <!-- 8 CHAT COMMANDS & GIFTS -->
+          <!-- 13 CHAT COMMANDS & GIFTS -->
           <div class="grid-2">
             <div class="card">
-              <div class="card-header"><div class="card-title">🐾 8 Lệnh Chat Khán Giả</div></div>
+              <div class="card-header"><div class="card-title">🐾 13 Lệnh Chat Khán Giả (Hài Hước & Đáng Yêu)</div></div>
               <div class="btn-group">
                 <button class="btn-blue" onclick="sendMockChat('cat', undefined, 'MÈO')">🐾 1. 'MÈO' (Nhận mèo)</button>
                 <button class="btn-gold" onclick="sendMockChat('cat', undefined, 'ĂN')">🍗 2. 'ĂN' (Cho mèo ăn cá)</button>
@@ -833,16 +903,91 @@
                 <button class="btn-primary" onclick="sendMockChat('cat', undefined, 'GỌI')">📣 6. 'GỌI' (Ra chào)</button>
                 <button class="btn-outline" onclick="sendMockChat('cat', undefined, 'CHỤP')">📸 7. 'CHỤP' (Tạo dáng)</button>
                 <button class="btn-green" onclick="sendMockChat('cat', undefined, 'VƯỜN')">🌿 8. 'VƯỜN' (Ra vườn)</button>
+                <button class="btn-red" onclick="sendMockChat('cat', undefined, 'DỖI')">😾 9. 'DỖI' (Mèo cáu quạu / khè)</button>
+                <button class="btn-gold" onclick="sendMockChat('cat', undefined, 'QUẨY')">💃 10. 'QUẨY' (Nhảy múa disco)</button>
+                <button class="btn-blue" onclick="sendMockChat('cat', undefined, 'NGÁO')">⚡ 11. 'NGÁO' (3h sáng zoomies)</button>
+                <button class="btn-outline" onclick="sendMockChat('cat', undefined, 'HỘP')">📦 12. 'HỘP' (Chui thùng carton)</button>
+                <button class="btn-green" onclick="sendMockChat('cat', undefined, 'TẮM')">🧼 13. 'TẮM' (Liếm lông spa)</button>
               </div>
             </div>
 
             <div class="card">
-              <div class="card-header"><div class="card-title">🎁 Quà Tặng Mèo (TikTok Gifts)</div></div>
-              <div class="btn-group">
-                <button class="btn-red" onclick="sendMockGift('cat', 'Rose', 1)">🌹 Gửi 1 Rose (Thưởng Cá Nướng)</button>
-                <button class="btn-red" onclick="sendMockGift('cat', 'Rose', 5)">🌹 Chuỗi 5 Roses</button>
-                <button class="btn-gold" onclick="sendMockGift('cat', 'Heart', 1)">❤️ Gửi Heart (Mưa Tim)</button>
-                <button class="btn-blue" onclick="sendMockGift('cat', 'Universe', 1)">🌌 Gửi Universe (Đại Tiệc Mèo)</button>
+              <div class="card-header"><div class="card-title">🎁 Quà Tặng Mèo (TikTok Gifts Simulation)</div></div>
+              
+              <!-- Quick Preset Badges -->
+              <div style="margin-bottom: 10px;">
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Phím Nhanh Tặng Quà TikTok Phổ Biến:</label>
+                <div class="btn-group">
+                  <button class="btn-red" onclick="sendMockGift('cat', 'Rose', 1)">🌹 1 Rose (Cá Nướng)</button>
+                  <button class="btn-red" onclick="sendMockGift('cat', 'Rose', 5)">🌹 5 Roses (Chuỗi Hoa)</button>
+                  <button class="btn-gold" onclick="sendMockGift('cat', 'Grilled Fish', 1)">🐟 Cá Nướng Thơm</button>
+                  <button class="btn-gold" onclick="sendMockGift('cat', 'Heart', 1)">❤️ 1 Heart (Mưa Tim)</button>
+                  <button class="btn-gold" onclick="sendMockGift('cat', 'Heart', 10)">💖 10 Hearts (Bão Tim)</button>
+                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('cat', 'Lion', 1)">🦁 Lion (Mèo Hoàng Gia 👑)</button>
+                  <button class="btn-blue" onclick="sendMockGift('cat', 'Universe', 1)">🌌 Universe (Đại Tiệc Mèo)</button>
+                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('cat', 'Cake', 1)">🎂 Cake (Tiệc Bánh Kem)</button>
+                  <button class="btn-green" onclick="sendMockGift('cat', 'Fish Basket', 1)">🧺 Giỏ Cá Đầy</button>
+                  <button class="btn-outline" onclick="sendMockGift('cat', 'Yarn Ball', 1)">🧶 Cuộn Len</button>
+                  <button class="btn-outline" onclick="sendMockGift('cat', 'Fireworks', 1)">🎆 Pháo Hoa</button>
+                  <button class="btn-outline" onclick="sendMockGift('cat', 'Perfume', 1)">🧴 Nước Hoa</button>
+                  <button class="btn-outline" onclick="sendMockGift('cat', 'Coffee', 1)">☕ Cà Phê</button>
+                  <button class="btn-outline" onclick="sendMockGift('cat', 'Ice Cream', 1)">🍦 Kem Tươi</button>
+                  <button class="btn-gold" onclick="sendMockGift('cat', 'Crown', 1)">👑 Vương Miện</button>
+                </div>
+              </div>
+
+              <!-- Interactive Custom Gift Dispatcher -->
+              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px;">
+                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Tùy Chỉnh (Custom Gift Dispatcher):</label>
+                <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                  <div>
+                    <label style="font-size: 10px;">Khán Giả / Viewer:</label>
+                    <input type="text" id="input-cat-gift-nick" value="ĐạiGiaMèoCam" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Loại Quà (Gift):</label>
+                    <select id="select-cat-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                      <option value="Rose">🌹 Rose (Hoa Hồng Cá Nướng)</option>
+                      <option value="Heart">❤️ Heart (Trái Tim Mưa Tim)</option>
+                      <option value="Lion">🦁 Lion (Sư Tử Đăng Quang Hoàng Gia)</option>
+                      <option value="Universe">🌌 TikTok Universe (Vũ Trụ Mở Tiệc)</option>
+                      <option value="Cake">🎂 Cake (Bánh Kem Sinh Nhật)</option>
+                      <option value="Grilled Fish">🐟 Grilled Fish (Cá Nướng Đặc Biệt)</option>
+                      <option value="Fish Basket">🧺 Fish Basket (Giỏ Cá)</option>
+                      <option value="Yarn Ball">🧶 Yarn Ball (Cuộn Len Đùa Nghịch)</option>
+                      <option value="Fireworks">🎆 Fireworks (Bắn Pháo Hoa)</option>
+                      <option value="Perfume">🧴 Perfume (Nước Hoa)</option>
+                      <option value="Coffee">☕ Coffee (Cà Phê Chill)</option>
+                      <option value="Ice Cream">🍦 Ice Cream (Kem Tươi)</option>
+                      <option value="Crown">👑 Crown (Vương Miện)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Số Lượng (Count):</label>
+                    <input type="number" id="input-cat-gift-count" value="1" min="1" max="100" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <button class="btn-green" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;" onclick="sendCustomMockGift('cat')">🎁 Gửi Quà</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- CAT CAFÉ TTS ANNOUNCER -->
+          <div class="card" style="border-top: 3px solid var(--accent); margin-top: 14px;">
+            <div class="card-header">
+              <div class="card-title">🗣️ Giọng Nói Quản Gia & Mèo Cưng (Cat Café TTS Announcer)</div>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Phát Giọng Quản Gia / Mèo Cưng Tiếng Việt Trực Tiếp:</label>
+              <div class="btn-group" style="margin-top: 4px;">
+                <button class="btn-green" onclick="sendCatCommand('cat_cafe.tts_speak', { text: 'Chào mừng Sen iu đã ghé thăm tiệm Café Mòe Béo!' })">🐱 Chào Mừng Sen Iu</button>
+                <button class="btn-red" onclick="sendCatCommand('cat_cafe.tts_speak', { text: 'Meo meo! Hoàng thượng đang đói bụng và nổi cáu rồi đấy nha!' })">😾 Mèo Giận Dỗi</button>
+                <button class="btn-gold" onclick="sendCatCommand('cat_cafe.tts_speak', { text: 'Cảm ơn Sen iu đã thưởng cá nướng thơm lừng cho bé mèo!' })">🐟 Cảm Ơn Quà Tặng</button>
+                <button class="btn-blue" onclick="sendCatCommand('cat_cafe.tts_speak', { text: 'Quẩy hết mình nào các bạn ơi! Nhảy disco tưng bừng!' })">💃 Quẩy Tưng Bừng</button>
+                <button class="btn-outline" onclick="sendCatCommand('cat_cafe.tts_speak', { text: 'Trời ơi, mèo con đang chạy nhảy tăng động khắp tiệm cà phê!' })">⚡ Mèo Tăng Động</button>
               </div>
             </div>
           </div>
@@ -951,17 +1096,52 @@
 
             <!-- GIFTS & TTS -->
             <div class="card">
-              <div class="card-header"><div class="card-title">🎁 Quà Tặng Hiệu Ứng (8 VFX Không Pay-to-Win)</div></div>
+              <div class="card-header"><div class="card-title">🎁 Quà Tặng Hiệu Ứng (8+ VFX Không Pay-to-Win)</div></div>
               
               <div style="margin-bottom: 12px;">
-                <label style="font-size: 11px; color: var(--text-muted);">Hiệu Ứng Quà Tặng TikTok:</label>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà TikTok:</label>
                 <div class="btn-group" style="margin-top: 4px;">
                   <button class="btn-red" onclick="sendMockGift('english', 'Rose', 1)">🌹 Hoa Hồng (Cánh bay)</button>
                   <button class="btn-gold" onclick="sendMockGift('english', 'Heart', 1)">💖 Thả Tim (Mưa tim)</button>
                   <button class="btn-blue" onclick="sendMockGift('english', 'Universe', 1)">🌌 Vũ Trụ (Đại tiệc)</button>
+                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('english', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
                   <button class="btn-gold" onclick="sendMockGift('english', 'Crown', 1)">👑 Vương Miện</button>
+                  <button class="btn-outline" onclick="sendMockGift('english', 'Donut', 1)">🍩 Bánh Donut</button>
+                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('english', 'Cake', 1)">🎂 Bánh Sinh Nhật</button>
                   <button class="btn-outline" onclick="sendMockGift('english', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                   <button class="btn-outline" onclick="sendMockGift('english', 'Magic', 1)">✨ Bụi Sao Kỳ Diệu</button>
+                </div>
+              </div>
+
+              <!-- Custom Gift Dispatcher for English Class -->
+              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Vào Lớp Học Tùy Chỉnh:</label>
+                <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                  <div>
+                    <label style="font-size: 10px;">Khán Giả / Học Viên:</label>
+                    <input type="text" id="input-english-gift-nick" value="PhụHuynhVIP" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Loại Quà (Gift):</label>
+                    <select id="select-english-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                      <option value="Rose">🌹 Rose (Hoa Hồng)</option>
+                      <option value="Heart">❤️ Heart (Trái Tim)</option>
+                      <option value="Universe">🌌 Universe (Vũ Trụ)</option>
+                      <option value="Lion">🦁 Lion (Sư Tử)</option>
+                      <option value="Crown">👑 Crown (Vương Miện)</option>
+                      <option value="Donut">🍩 Donut (Bánh Donut)</option>
+                      <option value="Cake">🎂 Cake (Bánh Kem)</option>
+                      <option value="Fireworks">🎆 Fireworks (Pháo Hoa)</option>
+                      <option value="Magic">✨ Magic (Bụi Sao)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Số Lượng:</label>
+                    <input type="number" id="input-english-gift-count" value="1" min="1" max="100" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <button class="btn-gold" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;" onclick="sendCustomMockGift('english')">🎁 Gửi Quà</button>
+                  </div>
                 </div>
               </div>
 
@@ -1074,15 +1254,49 @@
               <div class="card-header"><div class="card-title">🎁 Quà Tặng Hiệu Ứng (VFX Sân Khấu Neon)</div></div>
               
               <div style="margin-bottom: 12px;">
-                <label style="font-size: 11px; color: var(--text-muted);">Hiệu Ứng Quà Tặng TikTok:</label>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà TikTok:</label>
                 <div class="btn-group" style="margin-top: 4px;">
                   <button class="btn-red" onclick="sendMockGift('quiz', 'Rose', 1)">🌹 Hoa Hồng (+Gợi ý)</button>
                   <button class="btn-gold" onclick="sendMockGift('quiz', 'Heart', 1)">💖 Thả Tim (+1 Tim)</button>
                   <button class="btn-outline" onclick="sendMockGift('quiz', 'Donut', 1)">🍩 Bánh Donut (+10đ)</button>
                   <button class="btn-gold" onclick="sendMockGift('quiz', 'Star', 1)">⭐ Ngôi Sao (+50đ)</button>
+                  <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold;" onclick="sendMockGift('quiz', 'Lion', 1)">🦁 Sư Tử (Spotlight MC)</button>
                   <button class="btn-gold" onclick="sendMockGift('quiz', 'Crown', 1)">👑 Vương Miện (x2 Điểm)</button>
+                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('quiz', 'Cake', 1)">🎂 Bánh Kem</button>
                   <button class="btn-outline" onclick="sendMockGift('quiz', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                   <button class="btn-blue" onclick="sendMockGift('quiz', 'Universe', 1)">🌌 Vũ Trụ (Đại Tiệc Neon)</button>
+                </div>
+              </div>
+
+              <!-- Custom Gift Dispatcher for Quiz Show -->
+              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Gameshow Tùy Chỉnh:</label>
+                <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                  <div>
+                    <label style="font-size: 10px;">Khán Giả / Thí Sinh:</label>
+                    <input type="text" id="input-quiz-gift-nick" value="ĐạiGiaNeon" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Loại Quà (Gift):</label>
+                    <select id="select-quiz-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                      <option value="Rose">🌹 Rose (Hoa Hồng)</option>
+                      <option value="Heart">❤️ Heart (Thả Tim)</option>
+                      <option value="Donut">🍩 Donut (Bánh Ngọt)</option>
+                      <option value="Star">⭐ Star (Ngôi Sao)</option>
+                      <option value="Lion">🦁 Lion (Sư Tử)</option>
+                      <option value="Crown">👑 Crown (Vương Miện)</option>
+                      <option value="Cake">🎂 Cake (Bánh Kem)</option>
+                      <option value="Fireworks">🎆 Fireworks (Pháo Hoa)</option>
+                      <option value="Universe">🌌 Universe (Vũ Trụ)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Số Lượng:</label>
+                    <input type="number" id="input-quiz-gift-count" value="1" min="1" max="100" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <button class="btn-gold" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;" onclick="sendCustomMockGift('quiz')">🎁 Gửi Quà</button>
+                  </div>
                 </div>
               </div>
 
@@ -1186,7 +1400,7 @@
               <div class="card-header"><div class="card-title">🎁 Quà Tặng Đuổi Hình & Giọng Đọc MC</div></div>
               
               <div style="margin-bottom: 12px;">
-                <label style="font-size: 11px; color: var(--text-muted);">Hiệu Ứng Quà Tặng TikTok:</label>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà TikTok:</label>
                 <div class="btn-group" style="margin-top: 4px;">
                   <button class="btn-red" onclick="sendMockGift('rebus', 'Rose', 1)">🌹 Hoa Hồng (+10đ)</button>
                   <button class="btn-gold" onclick="sendMockGift('rebus', 'Heart', 1)">💖 Thả Tim (+20đ)</button>
@@ -1194,7 +1408,41 @@
                   <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold; padding:4px 8px; border:none; border-radius:4px;" onclick="sendMockGift('rebus', 'Perfume', 1)">🧴 Nước Hoa (Mở Gợi Ý)</button>
                   <button class="btn-gold" onclick="sendMockGift('rebus', 'Crown', 1)">👑 Vương Miện (+100đ)</button>
                   <button class="btn-amber" style="background:#f59e0b; color:black; font-weight:bold; padding:4px 8px; border:none; border-radius:4px;" onclick="sendMockGift('rebus', 'Lion', 1)">🦁 Sư Tử (Spotlight)</button>
+                  <button class="btn-purple" style="background:#c084fc; color:black; font-weight:bold;" onclick="sendMockGift('rebus', 'Cake', 1)">🎂 Bánh Kem (+80đ)</button>
+                  <button class="btn-outline" onclick="sendMockGift('rebus', 'Fireworks', 1)">🎆 Pháo Hoa Sân Khấu</button>
                   <button class="btn-blue" onclick="sendMockGift('rebus', 'Universe', 1)">🌌 Vũ Trụ (Tiệc Lớp)</button>
+                </div>
+              </div>
+
+              <!-- Custom Gift Dispatcher for Rebus -->
+              <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+                <label style="font-size: 11px; font-weight: bold; color: var(--gold); display: block; margin-bottom: 6px;">🎯 Bộ Gửi Quà Giải Đố Tùy Chỉnh:</label>
+                <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 0.8fr auto; gap: 8px; align-items: end;">
+                  <div>
+                    <label style="font-size: 10px;">Khán Giả / Thám Tử:</label>
+                    <input type="text" id="input-rebus-gift-nick" value="TrùmĐoánChữ" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Loại Quà (Gift):</label>
+                    <select id="select-rebus-gift-name" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                      <option value="Rose">🌹 Rose (Hoa Hồng)</option>
+                      <option value="Heart">❤️ Heart (Thả Tim)</option>
+                      <option value="Donut">🍩 Donut (Bánh Donut)</option>
+                      <option value="Perfume">🧴 Perfume (Nước Hoa Gợi Ý)</option>
+                      <option value="Lion">🦁 Lion (Sư Tử Spotlight)</option>
+                      <option value="Crown">👑 Crown (Vương Miện)</option>
+                      <option value="Cake">🎂 Cake (Bánh Kem)</option>
+                      <option value="Fireworks">🎆 Fireworks (Pháo Hoa)</option>
+                      <option value="Universe">🌌 Universe (Vũ Trụ)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 10px;">Số Lượng:</label>
+                    <input type="number" id="input-rebus-gift-count" value="1" min="1" max="100" style="width: 100%; font-size: 12px; padding: 4px 6px;">
+                  </div>
+                  <div>
+                    <button class="btn-gold" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;" onclick="sendCustomMockGift('rebus')">🎁 Gửi Quà</button>
+                  </div>
                 </div>
               </div>
 
@@ -1255,25 +1503,133 @@
           </div>
         </section>
 
-        <!-- ==================== TAB 5: GIFT ECONOMY RULES ==================== -->
+        <!-- ==================== TAB 5: PTPLAY GIFT CONTROL CENTER ==================== -->
         <section id="panel-economy" class="tab-panel">
-          <div class="card">
+          <div class="card" style="border-left: 4px solid var(--amber); margin-bottom: 14px;">
             <div class="card-header">
-              <div class="card-title">💰 Quản Lý Quy Tắc Ánh Xạ Quà Tặng (Gift Mapping Rules)</div>
-              <button class="btn-outline" onclick="fetchGiftMappings()">🔄 Làm Mới</button>
+              <div>
+                <div class="card-title">🎁 PTPlay Gift Control Center — Trung Tâm Quản Lý Quà Tặng & Mappings</div>
+                <p class="card-desc" style="margin: 4px 0 0;">Quản lý tập trung danh mục quà TikTok Live cho toàn bộ 5 game PTPlay, đồng bộ Bridge và phân tích sự kiện.</p>
+              </div>
+              <div class="btn-group">
+                <button class="btn-outline" onclick="syncCatalogFromSource()">🔄 Đồng Bộ Catalog</button>
+                <button class="btn-gold" onclick="fetchGiftControlData()">⚡ Làm Mới Dữ Liệu</button>
+              </div>
             </div>
-            <p class="card-desc">Cấu hình quà tặng TikTok sẽ tự động gọi binh chủng nào, số lượng bao nhiêu và thời gian hồi chiêu.</p>
 
-            <!-- ADD RULE FORM -->
-            <div style="background: #081326; border: 1px solid var(--border-card); border-radius: 6px; padding: 12px; margin-bottom: 14px;">
-              <h4 style="font-size: 13px; color: var(--amber); margin-bottom: 8px;">+ Thêm / Sửa Quy Tắc Mapping Quà</h4>
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin-bottom: 8px;">
-                <div>
-                  <label>Tên Quà TikTok:</label>
-                  <input type="text" id="input-map-gift" placeholder="VD: Dragon" style="width: 100%;">
+            <!-- METRIC PILLS IN HEADER -->
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font-size: 12px;">
+              <div style="background: rgba(255,255,255,0.04); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-card);">
+                📚 Catalog Toàn Cầu: <strong id="badge-stat-total-catalog" style="color: #38bdf8;">1.711 Quà</strong>
+              </div>
+              <div style="background: rgba(255,255,255,0.04); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-card);">
+                🇻🇳 Khu Vực Việt Nam: <strong id="badge-stat-vn-catalog" style="color: #34d399;">727 Quà</strong>
+              </div>
+              <div style="background: rgba(255,255,255,0.04); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-card);">
+                🎯 Quy Tắc Mappings: <strong id="badge-stat-mappings" style="color: #f59e0b;">Đang tải...</strong>
+              </div>
+              <div style="background: rgba(255,255,255,0.04); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-card);">
+                🔍 Gift ID Đã Xác Minh: <strong id="badge-stat-observed" style="color: #c084fc;">0 ID</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBTAB NAVIGATION BAR -->
+          <div class="gift-subtabs">
+            <button class="gift-subtab-btn active" id="btn-gsub-catalog" onclick="switchGiftSubtab('catalog')">
+              <span>📚</span>
+              <span>Catalog Quà TikTok</span>
+            </button>
+            <button class="gift-subtab-btn" id="btn-gsub-mappings" onclick="switchGiftSubtab('mappings')">
+              <span>🎮</span>
+              <span>Mappings Theo Game</span>
+            </button>
+            <button class="gift-subtab-btn" id="btn-gsub-analytics" onclick="switchGiftSubtab('analytics')">
+              <span>📊</span>
+              <span>Thống Kê LIVE & Phân Tích</span>
+            </button>
+            <button class="gift-subtab-btn" id="btn-gsub-pipeline" onclick="switchGiftSubtab('pipeline')">
+              <span>🚦</span>
+              <span>Giám Sát Pipeline Sự Kiện</span>
+            </button>
+          </div>
+
+          <!-- ==================== SUBPANEL 1: CATALOG BROWSER ==================== -->
+          <div id="gsubpanel-catalog" class="gift-subpanel active">
+            <div class="card" style="margin-bottom: 14px;">
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                <div style="display: flex; gap: 10px; flex: 1; min-width: 320px;">
+                  <input type="text" id="input-catalog-search" placeholder="🔍 Tìm kiếm quà: Rose, Lion, Galaxy, Cake, Capybara..." style="flex: 1;" oninput="onCatalogSearchInput()">
+                  <select id="select-catalog-region" style="width: 170px;" onchange="fetchCatalogGifts()">
+                    <option value="VN" selected>🇻🇳 Việt Nam (727 quà)</option>
+                    <option value="ALL">🌐 Toàn Cầu (1.711 quà)</option>
+                  </select>
+                  <select id="select-catalog-tier" style="width: 150px;" onchange="fetchCatalogGifts()">
+                    <option value="all" selected>Mọi mức Xu</option>
+                    <option value="low">1–99 Xu (Phổ thông)</option>
+                    <option value="mid">100–999 Xu (Trung cấp)</option>
+                    <option value="high">1.000+ Xu (Siêu quà)</option>
+                  </select>
                 </div>
+                <div style="font-size: 12px; color: var(--text-muted);">
+                  Hiển thị: <strong id="lbl-catalog-count" style="color: #38bdf8;">0</strong> quà
+                </div>
+              </div>
+            </div>
+
+            <!-- CATALOG CARDS GRID -->
+            <div class="catalog-grid" id="catalog-grid">
+              <!-- Dynamically populated -->
+              <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">
+                Đang tải danh mục quà tặng TikTok...
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== SUBPANEL 2: PER-GAME MAPPINGS ==================== -->
+          <div id="gsubpanel-mappings" class="gift-subpanel">
+            
+            <!-- GAME FILTER PILLS -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+              <button class="btn-outline active-filter-btn" id="btn-map-filter-all" onclick="filterMappingsByGame('all')">🌐 Tất Cả Game</button>
+              <button class="btn-outline" id="btn-map-filter-mw" onclick="filterMappingsByGame('mini-war')">⚔️ Mini War Arena</button>
+              <button class="btn-outline" id="btn-map-filter-cat" onclick="filterMappingsByGame('cat-cafe')">🐱 Café Mòe LIVE</button>
+              <button class="btn-outline" id="btn-map-filter-ec" onclick="filterMappingsByGame('english-class')">🎓 Lớp Học Vui</button>
+              <button class="btn-outline" id="btn-map-filter-qs" onclick="filterMappingsByGame('quiz-show')">🏆 Quiz Show</button>
+              <button class="btn-outline" id="btn-map-filter-dh" onclick="filterMappingsByGame('duoi-hinh-bat-chu')">💡 Đuổi Hình Bắt Chữ</button>
+            </div>
+
+            <!-- ADD / EDIT MAPPING FORM -->
+            <div class="card" style="border-top: 3px solid var(--amber); margin-bottom: 14px;">
+              <div class="card-header">
+                <div class="card-title">⚙️ Cấu Hình / Thêm Quy Tắc Mapping Quà Tặng Cho Game</div>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="exportMappingsJson()">📤 Export JSON</button>
+                  <label class="btn-outline" style="cursor: pointer; margin: 0;">
+                    📥 Import JSON <input type="file" id="file-import-mappings" accept=".json" style="display: none;" onchange="importMappingsJson(event)">
+                  </label>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 10px;">
                 <div>
-                  <label>Hành Động Game:</label>
+                  <label style="font-weight: 600; color: #38bdf8;">Tên Quà TikTok:</label>
+                  <input type="text" id="input-map-gift" placeholder="VD: Rose, Lion, Cake..." style="width: 100%;">
+                </div>
+
+                <div>
+                  <label style="font-weight: 600; color: #38bdf8;">Game Mục Tiêu:</label>
+                  <select id="select-map-game" style="width: 100%;" onchange="onMappingGameChange()">
+                    <option value="mini-war">⚔️ Mini War Arena</option>
+                    <option value="cat-cafe">🐱 Café Mòe LIVE</option>
+                    <option value="english-class">🎓 Lớp Học Vui</option>
+                    <option value="quiz-show">🏆 Quiz Show Đố Vui</option>
+                    <option value="duoi-hinh-bat-chu">💡 Đuổi Hình Bắt Chữ</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style="font-weight: 600; color: #38bdf8;">Hành Động Game (Đã Validate):</label>
                   <select id="select-map-action" style="width: 100%;">
                     <option value="spawn_unit">Triệu hồi lính (spawn_unit)</option>
                     <option value="spawn_boss">Triệu hồi Đại Tướng Boss (spawn_boss)</option>
@@ -1281,8 +1637,9 @@
                     <option value="boost_team">Tăng tốc độ Morale (boost_team)</option>
                   </select>
                 </div>
+
                 <div>
-                  <label>Loại Lính (Nếu có):</label>
+                  <label style="font-weight: 600;">Binh Chủng / Loại Hiệu Ứng:</label>
                   <select id="select-map-unit" style="width: 100%;">
                     <option value="warrior">Chiến Binh (Warrior)</option>
                     <option value="archer">Cung Thủ (Archer)</option>
@@ -1291,42 +1648,205 @@
                     <option value="boss">Boss Đại Tướng</option>
                   </select>
                 </div>
+
                 <div>
                   <label>Hệ Số Nhân (Mult):</label>
                   <input type="number" id="input-map-mult" value="2" min="1" max="20" style="width: 100%;">
                 </div>
+
                 <div>
                   <label>Hồi Chiêu (Giây):</label>
                   <input type="number" id="input-map-cd" value="0" min="0" max="60" style="width: 100%;">
                 </div>
+
                 <div>
                   <label>Giới Hạn Tối Đa/Lần:</label>
-                  <input type="number" id="input-map-max" value="10" min="1" max="30" style="width: 100%;">
+                  <input type="number" id="input-map-max" value="10" min="1" max="50" style="width: 100%;">
+                </div>
+
+                <div>
+                  <label>Mẫu Câu TTS Đọc Tên:</label>
+                  <input type="text" id="input-map-tts" placeholder="Cảm ơn {viewer} đã tặng {gift}!" style="width: 100%;">
                 </div>
               </div>
-              <button class="btn-green" onclick="saveNewMappingRule()">💾 Lưu Quy Tắc</button>
+
+              <div class="btn-group">
+                <button class="btn-green" onclick="saveNewMappingRule()">💾 Lưu Quy Tắc</button>
+                <button class="btn-outline" onclick="resetMappingForm()">↺ Làm Lại</button>
+              </div>
             </div>
 
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Tên Quà</th>
-                    <th>Lệnh Game</th>
-                    <th>Loại Lính</th>
-                    <th>Hệ Số</th>
-                    <th>Cooldown</th>
-                    <th>Max Spawn</th>
-                    <th>Trạng Thái</th>
-                    <th>Thao Tác</th>
-                  </tr>
-                </thead>
-                <tbody id="mapping-tbody">
-                  <tr><td colspan="8" style="text-align:center; color:#64748b;">Đang tải quy tắc...</td></tr>
-                </tbody>
-              </table>
+            <!-- MAPPINGS TABLE -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">📋 Bảng Quy Tắc Mapping Đang Áp Dụng</div>
+                <button class="btn-outline" onclick="fetchGiftMappings()">🔄 Làm Mới Bảng</button>
+              </div>
+
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Quà TikTok</th>
+                      <th>Game Nhận</th>
+                      <th>Hành Động Game</th>
+                      <th>Tham Số / Binh Chủng</th>
+                      <th>Hệ Số</th>
+                      <th>Cooldown / Max</th>
+                      <th>Trạng Thái</th>
+                      <th>Thao Tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mapping-tbody">
+                    <tr><td colspan="8" style="text-align:center; color:#64748b;">Đang tải quy tắc...</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
+
+          <!-- ==================== SUBPANEL 3: LIVE ANALYTICS ==================== -->
+          <div id="gsubpanel-analytics" class="gift-subpanel">
+            
+            <!-- 4 KPI CARDS -->
+            <div class="kpi-grid">
+              <div class="kpi-card real">
+                <span class="kpi-label">🎁 TỔNG QUÀ LIVE THẬT ĐÃ NHẬN</span>
+                <span class="kpi-value" id="kpi-real-gifts">0</span>
+                <small style="color: var(--text-muted); font-size: 10px; margin-top: 4px;">Tính theo số lượng delta chuẩn hóa</small>
+              </div>
+
+              <div class="kpi-card actions">
+                <span class="kpi-label">⚡ HÀNH ĐỘNG THỰC THI THÀNH CÔNG</span>
+                <span class="kpi-value" id="kpi-real-actions" style="color: #60a5fa;">0</span>
+                <small style="color: var(--text-muted); font-size: 10px; margin-top: 4px;">Đã chuyển thành lệnh game</small>
+              </div>
+
+              <div class="kpi-card diamonds">
+                <span class="kpi-label">💎 KIM CƯƠNG TIKFINITY THAM KHẢO</span>
+                <span class="kpi-value" id="kpi-real-diamonds" style="color: #fbbf24;">0</span>
+                <small style="color: var(--text-muted); font-size: 10px; margin-top: 4px;">Không đồng nhất với doanh thu</small>
+              </div>
+
+              <div class="kpi-card mock">
+                <span class="kpi-label">🧪 LƯỢT GIẢ LẬP MOCK SIMULATOR</span>
+                <span class="kpi-value" id="kpi-mock-gifts" style="color: #c084fc;">0</span>
+                <small style="color: var(--text-muted); font-size: 10px; margin-top: 4px;">Tách biệt hoàn toàn khỏi số liệu thật</small>
+              </div>
+            </div>
+
+            <!-- ANALYTICS BREAKDOWN GRID -->
+            <div class="grid-2" style="margin-bottom: 14px;">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">🏆 Top 5 Quà Tặng Được Nhận Nhiều Nhất</div>
+                </div>
+                <div id="analytics-top-gifts-container">
+                  <div style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có sự kiện quà tặng nào trong phiên</div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">🎮 Thống Kê Theo Từng Tựa Game</div>
+                </div>
+                <div id="analytics-per-game-container">
+                  <div style="color: var(--text-muted); text-align: center; padding: 20px;">Chưa có dữ liệu theo game</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- UNKNOWN GIFTS PANEL -->
+            <div class="card" style="border-left: 4px solid var(--rose);">
+              <div class="card-header">
+                <div class="card-title">⚠️ Quà Chưa Rõ Cần Cấu Hình (Unknown Gifts Detected)</div>
+                <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="resetAnalyticsData()">↺ Reset Thống Kê</button>
+              </div>
+              <p class="card-desc">Danh sách quà tặng được gửi trong luồng LIVE nhưng chưa có trong danh mục hoặc chưa được ánh xạ hành động.</p>
+              <div id="analytics-unknown-gifts-container">
+                <div style="color: #10b981; font-size: 12px; padding: 10px;">✓ Không phát hiện quà chưa rõ nào. Toàn bộ quà đã được nhận diện hoặc ánh xạ chuẩn xác!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== SUBPANEL 4: PIPELINE EVENT MONITOR ==================== -->
+          <div id="gsubpanel-pipeline" class="gift-subpanel">
+            
+            <!-- PIPELINE FLOW DIAGRAM -->
+            <div class="pipeline-flow-diagram">
+              <div class="flow-step">
+                <span class="step-icon">📡</span>
+                <span style="color: #38bdf8;">1. TikFinity Nhận</span>
+                <small style="color: var(--text-muted); font-size: 9px;">Port 21213 / RAW</small>
+              </div>
+              <span class="flow-arrow">➔</span>
+              <div class="flow-step">
+                <span class="step-icon">🔄</span>
+                <span style="color: #34d399;">2. Chuẩn Hóa Streak</span>
+                <small style="color: var(--text-muted); font-size: 9px;">deltaCount</small>
+              </div>
+              <span class="flow-arrow">➔</span>
+              <div class="flow-step">
+                <span class="step-icon">🛡️</span>
+                <span style="color: #fbbf24;">3. Chống Trùng</span>
+                <small style="color: var(--text-muted); font-size: 9px;">Deduplication</small>
+              </div>
+              <span class="flow-arrow">➔</span>
+              <div class="flow-step">
+                <span class="step-icon">📚</span>
+                <span style="color: #c084fc;">4. Tra Cứu Catalog</span>
+                <small style="color: var(--text-muted); font-size: 9px;">Observed / Ref</small>
+              </div>
+              <span class="flow-arrow">➔</span>
+              <div class="flow-step">
+                <span class="step-icon">🎯</span>
+                <span style="color: #60a5fa;">5. Lọc Game Active</span>
+                <small style="color: var(--text-muted); font-size: 9px;">Active Router</small>
+              </div>
+              <span class="flow-arrow">➔</span>
+              <div class="flow-step">
+                <span class="step-icon">⚡</span>
+                <span style="color: #10b981;">6. Thực Thi Game</span>
+                <small style="color: var(--text-muted); font-size: 9px;">SDK Command</small>
+              </div>
+            </div>
+
+            <!-- PIPELINE HISTORY TABLE -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">📜 Nhật Ký Xử Lý Sự Kiện Quà Thời Gian Thực (Pipeline Trace)</div>
+                <div class="btn-group">
+                  <select id="select-pipeline-filter-source" style="font-size: 11px; padding: 4px 8px;" onchange="renderPipelineHistory()">
+                    <option value="all">Tất Cả Nguồn (Real + Mock)</option>
+                    <option value="real">🟢 Chỉ Real LIVE</option>
+                    <option value="mock">🟡 Chỉ Mock Simulator</option>
+                  </select>
+                  <button class="btn-outline" onclick="fetchGiftAnalytics()">🔄 Tải Lại Nhật Ký</button>
+                </div>
+              </div>
+
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Thời Gian</th>
+                      <th>Nguồn</th>
+                      <th>Khán Giả</th>
+                      <th>Quà Tặng</th>
+                      <th>Số Lượng</th>
+                      <th>Game & Lệnh</th>
+                      <th>Trạng Thái Pipeline</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pipeline-tbody">
+                    <tr><td colspan="7" style="text-align:center; color:#64748b;">Chưa có sự kiện nào qua pipeline</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
         </section>
 
         <!-- ==================== TAB 6: PREVIEW 9:16 ==================== -->
@@ -1398,6 +1918,341 @@
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- ==================== TAB: TTS VOICE TESTING STUDIO ==================== -->
+        <section id="panel-ttsstudio" class="tab-panel">
+          
+          <!-- TTS ENGINE STATUS & DIAGNOSTICS CARD -->
+          <div class="card" style="border-left: 4px solid var(--emerald); background: #081a18; margin-bottom: 14px;">
+            <div class="card-header">
+              <div class="card-title">
+                <span>🎙️ Phòng Thí Nghiệm TTS & Giọng Đọc Đa Năng (Voice Testing Studio)</span>
+                <span id="badge-tts-status" class="badge badge-green">SPEECH API READY</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-gold" id="btn-unlock-tts" onclick="unlockAdminAudio()">🔓 Mở Khóa Âm Thanh (AudioContext)</button>
+                <button class="btn-outline" onclick="refreshAdminVoices()">🔄 Quét Lại Giọng</button>
+                <button class="btn-red" onclick="stopAdminTts()">⏹ Dừng Mọi Giọng (Stop All)</button>
+              </div>
+            </div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
+              <div>Hệ thống TTS: <strong style="color: #38bdf8;">Web Speech API (W3C Synthesizer)</strong></div>
+              <div>Trạng thái Audio: <strong id="lbl-audio-unlocked" style="color: #10b981;">✓ Sẵn sàng phát</strong></div>
+              <div>Tổng số giọng tìm thấy: <strong id="lbl-voice-count" style="color: #f59e0b;">Đang quét...</strong></div>
+              <div>Giọng Tiếng Việt chuẩn: <strong id="lbl-vi-voice-name" style="color: #34d399;">Đang nhận diện...</strong></div>
+            </div>
+          </div>
+
+          <!-- SYNTHESIZER CONTROLS & INTERACTIVE TESTER -->
+          <div class="grid-2" style="margin-bottom: 14px;">
+
+            <!-- LEFT: VOICE & AUDIO PARAMETERS -->
+            <div class="card" style="border-top: 3px solid var(--primary-blue);">
+              <div class="card-header">
+                <div class="card-title">⚙️ Bộ Căn Chỉnh Tham Số Giọng Nói</div>
+                <button class="btn-outline" style="font-size: 11px; padding: 2px 8px;" onclick="resetTtsSliders()">↺ Mặc Định</button>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 10px;">
+                <label for="select-tts-voice" style="font-weight: 600; color: #38bdf8;">Chọn Giọng Đọc (Speech Voice):</label>
+                <select id="select-tts-voice" style="width: 100%; font-size: 12px; padding: 6px 8px;">
+                  <option value="">-- Đang quét danh sách giọng hệ thống --</option>
+                </select>
+                <small style="color: var(--text-muted); font-size: 10px;">Ưu tiên giọng Neural Online tự nhiên (Microsoft HoaiMy, NamMinh, Google Tiếng Việt, Apple Linh).</small>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="select-tts-target-game" style="font-weight: 600;">Game Đích (Broadcast Target):</label>
+                  <select id="select-tts-target-game" style="width: 100%; font-size: 12px; padding: 6px 8px;">
+                    <option value="active">🎯 Game Đang Active Ở Header</option>
+                    <option value="mini-war">⚔️ Mini War Arena (5173)</option>
+                    <option value="cat-cafe">🐱 Café Mòe LIVE (5174)</option>
+                    <option value="english-class">🎓 Lớp Học Vui LIVE (5175)</option>
+                    <option value="quiz-show">🏆 Quiz Show Đố Vui (5176)</option>
+                    <option value="duoi-hinh-bat-chu">💡 Đuổi Hình Bắt Chữ (5177)</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="select-tts-lang" style="font-weight: 600;">Ngôn Ngữ (Language Tag):</label>
+                  <select id="select-tts-lang" style="width: 100%; font-size: 12px; padding: 6px 8px;">
+                    <option value="vi-VN">🇻🇳 Tiếng Việt (vi-VN)</option>
+                    <option value="en-US">🇺🇸 English US (en-US)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- SLIDERS -->
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-card); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+                <!-- Rate -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                    <span>Tốc Độ Nói (Rate):</span>
+                    <strong id="val-tts-rate" style="color: #38bdf8;">1.05x</strong>
+                  </div>
+                  <input type="range" id="slider-tts-rate" min="0.5" max="2.0" step="0.05" value="1.05" style="width: 100%;" oninput="updateTtsSliderLabel('rate')">
+                </div>
+
+                <!-- Pitch -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                    <span>Cao Độ Giọng (Pitch):</span>
+                    <strong id="val-tts-pitch" style="color: #f59e0b;">1.00</strong>
+                  </div>
+                  <input type="range" id="slider-tts-pitch" min="0.5" max="1.8" step="0.05" value="1.0" style="width: 100%;" oninput="updateTtsSliderLabel('pitch')">
+                </div>
+
+                <!-- Volume -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                    <span>Âm Lượng (Volume):</span>
+                    <strong id="val-tts-volume" style="color: #10b981;">90%</strong>
+                  </div>
+                  <input type="range" id="slider-tts-volume" min="0" max="100" step="5" value="90" style="width: 100%;" oninput="updateTtsSliderLabel('volume')">
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: CUSTOM TEXT SYNTHESIS & LIVE DISPATCH -->
+            <div class="card" style="border-top: 3px solid var(--emerald); display: flex; flex-direction: column;">
+              <div class="card-header">
+                <div class="card-title">💬 Khung Soạn Thảo Giọng Đọc Tự Do</div>
+              </div>
+
+              <div class="form-group" style="flex: 1; display: flex; flex-direction: column;">
+                <label for="input-tts-custom-text" style="font-weight: 600;">Nội Dung Cần Đọc / Phát:</label>
+                <textarea id="input-tts-custom-text" rows="4" style="width: 100%; flex: 1; min-height: 85px; font-size: 13px; padding: 8px; border-radius: 6px; background: var(--bg-input); border: 1px solid var(--border-card); color: #fff; resize: vertical;">Chào mừng quý khán giả thân yêu đã đến với phòng phát sóng trực tiếp PTPlay! Hãy thả tim và bình luận để cùng hòa nhịp trò chơi nhé!</textarea>
+              </div>
+
+              <!-- Quick Sentence Presets -->
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Mẫu Câu Phổ Biến Nhanh:</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('welcome')">👋 Chào Khán Giả</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('gift')">🎁 Cảm Ơn Quà Khủng</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('hype')">🔥 Hào Hứng Cao Trào</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('english')">🇺🇸 English Shoutout</button>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-gold" style="flex: 1; padding: 10px 14px; font-weight: 600;" onclick="testLocalAdminTts()">
+                  🔊 Phát Thử Tại Trình Duyệt (Local Preview)
+                </button>
+                <button class="btn-green" style="flex: 1; padding: 10px 14px; font-weight: 600;" onclick="broadcastCurrentTts()">
+                  🚀 Phát Vào Game (Broadcast Bridge)
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- UNIFIED 5-GAME SOUNDBOARD MATRIX -->
+          <div class="card" style="border-top: 3px solid var(--gold);">
+            <div class="card-header">
+              <div class="card-title">🎹 Bàn Điều Khiển Phát Nhanh Âm Thanh Cho 5 Game (Unified Soundboard Matrix)</div>
+              <span class="badge badge-gold">20 PRESET SOUNDBOARD LINES</span>
+            </div>
+            <p class="card-desc">Bấm <strong>🔊 Thử</strong> để nghe trước tại Admin, hoặc bấm <strong>🚀 Phát Game</strong> để phát thanh trực tiếp vào game đang stream qua GameBridge.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 10px;">
+
+              <!-- GAME 1: MINI WAR ARENA -->
+              <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.25); border-radius: 8px; padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: #60a5fa; font-size: 13px;">⚔️ Mini War Arena</strong>
+                  <span class="badge badge-blue">Cổng 5173</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Trận chiến bắt đầu! Toàn quân Đỏ và Xanh xung phong!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Trận chiến bắt đầu! Toàn quân Đỏ và Xanh xung phong!')">🔊 Thử</button>
+                      <button class="btn-primary" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('mini-war', 'Trận chiến bắt đầu! Toàn quân Đỏ và Xanh xung phong!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Cảnh báo! Căn cứ Đỏ đang bị tấn công dữ dội!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Cảnh báo! Căn cứ Đỏ đang bị tấn công dữ dội!')">🔊 Thử</button>
+                      <button class="btn-red" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('mini-war', 'Cảnh báo! Căn cứ Đỏ đang bị tấn công dữ dội!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Báo động! Trùm Hỏa Ngục khổng lồ đã xuất hiện!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Báo động! Trùm Hỏa Ngục khổng lồ đã xuất hiện trên chiến trường!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('mini-war', 'Báo động! Trùm Hỏa Ngục khổng lồ đã xuất hiện trên chiến trường!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Chiến thắng huy hoàng đã thuộc về các chiến binh dũng cảm!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Chiến thắng huy hoàng đã thuộc về các chiến binh dũng cảm!')">🔊 Thử</button>
+                      <button class="btn-green" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('mini-war', 'Chiến thắng huy hoàng đã thuộc về các chiến binh dũng cảm!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GAME 2: CAFÉ MÒE LIVE -->
+              <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: #34d399; font-size: 13px;">🐱 Café Mòe LIVE</strong>
+                  <span class="badge badge-green">Cổng 5174</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Chào mừng Sen iu đã ghé thăm quán Café Mòe Béo dễ thương!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Chào mừng Sen iu đã ghé thăm quán Café Mòe Béo dễ thương!')">🔊 Thử</button>
+                      <button class="btn-green" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('cat-cafe', 'Chào mừng Sen iu đã ghé thăm quán Café Mòe Béo dễ thương!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Trời ơi! Mèo Béo nổi giận xù lông rồi, dỗ dành hoàng thượng mau!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Trời ơi! Mèo Béo nổi giận xù lông rồi, dỗ dành hoàng thượng mau!')">🔊 Thử</button>
+                      <button class="btn-red" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('cat-cafe', 'Trời ơi! Mèo Béo nổi giận xù lông rồi, dỗ dành hoàng thượng mau!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Tuyệt vời quá! Bé Mèo bật chế độ nhảy disco tưng bừng khắp phòng!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Tuyệt vời quá! Bé Mèo bật chế độ nhảy disco tưng bừng khắp phòng!')">🔊 Thử</button>
+                      <button class="btn-primary" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('cat-cafe', 'Tuyệt vời quá! Bé Mèo bật chế độ nhảy disco tưng bừng khắp phòng!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Cảm ơn Sen đã thưởng cá nướng thơm ngon nức mũi cho Mèo Cưng!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Cảm ơn Sen đã thưởng cá nướng thơm ngon nức mũi cho Mèo Cưng!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('cat-cafe', 'Cảm ơn Sen đã thưởng cá nướng thơm ngon nức mũi cho Mèo Cưng!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GAME 3: ENGLISH CLASS LIVE -->
+              <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: #fbbf24; font-size: 13px;">🎓 Lớp Học Vui LIVE</strong>
+                  <span class="badge badge-gold">Cổng 5175</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Chào mừng cả lớp đến với tiết học tiếng Anh vui nhộn hôm nay!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Chào mừng cả lớp đến với tiết học tiếng Anh vui nhộn hôm nay!')">🔊 Thử</button>
+                      <button class="btn-green" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('english-class', 'Chào mừng cả lớp đến với tiết học tiếng Anh vui nhộn hôm nay!', 'vi-VN')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Awesome! That is correct, great job everyone!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Awesome! That is correct, great job everyone!', 'en-US')">🔊 Thử</button>
+                      <button class="btn-blue" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('english-class', 'Awesome! That is correct, great job everyone!', 'en-US')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Cảm ơn bạn đã gửi tặng Sư Tử dũng mãnh ủng hộ lớp học!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Cảm ơn bạn đã gửi tặng Sư Tử dũng mãnh ủng hộ lớp học!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('english-class', 'Cảm ơn bạn đã gửi tặng Sư Tử dũng mãnh ủng hộ lớp học!', 'vi-VN')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Are you ready for the next trivia question? Let us go!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Are you ready for the next trivia question? Let us go!', 'en-US')">🔊 Thử</button>
+                      <button class="btn-blue" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('english-class', 'Are you ready for the next trivia question? Let us go!', 'en-US')">🚀 Phát</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GAME 4: QUIZ SHOW -->
+              <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: #c084fc; font-size: 13px;">🏆 Quiz Show Đố Vui</strong>
+                  <span class="badge badge-purple" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">Cổng 5176</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Chào mừng các bạn đến với Đấu Trường Tri Thức Đố Vui Có Thưởng!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Chào mừng các bạn đến với Đấu Trường Tri Thức Đố Vui Có Thưởng!')">🔊 Thử</button>
+                      <button class="btn-green" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('quiz-show', 'Chào mừng các bạn đến với Đấu Trường Tri Thức Đố Vui Có Thưởng!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Thời gian còn 5 giây! Hãy gõ thật nhanh đáp án A B C D nào!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Thời gian còn 5 giây! Hãy gõ thật nhanh đáp án A B C D nào!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('quiz-show', 'Thời gian còn 5 giây! Hãy gõ thật nhanh đáp án A B C D nào!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Chúc mừng bạn đã xuất sắc trả lời đúng câu hỏi hóc búa này!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Chúc mừng bạn đã xuất sắc trả lời đúng câu hỏi hóc búa này!')">🔊 Thử</button>
+                      <button class="btn-blue" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('quiz-show', 'Chúc mừng bạn đã xuất sắc trả lời đúng câu hỏi hóc búa này!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Cảm ơn đại gia đã ném Sư Tử mở khóa vòng câu hỏi siêu đặc biệt!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Cảm ơn đại gia đã ném Sư Tử mở khóa vòng câu hỏi siêu đặc biệt!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('quiz-show', 'Cảm ơn đại gia đã ném Sư Tử mở khóa vòng câu hỏi siêu đặc biệt!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GAME 5: ĐUỔI HÌNH BẮT CHỮ -->
+              <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: 8px; padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: #22d3ee; font-size: 13px;">💡 Đuổi Hình Bắt Chữ</strong>
+                  <span class="badge badge-cyan" style="background: rgba(6, 182, 212, 0.2); color: #22d3ee;">Cổng 5177</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Chào mừng quý thám tử đến với phòng chơi Đuổi Hình Bắt Chữ!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Chào mừng quý thám tử đến với phòng chơi Đuổi Hình Bắt Chữ!')">🔊 Thử</button>
+                      <button class="btn-green" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('duoi-hinh-bat-chu', 'Chào mừng quý thám tử đến với phòng chơi Đuổi Hình Bắt Chữ!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Gợi ý số một đã được mở! Hãy ghép các hình ảnh lại thật nhanh nào!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Gợi ý số một đã được mở! Hãy ghép các hình ảnh lại thật nhanh nào!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('duoi-hinh-bat-chu', 'Gợi ý số một đã được mở! Hãy ghép các hình ảnh lại thật nhanh nào!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Tuyệt đỉnh! Thám tử tài ba đã giải mã chính xác câu đố hóc búa!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Tuyệt đỉnh! Thám tử tài ba đã giải mã chính xác câu đố hóc búa!')">🔊 Thử</button>
+                      <button class="btn-blue" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('duoi-hinh-bat-chu', 'Tuyệt đỉnh! Thám tử tài ba đã giải mã chính xác câu đố hóc búa!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                  <div class="tts-sound-item">
+                    <span style="font-size: 11px; flex: 1;">"Cảm ơn đại gia đã bắn Pháo Hoa rực rỡ ủng hộ bảng xếp hạng!"</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="playLocalAdminTts('Cảm ơn đại gia đã bắn Pháo Hoa rực rỡ ủng hộ bảng xếp hạng!')">🔊 Thử</button>
+                      <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="broadcastGameTts('duoi-hinh-bat-chu', 'Cảm ơn đại gia đã bắn Pháo Hoa rực rỡ ủng hộ bảng xếp hạng!')">🚀 Phát</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </section>
 
         <!-- ==================== TAB 7: SIMULATOR STUDIO ==================== -->

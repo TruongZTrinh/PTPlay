@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
-const WORKSPACE_DIR = path.resolve(__dirname, '../../');
+const PLATFORM_DIR = path.resolve(__dirname, '../../..');
+const WORKSPACE_DIR = path.resolve(__dirname, '../../../..');
 
 const PORT = Number(process.env.PORT) || 8080;
 const BRIDGE_PORT = 8088;
@@ -20,7 +21,6 @@ const QUIZ_SHOW_PORT = 5176;
 const DUOI_HINH_PORT = 5177;
 const TIKFINITY_PORT = 21213;
 
-const PLATFORM_DIR = path.resolve(__dirname, '../../');
 const GAMES_CONFIG_PATH = path.join(PLATFORM_DIR, 'config', 'games.json');
 
 const miniWarPath = fs.existsSync(path.join(PLATFORM_DIR, 'games', 'mini-war-arena'))

@@ -208,6 +208,18 @@ export class TikFinityProvider extends LiveEventProvider {
         return;
       }
 
+      if (msg.event === 'liveStatusChange' && msg.data) {
+        const isLive = Boolean((msg.data as any).isLive);
+        if (isLive) {
+          this.liveRoomStatus = 'active';
+          this.hasReceivedLiveEvents = true;
+        } else {
+          this.liveRoomStatus = 'disconnected';
+        }
+        this.emitStatusChange();
+        return;
+      }
+
       if (msg.event === 'disconnected') {
         this.liveRoomStatus = 'disconnected';
         this.emitStatusChange();
