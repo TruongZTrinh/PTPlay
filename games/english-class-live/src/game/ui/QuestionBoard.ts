@@ -247,7 +247,8 @@ export class QuestionBoard {
     this.promptTipText.setVisible(true);
     this.choicesGroup.setVisible(true);
 
-    this.headerText.setText(`CÂU ${roundNum}/10 • ${q.mode.toUpperCase()} QUIZ`);
+    const modeSuffix = q.mode ? ` • ${q.mode.toUpperCase()} QUIZ` : '';
+    this.headerText.setText(`CÂU ${roundNum}${modeSuffix}`);
 
     // Dynamic prompt font scaling for questions of any length
     if (q.prompt.length > 70) {

@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
-import { LeaderboardEntry, QuizMode, Team } from '../types.js';
+import { LeaderboardEntry, QuizMode, StudentPlayer, Team } from '../types.js';
 
 export class Scoreboard {
   private scene: Phaser.Scene;
   public topContainer: Phaser.GameObjects.Container;
   public bottomContainer: Phaser.GameObjects.Container;
   public teamContainer: Phaser.GameObjects.Container;
+  public podiumContainer: Phaser.GameObjects.Container;
 
   // Top HUD elements
   private liveStatusDot: Phaser.GameObjects.Graphics;
@@ -74,22 +75,26 @@ export class Scoreboard {
     }).setOrigin(1, 0.5);
     this.topContainer.add(this.studentCountText);
 
-    // 2. Top 3 Podium Pill (at y = 56)
+    // 2. Real-Time Leaderboard Podium Bar (at y = 58)
+    this.podiumContainer = scene.add.container(270, 58).setDepth(30);
+
     const podiumBg = scene.add.graphics();
-    podiumBg.fillStyle(0x1e293b, 0.85);
-    podiumBg.fillRoundedRect(-200, -11, 400, 22, 6);
-    podiumBg.lineStyle(1, 0x475569, 0.6);
-    podiumBg.strokeRoundedRect(-200, -11, 400, 22, 6);
+    podiumBg.fillStyle(0x0f172a, 0.94);
+    podiumBg.fillRoundedRect(-240, -13, 480, 26, 8);
+    podiumBg.lineStyle(1.5, 0xf59e0b, 0.85);
+    podiumBg.strokeRoundedRect(-240, -13, 480, 26, 8);
 
-    this.podiumText = scene.add.text(0, 0, '🥇 Đang đợi thí sinh tranh tài...', {
-      fontFamily: 'Arial, sans-serif',
-      fontSize: '10px',
-      fontStyle: 'bold',
-      color: '#fef08a',
-    }).setOrigin(0.5, 0.5);
+    this.podiumText = scene.add
+      .text(0, 0, '🏆 BẢNG VÀNG LIVE: Hãy trả lời đúng A/B/C/D để lên Top 1!', {
+        fontFamily: "'Segoe UI', system-ui, Arial, sans-serif",
+        fontSize: '11px',
+        fontStyle: 'bold',
+        color: '#fef08a',
+        align: 'center',
+      })
+      .setOrigin(0.5, 0.5);
 
-    const podiumContainer = scene.add.container(270, 56).setDepth(30);
-    podiumContainer.add([podiumBg, this.podiumText]);
+    this.podiumContainer.add([podiumBg, this.podiumText]);
 
     // 3. Team Battle Bar Container (hidden unless team mode active)
     this.teamContainer = scene.add.container(270, 80).setDepth(30);
@@ -150,15 +155,41 @@ export class Scoreboard {
     this.liveStatusText.setColor(connected ? '#4ade80' : '#94a3b8');
   }
 
-  public updateTop3(top: LeaderboardEntry[]): void {
-    if (top.length === 0) {
-      this.podiumText.setText('🥇 Hãy gõ JOIN hoặc A/B/C/D để bắt đầu!');
+  public updateLeaderboard(players: (StudentPlayer | LeaderboardEntry)[]): void {
+    const scored = [...players]
+      .filter((p) => p.score > 0)
+      .sort((a, b) => b.score - a.score || (b as any).totalCorrect - (a as any).totalCorrect);
+
+    if (scored.length === 0) {
+      this.podiumText.setText('🏆 BẢNG VÀNG LIVE: Hãy trả lời đúng A/B/C/D để lên Top 1!');
+      this.podiumText.setColor('#fde047');
       return;
     }
 
     const medals = ['🥇', '🥈', '🥉'];
-    const parts = top.slice(0, 3).map((p, i) => `${medals[i]} ${p.nickname} (${p.score}đ)`);
-    this.podiumText.setText(parts.join('  '));
+    const parts = scored.slice(0, 3).map((p, i) => {
+      const name = p.nickname.length > 9 ? p.nickname.slice(0, 8) + '…' : p.nickname;
+      return `${medals[i]} ${name}: ${p.score}đ`;
+    });
+
+    this.podiumText.setText(`🏆 TOP LIVE:  ${parts.join('   ')}`);
+    this.podiumText.setColor('#fef08a');
+
+    // Real-time animation feedback
+    if (this.scene.tweens) {
+      this.scene.tweens.add({
+        targets: this.podiumContainer,
+        scaleX: 1.03,
+        scaleY: 1.03,
+        duration: 150,
+        yoyo: true,
+        ease: 'Sine.easeOut',
+      });
+    }
+  }
+
+  public updateTop3(top: LeaderboardEntry[]): void {
+    this.updateLeaderboard(top);
   }
 
   public updateTeamMode(active: boolean, redScore = 0, blueScore = 0): void {

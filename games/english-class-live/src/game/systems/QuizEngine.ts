@@ -25,7 +25,7 @@ export class QuizEngine {
   public currentMode: QuizMode = 'quick';
   public currentQuestion: QuizQuestion | null = null;
   public questionIndex = 0;
-  public totalQuestionsInRound = 10;
+  public totalQuestionsInRound: number | null = null;
   public classPoints = 0;
   public defaultQuestionDurationSec = 22;
 
@@ -80,13 +80,13 @@ export class QuizEngine {
 
   public nextQuestion(topic?: string, now = Date.now()): void {
     this.questionIndex++;
-    if (this.questionIndex > this.totalQuestionsInRound) {
+    if (this.totalQuestionsInRound && this.questionIndex > this.totalQuestionsInRound) {
       this.finishRound();
       return;
     }
 
-    // Boss question appears on question 10 or in boss mode
-    const isBoss = this.currentMode === 'boss' || this.questionIndex === this.totalQuestionsInRound;
+    // Boss question appears periodically (every 10 questions) or in boss mode
+    const isBoss = this.currentMode === 'boss' || (this.questionIndex > 0 && this.questionIndex % 10 === 0);
     const modeToFetch: QuizMode = isBoss ? 'boss' : this.currentMode;
 
     const question = this.questionBank.getNextQuestion(modeToFetch, topic);

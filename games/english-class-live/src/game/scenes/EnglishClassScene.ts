@@ -133,9 +133,16 @@ export class EnglishClassScene extends Phaser.Scene {
 
     if (studentCount > 0) {
       const names = ['Mai Anh', 'Quang Hải', 'Thùy Linh', 'Minh Quân', 'Bảo Ngọc', 'Hoàng Nam', 'Khánh Vy', 'Tuấn Anh', 'Thanh Trúc', 'Đức Huy'];
+      const demoScores = [45, 30, 20, 10, 5];
       for (let i = 0; i < studentCount; i++) {
-        this.engine.join({ id: `test_stud_${i + 1}`, nickname: names[i % names.length] });
+        const p = this.engine.join({ id: `test_stud_${i + 1}`, nickname: names[i % names.length] });
+        if (demoScores[i]) {
+          p.score = demoScores[i];
+          p.totalCorrect = Math.floor(demoScores[i] / 10);
+        }
       }
+      this.scoreboard.updateLeaderboard(this.engine.roster.getAllPlayers());
+      this.scoreboard.updateStats(this.engine.classPoints, this.engine.roster.totalRegistered);
     }
 
     if (testReveal) {
@@ -143,6 +150,8 @@ export class EnglishClassScene extends Phaser.Scene {
       this.questionBoard.showQuestion(q, 1);
       this.teacher.setState('happy');
       this.questionBoard.revealCorrectAnswer(q.correct, q.explanation, 'Mai Anh');
+      this.scoreboard.updateLeaderboard(this.engine.roster.getAllPlayers());
+      this.scoreboard.updateStats(this.engine.classPoints, this.engine.roster.totalRegistered);
     } else if (testPose) {
       this.time.delayedCall(300, () => {
         this.teacher.setState(testPose as any);
@@ -186,6 +195,10 @@ export class EnglishClassScene extends Phaser.Scene {
         student.clearAnswerBadge();
       }
 
+      // Real-time leaderboard & HUD update at question start
+      this.scoreboard.updateLeaderboard(this.engine.roster.getAllPlayers());
+      this.scoreboard.updateStats(this.engine.classPoints, this.engine.roster.totalRegistered);
+
       // Teacher speaks prompt bilingually (TTS will trigger 'talk' pose and return to 'point')
       this.tts.announceQuestion(q);
 
@@ -224,16 +237,8 @@ export class EnglishClassScene extends Phaser.Scene {
       // Teacher speaks explanation bilingually (English pronunciation + Vietnamese meaning)
       this.tts.announceReveal(q, fastest);
 
-      // Update leaderboard
-      const top = this.engine.roster.getTopPlayers(3).map((p, idx) => ({
-        rank: idx + 1,
-        id: p.id,
-        nickname: p.nickname,
-        score: p.score,
-        streak: p.streak,
-        totalCorrect: p.totalCorrect,
-      }));
-      this.scoreboard.updateTop3(top);
+      // Real-time leaderboard updated immediately after question
+      this.scoreboard.updateLeaderboard(this.engine.roster.getAllPlayers());
       this.scoreboard.updateStats(this.engine.classPoints, this.engine.roster.totalRegistered);
 
       // Update team scores if team mode
@@ -248,6 +253,8 @@ export class EnglishClassScene extends Phaser.Scene {
       this.teacher.setState('idle');
       // Refresh seat visual assignments after seat rotation
       this.refreshVisibleStudents();
+      this.scoreboard.updateLeaderboard(this.engine.roster.getAllPlayers());
+      this.scoreboard.updateStats(this.engine.classPoints, this.engine.roster.totalRegistered);
     } else if (phase === 'celebration') {
       this.audio.playFanfare();
       this.teacher.celebrateVictory();
