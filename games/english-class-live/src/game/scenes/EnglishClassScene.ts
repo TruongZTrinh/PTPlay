@@ -33,7 +33,7 @@ export class EnglishClassScene extends Phaser.Scene {
   private config: StreamerConfig = {
     mode: 'quick',
     theme: 'day',
-    questionDurationSec: 12,
+    questionDurationSec: 22,
     ttsEnabled: true,
     ttsVietnamese: true,
     ttsEnglish: true,
@@ -101,6 +101,7 @@ export class EnglishClassScene extends Phaser.Scene {
       onBossDefeated: (totalCorrect) => this.handleBossDefeated(totalCorrect),
       onRoundComplete: (top, points) => this.handleRoundComplete(top, points),
     });
+    this.engine.defaultQuestionDurationSec = this.config.questionDurationSec;
 
     // 7. Live Bridge Event Router
     this.eventRouter = new EnglishLiveEventRouter(
@@ -168,6 +169,7 @@ export class EnglishClassScene extends Phaser.Scene {
 
   private applyConfigChanges(newCfg: StreamerConfig): void {
     this.config = newCfg;
+    this.engine.defaultQuestionDurationSec = newCfg.questionDurationSec;
     this.audio.setVolumes(newCfg.sfxVolume, newCfg.bgmVolume);
     this.presentation.setTheme(newCfg.theme);
   }
@@ -184,8 +186,8 @@ export class EnglishClassScene extends Phaser.Scene {
         student.clearAnswerBadge();
       }
 
-      // Teacher speaks prompt (TTS will trigger 'talk' pose and return to 'point')
-      this.tts.announceQuestion(q.promptVi || '', q.prompt, q.audioText);
+      // Teacher speaks prompt bilingually (TTS will trigger 'talk' pose and return to 'point')
+      this.tts.announceQuestion(q);
 
       // Update team mode bar
       this.scoreboard.updateTeamMode(
@@ -219,8 +221,8 @@ export class EnglishClassScene extends Phaser.Scene {
         }
       }
 
-      // Teacher speaks explanation
-      this.tts.announceReveal(q.correct, q.explanation, fastest);
+      // Teacher speaks explanation bilingually (English pronunciation + Vietnamese meaning)
+      this.tts.announceReveal(q, fastest);
 
       // Update leaderboard
       const top = this.engine.roster.getTopPlayers(3).map((p, idx) => ({
@@ -503,10 +505,10 @@ export class EnglishClassScene extends Phaser.Scene {
       const remainingSec = this.engine.getSecondsRemaining(now);
       this.questionBoard.drawTimerBar(progress, remainingSec);
 
-      // Audio tick during last 4 seconds
-      if (remainingSec <= 4 && remainingSec > 0 && Math.floor(now / 1000) !== Math.floor((now - delta) / 1000)) {
+      // Audio tick during last 5 seconds
+      if (remainingSec <= 5 && remainingSec > 0 && Math.floor(now / 1000) !== Math.floor((now - delta) / 1000)) {
         this.audio.playTick();
-        if (remainingSec === 4) {
+        if (remainingSec === 5 && !this.tts.isSpeakingQuestion()) {
           this.tts.announceTimeWarning();
         }
       }

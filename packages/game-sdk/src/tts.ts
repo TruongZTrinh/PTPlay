@@ -11,6 +11,74 @@ export interface TTSUtteranceOptions {
   voice?: SpeechSynthesisVoice | null;
 }
 
+export class EnglishVoiceHelper {
+  public static readonly ENGLISH_PRIORITY_VOICES = [
+    'Microsoft Jenny Online (Natural)',
+    'Microsoft Aria Online (Natural)',
+    'Microsoft Guy Online (Natural)',
+    'Google US English',
+    'Google UK English Female',
+    'Microsoft Zira Desktop',
+    'Microsoft Hazel Desktop',
+    'Samantha',
+  ];
+
+  public static isEnglishVoice(voice: SpeechSynthesisVoice): boolean {
+    if (!voice || !voice.lang) return false;
+    const lang = voice.lang.toLowerCase();
+    return (
+      lang.startsWith('en') ||
+      lang.includes('en-us') ||
+      lang.includes('en-gb') ||
+      lang.includes('en_us') ||
+      lang.includes('en_gb')
+    );
+  }
+
+  public static getEnglishVoices(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice[] {
+    if (!voices || !Array.isArray(voices)) return [];
+    return voices.filter((v) => this.isEnglishVoice(v));
+  }
+
+  public static selectBestEnglishVoice(
+    voices: SpeechSynthesisVoice[],
+    preferredGender: 'female' | 'male' | 'any' = 'female'
+  ): SpeechSynthesisVoice | null {
+    const enVoices = this.getEnglishVoices(voices);
+    if (enVoices.length === 0) return null;
+
+    // 1. High priority list check
+    for (const priorityName of this.ENGLISH_PRIORITY_VOICES) {
+      const match = enVoices.find((v) => v.name.includes(priorityName));
+      if (match) return match;
+    }
+
+    // 2. Female / Natural preference
+    if (preferredGender === 'female') {
+      const female = enVoices.find((v) => {
+        const n = v.name.toLowerCase();
+        return (
+          n.includes('female') ||
+          n.includes('zira') ||
+          n.includes('hazel') ||
+          n.includes('jenny') ||
+          n.includes('aria') ||
+          n.includes('samantha')
+        );
+      });
+      if (female) return female;
+    }
+
+    // 3. Any Natural or Google voice
+    const natural = enVoices.find((v) => v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('google'));
+    if (natural) return natural;
+
+    // 4. en-US fallback, then any English voice
+    const us = enVoices.find((v) => v.lang.toLowerCase().startsWith('en-us'));
+    return us || enVoices[0] || null;
+  }
+}
+
 export class VietnameseVoiceHelper {
   // Voice name prioritization list (from most natural/expressive to basic fallback)
   public static readonly VIETNAMESE_PRIORITY_VOICES = [

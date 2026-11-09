@@ -356,6 +356,99 @@ async function runSuite() {
     assert('onSpeechEnd' in tts, 'TTSController must expose onSpeechEnd hook');
   });
 
+  await test('8.5 Bilingual Voice Helper: Prioritizes and detects English voices accurately', async () => {
+    const { EnglishVoiceHelper } = await import('@ptplay/game-sdk');
+    const mockVoices = [
+      { name: 'Microsoft HoaiMy Online (Natural)', lang: 'vi-VN' },
+      { name: 'Microsoft David Desktop', lang: 'en-US' },
+      { name: 'Microsoft Jenny Online (Natural) - English (United States)', lang: 'en-US' },
+      { name: 'Microsoft Zira Desktop - English (United States)', lang: 'en-US' },
+      { name: 'Google US English', lang: 'en-US' },
+    ] as unknown as SpeechSynthesisVoice[];
+
+    assert.strictEqual(EnglishVoiceHelper.isEnglishVoice(mockVoices[0]), false);
+    assert.strictEqual(EnglishVoiceHelper.isEnglishVoice(mockVoices[1]), true);
+    assert.strictEqual(EnglishVoiceHelper.isEnglishVoice(mockVoices[2]), true);
+
+    const bestEn = EnglishVoiceHelper.selectBestEnglishVoice(mockVoices, 'female');
+    assert(bestEn);
+    assert(bestEn.name.includes('Jenny') || bestEn.name.includes('Zira'));
+  });
+
+  await test('8.6 Bilingual TTS: Announces question with Vietnamese host intro and native English pronunciation', () => {
+    const tts = new TTSController();
+    tts.enabled = true;
+    (tts as any).isUnlocked = true;
+
+    const sampleQ: any = {
+      id: 'voc-animals-09',
+      mode: 'quick',
+      prompt: 'What does "elephant" mean?',
+      promptVi: '"elephant" nghĩa là gì?',
+      choices: { A: 'thỏ', B: 'voi', C: 'chim', D: 'chó' },
+      correct: 'B',
+      explanation: '"elephant" nghĩa là "voi".',
+      durationSec: 22,
+    };
+
+    tts.announceQuestion(sampleQ);
+
+    const q = (tts as any).queue;
+    assert(q.length >= 1, 'Vietnamese intro must be queued first');
+    assert.strictEqual(q[0].lang, 'vi-VN');
+    assert(q[0].text.includes('Nghĩa của từ sau đây là gì'), 'Vietnamese voice must not awkwardly pronounce English word');
+
+    // Simulate completion of Vietnamese prompt to trigger chained English pronunciation
+    if (q[0].onEnd) {
+      q[0].onEnd();
+    }
+    const qAfter = (tts as any).queue;
+    const enItem = qAfter.find((item: any) => item.lang === 'en-US');
+    assert(enItem, 'English voice must be queued to pronounce English word');
+    assert(enItem.text.includes('elephant'), 'English voice must read the target English word');
+  });
+
+  await test('8.7 Bilingual TTS: Reveals answer with Vietnamese letter, English pronunciation, and Vietnamese translation', () => {
+    const tts = new TTSController();
+    tts.enabled = true;
+    (tts as any).isUnlocked = true;
+
+    const sampleQ: any = {
+      id: 'voc-animals-09',
+      mode: 'quick',
+      prompt: 'What does "elephant" mean?',
+      promptVi: '"elephant" nghĩa là gì?',
+      choices: { A: 'thỏ', B: 'voi', C: 'chim', D: 'chó' },
+      correct: 'B',
+      explanation: '"elephant" nghĩa là "voi".',
+    };
+
+    tts.announceReveal(sampleQ, 'Học Sinh A');
+
+    const q = (tts as any).queue;
+    assert(q.length >= 1, 'Initial reveal message must be queued');
+    assert.strictEqual(q[0].lang, 'vi-VN');
+    assert(q[0].text.includes('Đáp án chính xác là B'));
+    assert(q[0].text.includes('Học Sinh A'));
+
+    // Trigger completion of Vietnamese reveal to verify English pronunciation is chained
+    if (q[0].onEnd) {
+      q[0].onEnd();
+    }
+    const qAfter = (tts as any).queue;
+    const enItem = qAfter.find((item: any) => item.lang === 'en-US');
+    assert(enItem, 'English voice must be queued on reveal');
+    assert(enItem.text.includes('elephant'), 'English pronunciation must pronounce target word');
+  });
+
+  await test('8.8 Quiz Duration: Default duration provides at least 20s for speech completion and viewer interaction', () => {
+    const engine = new QuizEngine();
+    engine.startRound('quick');
+    assert(engine.currentQuestion);
+    const durationSec = Math.round((engine.questionEndsAt - engine.questionStartedAt) / 1000);
+    assert(durationSec >= 20, `Question duration must be at least 20s to fit TTS + comments, got ${durationSec}s`);
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================\n');

@@ -27,6 +27,7 @@ export class QuizEngine {
   public questionIndex = 0;
   public totalQuestionsInRound = 10;
   public classPoints = 0;
+  public defaultQuestionDurationSec = 22;
 
   public questionStartedAt = 0;
   public questionEndsAt = 0;
@@ -93,7 +94,10 @@ export class QuizEngine {
     this.answeredThisQuestion.clear();
     this.fastestWinner = null;
 
-    const durationMs = Math.max(8000, Math.min(30000, (question.durationSec || 12) * 1000));
+    const targetSec = question.durationSec
+      ? Math.max(question.durationSec, 20)
+      : this.defaultQuestionDurationSec;
+    const durationMs = Math.max(18000, Math.min(45000, targetSec * 1000));
     this.questionStartedAt = now;
     this.questionEndsAt = now + durationMs;
     this.phase = 'question';
@@ -191,7 +195,7 @@ export class QuizEngine {
   public revealAnswer(now = Date.now()): void {
     if (this.phase !== 'question') return;
     this.phase = 'reveal';
-    this.revealEndsAt = now + 3500;
+    this.revealEndsAt = now + 5000;
 
     // If boss question, check cooperative goal (e.g. >= 3 correct answers or 60% accuracy)
     const correctCount = Array.from(this.answeredThisQuestion.values()).filter((r) => r.correct).length;
