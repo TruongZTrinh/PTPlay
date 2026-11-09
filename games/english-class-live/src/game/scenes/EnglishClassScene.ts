@@ -63,8 +63,29 @@ export class EnglishClassScene extends Phaser.Scene {
     // 2. Classroom Presentation Layer
     this.presentation = new ClassroomPresentation(this);
 
-    // 3. Teacher Host Character
-    this.teacher = new TeacherCharacter(this, 94, 420);
+    // 3. Teacher Host Character (Positioned cleanly beside question board, 100% visible)
+    this.teacher = new TeacherCharacter(this, 98, 450, 295, 200);
+
+    // Dynamic Teacher Speech Coordination via TTS events
+    this.tts.onSpeechStart = () => {
+      // Don't interrupt celebratory fanfare cheer
+      if (this.teacher.currentState !== 'cheer') {
+        this.teacher.setState('talk');
+      }
+    };
+    this.tts.onSpeechEnd = () => {
+      // Return to context-appropriate pose when speech finishes
+      if (this.engine.phase === 'question') {
+        this.teacher.setState('point');
+      } else if (this.engine.phase === 'reveal') {
+        const hasCorrect = Array.from(this.engine.answeredThisQuestion.values()).some((r) => r.correct);
+        this.teacher.setState(hasCorrect ? 'happy' : 'sad');
+      } else if (this.engine.phase === 'celebration') {
+        this.teacher.setState('cheer');
+      } else {
+        this.teacher.setState('idle');
+      }
+    };
 
     // 4. Question Chalkboard UI
     this.questionBoard = new QuestionBoard(this);
@@ -104,7 +125,24 @@ export class EnglishClassScene extends Phaser.Scene {
     this.setupAudioUnlockTrigger();
 
     // 10. Start the game loop!
-    this.engine.startRound('quick');
+    const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const testPose = urlParams?.get('pose');
+    const studentCount = parseInt(urlParams?.get('students') || '0', 10);
+
+    if (studentCount > 0) {
+      const names = ['Mai Anh', 'Quang Hải', 'Thùy Linh', 'Minh Quân', 'Bảo Ngọc', 'Hoàng Nam', 'Khánh Vy', 'Tuấn Anh', 'Thanh Trúc', 'Đức Huy'];
+      for (let i = 0; i < studentCount; i++) {
+        this.engine.join({ id: `test_stud_${i + 1}`, nickname: names[i % names.length] });
+      }
+    }
+
+    if (testPose) {
+      this.time.delayedCall(300, () => {
+        this.teacher.setState(testPose as any);
+      });
+    } else {
+      this.engine.startRound('quick');
+    }
   }
 
   private setupAudioUnlockTrigger(): void {
@@ -133,14 +171,14 @@ export class EnglishClassScene extends Phaser.Scene {
       // 1. New Question Starts
       this.audio.playBell();
       this.questionBoard.showQuestion(q, this.engine.questionIndex);
-      this.teacher.setState('point', 1800);
+      this.teacher.setState('point');
 
       // Clear answer badges on desks
       for (const student of this.students.values()) {
         student.clearAnswerBadge();
       }
 
-      // Teacher speaks prompt
+      // Teacher speaks prompt (TTS will trigger 'talk' pose and return to 'point')
       this.tts.announceQuestion(q.promptVi || '', q.prompt, q.audioText);
 
       // Update team mode bar
@@ -157,10 +195,10 @@ export class EnglishClassScene extends Phaser.Scene {
       const hasCorrect = Array.from(this.engine.answeredThisQuestion.values()).some((r) => r.correct);
       if (hasCorrect) {
         this.audio.playCorrect();
-        this.teacher.setState('happy', 2500);
+        this.teacher.setState('happy');
       } else {
         this.audio.playWrong();
-        this.teacher.setState('sad', 2000);
+        this.teacher.setState('sad');
       }
 
       // Animate reactions for seated students

@@ -1,155 +1,158 @@
 import Phaser from 'phaser';
 import { TeacherState } from '../types.js';
+import { TeacherPose, TeacherPoseController, mapTeacherStateToPose } from './TeacherPoseController.js';
 
 export class TeacherCharacter {
   private scene: Phaser.Scene;
   public container: Phaser.GameObjects.Container;
+  public poseController: TeacherPoseController;
   public sprite: Phaser.GameObjects.Image;
-  private glowFx: Phaser.GameObjects.Image | null = null;
-  private pointerSparkle: Phaser.GameObjects.Image | null = null;
 
   public currentState: TeacherState = 'idle';
-  private idleTween: Phaser.Tweens.Tween | null = null;
-  private talkingTimer: Phaser.Time.TimerEvent | null = null;
+  private currentTween: Phaser.Tweens.Tween | null = null;
+  private autoRevertTimer: Phaser.Time.TimerEvent | null = null;
 
-  constructor(scene: Phaser.Scene, x = 96, y = 420) {
+  public readonly x: number;
+  public readonly bottomY: number;
+  public readonly maxHeight: number;
+  public readonly maxWidth: number;
+
+  constructor(scene: Phaser.Scene, x = 98, bottomY = 450, maxHeight = 295, maxWidth = 200) {
     this.scene = scene;
-    this.container = scene.add.container(x, y).setDepth(15);
+    this.x = x;
+    this.bottomY = bottomY;
+    this.maxHeight = maxHeight;
+    this.maxWidth = maxWidth;
 
-    // Main teacher sprite with bottom-center anchor
-    this.sprite = scene.add.image(0, 0, 'teacher_idle');
-    this.sprite.setDisplaySize(185, 260);
-    this.sprite.setOrigin(0.5, 1.0);
+    // Outer container for positioning & depth management
+    this.container = scene.add.container(0, 0).setDepth(15);
 
+    // Underlying TeacherPoseController manages still textures & uniform fitting
+    this.poseController = new TeacherPoseController(scene, x, bottomY, maxHeight, maxWidth);
+    this.sprite = this.poseController.sprite;
     this.container.add(this.sprite);
 
-    this.startIdleAnimation();
+    // Initial state
+    this.setState('idle');
+  }
+
+  /**
+   * Maps any requested teacher state to one of the 6 canonical poses:
+   * idle, point, talk, happy, sad, cheer
+   */
+  public mapStateToPose(state: TeacherState): TeacherPose {
+    return mapTeacherStateToPose(state);
   }
 
   public setState(state: TeacherState, autoRevertMs?: number): void {
-    if (this.currentState === state) return;
+    if (this.currentState === state && this.currentTween?.isPlaying()) {
+      return;
+    }
+
     this.currentState = state;
+    const pose = this.mapStateToPose(state);
 
-    // Stop speaking timer if switching away from talk
-    if (this.talkingTimer && state !== 'talk') {
-      this.talkingTimer.remove();
-      this.talkingTimer = null;
+    // Clear any pending revert timer
+    if (this.autoRevertTimer) {
+      this.autoRevertTimer.remove();
+      this.autoRevertTimer = null;
     }
 
-    // Switch texture cleanly
-    const textureKey = `teacher_${state}`;
-    if (this.scene.textures.exists(textureKey)) {
-      this.sprite.setTexture(textureKey);
-    }
+    // Stop existing procedural tween and restore exact baseline geometry
+    this.stopCurrentTween();
 
-    // Apply pose-specific tween and motion
-    switch (state) {
+    // Set texture & uniform fit
+    this.poseController.setPose(pose);
+    const baseScale = this.poseController.baseScale;
+
+    // Apply procedural motion according to pose
+    switch (pose) {
       case 'idle':
         this.startIdleAnimation();
         break;
 
       case 'point':
-        this.stopIdleTween();
-        // Arm extension toward chalkboard with slight scale pop
-        this.scene.tweens.add({
+        // Assertive arm extension toward chalkboard with subtle scale punch
+        this.currentTween = this.scene.tweens.add({
           targets: this.sprite,
-          scaleX: 1.03,
-          scaleY: 1.02,
-          duration: 250,
+          scaleX: baseScale * 1.025,
+          scaleY: baseScale * 1.02,
+          duration: 220,
           yoyo: true,
           ease: 'Back.easeOut',
+          onComplete: () => {
+            this.resetSpriteTransform();
+          },
         });
         break;
 
       case 'talk':
-        this.startTalkingLipFlap();
+        // Rhythmic speaking cadence (gentle head/posture bobbing)
+        this.currentTween = this.scene.tweens.add({
+          targets: this.sprite,
+          y: this.bottomY - 3,
+          scaleY: baseScale * 1.015,
+          duration: 240,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
         break;
 
       case 'happy':
-      case 'cheer':
-        this.stopIdleTween();
         // Joyful energetic bounce
-        this.scene.tweens.add({
+        this.currentTween = this.scene.tweens.add({
           targets: this.sprite,
-          y: -14,
-          duration: 180,
+          y: this.bottomY - 10,
+          scaleY: baseScale * 1.02,
+          duration: 200,
           yoyo: true,
           repeat: 3,
           ease: 'Sine.easeInOut',
           onComplete: () => {
-            if (this.currentState === state) {
+            this.resetSpriteTransform();
+            if (this.currentState === 'happy') {
               this.startIdleAnimation();
             }
           },
         });
         break;
 
-      case 'clap':
-        this.stopIdleTween();
-        // Clapping side-to-side cadence
-        this.scene.tweens.add({
-          targets: this.sprite,
-          scaleX: 0.96,
-          duration: 140,
-          yoyo: true,
-          repeat: 5,
-          ease: 'Sine.easeInOut',
-        });
-        break;
-
-      case 'think':
-        this.stopIdleTween();
-        // Head tilt thoughtful pause
-        this.scene.tweens.add({
-          targets: this.sprite,
-          angle: -3,
-          duration: 350,
-          ease: 'Quad.easeOut',
-        });
-        break;
-
-      case 'surprise':
-        this.stopIdleTween();
-        // Eyes wide surprise jump
-        this.scene.tweens.add({
-          targets: this.sprite,
-          y: -18,
-          scaleX: 1.05,
-          scaleY: 1.05,
-          duration: 150,
-          yoyo: true,
-          ease: 'Back.easeOut',
-        });
-        break;
-
       case 'sad':
-        this.stopIdleTween();
-        // Subtle sympathetic droop
-        this.scene.tweens.add({
+        // Sympathetic posture shift
+        this.currentTween = this.scene.tweens.add({
           targets: this.sprite,
-          y: 4,
-          angle: 2,
-          duration: 300,
+          y: this.bottomY + 2,
+          angle: 1.5,
+          duration: 350,
           ease: 'Sine.easeOut',
         });
         break;
 
-      case 'explain':
-        this.stopIdleTween();
-        // Gentle welcoming sway
-        this.scene.tweens.add({
+      case 'cheer':
+        // High celebratory jump
+        this.currentTween = this.scene.tweens.add({
           targets: this.sprite,
-          angle: 2,
-          duration: 400,
+          y: this.bottomY - 14,
+          scaleX: baseScale * 1.03,
+          scaleY: baseScale * 1.03,
+          duration: 220,
           yoyo: true,
-          repeat: 2,
-          ease: 'Sine.easeInOut',
+          repeat: 3,
+          ease: 'Back.easeOut',
+          onComplete: () => {
+            this.resetSpriteTransform();
+            if (this.currentState === 'cheer') {
+              this.startIdleAnimation();
+            }
+          },
         });
         break;
     }
 
+    // Schedule auto-revert to idle if duration is specified
     if (autoRevertMs && autoRevertMs > 0) {
-      this.scene.time.delayedCall(autoRevertMs, () => {
+      this.autoRevertTimer = this.scene.time.delayedCall(autoRevertMs, () => {
         if (this.currentState === state) {
           this.setState('idle');
         }
@@ -158,62 +161,54 @@ export class TeacherCharacter {
   }
 
   private startIdleAnimation(): void {
-    this.stopIdleTween();
-    this.sprite.setAngle(0);
-    this.sprite.setY(0);
+    this.stopCurrentTween();
+    this.resetSpriteTransform();
 
-    // Natural breathing / idle bobbing cycle
-    this.idleTween = this.scene.tweens.add({
+    const baseScale = this.poseController.baseScale;
+    // Gentle natural breathing cycle (subtle scaleY & upward offset, anchored at foot baseline)
+    this.currentTween = this.scene.tweens.add({
       targets: this.sprite,
-      scaleY: 1.025,
-      y: -3,
-      duration: 1400,
+      scaleY: baseScale * 1.015,
+      y: this.bottomY - 2,
+      duration: 1500,
       yoyo: true,
       repeat: -1,
       ease: 'Sine.easeInOut',
     });
   }
 
-  private stopIdleTween(): void {
-    if (this.idleTween) {
-      this.idleTween.stop();
-      this.idleTween = null;
+  private stopCurrentTween(): void {
+    if (this.currentTween) {
+      this.currentTween.stop();
+      this.currentTween = null;
     }
+    this.resetSpriteTransform();
   }
 
-  private startTalkingLipFlap(): void {
-    this.stopIdleTween();
-    let isTalkTexture = true;
-
-    this.talkingTimer = this.scene.time.addEvent({
-      delay: 180,
-      repeat: 12,
-      callback: () => {
-        isTalkTexture = !isTalkTexture;
-        this.sprite.setTexture(isTalkTexture ? 'teacher_talk' : 'teacher_idle');
-        this.sprite.setY(isTalkTexture ? -2 : 0);
-      },
-      callbackScope: this,
-    });
+  private resetSpriteTransform(): void {
+    this.sprite.setScale(this.poseController.baseScale);
+    this.sprite.setPosition(this.x, this.bottomY);
+    this.sprite.setAngle(0);
   }
 
   public celebrateVictory(): void {
     this.setState('cheer');
+
     // Spawn festive sparkles around teacher
     for (let i = 0; i < 6; i++) {
-      const offsetX = Phaser.Math.Between(-50, 50);
-      const offsetY = Phaser.Math.Between(-200, -60);
+      const offsetX = Phaser.Math.Between(-40, 40);
+      const offsetY = Phaser.Math.Between(-220, -70);
       const star = this.scene.add
-        .image(this.container.x + offsetX, this.container.y + offsetY, 'fx_star')
+        .image(this.x + offsetX, this.bottomY + offsetY, 'fx_star')
         .setDisplaySize(20, 20)
         .setDepth(25);
 
       this.scene.tweens.add({
         targets: star,
-        y: star.y - 40,
+        y: star.y - 45,
         alpha: 0,
         scale: 1.5,
-        duration: 900 + i * 100,
+        duration: 800 + i * 120,
         ease: 'Cubic.easeOut',
         onComplete: () => star.destroy(),
       });
@@ -221,8 +216,12 @@ export class TeacherCharacter {
   }
 
   public destroy(): void {
-    this.stopIdleTween();
-    if (this.talkingTimer) this.talkingTimer.remove();
+    if (this.autoRevertTimer) {
+      this.autoRevertTimer.remove();
+      this.autoRevertTimer = null;
+    }
+    this.stopCurrentTween();
+    this.poseController.destroy();
     this.container.destroy();
   }
 }

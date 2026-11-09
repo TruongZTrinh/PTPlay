@@ -31,6 +31,9 @@ export class TTSController {
   public enVoiceName?: string;
   public availableVoices: SpeechSynthesisVoice[] = [];
 
+  public onSpeechStart?: (item: SpeechUtteranceItem) => void;
+  public onSpeechEnd?: (item: SpeechUtteranceItem) => void;
+
   constructor(private audioEngine?: AudioEngine) {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       this.loadVoices();
@@ -165,11 +168,13 @@ export class TTSController {
       finished = true;
       this.isBusy = false;
       if (item.onEnd) item.onEnd();
+      if (this.onSpeechEnd) this.onSpeechEnd(item);
       void this.processQueue();
     };
 
     utterance.onstart = () => {
       if (item.onStart) item.onStart();
+      if (this.onSpeechStart) this.onSpeechStart(item);
     };
     utterance.onend = cleanup;
     utterance.onerror = cleanup;

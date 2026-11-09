@@ -53,8 +53,8 @@ export class BootScene extends Phaser.Scene {
     this.load.image('prop_desk', A + 'props/student_desk.png');
     this.load.image('prop_podium', A + 'props/teacher_podium.png');
 
-    // 3. Teacher 10 Key Poses
-    const teacherPoses = ['idle', 'point', 'talk', 'happy', 'think', 'surprise', 'sad', 'cheer', 'clap', 'explain'];
+    // 3. Teacher 6 Key Poses (PTPlay Premium Pack)
+    const teacherPoses = ['idle', 'point', 'talk', 'happy', 'sad', 'cheer'];
     teacherPoses.forEach((pose) => {
       this.load.image(`teacher_${pose}`, A + `teacher/teacher_${pose}.png`);
     });

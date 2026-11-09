@@ -22,10 +22,10 @@ export class ClassroomPresentation {
     this.boardProp.setDisplaySize(382, 264);
     this.boardProp.setDepth(5);
 
-    // 3. Teacher Podium
-    this.podiumProp = scene.add.image(88, 435, 'prop_podium');
-    this.podiumProp.setDisplaySize(120, 150);
-    this.podiumProp.setDepth(14);
+    // 3. Teacher Podium on left side of classroom
+    this.podiumProp = scene.add.image(44, 442, 'prop_podium');
+    this.podiumProp.setDisplaySize(92, 120);
+    this.podiumProp.setDepth(12);
 
     this.setupAmbientLight();
   }

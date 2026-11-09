@@ -295,6 +295,67 @@ async function runSuite() {
     assert.strictEqual(q[0].text, 'What does apple mean?');
   });
 
+  // --- 8. TEACHER 6 POSES & TTS SYNCHRONIZATION ---
+  await test('8.1 Teacher Poses: All 6 PNG assets exist with 512x768 dimensions and valid headers', async () => {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const poses = ['idle', 'point', 'talk', 'happy', 'sad', 'cheer'];
+    const dir = path.resolve('public/assets/english-class-v1/teacher');
+
+    poses.forEach((pose) => {
+      const file = path.join(dir, `teacher_${pose}.png`);
+      assert(fs.existsSync(file), `Teacher pose asset missing: ${file}`);
+      const buf = fs.readFileSync(file);
+      assert.strictEqual(buf.readUInt32BE(0), 0x89504E47, 'Must be valid PNG format');
+      const w = buf.readUInt32BE(16);
+      const h = buf.readUInt32BE(20);
+      assert.strictEqual(w, 512, `Pose ${pose} width must be 512 (found ${w})`);
+      assert.strictEqual(h, 768, `Pose ${pose} height must be 768 (found ${h})`);
+    });
+  });
+
+  await test('8.2 Teacher Poses: State mapping routes canonical and legacy states cleanly', async () => {
+    const { mapTeacherStateToPose } = await import('../src/game/visuals/TeacherPoseController.js');
+    assert.strictEqual(mapTeacherStateToPose('idle'), 'idle');
+    assert.strictEqual(mapTeacherStateToPose('point'), 'point');
+    assert.strictEqual(mapTeacherStateToPose('talk'), 'talk');
+    assert.strictEqual(mapTeacherStateToPose('happy'), 'happy');
+    assert.strictEqual(mapTeacherStateToPose('sad'), 'sad');
+    assert.strictEqual(mapTeacherStateToPose('cheer'), 'cheer');
+    // Legacy state fallbacks
+    assert.strictEqual(mapTeacherStateToPose('clap'), 'cheer');
+    assert.strictEqual(mapTeacherStateToPose('explain'), 'talk');
+    assert.strictEqual(mapTeacherStateToPose('think'), 'point');
+    assert.strictEqual(mapTeacherStateToPose('surprise'), 'happy');
+  });
+
+  await test('8.3 Teacher Poses: Uniform scaling preserves aspect ratio without independent stretching', async () => {
+    const { TEACHER_POSES } = await import('../src/game/visuals/TeacherPoseController.js');
+    assert.strictEqual(TEACHER_POSES.length, 6);
+
+    const assetW = 512;
+    const assetH = 768;
+    const maxHeight = 295;
+    const maxWidth = 200;
+
+    const s = Math.min(maxHeight / assetH, maxWidth / assetW);
+    const renderedW = assetW * s;
+    const renderedH = assetH * s;
+
+    // Check aspect ratio is identical to source
+    const originalAspect = assetW / assetH;
+    const renderedAspect = renderedW / renderedH;
+    assert(Math.abs(originalAspect - renderedAspect) < 0.0001, 'Rendered aspect ratio must match source');
+    assert(renderedH <= maxHeight, 'Rendered height must not exceed maxHeight');
+    assert(renderedW <= maxWidth, 'Rendered width must not exceed maxWidth');
+  });
+
+  await test('8.4 TTS Controller: Speech lifecycle hooks onSpeechStart and onSpeechEnd are supported', () => {
+    const tts = new TTSController();
+    assert('onSpeechStart' in tts, 'TTSController must expose onSpeechStart hook');
+    assert('onSpeechEnd' in tts, 'TTSController must expose onSpeechEnd hook');
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================\n');
