@@ -859,6 +859,45 @@ async function runTests() {
     await server.stop();
   });
 
+  // --- 18. CAT CAFÉ: ALL 13 MOCK CHAT COMMANDS ---
+  await test('20. Cat Café: All 13 Mock Chat Commands parse and dispatch correctly', async () => {
+    const { GameBridgeServer } = await import('../server/GameBridgeServer.js');
+    const server = new GameBridgeServer(8091);
+
+    const testCases: Array<{ comment: string; expectedAction: string }> = [
+      { comment: 'MÈO', expectedAction: 'cat_cafe.join' },
+      { comment: 'ĂN', expectedAction: 'cat_cafe.feed' },
+      { comment: 'CHƠI', expectedAction: 'cat_cafe.play' },
+      { comment: 'NGỦ', expectedAction: 'cat_cafe.nap' },
+      { comment: 'YÊU', expectedAction: 'cat_cafe.love' },
+      { comment: 'GỌI', expectedAction: 'cat_cafe.call' },
+      { comment: 'CHỤP', expectedAction: 'cat_cafe.photo' },
+      { comment: 'VƯỜN', expectedAction: 'cat_cafe.garden' },
+      { comment: 'DỖI', expectedAction: 'cat_cafe.angry' },
+      { comment: 'QUẨY', expectedAction: 'cat_cafe.dance' },
+      { comment: 'NGÁO', expectedAction: 'cat_cafe.zoomies' },
+      { comment: 'HỘP', expectedAction: 'cat_cafe.box' },
+      { comment: 'TẮM', expectedAction: 'cat_cafe.bath' },
+    ];
+
+    for (const tc of testCases) {
+      const parsed = server.parseCatCafeComment({
+        id: `mock_test_${tc.expectedAction}`,
+        type: 'chat',
+        provider: 'mock',
+        userId: 'test_user_cat',
+        uniqueId: '@test_user_cat',
+        nickname: 'TesterCat',
+        comment: tc.comment,
+        timestamp: Date.now(),
+      });
+      assert(parsed !== null, `Failed to parse comment "${tc.comment}"`);
+      assert.strictEqual(parsed.action, tc.expectedAction, `Expected ${tc.expectedAction} for comment "${tc.comment}"`);
+    }
+
+    await server.stop();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

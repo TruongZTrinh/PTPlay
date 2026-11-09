@@ -129,6 +129,25 @@ function switchTab(tabId) {
     if (actEl) actEl.innerText = crumbInfo.name;
   }
 
+  // Automatically sync Live Target when switching to a game tab
+  const gameTargetMap = {
+    miniwar: 'mini-war',
+    catcafe: 'cat-cafe',
+    english: 'english-class',
+    quizshow: 'quiz-show',
+    rebus: 'duoi-hinh-bat-chu',
+  };
+  const targetGame = gameTargetMap[tabId];
+  if (targetGame && targetGame !== currentActiveGame) {
+    currentActiveGame = targetGame;
+    updateActiveGameUI(targetGame);
+    fetch('/api/active_game', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ activeGame: targetGame }),
+    }).then(() => fetchStatus()).catch(() => {});
+  }
+
   if (tabId === 'economy') {
     fetchGiftControlData();
   }
@@ -1422,7 +1441,7 @@ async function updateQueueConfig() {
 // --- 10. Simulator & Diagnostic Prober ---
 async function sendMockChat(gameType, customNick, customComment) {
   const isEc = gameType === 'english' || gameType === 'english-class';
-  const isCat = gameType === 'cat';
+  const isCat = gameType === 'cat' || gameType === 'cat-cafe' || gameType === 'catcafe';
   const isQuiz = gameType === 'quiz' || gameType === 'quiz-show';
   const isRebus = gameType === 'rebus' || gameType === 'duoi-hinh-bat-chu';
 

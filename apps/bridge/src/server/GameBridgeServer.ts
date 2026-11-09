@@ -301,18 +301,44 @@ export class GameBridgeServer {
       action = 'cat_cafe.join';
     } else if (firstWord === 'AN' || firstWord === 'FEED' || firstWord === 'EAT' || cleanNoAccent.includes('CHO AN')) {
       action = 'cat_cafe.feed';
-    } else if (firstWord === 'CHOI' || firstWord === 'PLAY' || cleanNoAccent.includes('CHOI DUA')) {
+    } else if (firstWord === 'CHOI' || firstWord === 'PLAY' || cleanNoAccent.includes('CHOI DUA') || cleanNoAccent.includes('NGHICH')) {
       action = 'cat_cafe.play';
     } else if (firstWord === 'NGU' || firstWord === 'SLEEP' || firstWord === 'NAP' || cleanNoAccent.includes('DI NGU')) {
       action = 'cat_cafe.nap';
-    } else if (firstWord === 'YEU' || firstWord === 'LOVE' || firstWord === 'TIM' || cleanNoAccent.includes('THA TIM')) {
+    } else if (firstWord === 'YEU' || firstWord === 'LOVE' || firstWord === 'TIM' || cleanNoAccent.includes('THA TIM') || cleanNoAccent.includes('THUONG')) {
       action = 'cat_cafe.love';
-    } else if (firstWord === 'GOI' || firstWord === 'CALL' || firstWord === 'COME' || cleanNoAccent.includes('LAI DAY')) {
+    } else if (firstWord === 'GOI' || firstWord === 'CALL' || firstWord === 'COME' || cleanNoAccent.includes('LAI DAY') || cleanNoAccent.includes('RA DAY') || cleanNoAccent.includes('DUNG DAY')) {
       action = 'cat_cafe.call';
-    } else if (firstWord === 'CHUP' || firstWord === 'PHOTO' || cleanNoAccent.includes('CHUP ANH')) {
+    } else if (firstWord === 'CHUP' || firstWord === 'PHOTO' || cleanNoAccent.includes('CHUP ANH') || firstWord === 'PIC' || firstWord === 'POSE') {
       action = 'cat_cafe.photo';
-    } else if (firstWord === 'VUON' || firstWord === 'GARDEN' || cleanNoAccent.includes('RA VUON')) {
+    } else if (firstWord === 'VUON' || firstWord === 'GARDEN' || cleanNoAccent.includes('RA VUON') || firstWord === 'OUT' || firstWord === 'GAC' || cleanNoAccent.includes('LEN GAC')) {
       action = 'cat_cafe.garden';
+    } else if (
+      firstWord === 'DOI' || firstWord === 'CAU' || firstWord === 'GIAN' || firstWord === 'QUAU' ||
+      firstWord === 'ANGRY' || firstWord === 'KHE' || firstWord === 'HISS' || firstWord === 'GRR' || firstWord === 'XU' ||
+      cleanNoAccent.includes('DOI') || cleanNoAccent.includes('CAU KINH') || cleanNoAccent.includes('TUC GIAN') || cleanNoAccent.includes('QUAU') || cleanNoAccent.includes('KHE KHE')
+    ) {
+      action = 'cat_cafe.angry';
+    } else if (
+      firstWord === 'NHAY' || firstWord === 'MUA' || firstWord === 'QUAY' || firstWord === 'DANCE' ||
+      firstWord === 'LAC' || firstWord === 'PARTY' || cleanNoAccent.includes('NHAY MUA') || cleanNoAccent.includes('QUAY LEN') || cleanNoAccent.includes('LAC MONG')
+    ) {
+      action = 'cat_cafe.dance';
+    } else if (
+      firstWord === 'NGAO' || firstWord === 'CHAY' || firstWord === 'RUN' || firstWord === 'ZOOM' ||
+      firstWord === 'ZOOMIES' || firstWord === 'PHI' || firstWord === 'DUA' || cleanNoAccent.includes('CHAY DUA') || cleanNoAccent.includes('MEO NGAO') || cleanNoAccent.includes('PHONG')
+    ) {
+      action = 'cat_cafe.zoomies';
+    } else if (
+      firstWord === 'HOP' || firstWord === 'THUNG' || firstWord === 'BOX' || firstWord === 'TRON' ||
+      firstWord === 'HIDE' || cleanNoAccent.includes('CHUI HOP') || cleanNoAccent.includes('CHUI THUNG') || cleanNoAccent.includes('TRON HOP')
+    ) {
+      action = 'cat_cafe.box';
+    } else if (
+      firstWord === 'TAM' || firstWord === 'BATH' || firstWord === 'LIEM' || firstWord === 'DEP' ||
+      firstWord === 'CLEAN' || firstWord === 'GAI' || cleanNoAccent.includes('TAM RUA') || cleanNoAccent.includes('LIEM LONG') || cleanNoAccent.includes('RUA MAT')
+    ) {
+      action = 'cat_cafe.bath';
     } else if (cleanNoAccent === 'RESET' || cleanNoAccent === 'LAM LAI') {
       action = 'cat_cafe.reset';
     }
@@ -1430,22 +1456,25 @@ export class GameBridgeServer {
         if (pathname === '/api/catcafe/mock/chat') {
           const nick = String(json.nickname || 'Khán Giả Mèo').slice(0, 40);
           const comm = String(json.comment || 'MÈO').slice(0, 150);
-          this.mockProvider.simulateChat(nick, comm);
-          if (this.activeProvider !== this.mockProvider) {
-            this.totalEventsReceived++;
-            this.processIncomingLiveEvent({
-              id: `manual_chat_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-              type: 'chat',
-              provider: 'manual',
-              userId: `manual_${Date.now()}`,
-              uniqueId: nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user',
-              nickname: nick,
-              comment: comm,
-              timestamp: Date.now(),
-            });
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const event: NormalizedChatEvent = {
+            id: `mock_cat_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            type: 'chat',
+            provider: 'mock',
+            userId: uId,
+            uniqueId: `@${uId}`,
+            nickname: nick,
+            comment: comm,
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          const catCmd = this.parseCatCafeComment(event);
+          if (catCmd) {
+            this.eventQueue.push(catCmd);
+            this.totalEventsDispatched++;
           }
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: catCmd ? catCmd.action : null }));
           return;
         }
 
@@ -1453,27 +1482,40 @@ export class GameBridgeServer {
           const nick = String(json.nickname || 'Khán Giả Mèo').slice(0, 40);
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
-          this.mockProvider.simulateGift(nick, gift, count);
-          if (this.activeProvider !== this.mockProvider) {
-            this.totalEventsReceived++;
-            this.processIncomingLiveEvent({
-              id: `manual_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-              type: 'gift',
-              provider: 'manual',
-              userId: `manual_${Date.now()}`,
-              uniqueId: nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user',
-              nickname: nick,
-              giftId: `gift_${gift.toLowerCase()}`,
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const rule = this.giftCatalog.findMatchingRule('cat-cafe', gift);
+          const catGiftCmd: GameCommand = {
+            id: `cmd_cat_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            action: (rule?.action as any) || 'cat_cafe.gift_effect',
+            user: { userId: uId, uniqueId: `@${uId}`, nickname: nick },
+            metadata: {
               giftName: gift,
-              repeatCount: count,
-              deltaCount: count,
+              count,
               diamondCount: 1,
-              repeatEnd: true,
-              timestamp: Date.now(),
-            });
-          }
+              ...(rule?.params || {}),
+            },
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          this.eventQueue.push(catGiftCmd);
+          this.totalEventsDispatched++;
+          this.giftCatalog.recordPipelineEvent({
+            id: `pipe_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            timestamp: Date.now(),
+            source: 'mock',
+            giftName: gift,
+            count,
+            diamondCount: 1,
+            viewerNick: nick,
+            activeGame: this.activeGame,
+            targetGame: 'cat-cafe',
+            resolvedStatus: 'verified',
+            mappingMatched: !!rule,
+            actionExecuted: rule?.action || 'cat_cafe.gift_effect',
+            pipelineStatus: 'executed',
+          });
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: catGiftCmd.action }));
           return;
         }
 
@@ -1533,9 +1575,26 @@ export class GameBridgeServer {
           const nick = String(json.nickname || 'Học Sinh Chibi').slice(0, 40);
           const comm = String(json.comment || 'JOIN').slice(0, 150);
           const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
-          this.mockProvider.simulateChat(nick, comm, undefined, avatarUrl);
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const event: NormalizedChatEvent = {
+            id: `mock_eng_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            type: 'chat',
+            provider: 'mock',
+            userId: uId,
+            uniqueId: `@${uId}`,
+            nickname: nick,
+            comment: comm,
+            profilePictureUrl: avatarUrl,
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          const engCmd = this.parseEnglishClassComment(event);
+          if (engCmd) {
+            this.eventQueue.push(engCmd);
+            this.totalEventsDispatched++;
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: engCmd ? engCmd.action : null }));
           return;
         }
 
@@ -1544,9 +1603,26 @@ export class GameBridgeServer {
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
           const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
-          this.mockProvider.simulateGift(nick, gift, count, count, true, undefined, avatarUrl);
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const rule = this.giftCatalog.findMatchingRule('english-class', gift);
+          const engGiftCmd: GameCommand = {
+            id: `cmd_eng_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            action: (rule?.action as any) || 'english_class.gift',
+            user: { userId: uId, uniqueId: `@${uId}`, nickname: nick },
+            metadata: {
+              giftName: gift,
+              count,
+              diamondCount: 1,
+              profilePictureUrl: avatarUrl,
+              ...(rule?.params || {}),
+            },
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          this.eventQueue.push(engGiftCmd);
+          this.totalEventsDispatched++;
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: engGiftCmd.action }));
           return;
         }
 
@@ -1589,9 +1665,26 @@ export class GameBridgeServer {
           const nick = String(json.nickname || 'Thí Sinh Chibi').slice(0, 40);
           const comm = String(json.comment || 'JOIN').slice(0, 150);
           const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
-          this.mockProvider.simulateChat(nick, comm, undefined, avatarUrl);
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const event: NormalizedChatEvent = {
+            id: `mock_qs_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            type: 'chat',
+            provider: 'mock',
+            userId: uId,
+            uniqueId: `@${uId}`,
+            nickname: nick,
+            comment: comm,
+            profilePictureUrl: avatarUrl,
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          const qsCmd = this.parseQuizShowComment(event);
+          if (qsCmd) {
+            this.eventQueue.push(qsCmd);
+            this.totalEventsDispatched++;
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: qsCmd ? qsCmd.action : null }));
           return;
         }
 
@@ -1600,9 +1693,26 @@ export class GameBridgeServer {
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
           const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
-          this.mockProvider.simulateGift(nick, gift, count, count, true, undefined, avatarUrl);
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const rule = this.giftCatalog.findMatchingRule('quiz-show', gift);
+          const qsGiftCmd: GameCommand = {
+            id: `cmd_qs_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            action: (rule?.action as any) || 'quiz_show.gift',
+            user: { userId: uId, uniqueId: `@${uId}`, nickname: nick },
+            metadata: {
+              giftName: gift,
+              count,
+              diamondCount: 1,
+              profilePictureUrl: avatarUrl,
+              ...(rule?.params || {}),
+            },
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          this.eventQueue.push(qsGiftCmd);
+          this.totalEventsDispatched++;
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: qsGiftCmd.action }));
           return;
         }
 
@@ -1645,9 +1755,26 @@ export class GameBridgeServer {
           const nick = String(json.nickname || 'Thám Tử Chibi').slice(0, 40);
           const comm = String(json.comment || 'CÁ VÀNG').slice(0, 150);
           const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
-          this.mockProvider.simulateChat(nick, comm, undefined, avatarUrl);
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const event: NormalizedChatEvent = {
+            id: `mock_rebus_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            type: 'chat',
+            provider: 'mock',
+            userId: uId,
+            uniqueId: `@${uId}`,
+            nickname: nick,
+            comment: comm,
+            profilePictureUrl: avatarUrl,
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          const rebusCmd = this.parseRebusComment(event);
+          if (rebusCmd) {
+            this.eventQueue.push(rebusCmd);
+            this.totalEventsDispatched++;
+          }
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: rebusCmd ? rebusCmd.action : null }));
           return;
         }
 
@@ -1656,9 +1783,26 @@ export class GameBridgeServer {
           const gift = String(json.giftName || 'Rose').slice(0, 40);
           const count = Math.min(100, Math.max(1, Number(json.count) || 1));
           const avatarUrl = json.avatarUrl ? String(json.avatarUrl) : undefined;
-          this.mockProvider.simulateGift(nick, gift, count, count, true, undefined, avatarUrl);
+          const uId = `user_${nick.toLowerCase().replace(/\s+/g, '_')}`;
+          const rule = this.giftCatalog.findMatchingRule('duoi-hinh-bat-chu', gift);
+          const rebusGiftCmd: GameCommand = {
+            id: `cmd_rebus_gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+            action: (rule?.action as any) || 'rebus.gift',
+            user: { userId: uId, uniqueId: `@${uId}`, nickname: nick },
+            metadata: {
+              giftName: gift,
+              count,
+              diamondCount: 1,
+              profilePictureUrl: avatarUrl,
+              ...(rule?.params || {}),
+            },
+            timestamp: Date.now(),
+          };
+          this.totalEventsReceived++;
+          this.eventQueue.push(rebusGiftCmd);
+          this.totalEventsDispatched++;
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
+          res.end(JSON.stringify({ success: true, command: rebusGiftCmd.action }));
           return;
         }
 
