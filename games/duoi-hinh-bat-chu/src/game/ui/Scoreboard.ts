@@ -20,7 +20,7 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     this.entryBgs = scene.add.graphics();
     this.add(this.entryBgs);
 
-    const title = scene.add.text(402, 396, '🏆 BẢNG VÀNG TUẦN', {
+    const title = scene.add.text(402, 396, '🏆 BẢNG VÀNG LIVE', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '11px',
       color: '#fef08a',
@@ -127,34 +127,63 @@ export class Scoreboard extends Phaser.GameObjects.Container {
   }
 
   public updateLeaderboard(players: RebusPlayerRecord[]): void {
-    const sorted = [...players].sort((a, b) => b.score - a.score).slice(0, 5);
+    // Only players who actually earned points belong on the live ranking board!
+    const scored = [...players]
+      .filter((p) => p.score > 0)
+      .sort((a, b) => b.score - a.score || b.correctCount - a.correctCount);
 
     this.entryBgs.clear();
 
+    const placeholders = [
+      '🥇 Chờ người dẫn đầu...',
+      '🥈 Vị trí Á quân...',
+      '🥉 Vị trí Quý quân...',
+      '4. Đoán đúng lên Top!',
+      '5. Bình luận ngay để ghi điểm',
+    ];
+
     for (let i = 0; i < 5; i++) {
-      const p = sorted[i];
+      const p = scored[i];
       const y = 415 + i * 20;
 
       if (p) {
         const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
-        this.topEntries[i].setText(`${medal} ${p.nickname} : ${p.score}đ`);
+        const displayName = p.nickname.length > 10 ? p.nickname.slice(0, 9) + '…' : p.nickname;
+        this.topEntries[i].setText(`${medal} ${displayName} : ${p.score}đ`);
+        this.topEntries[i].setColor(i === 0 ? '#fde047' : i === 1 ? '#e2e8f0' : i === 2 ? '#fdba74' : '#cbd5e1');
+        this.topEntries[i].setFontStyle(i < 3 ? 'bold' : 'normal');
 
         // Row highlighting for Top 1, 2, 3
         if (i === 0) {
-          this.entryBgs.fillStyle(0x78350f, 0.6);
+          this.entryBgs.fillStyle(0x78350f, 0.75);
           this.entryBgs.fillRoundedRect(298, y - 2, 208, 18, 6);
-          this.entryBgs.lineStyle(1, 0xfde047, 0.8);
+          this.entryBgs.lineStyle(1.2, 0xfde047, 0.9);
           this.entryBgs.strokeRoundedRect(298, y - 2, 208, 18, 6);
         } else if (i === 1) {
-          this.entryBgs.fillStyle(0x1e293b, 0.7);
+          this.entryBgs.fillStyle(0x1e293b, 0.75);
           this.entryBgs.fillRoundedRect(298, y - 2, 208, 18, 6);
+          this.entryBgs.lineStyle(1, 0x94a3b8, 0.6);
+          this.entryBgs.strokeRoundedRect(298, y - 2, 208, 18, 6);
         } else if (i === 2) {
-          this.entryBgs.fillStyle(0x1e293b, 0.5);
+          this.entryBgs.fillStyle(0x1e293b, 0.6);
           this.entryBgs.fillRoundedRect(298, y - 2, 208, 18, 6);
+          this.entryBgs.lineStyle(1, 0xd97706, 0.5);
+          this.entryBgs.strokeRoundedRect(298, y - 2, 208, 18, 6);
         }
       } else {
-        this.topEntries[i].setText(`${i + 1}. ---`);
+        this.topEntries[i].setText(placeholders[i]);
+        this.topEntries[i].setColor(i === 0 ? '#94a3b8' : '#64748b');
+        this.topEntries[i].setFontStyle('normal');
       }
+    }
+
+    if (scored.length > 0) {
+      this.scene.tweens.add({
+        targets: this.topEntries.slice(0, Math.min(3, scored.length)),
+        scale: { from: 1.05, to: 1 },
+        duration: 180,
+        ease: 'Quad.easeOut',
+      });
     }
   }
 

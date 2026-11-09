@@ -7,7 +7,7 @@ import rawPuzzles from '../../data/puzzles.json';
 
 export interface RebusEngineEvents {
   onStateChanged?: (state: RebusState) => void;
-  onPuzzleStarted?: (puzzle: RebusPuzzle, round: number, totalRounds: number) => void;
+  onPuzzleStarted?: (puzzle: RebusPuzzle, round: number, totalRounds?: number) => void;
   onTick?: (remainingSec: number, totalSec: number) => void;
   onHint1Triggered?: (hint1: string, sponsorName?: string) => void;
   onHint2Triggered?: (hint2: string, firstChar: string, sponsorName?: string) => void;
@@ -29,7 +29,6 @@ export class RebusEngine {
   public currentPuzzle: RebusPuzzle | null = null;
   public currentState: RebusState = 'idle';
   public roundNumber: number = 0;
-  public readonly totalRounds: number = 10;
   public remainingTimeMs: number = 0;
   public totalTimeMs: number = 20000;
 
@@ -97,11 +96,6 @@ export class RebusEngine {
     this.clearTimers();
     this.roundNumber++;
 
-    if (this.roundNumber > this.totalRounds) {
-      this.triggerCeremony();
-      return;
-    }
-
     this.currentPuzzle = this.selectNextPuzzle();
     if (!this.currentPuzzle) {
       this.triggerCeremony();
@@ -120,7 +114,7 @@ export class RebusEngine {
 
     this.setState('intro');
     this.audioEngine.playRoundStart();
-    this.events.onPuzzleStarted?.(this.currentPuzzle, this.roundNumber, this.totalRounds);
+    this.events.onPuzzleStarted?.(this.currentPuzzle, this.roundNumber);
 
     if (this.config.ttsEnabled) {
       this.ttsController.announceRoundStart(this.roundNumber);

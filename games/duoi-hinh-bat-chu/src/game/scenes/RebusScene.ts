@@ -55,6 +55,12 @@ export class RebusScene extends Phaser.Scene {
     this.scoreboard = new Scoreboard(this);
     this.congratsPresenter = new CongratulationsPresenter(this);
 
+    // Score changed listener for instantaneous real-time leaderboard & student animation
+    this.studentRoster.setOnScoreChanged((player) => {
+      this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
+      this.spawnOrUpdateStudent(player);
+    });
+
     // 4. Instantiate visible chibi students
     this.renderInitialStudents();
 
@@ -191,11 +197,14 @@ export class RebusScene extends Phaser.Scene {
             student.reactWrong();
           }
         }
-        if (isCorrect && solverRank && solverRank > 1) {
-          const medal = solverRank === 2 ? '🥈 VỀ NHÌ' : '🥉 VỀ BA';
-          const player = this.studentRoster.getPlayer(userId);
-          const name = player ? player.nickname : userId;
-          this.scoreboard.setChatTicker(`${medal}: +${points}đ tốc độ!`, name);
+        if (isCorrect) {
+          this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
+          if (solverRank && solverRank > 1) {
+            const medal = solverRank === 2 ? '🥈 VỀ NHÌ' : '🥉 VỀ BA';
+            const player = this.studentRoster.getPlayer(userId);
+            const name = player ? player.nickname : userId;
+            this.scoreboard.setChatTicker(`${medal}: +${points}đ tốc độ!`, name);
+          }
         }
       },
 
@@ -206,6 +215,7 @@ export class RebusScene extends Phaser.Scene {
           winnerChar.reactCorrect();
         }
         this.scoreboard.setChatTicker(`⚡ NHANH NHẤT: "${puzzle.answer}" (+${points}đ)!`, winner.nickname);
+        this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
         this.congratsPresenter.showRoundWinner(winner.nickname, puzzle.answer, points);
       },
 

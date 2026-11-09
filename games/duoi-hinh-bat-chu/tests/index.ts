@@ -255,6 +255,56 @@ async function runTests() {
     audio.stopBGM();
   });
 
+  // 8. CONTINUOUS ROUNDS & REAL-TIME LIVE LEADERBOARD
+  test('8. Continuous Rounds & Live Leaderboard: Infinite rounds beyond 10, real-time score ranking', () => {
+    const alloc = new SeatAllocator();
+    const roster = new StudentRoster(alloc);
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    // Verify all seeded NPCs start at 0 score so live viewers aren't blocked by fake mock scores
+    const npcs = roster.getAllPlayers();
+    assert(npcs.length >= 8);
+    for (const npc of npcs) {
+      assert.strictEqual(npc.score, 0, `NPC ${npc.nickname} should start with 0 score`);
+      assert.strictEqual(npc.streak, 0);
+      assert.strictEqual(npc.correctCount, 0);
+    }
+
+    // Verify real-time score change listener
+    let scoreChangedPlayer = '';
+    roster.setOnScoreChanged((player) => {
+      scoreChangedPlayer = player.nickname;
+    });
+
+    const engine = new RebusEngine(roster, audio, tts);
+    engine.startShow();
+    assert.strictEqual(engine.roundNumber, 1);
+    assert(engine.currentPuzzle !== null);
+
+    // Simulate progressing past round 10 to ensure no hard 10-picture cap
+    for (let r = 1; r <= 14; r++) {
+      engine.nextRound();
+      assert(engine.currentPuzzle !== null, `Round ${engine.roundNumber} puzzle should be loaded`);
+      assert.notStrictEqual(engine.currentState, 'finished', `Round ${engine.roundNumber} should not trigger ceremony stop`);
+    }
+
+    // Now roundNumber should be 15, confirming continuous play without 10-cap stop
+    assert.strictEqual(engine.roundNumber, 15);
+
+    // Simulate a player scoring
+    const testPlayerId = 'viewer_real_1';
+    roster.registerOrGet(testPlayerId, 'Thám Tử Đỉnh Cao');
+    roster.addScore(testPlayerId, 31, true);
+
+    assert.strictEqual(scoreChangedPlayer, 'Thám Tử Đỉnh Cao');
+    const topPlayers = roster.getTopPlayers(5);
+    assert.strictEqual(topPlayers[0].userId, testPlayerId);
+    assert.strictEqual(topPlayers[0].score, 31);
+
+    engine.destroy();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

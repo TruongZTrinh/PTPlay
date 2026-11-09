@@ -58,7 +58,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.headerBadgesBg);
 
     // Header info (3D Badges)
-    this.roundText = scene.add.text(84, 96, '🎮 CÂU 1/10', {
+    this.roundText = scene.add.text(84, 96, '🎮 CÂU 1', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
       color: '#ffffff',
@@ -278,9 +278,9 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.promptBg.strokeRoundedRect(50, 345, 440, 22, 11);
   }
 
-  public setPuzzle(puzzle: RebusPuzzle, round: number, totalRounds: number): void {
+  public setPuzzle(puzzle: RebusPuzzle, round: number, totalRounds?: number): void {
     this.currentPuzzleAnswer = puzzle.answer;
-    this.roundText.setText(`Câu ${round}/${totalRounds}`);
+    this.roundText.setText(`🎮 CÂU ${round}`);
     this.categoryText.setText(`💡 ${puzzle.category}`);
     this.timerText.setText(`⏱ ${puzzle.durationSec || 20}s`);
 

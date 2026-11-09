@@ -5,10 +5,15 @@ import { TextNormalizer } from '../utils/TextNormalizer';
 export class StudentRoster {
   private players = new Map<string, RebusPlayerRecord>();
   private seatAllocator: SeatAllocator;
+  private onScoreChanged?: (player: RebusPlayerRecord) => void;
 
   constructor(seatAllocator: SeatAllocator) {
     this.seatAllocator = seatAllocator;
     this.seedNpcContestants();
+  }
+
+  public setOnScoreChanged(callback: (player: RebusPlayerRecord) => void): void {
+    this.onScoreChanged = callback;
   }
 
   private seedNpcContestants(): void {
@@ -31,11 +36,11 @@ export class StudentRoster {
         uniqueId: `@${id}`,
         nickname: npc.name,
         team: npc.team as 'red' | 'blue',
-        score: Math.max(90, 320 - idx * 20),
-        streak: idx < 3 ? 3 : 1,
-        maxStreak: idx < 3 ? 5 : 2,
-        answersCount: 12,
-        correctCount: 9,
+        score: 0,
+        streak: 0,
+        maxStreak: 0,
+        answersCount: 0,
+        correctCount: 0,
         lastActiveTime: Date.now(),
         skinIndex: idx % 8,
         seatIndex: seat.index,
@@ -135,6 +140,7 @@ export class StudentRoster {
     if (!player) return;
     player.score += points;
     player.lastActiveTime = Date.now();
+    this.onScoreChanged?.(player);
   }
 
   public grantExtraGuesses(userId: string, count: number = 3): void {
@@ -160,6 +166,8 @@ export class StudentRoster {
     } else {
       player.streak = 0;
     }
+
+    this.onScoreChanged?.(player);
   }
 
   private hashCode(str: string): number {
