@@ -111,7 +111,7 @@ export class GiftReactionVisuals {
 
         // 2. Target cat runs to the fish and starts eating!
         if (targetCat) {
-          targetCat.walkTo(x, y + 10, () => {
+          targetCat.walkTo(x, y, () => {
             targetCat.eatFood();
             fish.setScale(0.5);
             // Emits pleasant eating sparkles

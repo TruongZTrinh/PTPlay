@@ -23,6 +23,44 @@ export type CatState =
   | 'box'
   | 'bath';
 
+interface PoseMetric {
+  originX: number;
+  originY: number;
+  height: number;
+}
+
+const POSE_METRICS: Record<string, PoseMetric> = {
+  bath: { originX: 0.5, originY: 315 / 384, height: 247 },
+  box: { originX: 0.5, originY: 373 / 384, height: 367 },
+  call: { originX: 0.5, originY: 377 / 384, height: 370 },
+  chase_fish: { originX: 0.5, originY: 321 / 384, height: 260 },
+  climb: { originX: 0.5, originY: 377 / 384, height: 371 },
+  cool: { originX: 0.5, originY: 318 / 384, height: 251 },
+  couple: { originX: 0.5, originY: 303 / 384, height: 223 },
+  eat: { originX: 0.5, originY: 358 / 384, height: 332 },
+  flower: { originX: 0.5, originY: 318 / 384, height: 252 },
+  garden: { originX: 0.5, originY: 345 / 384, height: 307 },
+  groom: { originX: 0.5, originY: 369 / 384, height: 355 },
+  idle: { originX: 0.5, originY: 377 / 384, height: 371 },
+  idle_2: { originX: 0.5, originY: 379 / 384, height: 371 },
+  jump: { originX: 0.5, originY: 375 / 384, height: 367 },
+  love: { originX: 0.5, originY: 371 / 384, height: 359 },
+  love_2: { originX: 0.5, originY: 368 / 384, height: 359 },
+  meow: { originX: 0.5, originY: 331 / 384, height: 279 },
+  party: { originX: 0.5, originY: 362 / 384, height: 341 },
+  photo: { originX: 0.5, originY: 341 / 384, height: 299 },
+  play: { originX: 0.5, originY: 371 / 384, height: 357 },
+  play_2: { originX: 0.5, originY: 368 / 384, height: 357 },
+  royal: { originX: 0.5, originY: 343 / 384, height: 302 },
+  sleep: { originX: 0.5, originY: 344 / 384, height: 305 },
+  sleep_2: { originX: 0.5, originY: 346 / 384, height: 305 },
+  stretch: { originX: 0.5, originY: 351 / 384, height: 318 },
+  sunbathe: { originX: 0.5, originY: 361 / 384, height: 340 },
+  walk_1: { originX: 0.5, originY: 377 / 384, height: 371 },
+  walk_1_2: { originX: 0.5, originY: 379 / 384, height: 371 },
+  walk_2: { originX: 0.5, originY: 363 / 384, height: 341 },
+};
+
 export interface CatInitData {
   id: string;
   nickname: string;
@@ -63,8 +101,13 @@ export class Cat extends Phaser.GameObjects.Container {
   private stateElapsed = 0;
   private breatheTween: Phaser.Tweens.Tween | null = null;
   private moveTween: Phaser.Tweens.Tween | null = null;
+  private activeEffectTween: Phaser.Tweens.Tween | null = null;
+  private walkBobTween: Phaser.Tweens.Tween | null = null;
   private walkAnimTimer: Phaser.Time.TimerEvent | null = null;
   private isRoyal = false;
+  private facingLeft = false;
+  private readonly baseScale = 0.24;
+  private currentActionHeight = 371;
 
   constructor(scene: Phaser.Scene, data: CatInitData) {
     const initX = data.x ?? Random.range(140, 400);
@@ -93,13 +136,10 @@ export class Cat extends Phaser.GameObjects.Container {
       : (scene.textures.exists(legacySitKey) ? legacySitKey : `cat_coat_${this.coat.id}_body`);
 
     this.catSprite = scene.add.image(0, 0, spriteKey);
-    if (scene.textures.exists(v3IdleKey)) {
-      this.catSprite.setOrigin(0.5, 0.82);
-      this.catSprite.setScale(0.24);
-    } else {
-      this.catSprite.setOrigin(0.5, 0.72);
-      this.catSprite.setScale(1);
-    }
+    const metric = POSE_METRICS['idle'];
+    this.catSprite.setOrigin(metric.originX, metric.originY);
+    this.catSprite.setScale(this.baseScale);
+    this.currentActionHeight = metric.height;
     this.add(this.catSprite);
 
     // 2. Cozy Wooden Carved Nametag
@@ -129,35 +169,56 @@ export class Cat extends Phaser.GameObjects.Container {
     const key = catAssetKey(this.v3Coat, action);
     if (this.scene.textures.exists(key)) {
       this.catSprite.setTexture(key);
-      this.catSprite.setOrigin(0.5, 0.82);
-      const isFlipped = this.catSprite.scaleX < 0;
-      this.catSprite.setScale(isFlipped ? -0.24 : 0.24, 0.24);
+      const metric = POSE_METRICS[action] || { originX: 0.5, originY: 377 / 384, height: 371 };
+      this.catSprite.setOrigin(metric.originX, metric.originY);
+      this.catSprite.setScale(this.facingLeft ? -this.baseScale : this.baseScale, this.baseScale);
+      this.currentActionHeight = metric.height;
+      this.redrawNametag();
     }
   }
 
   public turnToward(targetX: number): void {
-    const isLeft = targetX < this.x;
-    this.catSprite.setScale(isLeft ? -0.24 : 0.24, 0.24);
+    this.facingLeft = targetX < this.x;
+    this.catSprite.setScale(this.facingLeft ? -this.baseScale : this.baseScale, this.baseScale);
   }
 
   private redrawNametag(): void {
     const textWidth = this.nametagText.width;
     const pillW = Math.max(textWidth + 18, 48);
     const pillH = 19;
-    // Offset slightly for side-by-side cats so nametags never overlap
-    const yOffset = this.coatVariant === 1 ? -88 : (this.coatVariant === 4 ? -76 : -82);
-    const nametagY = this.currentState === 'sleep' ? -52 : yOffset;
+    
+    // Position nametag dynamically right above the cat's ears based on pose height
+    const catHeightPx = this.currentActionHeight * this.baseScale;
+    const yOffset = this.coatVariant === 1 ? -4 : (this.coatVariant === 4 ? 4 : 0);
+    const nametagY = -catHeightPx - 14 + yOffset;
 
     this.nametagText.y = nametagY;
 
     this.nametagBg.clear();
-    // Warm dark-wood pill background
     this.nametagBg.fillStyle(0x2A1409, 0.88);
     this.nametagBg.fillRoundedRect(-pillW / 2, nametagY - pillH / 2, pillW, pillH, 9.5);
-    // Border: Golden for NPC, Sky Blue / Gold for Viewers
     const borderColor = this.isNpc ? 0xF59E0B : 0x38BDF8;
     this.nametagBg.lineStyle(1.6, borderColor, 0.95);
     this.nametagBg.strokeRoundedRect(-pillW / 2, nametagY - pillH / 2, pillW, pillH, 9.5);
+  }
+
+  private stopAllSpriteTweens(): void {
+    if (this.activeEffectTween) {
+      this.activeEffectTween.stop();
+      this.activeEffectTween = null;
+    }
+    if (this.walkBobTween) {
+      this.walkBobTween.stop();
+      this.walkBobTween = null;
+    }
+    if (this.breatheTween) {
+      this.breatheTween.stop();
+      this.breatheTween = null;
+    }
+    this.catSprite.x = 0;
+    this.catSprite.y = 0;
+    this.catSprite.angle = 0;
+    this.catSprite.setScale(this.facingLeft ? -this.baseScale : this.baseScale, this.baseScale);
   }
 
   public updateNickname(newNickname: string): void {
@@ -272,6 +333,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public walkTo(targetX: number, targetY: number, onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     if (this.moveTween) {
       this.moveTween.stop();
       this.moveTween = null;
@@ -282,8 +344,8 @@ export class Cat extends Phaser.GameObjects.Container {
     }
 
     this.transitionTo('wander');
-    const movingLeft = targetX < this.x;
-    this.catSprite.setScale(movingLeft ? -0.24 : 0.24, 0.24);
+    this.facingLeft = targetX < this.x;
+    this.catSprite.setScale(this.facingLeft ? -this.baseScale : this.baseScale, this.baseScale);
 
     const dist = Phaser.Math.Distance.Between(this.x, this.y, targetX, targetY);
     const speed = 80;
@@ -292,20 +354,18 @@ export class Cat extends Phaser.GameObjects.Container {
     // Alternate walk poses: walk_1 <-> walk_2
     let step = 0;
     this.setActionPose('walk_1');
-    this.catSprite.setScale(movingLeft ? -0.24 : 0.24, 0.24);
     this.walkAnimTimer = this.scene.time.addEvent({
       delay: 180,
       loop: true,
       callback: () => {
         step = (step + 1) % 2;
         this.setActionPose(step === 0 ? 'walk_1' : 'walk_2');
-        this.catSprite.setScale(movingLeft ? -0.24 : 0.24, 0.24);
       },
     });
 
-    const walkBob = this.scene.tweens.add({
+    this.walkBobTween = this.scene.tweens.add({
       targets: this.catSprite,
-      y: '-=4',
+      y: -4,
       duration: 180,
       yoyo: true,
       repeat: Math.floor(duration / 360),
@@ -322,74 +382,87 @@ export class Cat extends Phaser.GameObjects.Container {
           this.walkAnimTimer.remove();
           this.walkAnimTimer = null;
         }
-        walkBob.stop();
+        if (this.walkBobTween) {
+          this.walkBobTween.stop();
+          this.walkBobTween = null;
+        }
         this.catSprite.y = 0;
         this.moveTween = null;
         this.setActionPose('idle');
-        this.catSprite.setScale(movingLeft ? -0.24 : 0.24, 0.24);
+        this.startIdlingAnimations();
         if (onComplete) onComplete();
       },
     });
   }
 
   public sitDown(durationSec = 5): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('sit');
     this.scheduleNextAction(durationSec);
   }
 
   public stretchCat(): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('stretch');
     this.setActionPose('stretch');
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
-      scaleX: (this.catSprite.scaleX > 0 ? 0.27 : -0.27),
+      scaleX: (this.facingLeft ? -0.27 : 0.27),
       scaleY: 0.21,
       duration: 500,
       yoyo: true,
       repeat: 1,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(Random.range(2, 4));
       },
     });
   }
 
   public groomCat(): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('groom');
     this.setActionPose('groom');
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
       angle: { from: -6, to: 6 },
       duration: 240,
       yoyo: true,
       repeat: 4,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.angle = 0;
         this.happiness = Math.min(100, this.happiness + 10);
         this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(Random.range(3, 5));
       },
     });
   }
 
   public eatFood(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('eat');
     this.setActionPose('eat');
     this.showEmote('emote_food', 2800);
     CafeAudioEngine.getInstance().playBowlClink();
     CafeAudioEngine.getInstance().playMunch();
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
-      y: '+=5',
+      y: 5,
       duration: 200,
       yoyo: true,
       repeat: 8,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.y = 0;
         this.happiness = Math.min(100, this.happiness + 20);
         this.hunger = Math.max(0, this.hunger - 35);
         this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(Random.range(3, 6));
         if (onComplete) onComplete();
       },
@@ -397,23 +470,27 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public playWithToy(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('play');
     this.setActionPose('play');
     this.showEmote('emote_play', 3000);
     CafeAudioEngine.getInstance().playYarnJingle();
     CafeAudioEngine.getInstance().playScratch();
 
-    this.scene.tweens.add({
-      targets: this,
-      y: '-=16',
+    this.activeEffectTween = this.scene.tweens.add({
+      targets: this.catSprite,
+      y: -16,
       duration: 250,
       yoyo: true,
       repeat: 3,
       ease: 'Quad.easeOut',
       onComplete: () => {
+        this.activeEffectTween = null;
+        this.catSprite.y = 0;
         this.happiness = Math.min(100, this.happiness + 25);
         this.energy = Math.max(10, this.energy - 15);
         this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(Random.range(3, 6));
         if (onComplete) onComplete();
       },
@@ -421,6 +498,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public takeNap(durationSec = 8): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('sleep');
     this.setActionPose('sleep');
     this.showEmote('emote_sleep', durationSec * 1000);
@@ -429,25 +507,28 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public showLoveReaction(): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('react');
     this.setActionPose('love');
     this.showEmote('emote_heart', 3000);
     CafeAudioEngine.getInstance().playHeartPop();
     CafeAudioEngine.getInstance().playPurr();
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
-      y: '-=14',
+      y: -14,
       duration: 250,
       yoyo: true,
       repeat: 2,
       ease: 'Back.easeOut',
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.y = 0;
         this.happiness = 100;
         this.scene.time.delayedCall(2200, () => {
           if (this.currentState === 'react') {
             this.setActionPose('idle');
+            this.startIdlingAnimations();
           }
         });
         this.scheduleNextAction(4);
@@ -456,15 +537,16 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public becomeRoyal(durationMs = 8500): void {
+    this.stopAllSpriteTweens();
     this.isRoyal = true;
     this.transitionTo('react');
     this.setActionPose('royal');
     this.showEmote('emote_heart', durationMs);
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
       scaleY: 0.26,
-      scaleX: (this.catSprite.scaleX > 0 ? 0.25 : -0.25),
+      scaleX: (this.facingLeft ? -0.25 : 0.25),
       duration: 400,
       yoyo: true,
       repeat: 7,
@@ -472,28 +554,34 @@ export class Cat extends Phaser.GameObjects.Container {
 
     this.scene.time.delayedCall(durationMs, () => {
       this.isRoyal = false;
+      this.stopAllSpriteTweens();
       this.setActionPose('idle');
+      this.startIdlingAnimations();
       this.scheduleNextAction(Random.range(2, 5));
     });
   }
 
   public becomeParty(durationMs = 4000): void {
+    this.stopAllSpriteTweens();
     if (this.isRoyal) this.isRoyal = false;
     this.setActionPose('party');
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
       angle: { from: -8, to: 8 },
       duration: 180,
       yoyo: true,
       repeat: 8,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.angle = 0;
         this.setActionPose('idle');
+        this.startIdlingAnimations();
       },
     });
   }
 
   public becomeAngry(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('angry');
     this.setActionPose('meow');
@@ -512,16 +600,19 @@ export class Cat extends Phaser.GameObjects.Container {
     ];
     this.showSpeechBubble(Random.choice(angryLines), 3500);
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
       x: { from: -6, to: 6 },
       duration: 65,
       yoyo: true,
       repeat: 10,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.x = 0;
         this.catSprite.clearTint();
         this.happiness = Math.max(10, this.happiness - 15);
+        this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(4);
         if (onComplete) onComplete();
       },
@@ -529,6 +620,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public doDance(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('dance');
     this.setActionPose('party');
@@ -542,7 +634,7 @@ export class Cat extends Phaser.GameObjects.Container {
     ];
     this.showSpeechBubble(Random.choice(danceLines), 3500);
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
       angle: { from: -14, to: 14 },
       scaleY: { from: 0.22, to: 0.27 },
@@ -551,10 +643,12 @@ export class Cat extends Phaser.GameObjects.Container {
       repeat: 8,
       ease: 'Sine.easeInOut',
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.angle = 0;
-        this.catSprite.scaleY = 0.24;
+        this.catSprite.scaleY = this.baseScale;
         this.happiness = Math.min(100, this.happiness + 25);
         this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(4);
         if (onComplete) onComplete();
       },
@@ -562,6 +656,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public doZoomies(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     if (this.isRoyal) this.isRoyal = false;
     if (this.moveTween) {
       this.moveTween.stop();
@@ -619,6 +714,7 @@ export class Cat extends Phaser.GameObjects.Container {
                 this.energy = Math.max(10, this.energy - 20);
                 this.happiness = Math.min(100, this.happiness + 20);
                 this.setActionPose('idle');
+                this.startIdlingAnimations();
                 this.scheduleNextAction(Random.range(3, 5));
                 if (onComplete) onComplete();
               },
@@ -630,6 +726,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public hideInBox(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('box');
     this.setActionPose('box');
@@ -643,13 +740,14 @@ export class Cat extends Phaser.GameObjects.Container {
     ];
     this.showSpeechBubble(Random.choice(boxLines), 3500);
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
-      y: { from: 0, to: -8 },
+      y: -8,
       duration: 320,
       yoyo: true,
       repeat: 3,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.y = 0;
         this.happiness = Math.min(100, this.happiness + 15);
         this.scheduleNextAction(Random.range(4, 7));
@@ -659,6 +757,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public takeBath(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     if (this.isRoyal) this.isRoyal = false;
     this.transitionTo('bath');
     this.setActionPose('bath');
@@ -672,16 +771,18 @@ export class Cat extends Phaser.GameObjects.Container {
     ];
     this.showSpeechBubble(Random.choice(bathLines), 3500);
 
-    this.scene.tweens.add({
+    this.activeEffectTween = this.scene.tweens.add({
       targets: this.catSprite,
       angle: { from: -7, to: 7 },
       duration: 250,
       yoyo: true,
       repeat: 5,
       onComplete: () => {
+        this.activeEffectTween = null;
         this.catSprite.angle = 0;
         this.happiness = Math.min(100, this.happiness + 15);
         this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(Random.range(3, 6));
         if (onComplete) onComplete();
       },
@@ -689,6 +790,7 @@ export class Cat extends Phaser.GameObjects.Container {
   }
 
   public callToFront(onComplete?: () => void): void {
+    this.stopAllSpriteTweens();
     this.transitionTo('call');
     this.setActionPose('call');
     CafeAudioEngine.getInstance().playHappyTrill();
@@ -696,13 +798,17 @@ export class Cat extends Phaser.GameObjects.Container {
     const line = Random.choice(this.personalityDef.dialogues);
     this.showSpeechBubble(line, 4000);
 
-    this.scene.tweens.add({
-      targets: this,
-      y: '-=12',
+    this.activeEffectTween = this.scene.tweens.add({
+      targets: this.catSprite,
+      y: -12,
       duration: 200,
       yoyo: true,
       repeat: 2,
       onComplete: () => {
+        this.activeEffectTween = null;
+        this.catSprite.y = 0;
+        this.setActionPose('idle');
+        this.startIdlingAnimations();
         this.scheduleNextAction(4);
         if (onComplete) onComplete();
       },
@@ -834,10 +940,7 @@ export class Cat extends Phaser.GameObjects.Container {
       this.walkAnimTimer.remove();
       this.walkAnimTimer = null;
     }
-    if (this.breatheTween) {
-      this.breatheTween.stop();
-      this.breatheTween = null;
-    }
+    this.stopAllSpriteTweens();
     if (this.moveTween) {
       this.moveTween.stop();
       this.moveTween = null;
