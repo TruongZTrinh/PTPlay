@@ -12,20 +12,27 @@ export class ClassroomPresentation {
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
 
-    // 1. Static Classroom Background (540x960)
+    // 1. Modern Anime Classroom Background (540x960)
     this.bgImage = scene.add.image(270, 480, 'bg_day');
     this.bgImage.setDisplaySize(540, 960);
     this.bgImage.setDepth(0);
 
-    // 2. Chalkboard prop on right
-    this.boardProp = scene.add.image(346, 255, 'prop_board');
-    this.boardProp.setDisplaySize(382, 264);
-    this.boardProp.setDepth(5);
+    // 2. Subtle chalkboard contrast enhancer over the wall chalkboard
+    const boardEnhancer = scene.add.graphics();
+    boardEnhancer.fillStyle(0x0a1612, 0.45);
+    boardEnhancer.fillRoundedRect(210, 238, 278, 178, 4);
+    boardEnhancer.setDepth(4);
 
-    // 3. Teacher Podium on left side of classroom
+    // Legacy props retained for compatibility but hidden to preserve modern anime aesthetic
+    this.boardProp = scene.add.image(350, 326, 'prop_board');
+    this.boardProp.setDisplaySize(280, 180);
+    this.boardProp.setDepth(3);
+    this.boardProp.setVisible(false);
+
     this.podiumProp = scene.add.image(44, 442, 'prop_podium');
     this.podiumProp.setDisplaySize(92, 120);
     this.podiumProp.setDepth(12);
+    this.podiumProp.setVisible(false);
 
     this.setupAmbientLight();
   }

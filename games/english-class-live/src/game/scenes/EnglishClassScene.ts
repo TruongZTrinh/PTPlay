@@ -127,6 +127,7 @@ export class EnglishClassScene extends Phaser.Scene {
     // 10. Start the game loop!
     const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const testPose = urlParams?.get('pose');
+    const testReveal = urlParams?.get('reveal');
     const studentCount = parseInt(urlParams?.get('students') || '0', 10);
 
     if (studentCount > 0) {
@@ -136,7 +137,12 @@ export class EnglishClassScene extends Phaser.Scene {
       }
     }
 
-    if (testPose) {
+    if (testReveal) {
+      this.time.delayedCall(300, () => {
+        this.teacher.setState('happy');
+        this.questionBoard.revealCorrectAnswer('C', '"sleep" có nghĩa là "ngủ".', 'Mai Anh');
+      });
+    } else if (testPose) {
       this.time.delayedCall(300, () => {
         this.teacher.setState(testPose as any);
       });
