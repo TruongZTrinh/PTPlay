@@ -9,6 +9,12 @@ export class QuestionBoard extends Phaser.GameObjects.Container {
   private timerText: Phaser.GameObjects.Text;
   private questionText: Phaser.GameObjects.Text;
 
+  // Community Heart Goal Widget (Tap Screen to Unlock Hint)
+  private heartGoalContainer!: Phaser.GameObjects.Container;
+  private heartGoalBg!: Phaser.GameObjects.Graphics;
+  private heartGoalBar!: Phaser.GameObjects.Graphics;
+  private heartGoalText!: Phaser.GameObjects.Text;
+
   private optionCards: Map<ChoiceLetter, {
     container: Phaser.GameObjects.Container;
     bg: Phaser.GameObjects.Graphics;
@@ -65,6 +71,7 @@ export class QuestionBoard extends Phaser.GameObjects.Container {
     this.add(this.questionText);
 
     this.createOptionCards();
+    this.createHeartGoalWidget();
     this.drawBoardBackground();
 
     scene.add.existing(this);
@@ -126,7 +133,98 @@ export class QuestionBoard extends Phaser.GameObjects.Container {
     });
   }
 
-  private drawOptionCard(letter: ChoiceLetter, state: 'normal' | 'locked' | 'correct' | 'wrong'): void {
+  private createHeartGoalWidget(): void {
+    this.heartGoalContainer = this.scene.add.container(270, 52);
+    this.heartGoalBg = this.scene.add.graphics();
+    this.heartGoalBar = this.scene.add.graphics();
+
+    this.heartGoalText = this.scene.add.text(0, 0, '❤️ 0/10 Tim để mở gợi ý 50:50!', {
+      fontFamily: 'system-ui, sans-serif',
+      fontSize: '12px',
+      color: '#fbcfe8',
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+
+    this.heartGoalContainer.add(this.heartGoalBg);
+    this.heartGoalContainer.add(this.heartGoalBar);
+    this.heartGoalContainer.add(this.heartGoalText);
+    this.add(this.heartGoalContainer);
+
+    this.drawHeartGoalWidget(0, 10, true, 'gợi ý 50:50');
+  }
+
+  private drawHeartGoalWidget(current: number, target: number, enabled: boolean, actionLabel = 'gợi ý 50:50'): void {
+    if (!enabled) {
+      this.heartGoalContainer.setVisible(false);
+      return;
+    }
+    this.heartGoalContainer.setVisible(true);
+
+    const width = 360;
+    const height = 24;
+    const radius = 12;
+
+    this.heartGoalBg.clear();
+    this.heartGoalBg.fillStyle(0x1a0928, 0.92);
+    this.heartGoalBg.fillRoundedRect(-width / 2, -height / 2, width, height, radius);
+    this.heartGoalBg.lineStyle(1.5, current >= target ? 0xfacc15 : 0xff2d55, 0.85);
+    this.heartGoalBg.strokeRoundedRect(-width / 2, -height / 2, width, height, radius);
+
+    const ratio = Math.max(0, Math.min(1, current / Math.max(1, target)));
+    this.heartGoalBar.clear();
+    if (ratio > 0) {
+      const fillWidth = (width - 4) * ratio;
+      this.heartGoalBar.fillStyle(current >= target ? 0x10b981 : 0xff2d55, 0.85);
+      this.heartGoalBar.fillRoundedRect(-width / 2 + 2, -height / 2 + 2, fillWidth, height - 4, radius - 2);
+    }
+
+    if (current >= target) {
+      this.heartGoalText.setText(`✨ ${actionLabel.toUpperCase()} ĐÃ MỞ! ✨`);
+      this.heartGoalText.setColor('#fef08a');
+    } else {
+      this.heartGoalText.setText(`❤️ ${current}/${target} Tim để mở ${actionLabel}!`);
+      this.heartGoalText.setColor('#fbcfe8');
+    }
+  }
+
+  public updateHeartGoalProgress(current: number, target: number, enabled: boolean, actionLabel?: string): void {
+    this.drawHeartGoalWidget(current, target, enabled, actionLabel || 'gợi ý 50:50');
+    if (current >= target) {
+      this.scene.tweens.add({
+        targets: this.heartGoalContainer,
+        scaleX: 1.06,
+        scaleY: 1.06,
+        duration: 200,
+        yoyo: true,
+        repeat: 2,
+      });
+    }
+  }
+
+  public eliminateOptions(letters: ChoiceLetter[]): void {
+    letters.forEach((l) => {
+      this.drawOptionCard(l, 'eliminated');
+      const card = this.optionCards.get(l);
+      if (card) {
+        this.scene.tweens.add({
+          targets: card.container,
+          x: card.container.x + 4,
+          duration: 60,
+          yoyo: true,
+          repeat: 4,
+        });
+      }
+    });
+  }
+
+  public restoreOptions(): void {
+    const letters: ChoiceLetter[] = ['A', 'B', 'C', 'D'];
+    letters.forEach((l) => {
+      this.drawOptionCard(l, 'normal');
+    });
+  }
+
+  private drawOptionCard(letter: ChoiceLetter, state: 'normal' | 'locked' | 'correct' | 'wrong' | 'eliminated'): void {
     const card = this.optionCards.get(letter);
     if (!card) return;
 
@@ -139,20 +237,39 @@ export class QuestionBoard extends Phaser.GameObjects.Container {
       fillColor = 0x3b1d6e;
       strokeColor = 0xfacc15;
       strokeWidth = 2;
+      card.container.setAlpha(1);
     } else if (state === 'correct') {
       fillColor = 0x064e3b;
       strokeColor = 0x10b981;
       strokeWidth = 2.5;
+      card.container.setAlpha(1);
     } else if (state === 'wrong') {
       fillColor = 0x221326;
       strokeColor = 0x475569;
       strokeWidth = 1;
+      card.container.setAlpha(0.6);
+    } else if (state === 'eliminated') {
+      fillColor = 0x190824;
+      strokeColor = 0xef4444;
+      strokeWidth = 2;
+      card.container.setAlpha(0.35);
+    } else {
+      card.container.setAlpha(1);
     }
 
     card.bg.fillStyle(fillColor, 0.95);
     card.bg.fillRoundedRect(-110, -26, 220, 52, 14);
     card.bg.lineStyle(strokeWidth, strokeColor, 1);
     card.bg.strokeRoundedRect(-110, -26, 220, 52, 14);
+
+    if (state === 'eliminated') {
+      // Red Strikethrough diagonal or horizontal line
+      card.bg.lineStyle(3, 0xef4444, 0.95);
+      card.bg.beginPath();
+      card.bg.moveTo(-100, 0);
+      card.bg.lineTo(100, 0);
+      card.bg.strokePath();
+    }
   }
 
   public setQuestion(q: QuestionData, round: number, totalRounds: number): void {

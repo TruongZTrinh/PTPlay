@@ -13,6 +13,12 @@ export class StreamerModal extends Phaser.GameObjects.Container {
   private roster: StudentRoster;
   private giftController: GiftReactionController;
   private isModalVisible: boolean = false;
+  private voiceStatusText?: Phaser.GameObjects.Text;
+  private liveRouter?: any;
+
+  public setLiveRouter(router: any): void {
+    this.liveRouter = router;
+  }
 
   constructor(
     scene: Phaser.Scene,
@@ -140,11 +146,11 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       }
     });
 
-    this.createButton(140, 570, '➕ Follow Kênh (Mở Chữ Đầu)', 0x059669, () => {
-      this.engine.triggerFirstCharHint('Fan Mới');
+    this.createButton(140, 565, '➕ Follow (Mở Gợi Ý 1)', 0x059669, () => {
+      this.engine.triggerHint1('Fan Mới', 'follow');
     });
 
-    this.createButton(380, 570, '🌌 Quà Universe', 0x6d28d9, () => {
+    this.createButton(380, 565, '🌌 Quà Universe', 0x6d28d9, () => {
       this.giftController.triggerGiftReaction('Universe', 'Top 1 Fan');
       this.tts.announceGift('Top 1 Fan', 'Vũ Trụ');
       this.engine.triggerHint1('Top 1 Fan', 'rose');
@@ -155,8 +161,17 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       }
     });
 
+    this.createButton(270, 608, '❤️ Test Thả 20 Tim (+5s / 1 Lần)', 0xe11d48, () => {
+      if (this.liveRouter) {
+        this.liveRouter.simulateLikes(20, 'Khán giả Live');
+      } else {
+        this.engine.addTime(5, '20 Tim Cổ Vũ', true);
+        this.tts.announceLikeBonus(20, 5);
+      }
+    });
+
     // Sound & Funny Chill BGM Section
-    const audioLabel = this.scene.add.text(270, 620, '--- ÂM THANH & NHẠC NỀN (BGM) HÀI HƯỚC / CHILL ---', {
+    const audioLabel = this.scene.add.text(270, 648, '--- ÂM THANH & NHẠC NỀN (BGM) HÀI HƯỚC / CHILL ---', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
       color: '#ec4899',
@@ -167,7 +182,7 @@ export class StreamerModal extends Phaser.GameObjects.Container {
     const currentTrack = this.audio.getCurrentTrack();
     const bgmStatusText = this.scene.add.text(
       270,
-      650,
+      674,
       `🎶 Đang phát: ${currentTrack.title} (${currentTrack.genre})`,
       {
         fontFamily: 'system-ui, sans-serif',
@@ -177,14 +192,14 @@ export class StreamerModal extends Phaser.GameObjects.Container {
     ).setOrigin(0.5);
     this.add(bgmStatusText);
 
-    this.createButton(140, 695, '🎵 Đổi Bài BGM', 0x9333ea, () => {
+    this.createButton(140, 712, '🎵 Đổi Bài BGM', 0x9333ea, () => {
       const next = this.audio.nextBGMTrack();
       bgmStatusText.setText(`🎶 Đang phát: ${next.title} (${next.genre})`);
     });
 
     const bgmToggleBtn = this.createButton(
       380,
-      695,
+      712,
       this.audio.bgmEnabled ? '🔊 Nhạc BGM: BẬT' : '🔈 Nhạc BGM: TẮT',
       this.audio.bgmEnabled ? 0x059669 : 0x475569,
       () => {
@@ -194,16 +209,39 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       }
     );
 
-    this.createButton(140, 750, '🗣️ Bật/Tắt TTS', 0x059669, () => {
-      this.tts.setEnabled(!this.tts.isEnabled);
-    });
+    const voiceInfo = this.tts.getVoiceInfo();
+    this.voiceStatusText = this.scene.add.text(
+      270,
+      745,
+      voiceInfo.isVietnamese
+        ? `🎤 MC Tiếng Việt: ${voiceInfo.name}`
+        : `⚠️ Chưa có giọng TV (Mở bằng Edge để có giọng chuẩn)`,
+      {
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '11px',
+        color: voiceInfo.isVietnamese ? '#34d399' : '#fbbf24',
+      }
+    ).setOrigin(0.5);
+    this.add(this.voiceStatusText);
 
-    this.createButton(380, 750, '🎙️ Thử Giọng MC', 0x2563eb, () => {
+    const ttsToggleBtn = this.createButton(
+      140,
+      780,
+      this.tts.isEnabled ? '🗣️ Giọng MC: BẬT' : '🤐 Giọng MC: TẮT',
+      this.tts.isEnabled ? 0x059669 : 0x475569,
+      () => {
+        this.tts.setEnabled(!this.tts.isEnabled);
+        ttsToggleBtn.setText(this.tts.isEnabled ? '🗣️ Giọng MC: BẬT' : '🤐 Giọng MC: TẮT');
+        ttsToggleBtn.setColor(this.tts.isEnabled ? 0x059669 : 0x475569);
+      }
+    );
+
+    this.createButton(380, 780, '🎙️ Thử Giọng MC', 0x2563eb, () => {
       this.tts.testVoice();
     });
 
     // Close button
-    this.createButton(270, 825, '❌ Đóng Bảng Điều Khiển', 0x334155, () => this.toggle());
+    this.createButton(270, 836, '❌ Đóng Bảng Điều Khiển', 0x334155, () => this.toggle());
   }
 
   private createButton(
@@ -248,6 +286,15 @@ export class StreamerModal extends Phaser.GameObjects.Container {
   public toggle(): void {
     this.isModalVisible = !this.isModalVisible;
     this.setVisible(this.isModalVisible);
+    if (this.isModalVisible && this.voiceStatusText) {
+      const v = this.tts.getVoiceInfo();
+      this.voiceStatusText.setText(
+        v.isVietnamese
+          ? `🎤 MC Tiếng Việt: ${v.name}`
+          : `⚠️ Chưa có giọng TV (Mở bằng Edge để có giọng chuẩn)`
+      );
+      this.voiceStatusText.setColor(v.isVietnamese ? '#34d399' : '#fbbf24');
+    }
   }
 }
 

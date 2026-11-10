@@ -316,6 +316,45 @@ function stopManagedProcess(serviceKey) {
 
 const CONTROL_SECRET = process.env.PTPLAY_CONTROL_SECRET || 'ptplay_control_secret_2026';
 
+let adminTtsConfig = {
+  voiceName: 'Microsoft Hoài My Online (Natural)',
+  rate: 1.05,
+  pitch: 1.0,
+  volume: 0.8,
+  updatedAt: Date.now(),
+};
+
+function forwardJsonToBridge(targetPath, method, jsonBody) {
+  return new Promise((resolve, reject) => {
+    const req = http.request(
+      {
+        hostname: '127.0.0.1',
+        port: BRIDGE_PORT,
+        path: targetPath,
+        method: method || 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(jsonBody || ''),
+          'x-ptplay-token': CONTROL_SECRET,
+        },
+        timeout: 2000,
+      },
+      (res) => {
+        let data = '';
+        res.on('data', (c) => (data += c));
+        res.on('end', () => resolve({ statusCode: res.statusCode || 200, body: data }));
+      }
+    );
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('timeout'));
+    });
+    if (jsonBody) req.write(jsonBody);
+    req.end();
+  });
+}
+
 // Proxy request to Bridge server (port 8088)
 function proxyToBridge(req, res, targetPath) {
   const headers = {
@@ -627,6 +666,61 @@ const server = http.createServer(async (req, res) => {
         'Accept-Ranges': 'bytes',
       });
       fs.createReadStream(musicFilePath).pipe(res);
+      return;
+    }
+  }
+
+  // 7b. Central TTS Config API (with Bridge sync + Admin fallback)
+  if (pathname === '/api/tts/config') {
+    if (req.method === 'GET') {
+      forwardJsonToBridge('/api/tts/config', 'GET', '')
+        .then((bRes) => {
+          if (bRes.statusCode === 200 && bRes.body) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(bRes.body);
+            try {
+              const p = JSON.parse(bRes.body);
+              if (p && p.config) adminTtsConfig = { ...adminTtsConfig, ...p.config };
+            } catch {}
+          } else {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, config: adminTtsConfig, source: 'admin_cache' }));
+          }
+        })
+        .catch(() => {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, config: adminTtsConfig, source: 'admin_cache' }));
+        });
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', (c) => {
+        body += c;
+      });
+      req.on('end', () => {
+        try {
+          const parsed = JSON.parse(body);
+          if (parsed && typeof parsed === 'object') {
+            adminTtsConfig = {
+              ...adminTtsConfig,
+              ...parsed,
+              updatedAt: Date.now(),
+            };
+          }
+        } catch {}
+
+        forwardJsonToBridge('/api/tts/config', 'POST', body)
+          .then((bRes) => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, config: adminTtsConfig, bridgeSynced: true }));
+          })
+          .catch(() => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, config: adminTtsConfig, bridgeSynced: false }));
+          });
+      });
       return;
     }
   }

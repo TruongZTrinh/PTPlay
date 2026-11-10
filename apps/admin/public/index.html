@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PTPlay Admin Center — Unified Game Studio & Live Operations</title>
-  <link rel="stylesheet" href="styles.css?v=20261109d">
+  <link rel="stylesheet" href="styles.css?v=20261110a">
 </head>
 <body>
 
@@ -167,39 +167,45 @@
 
         <div class="header-center">
           <div class="telemetry-bar">
-            <div class="telemetry-item" title="Cổng 8088 (PTPlay Live Bridge Central)">
+            <div class="telemetry-item" id="pill-bridge" onclick="quickLaunchOrOpen('bridge', 8088, 'PTPlay LIVE Bridge')" title="Cổng 8088 (Bridge) · Bấm để Mở Tab">
               <span class="tele-dot online" id="dot-bridge"></span>
-              <span class="tele-name">Bridge:</span>
+              <span class="tele-name">Bridge</span>
               <strong class="tele-port" id="val-bridge">8088</strong>
+              <span class="tele-action-icon">↗</span>
             </div>
-            <div class="telemetry-item" title="Cổng 5173 (Mini War Arena V1.0)">
+            <div class="telemetry-item is-offline" id="pill-port-5173" onclick="quickLaunchOrOpen('mini-war', 5173, 'Mini War Arena')" title="Cổng 5173 · Bấm 1-Click để BẬT & MỞ TAB">
               <span class="tele-dot offline" id="dot-port-5173"></span>
-              <span class="tele-name">MiniWar:</span>
+              <span class="tele-name">MiniWar</span>
               <strong class="tele-port" id="val-port-5173">5173</strong>
+              <span class="tele-action-icon">↗</span>
             </div>
-            <div class="telemetry-item" title="Cổng 5174 (Café Mòe LIVE V1.0)">
+            <div class="telemetry-item is-offline" id="pill-port-5174" onclick="quickLaunchOrOpen('cat-cafe', 5174, 'Café Mòe LIVE')" title="Cổng 5174 · Bấm 1-Click để BẬT & MỞ TAB">
               <span class="tele-dot offline" id="dot-port-5174"></span>
-              <span class="tele-name">CatCafe:</span>
+              <span class="tele-name">CatCafe</span>
               <strong class="tele-port" id="val-port-5174">5174</strong>
+              <span class="tele-action-icon">↗</span>
             </div>
-            <div class="telemetry-item" title="Cổng 5175 (Lớp Học Vui LIVE V1.0)">
+            <div class="telemetry-item is-offline" id="pill-port-5175" onclick="quickLaunchOrOpen('english-class', 5175, 'Lớp Học Vui LIVE')" title="Cổng 5175 · Bấm 1-Click để BẬT & MỞ TAB">
               <span class="tele-dot offline" id="dot-port-5175"></span>
-              <span class="tele-name">EngClass:</span>
+              <span class="tele-name">EngClass</span>
               <strong class="tele-port" id="val-port-5175">5175</strong>
+              <span class="tele-action-icon">↗</span>
             </div>
-            <div class="telemetry-item" title="Cổng 5176 (PTPlay Quiz Show — Đố Vui Có Thưởng)">
+            <div class="telemetry-item is-offline" id="pill-port-5176" onclick="quickLaunchOrOpen('quiz-show', 5176, 'Quiz Show Đố Vui')" title="Cổng 5176 · Bấm 1-Click để BẬT & MỞ TAB">
               <span class="tele-dot offline" id="dot-port-5176"></span>
-              <span class="tele-name">QuizShow:</span>
+              <span class="tele-name">QuizShow</span>
               <strong class="tele-port" id="val-port-5176">5176</strong>
+              <span class="tele-action-icon">↗</span>
             </div>
-            <div class="telemetry-item" title="Cổng 5177 (PTPlay Đuổi Hình Bắt Chữ — Thử Tài IQ)">
+            <div class="telemetry-item is-offline" id="pill-port-5177" onclick="quickLaunchOrOpen('duoi-hinh-bat-chu', 5177, 'Đuổi Hình Bắt Chữ')" title="Cổng 5177 · Bấm 1-Click để BẬT & MỞ TAB">
               <span class="tele-dot offline" id="dot-port-5177"></span>
-              <span class="tele-name">DuoiHinh:</span>
+              <span class="tele-name">DuoiHinh</span>
               <strong class="tele-port" id="val-port-5177">5177</strong>
+              <span class="tele-action-icon">↗</span>
             </div>
-            <div class="telemetry-item" title="Cổng 21213 (TikFinity Desktop App)">
+            <div class="telemetry-item is-offline" id="pill-tikfinity" onclick="quickLaunchOrOpen('tikfinity', 21213, 'TikFinity Desktop App')" title="Cổng 21213 · TikFinity Desktop">
               <span class="tele-dot offline" id="dot-tikfinity"></span>
-              <span class="tele-name">TikFinity:</span>
+              <span class="tele-name">TikFinity</span>
               <strong class="tele-port" id="val-tikfinity">21213</strong>
             </div>
           </div>
@@ -213,9 +219,76 @@
             <span class="switch-glyph">⇄</span>
           </button>
 
+          <!-- QUICK LAUNCHER DROPDOWN (1-CLICK BẬT & MỞ TAB TỪNG GAME) -->
+          <div style="position: relative;" id="quick-launcher-wrap">
+            <button class="btn-quick-launcher" onclick="toggleQuickLaunchMenu(event)" title="Bật nhanh & Mở tab từng game">
+              <span>🚀 Mở Nhanh ▾</span>
+            </button>
+            <div class="quick-launch-menu" id="quick-launch-menu" style="display: none;">
+              <div class="ql-header">
+                <span>🎮 BẬT NHANH & MỞ TAB</span>
+                <span style="font-size: 11px; cursor: pointer; color: #94a3b8; padding: 2px 6px;" onclick="closeQuickLaunchMenu()">✕ Đóng</span>
+              </div>
+              <div class="ql-item">
+                <div class="ql-info">
+                  <div class="ql-title">⚔️ Mini War Arena</div>
+                  <div class="ql-port">Cổng 5173 · <span id="ql-status-5173" style="color: #64748b;">Chưa bật</span></div>
+                </div>
+                <div class="ql-actions">
+                  <button class="ql-btn-start" id="ql-btn-5173" onclick="quickLaunchOrOpen('mini-war', 5173, 'Mini War Arena')">🚀 Bật & Mở</button>
+                  <button class="ql-btn-stop" onclick="stopService('mini-war')" title="Dừng dịch vụ">⏹</button>
+                </div>
+              </div>
+              <div class="ql-item">
+                <div class="ql-info">
+                  <div class="ql-title">🐱 Café Mòe LIVE</div>
+                  <div class="ql-port">Cổng 5174 · <span id="ql-status-5174" style="color: #64748b;">Chưa bật</span></div>
+                </div>
+                <div class="ql-actions">
+                  <button class="ql-btn-start" id="ql-btn-5174" onclick="quickLaunchOrOpen('cat-cafe', 5174, 'Café Mòe LIVE')">🚀 Bật & Mở</button>
+                  <button class="ql-btn-stop" onclick="stopService('cat-cafe')" title="Dừng dịch vụ">⏹</button>
+                </div>
+              </div>
+              <div class="ql-item">
+                <div class="ql-info">
+                  <div class="ql-title">🎓 Lớp Học Vui LIVE</div>
+                  <div class="ql-port">Cổng 5175 · <span id="ql-status-5175" style="color: #64748b;">Chưa bật</span></div>
+                </div>
+                <div class="ql-actions">
+                  <button class="ql-btn-start" id="ql-btn-5175" onclick="quickLaunchOrOpen('english-class', 5175, 'Lớp Học Vui LIVE')">🚀 Bật & Mở</button>
+                  <button class="ql-btn-stop" onclick="stopService('english-class')" title="Dừng dịch vụ">⏹</button>
+                </div>
+              </div>
+              <div class="ql-item">
+                <div class="ql-info">
+                  <div class="ql-title">🏆 Quiz Show Đố Vui</div>
+                  <div class="ql-port">Cổng 5176 · <span id="ql-status-5176" style="color: #64748b;">Chưa bật</span></div>
+                </div>
+                <div class="ql-actions">
+                  <button class="ql-btn-start" id="ql-btn-5176" onclick="quickLaunchOrOpen('quiz-show', 5176, 'Quiz Show Đố Vui')">🚀 Bật & Mở</button>
+                  <button class="ql-btn-stop" onclick="stopService('quiz-show')" title="Dừng dịch vụ">⏹</button>
+                </div>
+              </div>
+              <div class="ql-item">
+                <div class="ql-info">
+                  <div class="ql-title">💡 Đuổi Hình Bắt Chữ</div>
+                  <div class="ql-port">Cổng 5177 · <span id="ql-status-5177" style="color: #64748b;">Chưa bật</span></div>
+                </div>
+                <div class="ql-actions">
+                  <button class="ql-btn-start" id="ql-btn-5177" onclick="quickLaunchOrOpen('duoi-hinh-bat-chu', 5177, 'Đuổi Hình Bắt Chữ')">🚀 Bật & Mở</button>
+                  <button class="ql-btn-stop" onclick="stopService('duoi-hinh-bat-chu')" title="Dừng dịch vụ">⏹</button>
+                </div>
+              </div>
+              <div style="display: flex; gap: 6px; margin-top: 4px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+                <button class="btn-enterprise-green" style="flex: 1; font-size: 11px; padding: 6px;" onclick="startAllServices()">⚡ Bật 5</button>
+                <button class="btn-enterprise-red" style="flex: 1; font-size: 11px; padding: 6px;" onclick="stopAllServices()">⏹ Dừng Cả 5</button>
+              </div>
+            </div>
+          </div>
+
           <!-- GLOBAL CLUSTER ACTIONS -->
           <div class="btn-group">
-            <button class="btn-enterprise-green" onclick="startAllServices()" title="Khởi động tất cả dịch vụ">⚡ Bật Cả 5</button>
+            <button class="btn-enterprise-green" onclick="startAllServices()" title="Khởi động tất cả dịch vụ">⚡ Bật 5</button>
             <button class="btn-enterprise-red" onclick="stopAllServices()" title="Dừng toàn bộ dịch vụ">⏹ Dừng</button>
           </div>
 
@@ -1296,6 +1369,12 @@
                   <button class="btn-outline" onclick="sendMockGift('quiz', 'Fireworks', 1)"><img src="/assets/gifts/fireworks.webp" onerror="this.src='https://beetgames.com/images/gifts/fireworks.webp'" class="gift-btn-img" alt="Fireworks"> Pháo Hoa Sân Khấu</button>
                   <button class="btn-blue" onclick="sendMockGift('quiz', 'Universe', 1)"><img src="/assets/gifts/tiktok_universe.webp" onerror="this.src='https://beetgames.com/images/gifts/tiktok_universe.webp'" class="gift-btn-img" alt="Universe"> Vũ Trụ (Đại Tiệc Neon)</button>
                 </div>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span style="font-size: 11px; color: #f43f5e; font-weight: 600;">❤️ Mốc Tap Màn Hình (Community Heart Goal):</span>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="simulateTapHeart(1, 'quiz-show')">❤️ +1 Tim (Tap)</button>
+                  <button class="btn-gold" style="font-size: 11px; padding: 3px 10px;" onclick="simulateReachHeartMilestone('quiz-show')">🎯 Đạt Mốc 10 Tim (Mở Gợi Ý 50:50 Ngay)</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="switchTab('economy'); switchGiftSubtab('triggers'); switchTriggerGame('quiz-show');">⚙️ Cấu Hình Mốc</button>
+                </div>
               </div>
 
               <!-- Custom Gift Dispatcher for Quiz Show -->
@@ -1373,11 +1452,13 @@
           <!-- REBUS PUZZLE CONTROLS & HINTS -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎯 Điều Khiển Ô Chữ & Gợi Ý Tự Động (Ngân Hàng 666 Câu Đố)</div>
+              <div class="card-title">🎯 Điều Khiển Ô Chữ & Gợi Ý Tự Động (Ngân Hàng 951 Câu Đố Tranh Hoạt Họa Gốc Chuẩn Xịn — Phân Loại Độ Khó & Gợi Ý Hoa Hồng)</div>
               <div class="btn-group">
                 <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Đổi Sang Câu Đố Khác</button>
                 <button class="btn-primary" onclick="sendRebusCommand('add_time', { seconds: 10 })">🌹 Tăng Thời Gian (+10s)</button>
-                <button class="btn-blue" onclick="sendMockFollow('rebus', 'FanCứngBấmFollow')">➕ Bấm Follow Kênh (Mở Chữ Đầu)</button>
+                <button class="btn-gold" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; font-weight: 700; box-shadow: 0 0 14px rgba(245, 158, 11, 0.45); border: 1px solid #fde047;" onclick="testRebusCeremony()">🏆 Test Vinh Danh 30 Câu (Top 1, 2, 3)</button>
+                <button class="btn-purple" style="background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; font-weight: 600;" onclick="sendRebusCommand('ceremony')">🏆 Trao Giải Hiện Tại</button>
+                <button class="btn-blue" onclick="sendMockFollow('rebus', 'FanCứngBấmFollow')">➕ Bấm Follow (Mở Gợi Ý 1)</button>
                 <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua Câu Này</button>
                 <button class="btn-red" onclick="sendRebusCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
               </div>
@@ -1440,16 +1521,20 @@
               
               <div style="margin-bottom: 12px;">
                 <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">
-                  ⚡ 2 Hành Động Tương Tác TikTok Chính (TikTok LIVE Rules):
+                  ⚡ 3 Hành Động Tương Tác TikTok Chính (TikTok LIVE Rules):
                 </label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
-                  <button class="btn-red" style="padding: 10px 14px; font-size: 13px; font-weight: bold; justify-content: center; display: flex; align-items: center; gap: 8px;" onclick="sendMockGift('rebus', 'Rose', 1)">
-                    <img src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-btn-img" style="width: 24px; height: 24px;" alt="Rose">
-                    <span>🌹 Tặng Hoa Hồng (+10s Thời Gian)</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 8px; margin-bottom: 10px;">
+                  <button class="btn-red" style="padding: 10px 10px; font-size: 12px; font-weight: bold; justify-content: center; display: flex; align-items: center; gap: 6px;" onclick="sendMockGift('rebus', 'Rose', 1)">
+                    <img src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-btn-img" style="width: 20px; height: 20px;" alt="Rose">
+                    <span>🌹 Tặng Hoa Hồng (Mở Chữ Đầu & +10s)</span>
                   </button>
-                  <button class="btn-blue" style="padding: 10px 14px; font-size: 13px; font-weight: bold; justify-content: center; display: flex; align-items: center; gap: 8px;" onclick="sendMockFollow('rebus', 'KhánGiảBấmFollow')">
-                    <span style="font-size: 18px;">➕</span>
-                    <span>Bấm Follow Kênh (Gợi Ý Chữ Đầu)</span>
+                  <button class="btn-blue" style="padding: 10px 10px; font-size: 12px; font-weight: bold; justify-content: center; display: flex; align-items: center; gap: 6px;" onclick="sendMockFollow('rebus', 'KhánGiảBấmFollow')">
+                    <span style="font-size: 16px;">➕</span>
+                    <span>Bấm Follow Kênh (Mở Gợi Ý 1)</span>
+                  </button>
+                  <button class="btn-pink" style="padding: 10px 10px; font-size: 12px; font-weight: bold; justify-content: center; display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; border: 1px solid #fda4af;" onclick="sendMockLike('rebus', 20, 'KhánGiảThảTim')">
+                    <span style="font-size: 16px;">❤️</span>
+                    <span>Thả 20 Tim (+5s / 1 Lần Mỗi Câu)</span>
                   </button>
                 </div>
 
@@ -1510,9 +1595,10 @@
                 <label style="font-size: 11px; color: var(--text-muted);">Giọng Đọc MC Nữ (Tiếng Việt):</label>
                 <div class="btn-group" style="margin-top: 4px;">
                   <button class="btn-green" onclick="sendRebusCommand('tts_speak', { text: 'Chào mừng cả nhà đến với Đuổi Hình Bắt Chữ! Cùng nhìn hình và nhanh tay đoán đáp án nhé!', lang: 'vi-VN' })">🗣️ Chào Mừng</button>
-                  <button class="btn-blue" onclick="sendRebusCommand('tts_speak', { text: 'Cảm ơn bạn đã bấm theo dõi kênh và mở chữ cái đầu tiên!', lang: 'vi-VN' })">🗣️ Cảm Ơn Bấm Follow</button>
-                  <button class="btn-gold" onclick="sendRebusCommand('tts_speak', { text: 'Cảm ơn bạn đã tặng Hoa Hồng! Cả lớp được cộng thêm 10 giây suy nghĩ!', lang: 'vi-VN' })">🗣️ Cảm Ơn Tặng Hoa Hồng</button>
-                  <button class="btn-red" onclick="sendRebusCommand('tts_speak', { text: 'Còn 5 giây cuối cùng, cả lớp nhanh tay gõ đáp án nào!', lang: 'vi-VN' })">🗣️ Cảnh Báo 5s Cuối</button>
+                  <button class="btn-blue" onclick="sendRebusCommand('tts_speak', { text: 'Cảm ơn bạn đã bấm theo dõi kênh và mở gợi ý đầu tiên!', lang: 'vi-VN' })">🗣️ Cảm Ơn Bấm Follow</button>
+                  <button class="btn-gold" onclick="sendRebusCommand('tts_speak', { text: 'Cảm ơn bạn đã tặng Hoa Hồng! Mở chữ đầu và cộng thêm 10 giây suy nghĩ!', lang: 'vi-VN' })">🗣️ Cảm Ơn Tặng Hoa Hồng</button>
+                  <button class="btn-red" onclick="sendRebusCommand('tts_speak', { text: 'Còn 5 giây cuối cùng! Tặng Hoa Hồng để mở chữ đầu cứu cả lớp nào!', lang: 'vi-VN' })">🗣️ Cảnh Báo 5s Cuối</button>
+                  <button class="btn-purple" onclick="sendRebusCommand('tts_speak', { text: 'Vinh danh nhà vô địch hôm nay! Chúc mừng bạn đã xuất sắc đoạt Cúp Vàng!', lang: 'vi-VN' })">🏆 Vinh Danh Quán Quân</button>
                 </div>
               </div>
             </div>
@@ -1614,6 +1700,10 @@
               <span>🚦</span>
               <span>Giám Sát Pipeline Sự Kiện</span>
             </button>
+            <button class="gift-subtab-btn" id="btn-gsub-triggers" onclick="switchGiftSubtab('triggers')">
+              <span>🎯</span>
+              <span>Mục Tiêu Tương Tác (Tap Màn Hình & Tim)</span>
+            </button>
           </div>
 
           <!-- ==================== SUBPANEL 1: CATALOG BROWSER ==================== -->
@@ -1674,9 +1764,13 @@
               </div>
 
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 10px;">
-                <div>
+                <div class="gift-autocomplete-wrapper">
                   <label style="font-weight: 600; color: #38bdf8;">Tên Quà TikTok:</label>
-                  <input type="text" id="input-map-gift" placeholder="VD: Rose, Lion, Cake..." style="width: 100%;">
+                  <div class="gift-input-container">
+                    <img id="img-map-gift-preview" class="gift-selected-icon-preview" src="" alt="">
+                    <input type="text" id="input-map-gift" placeholder="Gõ tìm quà (VD: Rose, Lion, Cake...)" style="width: 100%;" autocomplete="off" oninput="onMapGiftInput()" onfocus="onMapGiftInput()" onkeydown="onMapGiftKeydown(event)">
+                  </div>
+                  <div id="gift-autocomplete-dropdown" class="gift-autocomplete-dropdown"></div>
                 </div>
 
                 <div>
@@ -1909,6 +2003,112 @@
 
           </div>
 
+          <!-- ==================== SUBPANEL 5: INTERACTIVE TRIGGERS & HEART GOALS ==================== -->
+          <div id="gsubpanel-triggers" class="gift-subpanel">
+            
+            <!-- GAME FILTER PILLS -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+              <button class="btn-outline active-filter-btn" id="btn-trig-filter-quiz" onclick="switchTriggerGame('quiz-show')">🏆 PTPlay Quiz Show</button>
+              <button class="btn-outline" id="btn-trig-filter-dh" onclick="switchTriggerGame('duoi-hinh-bat-chu')">💡 Đuổi Hình Bắt Chữ</button>
+              <button class="btn-outline" id="btn-trig-filter-ec" onclick="switchTriggerGame('english-class')">🎓 Lớp Học Vui LIVE</button>
+              <button class="btn-outline" id="btn-trig-filter-cat" onclick="switchTriggerGame('cat-cafe')">🐱 Café Mòe LIVE</button>
+              <button class="btn-outline" id="btn-trig-filter-mw" onclick="switchTriggerGame('mini-war')">⚔️ Mini War Arena</button>
+            </div>
+
+            <!-- TRIGGER CONFIGURATION CARD -->
+            <div class="card" style="margin-bottom: 14px;">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">🎯 Cấu Hình Mục Tiêu Tương Tác / Tap Màn Hình (Community Heart Milestone)</div>
+                  <p class="card-desc" style="margin: 4px 0 0;">Cấu hình số lượt tap màn hình (thả tim) hoặc hành động tương tác để tự động kích hoạt gợi ý 50:50, thêm thời gian hoặc buff trong game.</p>
+                </div>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="fetchInteractiveTriggers()">🔄 Tải Lại</button>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
+                <div>
+                  <label style="font-weight: 600; color: #38bdf8;">Game Đang Chọn:</label>
+                  <select id="select-trig-game" style="width: 100%;" onchange="onTriggerGameSelectChange()">
+                    <option value="quiz-show">🏆 PTPlay Quiz Show</option>
+                    <option value="duoi-hinh-bat-chu">💡 Đuổi Hình Bắt Chữ</option>
+                    <option value="english-class">🎓 Lớp Học Vui</option>
+                    <option value="cat-cafe">🐱 Café Mòe LIVE</option>
+                    <option value="mini-war">⚔️ Mini War Arena</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style="font-weight: 600; color: #38bdf8;">Trạng Thái Tính Năng:</label>
+                  <select id="select-trig-enabled" style="width: 100%;">
+                    <option value="true">✅ BẬT (Kích hoạt mốc tim)</option>
+                    <option value="false">❌ TẮT (Không mở gợi ý)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style="font-weight: 600; color: #f43f5e;">Số Lượt Thả Tim (Tap Màn Hình) Cần Đạt:</label>
+                  <input type="number" id="input-trig-target" value="10" min="1" max="1000" style="width: 100%;">
+                </div>
+
+                <div>
+                  <label style="font-weight: 600; color: #38bdf8;">Hành Động Game Kích Hoạt:</label>
+                  <select id="select-trig-action" style="width: 100%;">
+                    <!-- Dynamically populated per game -->
+                  </select>
+                </div>
+
+                <div>
+                  <label style="font-weight: 600;">Chu Kỳ Đặt Lại:</label>
+                  <select id="select-trig-reset" style="width: 100%;">
+                    <option value="per_round" selected>Mỗi câu hỏi / vòng chơi mới</option>
+                    <option value="per_session">Mỗi phiên LIVE</option>
+                    <option value="manual">Thủ công</option>
+                  </select>
+                </div>
+
+                <div style="grid-column: 1 / -1;">
+                  <label style="font-weight: 600;">Mẫu Câu Xướng Tên TTS MC Khi Đạt Mốc:</label>
+                  <input type="text" id="input-trig-tts" placeholder="Khán giả đã thả đủ {count} tim! Gợi ý 50:50 đã loại bỏ 2 đáp án sai!" style="width: 100%;">
+                </div>
+              </div>
+
+              <div class="btn-group" style="border-top: 1px solid var(--border-card); padding-top: 12px;">
+                <button class="btn-green" onclick="saveCurrentTriggerConfig()">💾 Lưu Cấu Hình Cho Game Này</button>
+                <button class="btn-outline" onclick="simulateTapHeart(1)">❤️ Giả Lập Thả 1 Tim (Tap)</button>
+                <button class="btn-gold" onclick="simulateReachHeartMilestone()">🎯 Kích Hoạt Đạt Mốc Ngay (Thử Nghiệm)</button>
+              </div>
+            </div>
+
+            <!-- ALL GAMES TRIGGER OVERVIEW TABLE -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">📋 Bảng Cấu Hình Tương Tác Cả 5 Game</div>
+              </div>
+
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Tên Game</th>
+                      <th>Loại Tương Tác</th>
+                      <th>Mức Cần Đạt</th>
+                      <th>Hành Động Kích Hoạt</th>
+                      <th>Chu Kỳ</th>
+                      <th>Trạng Thái</th>
+                      <th>Thử Nghiệm</th>
+                    </tr>
+                  </thead>
+                  <tbody id="trigger-overview-tbody">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
         </section>
 
         <!-- ==================== TAB 6: PREVIEW 9:16 ==================== -->
@@ -2021,7 +2221,11 @@
                 <select id="select-tts-voice" style="width: 100%; font-size: 12px; padding: 6px 8px;">
                   <option value="">-- Đang quét danh sách giọng hệ thống --</option>
                 </select>
-                <small style="color: var(--text-muted); font-size: 10px;">Ưu tiên giọng Neural Online tự nhiên (Microsoft HoaiMy, NamMinh, Google Tiếng Việt, Apple Linh).</small>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                  <small style="color: var(--text-muted); font-size: 10px;">Ưu tiên giọng Neural Online tự nhiên (Microsoft Hoài My, NamMinh, Google Tiếng Việt, Apple Linh).</small>
+                  <button class="btn-primary" style="font-size: 11px; padding: 3px 10px; background: #0284c7; white-space: nowrap;" onclick="saveTtsVoiceToGame()">💾 Lưu Vào Game</button>
+                </div>
+                <div id="lbl-voice-save-status" style="font-size: 11px; color: #34d399; margin-top: 4px; display: none;">✓ Đã lưu giọng vào game!</div>
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
@@ -2075,6 +2279,12 @@
                   <input type="range" id="slider-tts-volume" min="0" max="100" step="5" value="80" style="width: 100%;" oninput="updateTtsSliderLabel('volume')">
                 </div>
               </div>
+
+              <div id="tts-voice-support-hint" style="font-size: 11px; color: var(--text-muted); line-height: 1.45; padding: 6px 10px; background: rgba(56, 189, 248, 0.06); border-left: 2px solid #38bdf8; border-radius: 4px; margin-top: 8px;">
+                💡 <strong>Lưu ý về giọng Neural Online (Hoài My):</strong> Giọng Online Natural của Microsoft sử dụng mô hình trí tuệ nhân tạo phát trực tiếp từ máy chủ nên giữ cao độ và âm lượng chuẩn theo âm sắc tự nhiên của diễn viên lồng tiếng. Tốc độ nói (Rate) được hỗ trợ đầy đủ. Để điều chỉnh tự do cả Cao Độ (Pitch) & Âm Lượng (Volume), bạn có thể chọn giọng Windows gốc như <strong>Microsoft An</strong>.
+              </div>
+
+              <button class="btn-primary" style="width: 100%; font-size: 12px; padding: 8px; margin-top: 10px; background: linear-gradient(135deg, #059669, #0284c7); border: none;" onclick="saveTtsVoiceToGame()">💾 Lưu & Đồng Bộ Giọng Này Vào Game</button>
             </div>
 
             <!-- RIGHT: CUSTOM TEXT SYNTHESIS & LIVE DISPATCH -->
@@ -3069,9 +3279,38 @@
     </div>
   </div>
 
+  <!-- ==================== CONFIRMATION POPUP MODAL ==================== -->
+  <div id="confirm-modal-backdrop" class="modal-backdrop" onclick="if(event.target === this) handleConfirmDialogAction(false)">
+    <div class="confirm-dialog-card" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+      <div class="confirm-dialog-header">
+        <div class="confirm-dialog-header-left">
+          <div id="confirm-modal-icon-badge" class="confirm-dialog-icon">🎯</div>
+          <div class="confirm-dialog-title-wrap">
+            <h3 id="confirm-modal-title" class="confirm-dialog-title">Xác nhận</h3>
+            <p id="confirm-modal-subtitle" class="confirm-dialog-subtitle">Vui lòng kiểm tra kỹ trước khi thực hiện</p>
+          </div>
+        </div>
+        <button class="confirm-dialog-close-btn" type="button" onclick="handleConfirmDialogAction(false)" title="Đóng (ESC)">✕</button>
+      </div>
+      <div class="confirm-dialog-body">
+        <div id="confirm-modal-message" class="confirm-dialog-message"></div>
+      </div>
+      <div class="confirm-dialog-footer">
+        <button id="confirm-modal-btn-cancel" type="button" class="confirm-btn-cancel" onclick="handleConfirmDialogAction(false)">
+          <span id="confirm-modal-text-cancel">Hủy</span>
+          <kbd class="confirm-kbd">ESC</kbd>
+        </button>
+        <button id="confirm-modal-btn-ok" type="button" class="confirm-btn-ok" onclick="handleConfirmDialogAction(true)">
+          <span id="confirm-modal-text-ok">Xác nhận</span>
+          <kbd class="confirm-kbd">↵ Enter</kbd>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST ALERTS CONTAINER -->
   <div id="toast-container"></div>
 
-  <script src="app.js?v=20261109c"></script>
+  <script src="app.js?v=20261110b"></script>
 </body>
 </html>

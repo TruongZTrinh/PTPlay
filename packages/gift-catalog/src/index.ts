@@ -50,6 +50,23 @@ export type GiftLookupResult =
   | { status: 'name-only-unverified'; match: GiftReference; eventName?: string }
   | { status: 'ambiguous' | 'unresolved'; match: null; candidates?: GiftReference[]; eventName?: string };
 
+export interface GameLikeGoalConfig {
+  enabled: boolean;
+  targetCount: number;
+  action: string;
+  actionLabel?: string;
+  params?: Record<string, any>;
+  resetMode: 'per_round' | 'per_session' | 'manual';
+  ttsAnnouncement?: string;
+  description?: string;
+}
+
+export interface GameInteractiveTriggerConfig {
+  gameType: string;
+  gameName: string;
+  likeGoal: GameLikeGoalConfig;
+}
+
 export interface GameGiftActionDef {
   action: string;
   label: string;
@@ -234,6 +251,33 @@ export const REGISTERED_GAME_ACTIONS: Record<string, GameGiftActionDef[]> = {
       supportedSfx: ['chime_correct', 'applause'],
       defaultTts: 'Cảm ơn bạn {viewer} đã gửi tặng {gift} tiếp sức cho cả lớp!',
     },
+    {
+      action: 'english_class.hint_5050',
+      label: 'Gợi ý 50:50 cho cả lớp (Loại 2 đáp án sai)',
+      gameType: 'english-class',
+      description: 'Cô giáo trợ giúp gạch bỏ 2 phương án sai',
+      supportedVfx: ['study_sparkles', 'golden_key'],
+      supportedSfx: ['chime_correct'],
+      defaultTts: 'Gợi ý 50:50 đã được cô giáo mở cho cả lớp!',
+    },
+    {
+      action: 'english_class.add_time',
+      label: 'Cộng thêm 10 giây suy nghĩ (+10s)',
+      gameType: 'english-class',
+      description: 'Thêm thời gian suy nghĩ cho các bạn học sinh',
+      supportedVfx: ['magic_stars'],
+      supportedSfx: ['chime_correct'],
+      defaultTts: 'Cả lớp được cộng thêm 10 giây làm bài!',
+    },
+    {
+      action: 'english_class.teacher_dance',
+      label: 'Cô giáo nhảy múa cổ vũ',
+      gameType: 'english-class',
+      description: 'Cô giáo nhảy múa ăn mừng vui nhộn',
+      supportedVfx: ['teacher_dance', 'class_confetti'],
+      supportedSfx: ['applause'],
+      defaultTts: 'Cô giáo đang nhảy múa ăn mừng cùng cả lớp!',
+    },
   ],
   'quiz-show': [
     {
@@ -247,6 +291,42 @@ export const REGISTERED_GAME_ACTIONS: Record<string, GameGiftActionDef[]> = {
       supportedVfx: ['stage_spotlight', 'neon_laser', 'stadium_confetti'],
       supportedSfx: ['gameshow_horn', 'cheer_crowd'],
       defaultTts: 'Cảm ơn đại gia {viewer} đã tiếp lửa đấu trường với {gift}!',
+    },
+    {
+      action: 'quiz_show.hint_5050',
+      label: 'Gợi ý 50:50 (Loại 2 đáp án sai)',
+      gameType: 'quiz-show',
+      description: 'Tự động gạch bỏ 2 phương án sai, chỉ để lại 1 đúng và 1 sai',
+      supportedVfx: ['stage_spotlight', 'neon_laser'],
+      supportedSfx: ['gameshow_horn'],
+      defaultTts: 'Khán giả đã thả đủ tim! Gợi ý 50:50 đã loại bỏ 2 đáp án sai!',
+    },
+    {
+      action: 'quiz_show.hint_one',
+      label: 'Loại bỏ 1 đáp án sai',
+      gameType: 'quiz-show',
+      description: 'Gạch bỏ 1 phương án sai ngẫu nhiên',
+      supportedVfx: ['stage_spotlight'],
+      supportedSfx: ['gameshow_horn'],
+      defaultTts: 'Gợi ý đã loại bỏ 1 đáp án sai!',
+    },
+    {
+      action: 'quiz_show.add_time',
+      label: 'Cộng thêm 10 giây suy nghĩ (+10s)',
+      gameType: 'quiz-show',
+      description: 'Gia hạn thêm 10 giây suy nghĩ cho câu hỏi hiện tại',
+      supportedVfx: ['neon_laser'],
+      supportedSfx: ['cheer_crowd'],
+      defaultTts: 'Đấu trường vừa được cộng thêm 10 giây thời gian suy nghĩ!',
+    },
+    {
+      action: 'quiz_show.double_points',
+      label: 'Nhân đôi điểm thưởng vòng này (x2)',
+      gameType: 'quiz-show',
+      description: 'Nhân 2 toàn bộ số điểm người chơi đạt được ở câu hỏi này',
+      supportedVfx: ['stadium_confetti'],
+      supportedSfx: ['cheer_crowd'],
+      defaultTts: 'Đặc biệt! Điểm thưởng câu hỏi này được nhân đôi!',
     },
   ],
   'duoi-hinh-bat-chu': [
@@ -271,6 +351,24 @@ export const REGISTERED_GAME_ACTIONS: Record<string, GameGiftActionDef[]> = {
       supportedSfx: ['hint_ding'],
       defaultTts: 'Manh mối gợi ý đặc biệt đã được mở!',
     },
+    {
+      action: 'rebus.add_time',
+      label: 'Gia hạn thêm 15 giây (+15s)',
+      gameType: 'duoi-hinh-bat-chu',
+      description: 'Thêm 15 giây thời gian suy nghĩ cho thám tử',
+      supportedVfx: ['easel_sparkle'],
+      supportedSfx: ['bell_ding'],
+      defaultTts: 'Cộng thêm 15 giây suy nghĩ cho thám tử!',
+    },
+    {
+      action: 'rebus.bonus_score',
+      label: 'Cộng 50 điểm thưởng',
+      gameType: 'duoi-hinh-bat-chu',
+      description: 'Thưởng 50 điểm cho các thám tử',
+      supportedVfx: ['magnifying_glow'],
+      supportedSfx: ['puzzle_solve'],
+      defaultTts: 'Thưởng nóng 50 điểm cho các thám tử kỳ tài!',
+    },
   ],
 };
 
@@ -284,6 +382,7 @@ export class GiftCatalogService {
   private catalogVn: GiftReference[] = [];
   private observedGifts: ObservedGiftIdentity[] = [];
   private mappings: Map<string, GameGiftMappingRule> = new Map();
+  private interactiveTriggers: Map<string, GameInteractiveTriggerConfig> = new Map();
   private lastTriggerTimes: Map<string, number> = new Map();
 
   private analytics: GiftAnalyticsSummary = {
@@ -322,6 +421,7 @@ export class GiftCatalogService {
     this.loadCatalogData();
     this.loadObservedGifts();
     this.loadMappings();
+    this.loadInteractiveTriggers();
   }
 
   public static getInstance(customRootDir?: string): GiftCatalogService {
@@ -335,6 +435,7 @@ export class GiftCatalogService {
     this.loadCatalogData();
     this.loadObservedGifts();
     this.loadMappings();
+    this.loadInteractiveTriggers();
   }
 
   private loadCatalogData(): void {
@@ -459,6 +560,141 @@ export class GiftCatalogService {
     } catch (e: any) {
       console.warn('[GiftCatalogService] Error saving mappings:', e.message);
     }
+  }
+
+  private loadInteractiveTriggers(): void {
+    const configPath = path.join(this.rootDir, 'config', 'interactive-triggers.json');
+    if (fs.existsSync(configPath)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        const triggersObj = raw.triggers || {};
+        this.interactiveTriggers.clear();
+        for (const [key, val] of Object.entries(triggersObj)) {
+          if (val && typeof val === 'object') {
+            this.interactiveTriggers.set(key, val as GameInteractiveTriggerConfig);
+          }
+        }
+        return;
+      } catch (e: any) {
+        console.warn('[GiftCatalogService] Failed reading interactive-triggers.json:', e.message);
+      }
+    }
+    this.initDefaultInteractiveTriggers();
+    this.saveInteractiveTriggersToFile();
+  }
+
+  private initDefaultInteractiveTriggers(): void {
+    this.interactiveTriggers.clear();
+    const defaults: Record<string, GameInteractiveTriggerConfig> = {
+      'quiz-show': {
+        gameType: 'quiz-show',
+        gameName: 'PTPlay Quiz Show',
+        likeGoal: {
+          enabled: true,
+          targetCount: 10,
+          action: 'quiz_show.hint_5050',
+          actionLabel: 'Gợi ý 50:50 (Loại 2 đáp án sai)',
+          resetMode: 'per_round',
+          ttsAnnouncement: 'Khán giả đã thả đủ {count} tim! Gợi ý 50:50 loại bỏ 2 đáp án sai đã xuất hiện!',
+          description: 'Khi khán giả tap màn hình đạt 10 tim trong 1 câu hỏi, tự động loại bỏ 2 đáp án sai.',
+        },
+      },
+      'duoi-hinh-bat-chu': {
+        gameType: 'duoi-hinh-bat-chu',
+        gameName: 'Đuổi Hình Bắt Chữ',
+        likeGoal: {
+          enabled: true,
+          targetCount: 15,
+          action: 'rebus.hint',
+          actionLabel: 'Mở 1 ký tự gợi ý ô chữ',
+          resetMode: 'per_round',
+          ttsAnnouncement: 'Khán giả đã thả đủ {count} tim! Manh mối gợi ý chữ cái đã được mở!',
+          description: 'Khi khán giả tap màn hình đạt 15 tim, tự động mở chữ cái đầu tiên của câu đố.',
+        },
+      },
+      'english-class': {
+        gameType: 'english-class',
+        gameName: 'Lớp Học Vui LIVE',
+        likeGoal: {
+          enabled: true,
+          targetCount: 20,
+          action: 'english_class.hint_5050',
+          actionLabel: 'Gợi ý 50:50 cho cả lớp',
+          resetMode: 'per_round',
+          ttsAnnouncement: 'Cả lớp đã nhận được trợ giúp 50:50 nhờ {count} lượt thả tim từ khán giả!',
+          description: 'Khi khán giả thả đủ 20 tim, cô giáo trợ giúp loại bỏ 2 đáp án sai.',
+        },
+      },
+      'cat-cafe': {
+        gameType: 'cat-cafe',
+        gameName: 'Café Mòe LIVE',
+        likeGoal: {
+          enabled: true,
+          targetCount: 25,
+          action: 'cat_cafe.dance',
+          actionLabel: 'Mèo quẩy Disco tập thể',
+          resetMode: 'per_round',
+          ttsAnnouncement: 'Khán giả thả đủ {count} tim! Toàn bộ mèo trong quán đang nhảy Disco cực cháy!',
+          description: 'Khi đạt 25 tim, mèo mở tiệc quẩy disco và tăng điểm Purr.',
+        },
+      },
+      'mini-war': {
+        gameType: 'mini-war',
+        gameName: 'Mini War Arena',
+        likeGoal: {
+          enabled: true,
+          targetCount: 30,
+          action: 'boost_team',
+          actionLabel: 'Tăng tốc Morale sĩ khí',
+          resetMode: 'per_round',
+          ttsAnnouncement: 'Sĩ khí toàn quân tăng vọt nhờ {count} lượt thả tim cổ vũ từ khán giả!',
+          description: 'Khi khán giả thả đủ 30 tim, tăng tốc độ di chuyển và tấn công.',
+        },
+      },
+    };
+    for (const [k, v] of Object.entries(defaults)) {
+      this.interactiveTriggers.set(k, v);
+    }
+  }
+
+  public saveInteractiveTriggersToFile(): void {
+    try {
+      const configDir = path.join(this.rootDir, 'config');
+      if (!fs.existsSync(configDir)) fs.mkdirSync(configDir, { recursive: true });
+      const dest = path.join(configDir, 'interactive-triggers.json');
+      const obj: Record<string, GameInteractiveTriggerConfig> = {};
+      for (const [k, v] of this.interactiveTriggers.entries()) {
+        obj[k] = v;
+      }
+      fs.writeFileSync(
+        dest,
+        JSON.stringify({ formatVersion: 1, updatedAt: new Date().toISOString(), triggers: obj }, null, 2),
+        'utf8'
+      );
+    } catch (e: any) {
+      console.warn('[GiftCatalogService] Error saving interactive triggers:', e.message);
+    }
+  }
+
+  public getInteractiveTriggers(gameType?: string): Record<string, GameInteractiveTriggerConfig> | GameInteractiveTriggerConfig | null {
+    if (!gameType || gameType === 'all') {
+      const result: Record<string, GameInteractiveTriggerConfig> = {};
+      for (const [k, v] of this.interactiveTriggers.entries()) {
+        result[k] = v;
+      }
+      return result;
+    }
+    const norm = gameType === 'cat' ? 'cat-cafe' : (gameType === 'miniwar' ? 'mini-war' : (gameType === 'english' ? 'english-class' : (gameType === 'quiz' ? 'quiz-show' : (gameType === 'rebus' ? 'duoi-hinh-bat-chu' : gameType))));
+    return this.interactiveTriggers.get(norm) || null;
+  }
+
+  public saveInteractiveTrigger(config: GameInteractiveTriggerConfig): GameInteractiveTriggerConfig {
+    if (!config || !config.gameType) throw new Error('Invalid interactive trigger config: gameType required');
+    const norm = config.gameType === 'cat' ? 'cat-cafe' : (config.gameType === 'miniwar' ? 'mini-war' : (config.gameType === 'english' ? 'english-class' : (config.gameType === 'quiz' ? 'quiz-show' : (config.gameType === 'rebus' ? 'duoi-hinh-bat-chu' : config.gameType))));
+    config.gameType = norm;
+    this.interactiveTriggers.set(norm, config);
+    this.saveInteractiveTriggersToFile();
+    return config;
   }
 
   /**

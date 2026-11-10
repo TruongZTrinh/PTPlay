@@ -308,9 +308,31 @@ export class BattleManager {
       }
 
       case 'tts_speak': {
-        const text = cmd.metadata?.text as string;
+        const text = (cmd.metadata?.text || cmd.metadata?.message) as string;
         if (text) {
+          if (cmd.metadata?.voiceName) {
+            this.tts.setVoiceByName(String(cmd.metadata.voiceName));
+          }
+          if (cmd.metadata?.rate !== undefined) {
+            this.tts.rate = Number(cmd.metadata.rate);
+          }
+          if (cmd.metadata?.pitch !== undefined) {
+            this.tts.pitch = Number(cmd.metadata.pitch);
+          }
+          if (cmd.metadata?.volume !== undefined) {
+            this.tts.volume = Math.max(0, Math.min(1.0, Number(cmd.metadata.volume)));
+          }
           this.tts.speak(text, true);
+        }
+        break;
+      }
+
+      case 'set_voice':
+      case 'tts_config': {
+        if (cmd.metadata) {
+          this.tts.applyVoiceConfig(cmd.metadata as any);
+          const voiceLabel = cmd.metadata.voiceName ? ` (${cmd.metadata.voiceName})` : '';
+          this.ui.showAnnouncement(`🔊 ĐÃ ĐỒNG BỘ GIỌNG NÓI${voiceLabel}`, GAME_CONFIG.COLORS.GOLD);
         }
         break;
       }

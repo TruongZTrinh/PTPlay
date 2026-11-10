@@ -295,11 +295,213 @@ async function fetchStatus() {
   } catch (e) {}
 }
 
+let latestPorts = {
+  8088: false,
+  5173: false,
+  5174: false,
+  5175: false,
+  5176: false,
+  5177: false,
+  21213: false,
+};
+
+function updatePillStatus(port, isOpen, serviceName) {
+  const pill = document.getElementById(`pill-port-${port}`) || document.getElementById(`pill-${port === 8088 ? 'bridge' : (port === 21213 ? 'tikfinity' : '')}`);
+  if (pill) {
+    pill.classList.toggle('is-online', isOpen);
+    pill.classList.toggle('is-offline', !isOpen);
+    pill.title = isOpen
+      ? `🟢 ${serviceName} đang chạy · Bấm để MỞ TAB (http://127.0.0.1:${port})`
+      : `⚪ ${serviceName} đang tắt · Bấm 1-Click để BẬT & MỞ TAB (http://127.0.0.1:${port})`;
+  }
+  const qlStatus = document.getElementById(`ql-status-${port}`);
+  if (qlStatus) {
+    qlStatus.innerHTML = isOpen
+      ? `<span style="color:#10b981; font-weight:700;">● Đang Chạy</span>`
+      : `<span style="color:#64748b;">● Đang Tắt</span>`;
+  }
+  const qlBtn = document.getElementById(`ql-btn-${port}`);
+  if (qlBtn) {
+    qlBtn.innerText = isOpen ? '↗ Mở Tab' : '🚀 Bật & Mở';
+    qlBtn.className = isOpen ? 'ql-btn-open' : 'ql-btn-start';
+  }
+}
+
+async function quickLaunchOrOpen(serviceKey, port, serviceName) {
+  playSound('click');
+  const url = `http://127.0.0.1:${port}`;
+  const isOpen = Boolean(latestPorts[port]);
+
+  if (isOpen) {
+    window.open(url, '_blank');
+    showToast(`🚀 [${serviceName}] Đang mở tab ${url}`, 'success');
+    return;
+  }
+
+  // If closed, open a transitional tab immediately to avoid browser popup blocker!
+  const targetWindow = window.open('', '_blank');
+  if (targetWindow) {
+    targetWindow.document.write(`<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <title>Đang khởi động ${serviceName}...</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #090d16;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
+      padding: 36px 32px;
+      text-align: center;
+      max-width: 440px;
+      width: 100%;
+    }
+    .spinner {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 20px;
+      border: 4px solid rgba(56, 189, 248, 0.15);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    h2 { margin: 0 0 10px; font-size: 20px; font-weight: 700; color: #fff; }
+    p { margin: 0 0 18px; font-size: 13px; color: #94a3b8; line-height: 1.5; }
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: monospace;
+    }
+    .manual-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 8px 18px;
+      background: #2563eb;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .manual-btn:hover { background: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="spinner"></div>
+    <h2>Đang khởi động ${serviceName}</h2>
+    <p>Hệ thống đang nạp tài nguyên và mở cổng dev server...</p>
+    <div class="badge">http://127.0.0.1:${port}</div>
+    <br>
+    <a class="manual-btn" href="${url}">Bấm vào đây nếu không tự chuyển</a>
+  </div>
+  <script>
+    let attempts = 0;
+    function checkServer() {
+      fetch('${url}', { mode: 'no-cors' })
+        .then(() => {
+          location.replace('${url}');
+        })
+        .catch(() => {
+          attempts++;
+          if (attempts < 25) {
+            setTimeout(checkServer, 500);
+          } else {
+            location.replace('${url}');
+          }
+        });
+    }
+    setTimeout(checkServer, 700);
+  </script>
+</body>
+</html>`);
+    targetWindow.document.close();
+  }
+
+  showToast(`⚡ Đang khởi động ${serviceName} (Cổng ${port})...`, 'info');
+  try {
+    const res = await fetch(`/api/process/start/${serviceKey}`, { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`✅ Đã bật ${serviceName}! Đang tự động mở tab...`, 'success');
+    }
+    setTimeout(() => {
+      fetchProcessStatus();
+      fetchPorts();
+    }, 1200);
+  } catch (e) {
+    showToast(`Lỗi bật ${serviceName}: ${e.message}`, 'error');
+  }
+}
+
+function toggleQuickLaunchMenu(event) {
+  if (event) event.stopPropagation();
+  playSound('click');
+  const menu = document.getElementById('quick-launch-menu');
+  if (!menu) return;
+  const isHidden = menu.style.display === 'none' || !menu.style.display;
+  menu.style.display = isHidden ? 'flex' : 'none';
+  if (isHidden) {
+    fetchPorts();
+  }
+}
+
+function closeQuickLaunchMenu() {
+  const menu = document.getElementById('quick-launch-menu');
+  if (menu) menu.style.display = 'none';
+}
+
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('quick-launcher-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    closeQuickLaunchMenu();
+  }
+});
+
 async function fetchPorts() {
   try {
     const res = await fetch('/api/ports');
     if (!res.ok) return;
     const p = await res.json();
+
+    latestPorts = {
+      8088: Boolean(p.bridgePort?.open),
+      5173: Boolean(p.miniWarPort?.open),
+      5174: Boolean(p.catCafePort?.open),
+      5175: Boolean(p.englishClassPort?.open),
+      5176: Boolean(p.quizShowPort?.open),
+      5177: Boolean(p.duoiHinhPort?.open),
+      21213: Boolean(p.tikfinityPort?.open),
+    };
+
+    updatePillStatus(8088, latestPorts[8088], 'Bridge');
+    updatePillStatus(5173, latestPorts[5173], 'Mini War Arena');
+    updatePillStatus(5174, latestPorts[5174], 'Café Mòe LIVE');
+    updatePillStatus(5175, latestPorts[5175], 'Lớp Học Vui LIVE');
+    updatePillStatus(5176, latestPorts[5176], 'Quiz Show');
+    updatePillStatus(5177, latestPorts[5177], 'Đuổi Hình Bắt Chữ');
+    updatePillStatus(21213, latestPorts[21213], 'TikFinity');
 
     const val5173 = document.getElementById('val-port-5173');
     const dot5173 = document.getElementById('dot-port-5173');
@@ -428,6 +630,87 @@ function updateActiveGameUI(game) {
   }
 }
 
+// --- Interactive Custom Confirm Modal (Enter to OK, Esc to Close) ---
+let confirmModalResolver = null;
+let lastActiveElementBeforeModal = null;
+
+function showConfirmModal(options) {
+  return new Promise((resolve) => {
+    if (confirmModalResolver) {
+      try { confirmModalResolver(false); } catch (e) {}
+    }
+    confirmModalResolver = resolve;
+    lastActiveElementBeforeModal = document.activeElement;
+
+    const opts = typeof options === 'string' ? { message: options } : (options || {});
+    const title = opts.title || 'Xác nhận';
+    const subtitle = opts.subtitle || 'Vui lòng kiểm tra kỹ trước khi thực hiện';
+    const message = opts.message || 'Bạn có chắc chắn muốn thực hiện hành động này?';
+    const confirmText = opts.confirmText || 'Xác nhận';
+    const cancelText = opts.cancelText || 'Hủy';
+    const icon = opts.icon || '🎯';
+    const variant = opts.variant || 'primary';
+
+    const backdrop = document.getElementById('confirm-modal-backdrop');
+    const titleEl = document.getElementById('confirm-modal-title');
+    const subtitleEl = document.getElementById('confirm-modal-subtitle');
+    const messageEl = document.getElementById('confirm-modal-message');
+    const iconEl = document.getElementById('confirm-modal-icon-badge');
+    const btnOk = document.getElementById('confirm-modal-btn-ok');
+    const textOk = document.getElementById('confirm-modal-text-ok');
+    const textCancel = document.getElementById('confirm-modal-text-cancel');
+
+    if (!backdrop) {
+      resolve(confirm(message.replace(/<[^>]*>?/gm, '')));
+      return;
+    }
+
+    if (titleEl) titleEl.textContent = title;
+    if (subtitleEl) subtitleEl.textContent = subtitle;
+    if (messageEl) messageEl.innerHTML = message;
+    if (textOk) textOk.textContent = confirmText;
+    if (textCancel) textCancel.textContent = cancelText;
+
+    if (iconEl) {
+      iconEl.textContent = icon;
+      iconEl.className = 'confirm-dialog-icon' + (variant !== 'primary' ? ' ' + variant : '');
+    }
+
+    if (btnOk) {
+      btnOk.className = 'confirm-btn-ok' + (variant !== 'primary' ? ' ' + variant : '');
+    }
+
+    backdrop.classList.add('active');
+
+    // Auto-focus OK button immediately so pressing Enter will confirm
+    requestAnimationFrame(() => {
+      btnOk?.focus();
+    });
+  });
+}
+
+function handleConfirmDialogAction(isConfirmed) {
+  const backdrop = document.getElementById('confirm-modal-backdrop');
+  if (backdrop) {
+    backdrop.classList.remove('active');
+  }
+
+  const resolver = confirmModalResolver;
+  confirmModalResolver = null;
+
+  if (lastActiveElementBeforeModal && typeof lastActiveElementBeforeModal.focus === 'function') {
+    try { lastActiveElementBeforeModal.focus(); } catch (e) {}
+    lastActiveElementBeforeModal = null;
+  }
+
+  if (resolver) {
+    resolver(Boolean(isConfirmed));
+  }
+}
+
+window.showConfirmModal = showConfirmModal;
+window.handleConfirmDialogAction = handleConfirmDialogAction;
+
 async function switchActiveGame(target) {
   if (target === currentActiveGame) return;
   playSound('click');
@@ -440,7 +723,6 @@ async function switchActiveGame(target) {
         : (target === 'quiz-show' 
           ? 'Đố Vui Có Thưởng' 
           : 'Đuổi Hình Bắt Chữ')));
-  if (!confirm(`Xác nhận đổi game tiếp nhận luồng sự kiện TikTok LIVE sang: ${targetName}?`)) return;
   try {
     const res = await fetch('/api/active_game', {
       method: 'POST',
@@ -654,7 +936,16 @@ async function addManualSpectator() {
 }
 
 async function clearSpectators() {
-  if (!confirm('Xác nhận xóa toàn bộ danh sách khán giả đã tham gia?')) return;
+  const confirmed = await showConfirmModal({
+    title: 'Xóa Danh Sách Khán Giả',
+    subtitle: 'Quản lý phiên livestream',
+    message: 'Xác nhận xóa toàn bộ danh sách khán giả đã tham gia phiên LIVE?',
+    confirmText: 'Xóa Danh Sách',
+    cancelText: 'Hủy',
+    icon: '🗑️',
+    variant: 'danger'
+  });
+  if (!confirmed) return;
   playSound('warn');
   await fetch('/api/spectators/clear', { method: 'POST', headers: authHeaders() });
   showToast('🧹 Đã xóa danh sách khán giả', 'info');
@@ -689,6 +980,8 @@ function switchGiftSubtab(tabName) {
     if (Object.keys(gameActionsMapCache).length === 0) onMappingGameChange();
   } else if (tabName === 'analytics' || tabName === 'pipeline') {
     fetchGiftAnalytics();
+  } else if (tabName === 'triggers') {
+    fetchInteractiveTriggers();
   }
 }
 
@@ -817,8 +1110,15 @@ function prefillMappingFromCatalog(giftName, coins) {
   switchGiftSubtab('mappings');
   const inputGift = document.getElementById('input-map-gift');
   const inputTts = document.getElementById('input-map-tts');
+  const preview = document.getElementById('img-map-gift-preview');
   if (inputGift) {
     inputGift.value = giftName;
+    const found = (catalogGiftsCache || []).find(g => (g.name || '').toLowerCase() === giftName.toLowerCase());
+    if (preview && found && (found.iconUrl || found.localIcon)) {
+      preview.src = found.iconUrl || found.localIcon;
+      preview.style.display = 'inline-block';
+      inputGift.style.paddingLeft = '38px';
+    }
     inputGift.focus();
     inputGift.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
@@ -928,7 +1228,212 @@ async function syncCatalogFromSource() {
   }
 }
 
-function filterMappingsByGame(gameType) {
+// --- 8.3 Gift Autocomplete & Quick Selector ---
+let giftAutocompleteTimer = null;
+let giftAutocompleteHighlightedIndex = -1;
+let currentGiftSuggestions = [];
+
+function hideGiftDropdown() {
+  const dropdown = document.getElementById('gift-autocomplete-dropdown');
+  if (dropdown) {
+    dropdown.style.display = 'none';
+    dropdown.innerHTML = '';
+  }
+  giftAutocompleteHighlightedIndex = -1;
+  currentGiftSuggestions = [];
+}
+
+async function onMapGiftInput() {
+  const input = document.getElementById('input-map-gift');
+  const dropdown = document.getElementById('gift-autocomplete-dropdown');
+  const preview = document.getElementById('img-map-gift-preview');
+  if (!input || !dropdown) return;
+
+  const query = input.value.trim();
+
+  // If empty, reset preview and hide dropdown
+  if (!query) {
+    if (preview) {
+      preview.style.display = 'none';
+      preview.src = '';
+    }
+    input.style.paddingLeft = '';
+    hideGiftDropdown();
+    return;
+  }
+
+  // Check if current text exactly matches a known gift
+  const exact = (catalogGiftsCache || []).find(g => (g.name || '').toLowerCase() === query.toLowerCase());
+  if (exact && (exact.iconUrl || exact.localIcon) && preview) {
+    preview.src = exact.iconUrl || exact.localIcon;
+    preview.style.display = 'inline-block';
+    input.style.paddingLeft = '38px';
+  } else if (!exact && preview) {
+    preview.style.display = 'none';
+    input.style.paddingLeft = '';
+  }
+
+  if (giftAutocompleteTimer) clearTimeout(giftAutocompleteTimer);
+  giftAutocompleteTimer = setTimeout(async () => {
+    let gifts = [];
+
+    // 1. Search locally in catalogGiftsCache
+    if (catalogGiftsCache && catalogGiftsCache.length > 0) {
+      const qLower = query.toLowerCase();
+      gifts = catalogGiftsCache.filter(g => (g.name || '').toLowerCase().includes(qLower));
+    }
+
+    // 2. Query catalog API if local cache is empty or has few matches
+    if (gifts.length < 5) {
+      try {
+        const res = await fetch(`/api/catalog/gifts?q=${encodeURIComponent(query)}&region=VN&limit=15`);
+        if (res.ok) {
+          const data = await res.json();
+          const apiGifts = Array.isArray(data) ? data : (data.gifts || []);
+          const seen = new Set(gifts.map(g => (g.name || '').toLowerCase()));
+          apiGifts.forEach(g => {
+            if (!seen.has((g.name || '').toLowerCase())) {
+              gifts.push(g);
+              seen.add((g.name || '').toLowerCase());
+            }
+          });
+        }
+      } catch (e) {
+        // use local
+      }
+    }
+
+    if (gifts.length === 0) {
+      hideGiftDropdown();
+      return;
+    }
+
+    // 3. Smart ranking: exact match > startsWith > contains
+    const qLower = query.toLowerCase();
+    gifts.sort((a, b) => {
+      const aName = (a.name || '').toLowerCase();
+      const bName = (b.name || '').toLowerCase();
+      const aExact = aName === qLower ? 1 : 0;
+      const bExact = bName === qLower ? 1 : 0;
+      if (aExact !== bExact) return bExact - aExact;
+
+      const aStarts = aName.startsWith(qLower) ? 1 : 0;
+      const bStarts = bName.startsWith(qLower) ? 1 : 0;
+      if (aStarts !== bStarts) return bStarts - aStarts;
+
+      return (a.coins || a.diamonds || 1) - (b.coins || b.diamonds || 1);
+    });
+
+    currentGiftSuggestions = gifts.slice(0, 10);
+    giftAutocompleteHighlightedIndex = -1;
+
+    dropdown.innerHTML = currentGiftSuggestions.map((g, idx) => {
+      const iconUrl = g.iconUrl || g.localIcon || '';
+      const safeName = (g.name || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const coins = g.coins || g.diamonds || 1;
+      const isVn = g.isVN || (g.regions && g.regions.includes('VN'));
+
+      // Highlight matched portion
+      const name = g.name || '';
+      const matchIdx = name.toLowerCase().indexOf(qLower);
+      let nameHtml = name;
+      if (matchIdx >= 0) {
+        const before = name.substring(0, matchIdx);
+        const match = name.substring(matchIdx, matchIdx + query.length);
+        const after = name.substring(matchIdx + query.length);
+        nameHtml = `${before}<span style="color: #38bdf8; text-decoration: underline; font-weight: bold;">${match}</span>${after}`;
+      }
+
+      return `
+        <div class="gift-autocomplete-item" id="gift-item-${idx}" onclick="selectGiftSuggestion('${safeName}', '${iconUrl}', ${coins})">
+          <img src="${iconUrl}" alt="${safeName}" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'32\\' height=\\'32\\'><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'central\\' text-anchor=\\'middle\\' font-size=\\'16\\'>🎁</text></svg>';">
+          <div class="gift-autocomplete-info">
+            <span class="gift-autocomplete-name">${nameHtml}</span>
+            <div class="gift-autocomplete-meta">
+              <span>💎 ${coins.toLocaleString()} Xu</span>
+              ${isVn ? '<span class="gift-autocomplete-badge">🇻🇳 VN</span>' : ''}
+            </div>
+          </div>
+          <span style="font-size: 11px; color: #38bdf8; font-weight: 600;">Chọn ➔</span>
+        </div>
+      `;
+    }).join('');
+
+    dropdown.style.display = 'block';
+  }, 120);
+}
+
+function selectGiftSuggestion(giftName, iconUrl, coins = 1) {
+  const input = document.getElementById('input-map-gift');
+  const preview = document.getElementById('img-map-gift-preview');
+  const ttsInput = document.getElementById('input-map-tts');
+
+  if (input) {
+    input.value = giftName;
+    if (preview && iconUrl) {
+      preview.src = iconUrl;
+      preview.style.display = 'inline-block';
+      input.style.paddingLeft = '38px';
+    }
+  }
+
+  if (ttsInput && (!ttsInput.value || ttsInput.value.includes('{gift}'))) {
+    ttsInput.value = `Cảm ơn {viewer} đã tặng {count} ${giftName}!`;
+  }
+
+  hideGiftDropdown();
+  playSound('click');
+  showToast(`🎁 Đã chọn '${giftName}' (💎 ${coins} Xu)`, 'success');
+}
+
+function onMapGiftKeydown(e) {
+  const dropdown = document.getElementById('gift-autocomplete-dropdown');
+  if (!dropdown || dropdown.style.display === 'none' || currentGiftSuggestions.length === 0) {
+    return;
+  }
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    giftAutocompleteHighlightedIndex = (giftAutocompleteHighlightedIndex + 1) % currentGiftSuggestions.length;
+    updateGiftAutocompleteHighlight();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    giftAutocompleteHighlightedIndex = (giftAutocompleteHighlightedIndex - 1 + currentGiftSuggestions.length) % currentGiftSuggestions.length;
+    updateGiftAutocompleteHighlight();
+  } else if (e.key === 'Enter') {
+    if (giftAutocompleteHighlightedIndex >= 0 && currentGiftSuggestions[giftAutocompleteHighlightedIndex]) {
+      e.preventDefault();
+      const g = currentGiftSuggestions[giftAutocompleteHighlightedIndex];
+      selectGiftSuggestion(g.name, g.iconUrl || g.localIcon || '', g.coins || g.diamonds || 1);
+    }
+  } else if (e.key === 'Escape') {
+    hideGiftDropdown();
+  }
+}
+
+function updateGiftAutocompleteHighlight() {
+  currentGiftSuggestions.forEach((_, idx) => {
+    const el = document.getElementById(`gift-item-${idx}`);
+    if (el) {
+      if (idx === giftAutocompleteHighlightedIndex) {
+        el.classList.add('highlighted');
+        el.scrollIntoView({ block: 'nearest' });
+      } else {
+        el.classList.remove('highlighted');
+      }
+    }
+  });
+}
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.gift-autocomplete-wrapper')) {
+      hideGiftDropdown();
+    }
+  });
+}
+
+function filterMappingsByGame(gameType, syncSelect = true) {
   currentMappingGameFilter = gameType;
   playSound('click');
 
@@ -958,16 +1463,32 @@ function filterMappingsByGame(gameType) {
     }
   });
 
+  // Automatically sync with "Game Mục Tiêu" dropdown in the form
+  if (syncSelect) {
+    const gameSelect = document.getElementById('select-map-game');
+    if (gameSelect && gameType !== 'all') {
+      if (gameSelect.value !== gameType) {
+        gameSelect.value = gameType;
+        void onMappingGameChange(false);
+      }
+    }
+  }
+
   renderMappingsTable(currentMappingsList);
 }
 
-async function onMappingGameChange() {
+async function onMappingGameChange(syncFilter = true) {
   const gameSelect = document.getElementById('select-map-game');
   const actionSelect = document.getElementById('select-map-action');
   const unitSelect = document.getElementById('select-map-unit');
   if (!gameSelect || !actionSelect) return;
 
   const game = gameSelect.value;
+
+  // Sync the top filter button & table if user changes "Game mục tiêu" dropdown
+  if (syncFilter && currentMappingGameFilter !== game) {
+    filterMappingsByGame(game, false);
+  }
   try {
     if (!gameActionsMapCache[game]) {
       const res = await fetch(`/api/gift-mappings/actions?gameType=${game}`);
@@ -1102,6 +1623,7 @@ function renderMappingsTable(rules) {
       <td>${statusBadge}</td>
       <td>
         <div style="display: flex; gap: 4px; align-items: center;">
+          <button class="btn-outline" style="font-size:10px; padding:2px 6px;" title="Chỉnh sửa quy tắc này" onclick="editMappingRule('${r.id}')">✏️ Sửa</button>
           <button class="btn-gold" style="font-size:10px; padding:2px 6px;" title="Thử quà mà không cần trừ xu" onclick="testMappingAction('${game}', '${r.id}', '${safeGiftName}')">🧪 Thử</button>
           <button class="btn-outline" style="font-size:10px; padding:2px 6px;" onclick="toggleMappingRule('${r.id}')">Bật/Tắt</button>
           <button class="btn-red" style="font-size:10px; padding:2px 6px;" onclick="deleteMappingRule('${r.id}')">Xóa</button>
@@ -1109,6 +1631,60 @@ function renderMappingsTable(rules) {
       </td>
     </tr>`;
   }).join('');
+}
+
+function editMappingRule(ruleId) {
+  const rule = currentMappingsList.find(r => r.id === ruleId);
+  if (!rule) return;
+  playSound('click');
+
+  const giftInput = document.getElementById('input-map-gift');
+  const gameSelect = document.getElementById('select-map-game');
+  const multInput = document.getElementById('input-map-mult');
+  const cdInput = document.getElementById('input-map-cd');
+  const maxInput = document.getElementById('input-map-max');
+  const ttsInput = document.getElementById('input-map-tts');
+
+  if (giftInput) {
+    giftInput.value = rule.giftName || '';
+    const preview = document.getElementById('img-map-gift-preview');
+    const found = (catalogGiftsCache || []).find(g => (g.name || '').toLowerCase() === (rule.giftName || '').toLowerCase());
+    if (preview && found && (found.iconUrl || found.localIcon)) {
+      preview.src = found.iconUrl || found.localIcon;
+      preview.style.display = 'inline-block';
+      giftInput.style.paddingLeft = '38px';
+    } else if (preview) {
+      preview.style.display = 'none';
+      giftInput.style.paddingLeft = '';
+    }
+  }
+  if (multInput) multInput.value = rule.multiplier || 1;
+  if (cdInput) cdInput.value = rule.cooldownSec || 0;
+  if (maxInput) maxInput.value = rule.maxCountPerEvent || rule.maxSpawnPerEvent || 10;
+  if (ttsInput) ttsInput.value = rule.ttsTemplate || '';
+
+  if (rule.gameType) {
+    filterMappingsByGame(rule.gameType, true);
+    if (gameSelect) gameSelect.value = rule.gameType;
+    onMappingGameChange(false).then(() => {
+      const actionSelect = document.getElementById('select-map-action');
+      if (actionSelect && rule.action) {
+        actionSelect.value = rule.action;
+      }
+      const unitSelect = document.getElementById('select-map-unit');
+      if (unitSelect && (rule.unitType || rule.params?.type || rule.params?.effect)) {
+        unitSelect.value = rule.unitType || rule.params?.type || rule.params?.effect;
+      }
+    });
+  }
+
+  // Smooth scroll to form
+  const formCard = document.querySelector('#gsubpanel-mappings .card');
+  if (formCard) {
+    formCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  showToast(`✏️ Đã nạp thông tin "${rule.giftName}" (${rule.gameType}) vào form`, 'info');
 }
 
 async function saveNewMappingRule() {
@@ -1183,8 +1759,17 @@ function resetMappingForm() {
   const cdInput = document.getElementById('input-map-cd');
   const maxInput = document.getElementById('input-map-max');
   const ttsInput = document.getElementById('input-map-tts');
+  const preview = document.getElementById('img-map-gift-preview');
 
-  if (inputGift) inputGift.value = '';
+  if (inputGift) {
+    inputGift.value = '';
+    inputGift.style.paddingLeft = '';
+  }
+  if (preview) {
+    preview.style.display = 'none';
+    preview.src = '';
+  }
+  hideGiftDropdown();
   if (multInput) multInput.value = '2';
   if (cdInput) cdInput.value = '0';
   if (maxInput) maxInput.value = '10';
@@ -1210,7 +1795,16 @@ async function toggleMappingRule(id) {
 }
 
 async function deleteMappingRule(id) {
-  if (!confirm('Bạn có chắc muốn xóa quy tắc mapping này?')) return;
+  const confirmed = await showConfirmModal({
+    title: 'Xóa Quy Tắc Mapping',
+    subtitle: 'Cấu hình quà tặng & hành động',
+    message: 'Bạn có chắc muốn xóa quy tắc mapping này?',
+    confirmText: 'Xóa Quy Tắc',
+    cancelText: 'Hủy',
+    icon: '🗑️',
+    variant: 'danger'
+  });
+  if (!confirmed) return;
   playSound('warn');
   try {
     await fetch('/api/gift-mappings/delete', {
@@ -1483,7 +2077,16 @@ function renderPipelineHistory(events) {
 }
 
 async function resetAnalyticsData() {
-  if (!confirm('Bạn có chắc muốn đặt lại toàn bộ thống kê quà và nhật ký pipeline của phiên này?')) return;
+  const confirmed = await showConfirmModal({
+    title: 'Đặt Lại Thống Kê & Nhật Ký',
+    subtitle: 'Pipeline & Gift Monitor',
+    message: 'Bạn có chắc muốn đặt lại toàn bộ thống kê quà và nhật ký pipeline của phiên này?',
+    confirmText: 'Đặt Lại',
+    cancelText: 'Hủy',
+    icon: '🔄',
+    variant: 'warning'
+  });
+  if (!confirmed) return;
   playSound('warn');
   try {
     const res = await fetch('/api/gift-analytics/reset', { method: 'POST', headers: authHeaders() });
@@ -1500,7 +2103,254 @@ function fetchGiftControlData() {
   fetchCatalogGifts();
   fetchGiftMappings();
   fetchGiftAnalytics();
+  fetchInteractiveTriggers();
   onMappingGameChange();
+}
+
+// --- 8.5 Interactive Audience Triggers & Heart Goal Milestone Engine ---
+let interactiveTriggersCache = {};
+let currentTriggerGame = 'quiz-show';
+
+const GAME_TRIGGER_ACTIONS = {
+  'quiz-show': [
+    { value: 'quiz_show.hint_5050', label: 'Gợi ý 50:50 (Loại 2 đáp án sai)' },
+    { value: 'quiz_show.hint_one', label: 'Loại bỏ 1 đáp án sai' },
+    { value: 'quiz_show.add_time', label: 'Cộng thêm 10 giây suy nghĩ (+10s)' },
+    { value: 'quiz_show.double_points', label: 'Nhân đôi điểm thưởng vòng này (x2)' },
+  ],
+  'duoi-hinh-bat-chu': [
+    { value: 'rebus.hint', label: 'Mở 1 ký tự gợi ý ô chữ' },
+    { value: 'rebus.add_time', label: 'Gia hạn thêm 15 giây (+15s)' },
+    { value: 'rebus.bonus_score', label: 'Cộng 50 điểm thưởng' },
+  ],
+  'english-class': [
+    { value: 'english_class.hint_5050', label: 'Gợi ý 50:50 cho cả lớp' },
+    { value: 'english_class.add_time', label: 'Cộng thêm 10 giây suy nghĩ (+10s)' },
+    { value: 'english_class.teacher_dance', label: 'Cô giáo nhảy múa cổ vũ' },
+  ],
+  'cat-cafe': [
+    { value: 'cat_cafe.dance', label: 'Mèo quẩy Disco tập thể' },
+    { value: 'cat_cafe.zoomies', label: 'Mèo chạy tăng động (Zoomies)' },
+    { value: 'cat_cafe.bath', label: 'Tắm bọt xà phòng' },
+    { value: 'cat_cafe.add_purrs', label: 'Cộng 100 điểm Purr' },
+  ],
+  'mini-war': [
+    { value: 'boost_team', label: 'Tăng tốc Morale sĩ khí toàn quân' },
+    { value: 'heal_team', label: 'Hồi phục máu thành trì (+HP)' },
+    { value: 'spawn_unit', label: 'Triệu hồi quân chi viện' },
+  ],
+};
+
+async function fetchInteractiveTriggers(gameType) {
+  try {
+    const q = gameType ? `?gameType=${gameType}` : '';
+    const res = await fetch(`/api/interactive-triggers${q}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.triggers) {
+        if (gameType && data.triggers.likeGoal) {
+          interactiveTriggersCache[gameType] = data.triggers;
+        } else if (!gameType) {
+          interactiveTriggersCache = data.triggers;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Lỗi tải interactive triggers:', e);
+  }
+  populateTriggerForm(currentTriggerGame);
+  renderTriggerOverviewTable();
+}
+
+function switchTriggerGame(game) {
+  currentTriggerGame = game;
+  playSound('click');
+  document.querySelectorAll('[id^="btn-trig-filter-"]').forEach(btn => {
+    btn.classList.toggle('active-filter-btn', btn.id.endsWith(game === 'duoi-hinh-bat-chu' ? 'dh' : (game === 'english-class' ? 'ec' : (game === 'cat-cafe' ? 'cat' : (game === 'mini-war' ? 'mw' : 'quiz')))));
+  });
+  const sel = document.getElementById('select-trig-game');
+  if (sel) sel.value = game;
+  populateTriggerForm(game);
+}
+
+function onTriggerGameSelectChange() {
+  const sel = document.getElementById('select-trig-game');
+  if (sel) {
+    switchTriggerGame(sel.value);
+  }
+}
+
+function populateTriggerForm(game) {
+  const trig = interactiveTriggersCache[game] || {
+    gameType: game,
+    likeGoal: {
+      enabled: true,
+      targetCount: 10,
+      action: (GAME_TRIGGER_ACTIONS[game] && GAME_TRIGGER_ACTIONS[game][0]?.value) || 'quiz_show.hint_5050',
+      resetMode: 'per_round',
+      ttsAnnouncement: 'Khán giả đã thả đủ {count} tim!',
+    }
+  };
+
+  const lg = trig.likeGoal || {};
+
+  const enabledSel = document.getElementById('select-trig-enabled');
+  if (enabledSel) enabledSel.value = String(lg.enabled !== false);
+
+  const targetInput = document.getElementById('input-trig-target');
+  if (targetInput) targetInput.value = lg.targetCount || 10;
+
+  const resetSel = document.getElementById('select-trig-reset');
+  if (resetSel) resetSel.value = lg.resetMode || 'per_round';
+
+  const ttsInput = document.getElementById('input-trig-tts');
+  if (ttsInput) ttsInput.value = lg.ttsAnnouncement || '';
+
+  const actionSel = document.getElementById('select-trig-action');
+  if (actionSel) {
+    const list = GAME_TRIGGER_ACTIONS[game] || [];
+    actionSel.innerHTML = list.map(a => `<option value="${a.value}">${a.label} (${a.value})</option>`).join('');
+    if (lg.action) actionSel.value = lg.action;
+  }
+}
+
+async function saveCurrentTriggerConfig() {
+  playSound('click');
+  const game = currentTriggerGame;
+  const enabled = document.getElementById('select-trig-enabled')?.value === 'true';
+  const targetCount = Number(document.getElementById('input-trig-target')?.value) || 10;
+  const action = document.getElementById('select-trig-action')?.value || 'quiz_show.hint_5050';
+  const actionLabel = document.getElementById('select-trig-action')?.selectedOptions[0]?.text || '';
+  const resetMode = document.getElementById('select-trig-reset')?.value || 'per_round';
+  const ttsAnnouncement = document.getElementById('input-trig-tts')?.value || '';
+
+  const payload = {
+    gameType: game,
+    gameName: getGameNameLabel(game),
+    likeGoal: {
+      enabled,
+      targetCount,
+      action,
+      actionLabel,
+      resetMode,
+      ttsAnnouncement,
+    }
+  };
+
+  try {
+    const res = await fetch('/api/interactive-triggers/save', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ config: payload }),
+    });
+    if (res.ok) {
+      interactiveTriggersCache[game] = payload;
+      showToast(`💾 Đã lưu cấu hình tương tác cho [${getGameNameLabel(game)}] thành công!`, 'success');
+      renderTriggerOverviewTable();
+    } else {
+      showToast('❌ Lỗi lưu cấu hình tương tác', 'error');
+    }
+  } catch (e) {
+    showToast('❌ Không thể kết nối tới Bridge API', 'error');
+  }
+}
+
+function renderTriggerOverviewTable() {
+  const tbody = document.getElementById('trigger-overview-tbody');
+  if (!tbody) return;
+
+  const games = ['quiz-show', 'duoi-hinh-bat-chu', 'english-class', 'cat-cafe', 'mini-war'];
+  const rowsHtml = games.map(g => {
+    const trig = interactiveTriggersCache[g] || {};
+    const lg = trig.likeGoal || {};
+    const isEnabled = lg.enabled !== false;
+    const count = lg.targetCount || 10;
+    const actionLabel = lg.actionLabel || lg.action || 'Gợi ý';
+    const reset = lg.resetMode === 'per_session' ? 'Mỗi phiên' : 'Mỗi câu/vòng';
+
+    return `
+      <tr>
+        <td><strong>${getGameIcon(g)} ${getGameNameLabel(g)}</strong></td>
+        <td><span class="badge badge-purple">❤️ Thả Tim (Tap Màn Hình)</span></td>
+        <td><strong style="color: #f43f5e;">${count} tim</strong></td>
+        <td><span style="color: #38bdf8;">${actionLabel}</span></td>
+        <td><small style="color: #94a3b8;">${reset}</small></td>
+        <td>
+          <span class="badge ${isEnabled ? 'badge-green' : 'badge-red'}">
+            ${isEnabled ? '✅ BẬT' : '❌ TẮT'}
+          </span>
+        </td>
+        <td>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn-outline" style="font-size: 10px; padding: 2px 6px;" onclick="simulateTapHeart(1, '${g}')">❤️ +1</button>
+            <button class="btn-gold" style="font-size: 10px; padding: 2px 6px;" onclick="simulateReachHeartMilestone('${g}')">🎯 Đạt Mốc</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.innerHTML = rowsHtml;
+}
+
+function getGameNameLabel(g) {
+  const map = {
+    'quiz-show': 'PTPlay Quiz Show',
+    'duoi-hinh-bat-chu': 'Đuổi Hình Bắt Chữ',
+    'english-class': 'Lớp Học Vui LIVE',
+    'cat-cafe': 'Café Mòe LIVE',
+    'mini-war': 'Mini War Arena',
+  };
+  return map[g] || g;
+}
+
+function getGameIcon(g) {
+  const map = {
+    'quiz-show': '🏆',
+    'duoi-hinh-bat-chu': '💡',
+    'english-class': '🎓',
+    'cat-cafe': '🐱',
+    'mini-war': '⚔️',
+  };
+  return map[g] || '🎮';
+}
+
+async function simulateTapHeart(count = 1, targetGame = null) {
+  const game = targetGame || currentTriggerGame;
+  playSound('click');
+  try {
+    const res = await fetch('/api/interactive-triggers/trigger', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ gameType: game, count, nickname: 'KhánGiảTap' }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`❤️ Đã gửi +${count} lượt thả tim tới [${getGameNameLabel(game)}]!`, 'info');
+    }
+  } catch (e) {
+    showToast('Lỗi gửi lượt thả tim', 'error');
+  }
+}
+
+async function simulateReachHeartMilestone(targetGame = null) {
+  const game = targetGame || currentTriggerGame;
+  const cfg = interactiveTriggersCache[game];
+  const targetCount = cfg?.likeGoal?.targetCount || 10;
+  playSound('celebrate');
+  try {
+    const res = await fetch('/api/interactive-triggers/trigger', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ gameType: game, count: targetCount, nickname: 'FanCứngĐạiGia' }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`🎯 Đã kích hoạt đạt mốc ${targetCount} tim cho [${getGameNameLabel(game)}]!`, 'success');
+    }
+  } catch (e) {
+    showToast('Lỗi kích hoạt mốc tim', 'error');
+  }
 }
 
 // --- 9. Queue & Traffic Tuning ---
@@ -1595,6 +2445,26 @@ async function sendMockFollow(gameType = 'rebus', customNickname) {
   }
 }
 
+async function sendMockLike(gameType = 'rebus', count = 20, customNickname = undefined) {
+  playSound('click');
+  const nick = customNickname || (gameType === 'rebus' ? 'KhánGiảThảTim' : 'FanThảTim');
+  try {
+    const res = await fetch('/api/mock/like', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ game: gameType, nickname: nick, count: count }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`❤️ [TikTok Like] ${nick} vừa thả +${count} tim!`, 'success');
+      fetchStatus();
+      fetchRawLogs();
+    }
+  } catch (e) {
+    showToast(`Lỗi: ${e.message}`, 'error');
+  }
+}
+
 async function sendCustomMockGift(gameType) {
   playSound('click');
   const nickInput = document.getElementById(`input-${gameType}-gift-nick`);
@@ -1656,6 +2526,32 @@ async function sendMockRebusGuess(guess) {
   await sendMockChat('rebus', nick, guess);
 }
 
+async function testRebusCeremony() {
+  playSound('celebrate');
+  const mockTopPlayers = [
+    {
+      userId: 'contestant_huynh_nhu',
+      nickname: 'Huỳnh Như ⭐',
+      score: 380,
+      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    },
+    {
+      userId: 'contestant_cuong_bo',
+      nickname: 'Cường Bo 🥈',
+      score: 260,
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    },
+    {
+      userId: 'contestant_mai_trang',
+      nickname: 'Mai Trang 🥉',
+      score: 190,
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+    },
+  ];
+  await sendRebusCommand('ceremony', { topPlayers: mockTopPlayers });
+  showToast('🏆 Đã kích hoạt Lễ Vinh Danh 30 Câu mẫu (Huỳnh Như, Cường Bo, Mai Trang)!', 'success');
+}
+
 // --- 10.1 English Class Live Specific Actions ---
 async function sendEcCommand(action, metadata = {}) {
   playSound('click');
@@ -1708,14 +2604,22 @@ let adminTtsVoices = [];
 let adminAudioUnlocked = false;
 
 const VIETNAMESE_VOICE_PRIORITIES = [
-  'microsoft hoaimy online (natural)',
-  'microsoft namminh online (natural)',
-  'microsoft hoaimy',
-  'microsoft namminh',
-  'google tiếng việt',
-  'microsoft an',
+  'hoaimy',
+  'namminh',
+  'google',
   'linh',
+  'mai',
+  'an',
 ];
+
+function normalizeVoiceName(str) {
+  if (!str) return '';
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
 
 function isVietnameseVoice(voice) {
   if (!voice || !voice.lang) return false;
@@ -1727,7 +2631,9 @@ function isVietnameseVoice(voice) {
     lang.includes('vi_vn') ||
     lang.includes('vie') ||
     name.includes('vietnam') ||
-    name.includes('tiếng việt')
+    name.includes('tiếng việt') ||
+    name.includes('hoài my') ||
+    name.includes('nam minh')
   );
 }
 
@@ -1744,6 +2650,50 @@ function initAdminTts() {
   // Voice list loading
   refreshAdminVoices();
   window.speechSynthesis.onvoiceschanged = () => refreshAdminVoices();
+
+  // Auto-save listeners on change
+  const select = document.getElementById('select-tts-voice');
+  const rateInput = document.getElementById('slider-tts-rate');
+  const pitchInput = document.getElementById('slider-tts-pitch');
+  const volumeInput = document.getElementById('slider-tts-volume');
+  const targetGame = document.getElementById('select-tts-target-game');
+
+  let sliderTimer;
+  const triggerAutoSave = () => {
+    clearTimeout(sliderTimer);
+    sliderTimer = setTimeout(() => saveTtsVoiceToGame(false), 250);
+  };
+
+  if (select) {
+    select.addEventListener('change', () => {
+      updateVoiceSupportHint(select.value);
+      saveTtsVoiceToGame(false);
+    });
+  }
+  if (rateInput) {
+    rateInput.addEventListener('input', () => updateTtsSliderLabel('rate'));
+    rateInput.addEventListener('change', triggerAutoSave);
+  }
+  if (pitchInput) {
+    pitchInput.addEventListener('input', () => updateTtsSliderLabel('pitch'));
+    pitchInput.addEventListener('change', triggerAutoSave);
+  }
+  if (volumeInput) {
+    volumeInput.addEventListener('input', () => updateTtsSliderLabel('volume'));
+    volumeInput.addEventListener('change', triggerAutoSave);
+  }
+  if (targetGame) targetGame.addEventListener('change', () => saveTtsVoiceToGame(false));
+}
+
+function updateVoiceSupportHint(voiceName) {
+  const hintEl = document.getElementById('tts-voice-support-hint');
+  if (!hintEl) return;
+  const isOnline = (voiceName || '').toLowerCase().includes('online') || (voiceName || '').toLowerCase().includes('natural');
+  if (isOnline) {
+    hintEl.innerHTML = `💡 <strong>Giọng Neural Online (${(voiceName || '').split('-')[0].trim()}):</strong> Sử dụng mô hình AI của Microsoft Cloud. Tốc độ nói (Rate) được hỗ trợ đầy đủ. Cao độ và âm lượng giữ chuẩn theo mô hình ngữ điệu tự nhiên của AI. Để tinh chỉnh tự do Cao Độ (Pitch) & Âm Lượng (Volume), bạn có thể chọn giọng Windows gốc như <strong>Microsoft An</strong>.`;
+  } else {
+    hintEl.innerHTML = `✓ <strong>Giọng Desktop Offline (${(voiceName || '').split('-')[0].trim()}):</strong> Hỗ trợ tinh chỉnh 100% cả Tốc Độ Nói (Rate), Cao Độ (Pitch - Trầm/Bổng) và Âm Lượng (Volume).`;
+  }
 }
 
 function refreshAdminVoices() {
@@ -1762,11 +2712,27 @@ function refreshAdminVoices() {
     countEl.innerText = `${adminTtsVoices.length} giọng (${viVoices.length} Tiếng Việt, ${enVoices.length} English)`;
   }
 
-  // Find best Vietnamese voice
+  // Check saved voice in localStorage
+  let savedVoiceName = '';
+  try {
+    const raw = localStorage.getItem('ptplay_tts_config');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.voiceName) savedVoiceName = parsed.voiceName;
+    }
+  } catch {}
+
+  // Find best Vietnamese voice prioritizing Hoài My
   let bestViVoice = null;
-  for (const pri of VIETNAMESE_VOICE_PRIORITIES) {
-    const found = viVoices.find(v => v.name.toLowerCase().includes(pri));
-    if (found) { bestViVoice = found; break; }
+  if (savedVoiceName) {
+    bestViVoice = viVoices.find(v => v.name === savedVoiceName || normalizeVoiceName(v.name).includes(normalizeVoiceName(savedVoiceName)));
+  }
+
+  if (!bestViVoice) {
+    for (const pri of VIETNAMESE_VOICE_PRIORITIES) {
+      const found = viVoices.find(v => normalizeVoiceName(v.name).includes(pri));
+      if (found) { bestViVoice = found; break; }
+    }
   }
   if (!bestViVoice && viVoices.length > 0) {
     bestViVoice = viVoices[0];
@@ -1774,7 +2740,8 @@ function refreshAdminVoices() {
 
   if (viNameEl) {
     if (bestViVoice) {
-      viNameEl.innerText = `✓ ${bestViVoice.name} (${bestViVoice.lang})`;
+      const isFemale = normalizeVoiceName(bestViVoice.name).includes('hoaimy') || normalizeVoiceName(bestViVoice.name).includes('linh');
+      viNameEl.innerText = `✓ ${bestViVoice.name} ${isFemale ? '(Nữ - Female)' : ''} (${bestViVoice.lang})`;
       viNameEl.style.color = '#34d399';
     } else {
       viNameEl.innerText = '⚠️ Chưa cài giọng Tiếng Việt (dùng giọng mặc định vi-VN)';
@@ -1792,7 +2759,8 @@ function refreshAdminVoices() {
       const opt = document.createElement('option');
       opt.value = v.name;
       const isOnline = v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('online');
-      opt.textContent = `${v.name} ${isOnline ? '★ [Neural Online]' : ''} (${v.lang})`;
+      const isFemale = normalizeVoiceName(v.name).includes('hoaimy') || normalizeVoiceName(v.name).includes('linh');
+      opt.textContent = `${v.name} ${isOnline ? '★ [Neural Online]' : ''} ${isFemale ? '👩 Nữ' : '👨 Nam'} (${v.lang})`;
       if (bestViVoice && v.name === bestViVoice.name) {
         opt.selected = true;
       }
@@ -1823,6 +2791,59 @@ function refreshAdminVoices() {
       optGroupOther.appendChild(opt);
     });
     select.appendChild(optGroupOther);
+  }
+
+  if (select.value) {
+    updateVoiceSupportHint(select.value);
+  }
+}
+
+async function saveTtsVoiceToGame(showNotification = true) {
+  if (showNotification) playSound('click');
+  const voiceSelect = document.getElementById('select-tts-voice');
+  const voiceName = voiceSelect?.value || '';
+  const rate = parseFloat(document.getElementById('slider-tts-rate')?.value || '1.05');
+  const pitch = parseFloat(document.getElementById('slider-tts-pitch')?.value || '1.0');
+  const volume = parseFloat(document.getElementById('slider-tts-volume')?.value || '80') / 100;
+  const lang = document.getElementById('select-tts-lang')?.value || 'vi-VN';
+  const targetGame = document.getElementById('select-tts-target-game')?.value || 'all';
+
+  if (!voiceName) {
+    if (showNotification) showToast('Vui lòng chọn một giọng đọc trong danh sách', 'warn');
+    return;
+  }
+
+  const config = { voiceName, rate, pitch, volume, lang, targetGame, updatedAt: Date.now() };
+
+  // 1. Save to localStorage for instant cross-tab sync to games
+  try {
+    localStorage.setItem('ptplay_tts_config', JSON.stringify(config));
+  } catch (e) {
+    console.warn('[Admin TTS] localStorage error:', e);
+  }
+
+  // 2. Broadcast to GameBridge server & all active games
+  try {
+    const res = await fetch('/api/tts/config', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify(config),
+    });
+    const data = await res.json();
+    if (data.success) {
+      if (showNotification) {
+        showToast(`💾 Đã lưu thành công giọng "${voiceName}" vào game!`, 'success');
+      }
+      const statusEl = document.getElementById('lbl-voice-save-status');
+      if (statusEl) {
+        statusEl.innerHTML = `✓ Đã lưu giọng: <strong style="color: #38bdf8;">${voiceName}</strong> (${targetGame.toUpperCase()})`;
+        statusEl.style.display = 'inline-block';
+      }
+    } else {
+      if (showNotification) showToast(`Lưu qua Bridge thất bại, đã lưu vào LocalStorage`, 'warn');
+    }
+  } catch (e) {
+    if (showNotification) showToast(`Đã lưu giọng đọc vào LocalStorage trình duyệt`, 'info');
   }
 }
 
@@ -1973,23 +2994,38 @@ async function broadcastGameTts(targetGame, text, customLang = undefined) {
   }
 
   const lang = customLang || document.getElementById('select-tts-lang')?.value || 'vi-VN';
+  const voiceName = document.getElementById('select-tts-voice')?.value || '';
+  const rateVal = parseFloat(document.getElementById('slider-tts-rate')?.value || '1.05');
+  const pitchVal = parseFloat(document.getElementById('slider-tts-pitch')?.value || '1.0');
+  const volumeVal = parseFloat(document.getElementById('slider-tts-volume')?.value || '80') / 100;
+
+  const ttsMeta = {
+    text: cleanText,
+    message: cleanText,
+    lang,
+    voiceName,
+    voice: voiceName,
+    rate: isNaN(rateVal) ? 1.05 : rateVal,
+    pitch: isNaN(pitchVal) ? 1.0 : pitchVal,
+    volume: isNaN(volumeVal) ? 0.8 : volumeVal,
+  };
 
   try {
     let endpoint = '/api/game/command';
-    let payload = { action: 'tts_speak', metadata: { text: cleanText, lang } };
+    let payload = { action: 'tts_speak', metadata: ttsMeta };
 
     if (game === 'cat-cafe' || game === 'cat') {
       endpoint = '/api/catcafe/command';
-      payload = { action: 'cat_cafe.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+      payload = { action: 'cat_cafe.tts_speak', metadata: ttsMeta };
     } else if (game === 'english-class' || game === 'english') {
       endpoint = '/api/english/command';
-      payload = { action: 'english_class.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+      payload = { action: 'english_class.tts_speak', metadata: ttsMeta };
     } else if (game === 'quiz-show' || game === 'quiz') {
       endpoint = '/api/quiz/command';
-      payload = { action: 'quiz_show.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+      payload = { action: 'quiz_show.tts_speak', metadata: ttsMeta };
     } else if (game === 'duoi-hinh-bat-chu' || game === 'rebus') {
       endpoint = '/api/rebus/command';
-      payload = { action: 'rebus.tts_speak', metadata: { text: cleanText, message: cleanText, lang } };
+      payload = { action: 'rebus.tts_speak', metadata: ttsMeta };
     }
 
     const res = await fetch(endpoint, {
@@ -2668,6 +3704,42 @@ function executeCmdItem(idx) {
 // --- 14. Global Keyboard & Clock Listeners ---
 function initKeyboardShortcuts() {
   window.addEventListener('keydown', (e) => {
+    // 0. Confirm Modal has highest priority: Enter = OK, Esc = Close
+    const confirmModal = document.getElementById('confirm-modal-backdrop');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        playSound('click');
+        handleConfirmDialogAction(false);
+        return;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (document.activeElement && document.activeElement.id === 'confirm-modal-btn-cancel') {
+          playSound('click');
+          handleConfirmDialogAction(false);
+        } else {
+          playSound('click');
+          handleConfirmDialogAction(true);
+        }
+        return;
+      }
+      if (e.key === 'Tab') {
+        const btnCancel = document.getElementById('confirm-modal-btn-cancel');
+        const btnOk = document.getElementById('confirm-modal-btn-ok');
+        if (document.activeElement === btnOk && !e.shiftKey) {
+          e.preventDefault();
+          btnCancel?.focus();
+        } else if (document.activeElement === btnCancel && e.shiftKey) {
+          e.preventDefault();
+          btnOk?.focus();
+        }
+      }
+      return;
+    }
+
     // Ctrl + K to toggle command palette
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();

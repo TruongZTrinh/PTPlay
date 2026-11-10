@@ -133,3 +133,44 @@ test('6. Unknown gift tracking and fallback', () => {
   assert.equal(a.real.unknownGifts['UnknownMysteryBox999'].count, 3);
 });
 
+test('7. Interactive triggers management across games', () => {
+  const service = new GiftCatalogService(rootDir);
+  const allTriggers = service.getInteractiveTriggers();
+  assert.ok(allTriggers['quiz-show']);
+  assert.ok(allTriggers['duoi-hinh-bat-chu']);
+  assert.equal(allTriggers['quiz-show'].likeGoal.targetCount, 10);
+  assert.equal(allTriggers['quiz-show'].likeGoal.action, 'quiz_show.hint_5050');
+
+  // Update trigger for quiz-show
+  const updated = service.saveInteractiveTrigger({
+    gameType: 'quiz-show',
+    gameName: 'PTPlay Quiz Show',
+    likeGoal: {
+      enabled: true,
+      targetCount: 15,
+      action: 'quiz_show.add_time',
+      actionLabel: 'Cộng thêm 10 giây',
+      resetMode: 'per_round',
+      ttsAnnouncement: 'Khán giả thả đủ 15 tim!',
+    },
+  });
+  assert.equal(updated.likeGoal.targetCount, 15);
+  const fetchSingle = service.getInteractiveTriggers('quiz-show');
+  assert.equal(fetchSingle.likeGoal.targetCount, 15);
+
+  // Restore back to default 10 for consistency
+  service.saveInteractiveTrigger({
+    gameType: 'quiz-show',
+    gameName: 'PTPlay Quiz Show',
+    likeGoal: {
+      enabled: true,
+      targetCount: 10,
+      action: 'quiz_show.hint_5050',
+      actionLabel: 'Gợi ý 50:50 (Loại 2 đáp án sai)',
+      resetMode: 'per_round',
+      ttsAnnouncement: 'Khán giả đã thả đủ {count} tim! Gợi ý 50:50 loại bỏ 2 đáp án sai đã xuất hiện!',
+    },
+  });
+});
+
+

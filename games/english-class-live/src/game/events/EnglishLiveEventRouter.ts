@@ -102,7 +102,29 @@ export class EnglishLiveEventRouter {
         const text = String(cmd.metadata?.text || cmd.metadata?.message || '');
         const lang = (cmd.metadata?.lang === 'en-US' || cmd.metadata?.lang === 'en-GB') ? cmd.metadata.lang : 'vi-VN';
         if (text) {
+          if (cmd.metadata?.voiceName) {
+            this.tts.setVoiceByName(String(cmd.metadata.voiceName));
+          }
+          if (cmd.metadata?.rate !== undefined) {
+            this.tts.rate = Number(cmd.metadata.rate);
+          }
+          if (cmd.metadata?.pitch !== undefined) {
+            this.tts.pitch = Number(cmd.metadata.pitch);
+          }
+          if (cmd.metadata?.volume !== undefined) {
+            this.tts.volume = Math.max(0, Math.min(1.0, Number(cmd.metadata.volume)));
+          }
           this.tts.speak(text, lang, 2);
+        }
+        break;
+      }
+
+      case 'english_class.set_voice':
+      case 'english_class.tts_config':
+      case 'set_voice':
+      case 'tts_config': {
+        if (cmd.metadata) {
+          this.tts.applyVoiceConfig(cmd.metadata as any);
         }
         break;
       }

@@ -37,6 +37,16 @@ export class QuizShowLiveEventRouter {
 
   public start(): void {
     this.client.connect();
+    if (typeof fetch !== 'undefined') {
+      fetch('http://localhost:8088/api/interactive-triggers?gameType=quiz-show')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.triggers && data.triggers.likeGoal) {
+            this.engine.setHeartGoalConfig(data.triggers.likeGoal);
+          }
+        })
+        .catch(() => {});
+    }
   }
 
   public stop(): void {
@@ -83,6 +93,33 @@ export class QuizShowLiveEventRouter {
         break;
       }
 
+      case 'quiz_show.like': {
+        const count = Number(cmd.metadata?.likeCount) || 1;
+        this.engine.recordHearts(count, nickname);
+        this.scoreboard.setChatTicker(`thả +${count} tim! ❤️`, nickname);
+        break;
+      }
+
+      case 'quiz_show.hint':
+      case 'quiz_show.hint_5050': {
+        this.engine.triggerHeartMilestone(nickname);
+        break;
+      }
+
+      case 'quiz_show.set_triggers': {
+        if (cmd.metadata) {
+          const likeGoal = (cmd.metadata as any).likeGoal || cmd.metadata;
+          this.engine.setHeartGoalConfig({
+            enabled: likeGoal.enabled !== undefined ? Boolean(likeGoal.enabled) : true,
+            targetCount: Number(likeGoal.targetCount) || 10,
+            action: String(likeGoal.action || 'quiz_show.hint_5050'),
+            actionLabel: String(likeGoal.actionLabel || 'Gợi ý 50:50'),
+            ttsAnnouncement: likeGoal.ttsAnnouncement ? String(likeGoal.ttsAnnouncement) : undefined,
+          });
+        }
+        break;
+      }
+
       case 'quiz_show.reset': {
         this.engine.startShow();
         break;
@@ -92,7 +129,29 @@ export class QuizShowLiveEventRouter {
       case 'tts_speak': {
         const text = String(cmd.metadata?.text || cmd.metadata?.message || '');
         if (text) {
+          if (cmd.metadata?.voiceName && this.tts) {
+            this.tts.setVoiceByName(String(cmd.metadata.voiceName));
+          }
+          if (cmd.metadata?.rate !== undefined && this.tts) {
+            this.tts.rate = Number(cmd.metadata.rate);
+          }
+          if (cmd.metadata?.pitch !== undefined && this.tts) {
+            this.tts.pitch = Number(cmd.metadata.pitch);
+          }
+          if (cmd.metadata?.volume !== undefined && this.tts) {
+            this.tts.volume = Math.max(0, Math.min(1.0, Number(cmd.metadata.volume)));
+          }
           this.tts?.speak(text, true);
+        }
+        break;
+      }
+
+      case 'quiz_show.set_voice':
+      case 'quiz_show.tts_config':
+      case 'set_voice':
+      case 'tts_config': {
+        if (cmd.metadata && this.tts) {
+          this.tts.applyVoiceConfig(cmd.metadata as any);
         }
         break;
       }

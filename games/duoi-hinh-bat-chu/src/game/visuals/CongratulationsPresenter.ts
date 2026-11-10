@@ -5,8 +5,9 @@ export class CongratulationsPresenter {
   private scene: Phaser.Scene;
   private container: Phaser.GameObjects.Container;
   private activeTweens: Phaser.Tweens.Tween[] = [];
+  private ceremonyOverlay: Phaser.GameObjects.Container | null = null;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, _avatarManager?: unknown, _audio?: unknown) {
     this.scene = scene;
     this.container = scene.add.container(0, 0);
     this.container.setDepth(180);
@@ -125,10 +126,16 @@ export class CongratulationsPresenter {
    * Displays the grand championship ceremony podium overlay
    */
   public showCeremonyPodium(topPlayers: RebusPlayerRecord[]): void {
+    if (this.ceremonyOverlay) {
+      this.ceremonyOverlay.destroy();
+      this.ceremonyOverlay = null;
+    }
+
     const overlay = this.scene.add.container(270, 480);
     overlay.setDepth(195);
     overlay.setScale(0.8);
     overlay.setAlpha(0);
+    this.ceremonyOverlay = overlay;
 
     const bg = this.scene.add.graphics();
     bg.fillStyle(0x0f172a, 0.96);
@@ -239,7 +246,15 @@ export class CongratulationsPresenter {
     });
   }
 
+  public hideCeremony(): void {
+    if (this.ceremonyOverlay) {
+      this.ceremonyOverlay.destroy();
+      this.ceremonyOverlay = null;
+    }
+  }
+
   public destroy(): void {
+    this.hideCeremony();
     this.activeTweens.forEach((t) => t.stop());
     this.activeTweens = [];
     this.container.destroy(true);

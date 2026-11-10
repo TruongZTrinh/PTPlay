@@ -25,7 +25,13 @@ export type CatCafeAction =
   | 'cat_cafe.set_volume'
   | 'cat_cafe.switch_music'
   | 'cat_cafe.add_cat'
-  | 'cat_cafe.clear_cats';
+  | 'cat_cafe.clear_cats'
+  | 'cat_cafe.tts_speak'
+  | 'cat_cafe.set_voice'
+  | 'cat_cafe.tts_config'
+  | 'tts_speak'
+  | 'set_voice'
+  | 'tts_config';
 
 export interface ParsedCafeCommand {
   action: CatCafeAction;

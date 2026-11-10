@@ -174,6 +174,66 @@ async function runTests() {
     tts.destroy();
   });
 
+  // 8. INTERACTIVE HEART GOAL (TAP SCREEN TO UNLOCK HINT)
+  test('8. Heart Goal Milestone: Tap screen 10 times triggers 50:50 hint', () => {
+    const bank = new QuestionBank();
+    const allocator = new SeatAllocator();
+    const roster = new StudentRoster(allocator);
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    const engine = new QuizShowEngine(bank, roster, audio, tts, {
+      introDurationMs: 0,
+      askingDurationMs: 15000,
+    });
+
+    let hintTriggered = false;
+    let eliminatedChoices: any[] = [];
+    let progressReported: any = null;
+
+    engine.setEvents({
+      onHeartGoalProgress: (cur, tgt) => {
+        progressReported = { current: cur, target: tgt };
+      },
+      onHintTriggered: (eliminated, type) => {
+        hintTriggered = true;
+        eliminatedChoices = eliminated;
+        assert.strictEqual(type, '50:50');
+      },
+    });
+
+    engine.startShow();
+    // Force to asking state
+    (engine as any).startAsking();
+
+    assert.strictEqual(engine.heartGoalConfig.enabled, true);
+    assert.strictEqual(engine.heartGoalConfig.targetCount, 10);
+    assert.strictEqual(engine.heartGoalConfig.currentHearts, 0);
+
+    // Simulate viewers tapping the screen: 4 hearts
+    engine.recordHearts(4, 'Fan1');
+    assert.strictEqual(engine.heartGoalConfig.currentHearts, 4);
+    assert.strictEqual(hintTriggered, false);
+    assert.strictEqual(progressReported?.current, 4);
+
+    // Tap 6 more times -> reaches 10 hearts
+    engine.recordHearts(6, 'Fan2');
+    assert.strictEqual(engine.heartGoalConfig.currentHearts, 10);
+    assert.strictEqual(hintTriggered, true);
+    assert.strictEqual(eliminatedChoices.length, 2);
+
+    // Verified that correct answer is NOT eliminated
+    const correctLetter = engine.currentQuestion!.correct;
+    assert.strictEqual(eliminatedChoices.includes(correctLetter), false);
+
+    // Extra hearts after milestone do not re-trigger
+    engine.recordHearts(5, 'Fan3');
+    assert.strictEqual(engine.heartGoalConfig.hintTriggered, true);
+
+    engine.destroy();
+    tts.destroy();
+  });
+
   console.log('\n========================================================');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
   console.log('========================================================');

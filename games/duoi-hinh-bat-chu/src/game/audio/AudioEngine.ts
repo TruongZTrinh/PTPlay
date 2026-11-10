@@ -46,6 +46,7 @@ export class AudioEngine {
   public bgmEnabled: boolean = true;
   public bgmVolume: number = 0.35;
   private currentTrackIndex: number = 0;
+  private currentCue: string = 'lobby';
   private basePath: string = '/shared-music/duoi-hinh-bat-chu';
 
   constructor() {}
@@ -78,11 +79,12 @@ export class AudioEngine {
     this.ensureContext();
     this.sharedMusic.unlock();
     if (this.bgmEnabled) {
-      this.sharedMusic.playCue('lobby');
+      this.sharedMusic.playCue(this.currentCue);
     }
   }
 
   public playCue(cue: string): void {
+    this.currentCue = cue;
     this.sharedMusic.playCue(cue);
   }
 
@@ -222,6 +224,26 @@ export class AudioEngine {
       this.playTone(freq, 'triangle', 0.18, idx * 0.08, 0.22);
     });
   }
+
+  public playCeremonyCelebration(): void {
+    this.playFanfare();
+    this.playCue('ceremony');
+  }
+
+  public playFirework(pan = 0): void {
+    this.playTone(800 + Math.random() * 400, 'triangle', 0.15, 0.0, 0.1);
+  }
+
+  public playApplause(): void {
+    this.playFanfare();
+  }
+
+  public playPodiumReveal(rank: number): void {
+    const freqs = [523.25, 659.25, 783.99];
+    this.playTone(freqs[rank - 1] || 523.25, 'triangle', 0.25, 0.0, 0.3);
+  }
+
+  public stopCeremonySounds(): void {}
 
   public playGiftRose(): void {
     this.playTone(659.25, 'sine', 0.2, 0.0, 0.18);

@@ -117,6 +117,13 @@ export class AudioEngine {
     });
   }
 
+  public playLifeline(): void {
+    const notes = [523.25, 659.25, 783.99, 1046.5, 1318.51];
+    notes.forEach((freq, idx) => {
+      this.playTone(freq, 'sine', 0.22, idx * 0.06, 0.2);
+    });
+  }
+
   public playGiftRose(): void {
     this.playTone(659.25, 'sine', 0.2, 0.0, 0.18);
     this.playTone(880, 'sine', 0.3, 0.1, 0.22);

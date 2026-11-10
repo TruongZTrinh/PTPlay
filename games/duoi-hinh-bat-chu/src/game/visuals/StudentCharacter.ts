@@ -4,12 +4,12 @@ import { AvatarManager } from '../systems/AvatarManager';
 
 const SKIN_KEYS = [
   'student_blue',
-  'student_red',
+  'student_coral',
   'student_purple',
   'student_pink',
   'student_yellow',
   'student_green',
-  'student_teal',
+  'student_navy',
   'student_orange',
 ];
 

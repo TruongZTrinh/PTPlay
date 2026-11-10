@@ -49,11 +49,12 @@ export class RebusScene extends Phaser.Scene {
 
     // 3. Visuals & Presentation
     this.easelBoard = new EaselBoardPresentation(this);
-    this.mc = new MCCharacter(this, 110, 520);
+    this.createClassroomSeats();
+    this.mc = new MCCharacter(this, 270, 548);
     this.mc.setDepth(55);
 
     this.scoreboard = new Scoreboard(this);
-    this.congratsPresenter = new CongratulationsPresenter(this);
+    this.congratsPresenter = new CongratulationsPresenter(this, this.avatarManager, this.audioEngine);
 
     // Score changed listener for instantaneous real-time leaderboard & student animation
     this.studentRoster.setOnScoreChanged((player) => {
@@ -92,13 +93,46 @@ export class RebusScene extends Phaser.Scene {
       this.ttsController
     );
     this.liveRouter.start();
+    this.streamerModal.setLiveRouter(this.liveRouter);
 
     // 8. Start First Round
     this.rebusEngine.startShow();
   }
 
+  private createClassroomSeats(): void {
+    const room = this.add.graphics().setDepth(12);
+    room.fillStyle(0x653519, 0.9);
+    room.fillRoundedRect(18, 568, 504, 333, 16);
+    room.fillStyle(0xf8c17d, 0.95);
+    room.fillRoundedRect(22, 572, 496, 325, 13);
+    room.lineStyle(3, 0x8b451f, 1);
+    room.strokeRoundedRect(22, 572, 496, 325, 13);
+
+    room.fillStyle(0x064e3b, 1);
+    room.fillRoundedRect(158, 576, 224, 25, 12);
+    room.lineStyle(1.5, 0xfacc15, 1);
+    room.strokeRoundedRect(158, 576, 224, 25, 12);
+    this.add.text(270, 588, 'LỚP HỌC ĐANG THAM GIA', {
+      fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#fff7d6', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(13);
+
+    this.seatAllocator.seats.forEach((seat) => {
+      room.fillStyle(0x8b451f, 0.7);
+      room.fillRoundedRect(seat.x - 44, seat.y - 39, 88, 61, 11);
+      room.fillStyle(0xffe7ac, 1);
+      room.fillRoundedRect(seat.x - 42, seat.y - 41, 84, 58, 9);
+      room.lineStyle(1.5, 0xb86b30, 1);
+      room.strokeRoundedRect(seat.x - 42, seat.y - 41, 84, 58, 9);
+      room.fillStyle(0xe5a25b, 1);
+      room.fillRoundedRect(seat.x - 43, seat.y + 6, 86, 18, 5);
+      room.fillStyle(0xffd887, 1);
+      room.fillRoundedRect(seat.x - 38, seat.y + 8, 76, 5, 2);
+      room.fillStyle(0xc7814d, 0.65);
+      room.fillCircle(seat.x, seat.y - 19, 12);
+    });
+  }
+
   private setupAudioUnlock(): void {
-    const unlockBtn = document.getElementById('audio-unlock-overlay');
     let unlocked = false;
 
     const unlockAudio = () => {
@@ -106,14 +140,7 @@ export class RebusScene extends Phaser.Scene {
       unlocked = true;
 
       this.audioEngine.unlock();
-
-      if (unlockBtn) {
-        unlockBtn.style.transition = 'opacity 0.3s ease';
-        unlockBtn.style.opacity = '0';
-        setTimeout(() => {
-          unlockBtn.style.display = 'none';
-        }, 300);
-      }
+      this.ttsController?.unlock();
 
       window.removeEventListener('click', unlockAudio);
       window.removeEventListener('pointerdown', unlockAudio);
@@ -123,9 +150,12 @@ export class RebusScene extends Phaser.Scene {
       this.input.off('pointerdown', unlockAudio);
     };
 
-    if (unlockBtn) {
-      unlockBtn.addEventListener('click', unlockAudio);
-    }
+    // Auto-attempt unlock immediately
+    try {
+      this.audioEngine.unlock();
+      this.ttsController?.unlock();
+    } catch {}
+
     window.addEventListener('click', unlockAudio, { once: true });
     window.addEventListener('pointerdown', unlockAudio, { once: true });
     window.addEventListener('touchstart', unlockAudio, { once: true });
@@ -161,6 +191,7 @@ export class RebusScene extends Phaser.Scene {
   private setupEngineEvents(): void {
     this.rebusEngine.setEvents({
       onStateChanged: (state) => {
+        if (state !== 'finished') this.congratsPresenter.hideCeremony();
         this.mc.onStateChanged(state);
         if (state === 'intro' || state === 'idle') {
           this.audioEngine.playCue('lobby');
@@ -174,6 +205,7 @@ export class RebusScene extends Phaser.Scene {
       onPuzzleStarted: (p, round, totalRounds) => {
         this.easelBoard.setPuzzle(p, round, totalRounds);
         this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
+        this.liveRouter?.onPuzzleStarted();
       },
 
       onTick: (rem, tot) => {

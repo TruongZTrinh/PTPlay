@@ -4,6 +4,7 @@ import { AudioEngine } from '../audio/AudioEngine';
 import { TTSController } from './TTSController';
 import { TextNormalizer } from '../utils/TextNormalizer';
 import rawPuzzles from '../../data/puzzles.json';
+import { CEREMONY_DURATION_MS, CEREMONY_REVEAL_TIMES } from '../constants';
 
 export interface RebusEngineEvents {
   onStateChanged?: (state: RebusState) => void;
@@ -41,6 +42,7 @@ export class RebusEngine {
 
   private timerHandle: any = null;
   private stateTimerHandle: any = null;
+  private ceremonyAnnouncementTimer: ReturnType<typeof setTimeout> | null = null;
   private puzzleDeck: RebusPuzzle[] = [];
 
   constructor(
@@ -117,8 +119,8 @@ export class RebusEngine {
     this.audioEngine.playRoundStart();
     this.events.onPuzzleStarted?.(this.currentPuzzle, this.roundNumber);
 
-    if (this.config.ttsEnabled) {
-      this.ttsController.announceRoundStart(this.roundNumber);
+    if (this.config.ttsEnabled && this.currentPuzzle) {
+      this.ttsController.announceRoundStart(this.roundNumber, this.currentPuzzle.difficulty || 1);
     }
 
     this.stateTimerHandle = setTimeout(() => {
@@ -173,9 +175,10 @@ export class RebusEngine {
 
       // Hints are NOT automatically revealed by time - only shown when users send Rose or Follow!
 
-      // Time warning at 5 seconds remaining (only announces if host is not speaking a hint)
+      // Time warning at 5 seconds remaining
       if (this.remainingTimeMs <= 5000 && this.remainingTimeMs > 4800 && this.config.ttsEnabled) {
-        this.ttsController.announceTimeWarning();
+        const isHard = (this.currentPuzzle?.difficulty || 1) >= 3;
+        this.ttsController.announceTimeWarning(isHard);
       }
 
       // Audio ticks
@@ -270,7 +273,7 @@ export class RebusEngine {
     }
   }
 
-  public addTime(seconds: number = 10, sponsorName?: string): void {
+  public addTime(seconds: number = 10, sponsorName?: string, silentTTS: boolean = false): void {
     if (this.currentState !== 'guessing') return;
     this.remainingTimeMs += seconds * 1000;
     this.totalTimeMs = Math.max(this.totalTimeMs, this.remainingTimeMs);
@@ -281,18 +284,18 @@ export class RebusEngine {
     const secLeft = Math.ceil(this.remainingTimeMs / 1000);
     this.events.onTick?.(secLeft, Math.ceil(this.totalTimeMs / 1000));
 
-    if (this.config.ttsEnabled) {
+    if (this.config.ttsEnabled && !silentTTS) {
       this.ttsController.announceTimeAdded(seconds, sponsorName);
     }
   }
 
-  public triggerFirstCharHint(sponsorName?: string): boolean {
+  public triggerFirstCharHint(sponsorName?: string, addedSeconds?: number): boolean {
     if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
-    this.triggerHint2(sponsorName, 'follow');
+    this.triggerHint2(sponsorName, 'rose', addedSeconds);
     return true;
   }
 
-  public unlockNextHint(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): boolean {
+  public unlockNextHint(sponsorName?: string, reason: 'rose' | 'follow' = 'follow'): boolean {
     if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
     if (!this.hint1Given) {
       this.triggerHint1(sponsorName, reason);
@@ -304,7 +307,7 @@ export class RebusEngine {
     return false;
   }
 
-  public triggerHint1(sponsorName?: string, reason: 'rose' | 'follow' = 'rose'): void {
+  public triggerHint1(sponsorName?: string, reason: 'rose' | 'follow' = 'follow'): void {
     if (this.hint1Given || !this.currentPuzzle) return;
     this.hint1Given = true;
     this.audioEngine.playHintChime();
@@ -315,7 +318,7 @@ export class RebusEngine {
     }
   }
 
-  public triggerHint2(sponsorName?: string, reason: 'rose' | 'follow' = 'follow'): void {
+  public triggerHint2(sponsorName?: string, reason: 'rose' | 'follow' = 'follow', addedSeconds?: number): void {
     if (!this.currentPuzzle) return;
     this.hint2Given = true;
     this.audioEngine.playHintChime();
@@ -323,7 +326,7 @@ export class RebusEngine {
     this.events.onHint2Triggered?.(this.currentPuzzle.hint2, firstChar, sponsorName);
 
     if (this.config.ttsEnabled) {
-      this.ttsController.announceFirstChar(firstChar, sponsorName, reason);
+      this.ttsController.announceFirstChar(firstChar, sponsorName, reason, addedSeconds);
     }
   }
 
@@ -356,7 +359,12 @@ export class RebusEngine {
     this.setState('celebrate');
 
     this.stateTimerHandle = setTimeout(() => {
-      this.nextRound();
+      // Automatic Grand Championship Ceremony every 30 questions
+      if (this.roundNumber > 0 && this.roundNumber % 30 === 0) {
+        this.triggerCeremony();
+      } else {
+        this.nextRound();
+      }
     }, this.config.celebrateDurationMs);
   }
 
@@ -364,17 +372,20 @@ export class RebusEngine {
     this.clearTimers();
     this.setState('finished');
     this.events.onCeremonyStarted?.();
-    this.audioEngine.playFanfare();
+    this.audioEngine.playCeremonyCelebration();
 
     if (this.config.ttsEnabled) {
-      const top3 = this.studentRoster.getTopPlayers(3);
-      const champion = top3[0] ? top3[0].nickname : 'Cả lớp';
-      this.ttsController.announceChampion(champion);
+      const top3 = this.studentRoster.getTopPlayers(3).filter(player => player.score > 0);
+      this.ceremonyAnnouncementTimer = setTimeout(() => {
+        this.ceremonyAnnouncementTimer = null;
+        this.ttsController.announceCeremony(top3[0]?.nickname, top3[1]?.nickname, top3[2]?.nickname);
+      }, CEREMONY_REVEAL_TIMES[0]);
     }
 
     this.stateTimerHandle = setTimeout(() => {
-      this.startShow();
-    }, 15000);
+      this.audioEngine.playCue('lobby');
+      this.nextRound();
+    }, CEREMONY_DURATION_MS);
   }
 
   public skipPuzzle(): void {
@@ -388,6 +399,10 @@ export class RebusEngine {
   }
 
   private clearTimers(): void {
+    if (this.ceremonyAnnouncementTimer) {
+      clearTimeout(this.ceremonyAnnouncementTimer);
+      this.ceremonyAnnouncementTimer = null;
+    }
     if (this.timerHandle) {
       clearInterval(this.timerHandle);
       this.timerHandle = null;

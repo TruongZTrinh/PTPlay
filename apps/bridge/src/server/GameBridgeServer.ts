@@ -45,6 +45,16 @@ export class GameBridgeServer {
   private errorLogs: ErrorLogItem[] = [];
   private readonly maxErrorLogs = 50;
 
+  // Unified TTS Configuration (Persists selected voice, rate, pitch across games)
+  public ttsConfig = {
+    voiceName: 'Microsoft Hoài My Online (Natural)',
+    rate: 1.05,
+    pitch: 1.05,
+    volume: 0.8,
+    lang: 'vi-VN',
+    updatedAt: Date.now(),
+  };
+
   constructor(port = 8088) {
     this.port = port;
 
@@ -1113,6 +1123,13 @@ export class GameBridgeServer {
       return;
     }
 
+    if (pathname === '/api/interactive-triggers' && req.method === 'GET') {
+      const gameType = url.searchParams.get('gameType') || undefined;
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, triggers: this.giftCatalog.getInteractiveTriggers(gameType) }));
+      return;
+    }
+
     if (pathname === '/api/gift-mappings' && req.method === 'GET') {
       const gameType = url.searchParams.get('gameType') || undefined;
       res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -1248,6 +1265,12 @@ export class GameBridgeServer {
           counts: this.teamManager.getTeamCounts(),
         })
       );
+      return;
+    }
+
+    if (pathname === '/api/tts/config' && req.method === 'GET') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, config: this.ttsConfig }));
       return;
     }
 
@@ -1446,6 +1469,29 @@ export class GameBridgeServer {
           return;
         }
 
+        if (pathname === '/api/mock/like' || pathname === '/api/rebus/mock/like') {
+          const nick = String(json.nickname || 'KhánGiảThảTim').slice(0, 40);
+          const count = Math.min(100, Math.max(1, Number(json.count) || 20));
+          this.mockProvider.simulateLike(nick, count);
+          if (this.activeProvider !== this.mockProvider) {
+            this.totalEventsReceived++;
+            const uId = `manual_user_${Date.now()}`;
+            this.processIncomingLiveEvent({
+              id: `manual_like_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              type: 'like',
+              provider: 'manual',
+              userId: uId,
+              uniqueId: `@${nick.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user'}`,
+              nickname: nick,
+              likeCount: count,
+              timestamp: Date.now(),
+            });
+          }
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, action: 'like', nickname: nick, count }));
+          return;
+        }
+
         if (pathname === '/api/mock/streak') {
           const nick = String(json.nickname || 'Khán Giả').slice(0, 40);
           const gift = String(json.giftName || 'Rose').slice(0, 40);
@@ -1481,6 +1527,8 @@ export class GameBridgeServer {
             'force_end_round',
             'boss_ability',
             'tts_speak',
+            'set_voice',
+            'tts_config',
             'set_volume',
             'switch_music',
           ];
@@ -1602,6 +1650,8 @@ export class GameBridgeServer {
             'cat_cafe.box',
             'cat_cafe.bath',
             'cat_cafe.tts_speak',
+            'cat_cafe.set_voice',
+            'cat_cafe.tts_config',
             'cat_cafe.switch_music',
             'tts_speak',
           ];
@@ -1693,6 +1743,8 @@ export class GameBridgeServer {
             'english_class.follow',
             'english_class.reset',
             'english_class.tts_speak',
+            'english_class.set_voice',
+            'english_class.tts_config',
             'english_class.set_volume',
             'english_class.switch_music',
             'tts_speak',
@@ -1782,9 +1834,17 @@ export class GameBridgeServer {
             'quiz_show.team',
             'quiz_show.gift',
             'quiz_show.like',
+            'quiz_show.hint',
+            'quiz_show.hint_5050',
+            'quiz_show.hint_one',
+            'quiz_show.add_time',
+            'quiz_show.double_points',
+            'quiz_show.set_triggers',
             'quiz_show.follow',
             'quiz_show.reset',
             'quiz_show.tts_speak',
+            'quiz_show.set_voice',
+            'quiz_show.tts_config',
             'quiz_show.set_volume',
             'quiz_show.switch_music',
             'tts_speak',
@@ -1881,10 +1941,13 @@ export class GameBridgeServer {
             'rebus.like',
             'rebus.follow',
             'rebus.add_time',
+            'rebus.ceremony',
             'rebus.next_puzzle',
             'rebus.skip_puzzle',
             'rebus.reset',
             'rebus.tts_speak',
+            'rebus.set_voice',
+            'rebus.tts_config',
             'rebus.set_volume',
             'rebus.switch_music',
             'tts_speak',
@@ -1942,6 +2005,48 @@ export class GameBridgeServer {
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true, game, action, volume, trackId, cue }));
+          return;
+        }
+
+        if (pathname === '/api/tts/config') {
+          const voiceName = String(json.voiceName || this.ttsConfig.voiceName);
+          const rate = json.rate !== undefined ? Number(json.rate) : this.ttsConfig.rate;
+          const pitch = json.pitch !== undefined ? Number(json.pitch) : this.ttsConfig.pitch;
+          const volume = json.volume !== undefined ? Number(json.volume) : this.ttsConfig.volume;
+          const lang = String(json.lang || this.ttsConfig.lang);
+          const targetGame = String(json.targetGame || 'all');
+
+          this.ttsConfig = {
+            voiceName,
+            rate,
+            pitch,
+            volume,
+            lang,
+            updatedAt: Date.now(),
+          };
+
+          const targetGames = targetGame === 'all'
+            ? ['mini-war', 'cat-cafe', 'english-class-live', 'quiz-show', 'duoi-hinh-bat-chu']
+            : [targetGame];
+
+          for (const g of targetGames) {
+            let cmdAction = 'tts_config';
+            if (g === 'cat-cafe') cmdAction = 'cat_cafe.tts_config';
+            else if (g === 'english-class-live' || g === 'english-class') cmdAction = 'english_class.tts_config';
+            else if (g === 'quiz-show') cmdAction = 'quiz_show.tts_config';
+            else if (g === 'duoi-hinh-bat-chu') cmdAction = 'rebus.tts_config';
+
+            const cmd: GameCommand = {
+              id: `cmd_tts_cfg_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              action: cmdAction as any,
+              metadata: { voiceName, voice: voiceName, rate, pitch, volume, lang },
+              timestamp: Date.now(),
+            };
+            this.broadcastToGame(cmd);
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, config: this.ttsConfig }));
           return;
         }
 
@@ -2036,6 +2141,51 @@ export class GameBridgeServer {
           this.giftCatalog.resetAnalytics();
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
+          return;
+        }
+
+        if (pathname === '/api/interactive-triggers/save') {
+          const config = json.config || json;
+          if (config && config.gameType) {
+            const saved = this.giftCatalog.saveInteractiveTrigger(config);
+            // Broadcast update command to game via WebSocket
+            this.eventQueue.push({
+              id: `cmd_set_triggers_${Date.now()}`,
+              action: `${saved.gameType}.set_triggers` as any,
+              user: { userId: 'admin', uniqueId: '@admin', nickname: 'Admin' },
+              metadata: saved as any,
+              timestamp: Date.now(),
+            });
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, config: saved, triggers: this.giftCatalog.getInteractiveTriggers() }));
+            return;
+          }
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'gameType required in trigger config' }));
+          return;
+        }
+
+        if (pathname === '/api/interactive-triggers/trigger') {
+          const game = String(json.gameType || 'quiz-show');
+          const count = Number(json.count) || 1;
+          const nickname = String(json.nickname || 'KhánGiảThảTim');
+          const actionMap: Record<string, string> = {
+            'quiz-show': 'quiz_show.like',
+            'duoi-hinh-bat-chu': 'rebus.like',
+            'english-class': 'english_class.like',
+            'cat-cafe': 'cat_cafe.love',
+            'mini-war': 'mini_war.like',
+          };
+          const targetAction = actionMap[game] || 'quiz_show.like';
+          this.eventQueue.push({
+            id: `cmd_sim_like_${Date.now()}`,
+            action: targetAction as any,
+            user: { userId: 'admin_tester', uniqueId: '@admin', nickname },
+            metadata: { likeCount: count },
+            timestamp: Date.now(),
+          });
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, game, count, action: targetAction }));
           return;
         }
 

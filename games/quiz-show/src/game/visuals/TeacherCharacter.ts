@@ -20,11 +20,16 @@ export class TeacherCharacter extends Phaser.GameObjects.Container {
     const initKey = scene.textures.exists('teacher_idle') ? 'teacher_idle' : 'props_podium';
     this.teacherSprite = scene.add.sprite(0, 0, initKey);
     this.teacherSprite.setOrigin(0.5, 0.85);
-    this.teacherSprite.setScale(0.55);
+    this.teacherSprite.setScale(this.getBaseScale());
     this.add(this.teacherSprite);
 
     this.startBreathingAnimation();
     scene.add.existing(this);
+  }
+
+  private getBaseScale(): number {
+    const width = this.teacherSprite?.width || 512;
+    return (512 / width) * 0.55;
   }
 
   public setPose(poseKey: string): void {
@@ -34,13 +39,17 @@ export class TeacherCharacter extends Phaser.GameObjects.Container {
       this.teacherSprite.setTexture(poseKey);
 
       // Cute pop effect on pose change
+      const baseScale = this.getBaseScale();
       this.scene.tweens.add({
         targets: this.teacherSprite,
-        scaleX: 0.58,
-        scaleY: 0.52,
+        scaleX: baseScale * 1.05,
+        scaleY: baseScale * 0.95,
         duration: 120,
         yoyo: true,
         ease: 'Quad.easeInOut',
+        onComplete: () => {
+          this.teacherSprite.setScale(baseScale);
+        },
       });
     }
   }
@@ -48,9 +57,10 @@ export class TeacherCharacter extends Phaser.GameObjects.Container {
   private startBreathingAnimation(): void {
     if (this.breathTween) this.breathTween.stop();
 
+    const baseScale = this.getBaseScale();
     this.breathTween = this.scene.tweens.add({
       targets: this.teacherSprite,
-      scaleY: 0.56,
+      scaleY: baseScale * 1.02,
       y: -4,
       duration: 1600,
       yoyo: true,

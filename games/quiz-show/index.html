@@ -38,38 +38,10 @@
         height: 100% !important;
         object-fit: contain;
       }
-      #audio-unlock-overlay {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(135deg, #ec4899, #8b5cf6);
-        color: white;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: 0 4px 15px rgba(236, 72, 153, 0.5);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        animation: pulse 2s infinite;
-        transition: opacity 0.3s;
-      }
-      @keyframes pulse {
-        0%, 100% { transform: translateX(-50%) scale(1); }
-        50% { transform: translateX(-50%) scale(1.05); }
-      }
     </style>
   </head>
   <body>
-    <div id="game-container">
-      <div id="audio-unlock-overlay">
-        <span>🔊</span> Bật Âm Thanh Quiz Show
-      </div>
-    </div>
+    <div id="game-container"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

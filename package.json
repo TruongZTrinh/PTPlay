@@ -37,8 +37,8 @@
     "test:rebus": "npm run test -w @ptplay/duoi-hinh-bat-chu"
   },
   "devDependencies": {
+    "sharp": "^0.35.5",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   }
 }
-

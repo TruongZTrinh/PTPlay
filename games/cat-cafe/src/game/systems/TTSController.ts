@@ -17,8 +17,10 @@ export class TTSController {
   private isSpeaking: boolean = false;
   private lastSpeakTime: number = 0;
   private cooldownMs: number = 1100;
-  private rate: number = 1.05;
-  private pitch: number = 1.15; // Cheerful, warm cafe host tone
+  public rate: number = 1.05;
+  public pitch: number = 1.15; // Cheerful, warm cafe host tone
+  public volume: number = 0.8;
+  public savedVoiceName?: string;
   private recentWelcomeViewers: Set<string> = new Set();
   private recentKeys: Map<string, number> = new Map();
   private cleanupVoiceLoader?: () => void;
@@ -38,6 +40,13 @@ export class TTSController {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
     this.cleanupVoiceLoader = VietnameseVoiceHelper.setupVoiceLoader((voices) => {
+      if (this.savedVoiceName) {
+        const customVoice = VietnameseVoiceHelper.findVoiceByName(voices, this.savedVoiceName);
+        if (customVoice) {
+          this.selectedVoice = customVoice;
+          return;
+        }
+      }
       // Prioritize warm female cafe host voice (e.g. HoaiMy, Google Tiếng Việt, Linh)
       const bestVoice =
         VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
@@ -46,6 +55,69 @@ export class TTSController {
         this.selectedVoice = bestVoice;
       }
     });
+
+    this.loadSavedVoiceConfig();
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'ptplay_tts_voice' && e.newValue) {
+          this.setVoiceByName(e.newValue);
+        }
+      });
+    }
+  }
+
+  public setVoiceByName(voiceName: string): boolean {
+    this.savedVoiceName = voiceName;
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const voices = window.speechSynthesis.getVoices();
+      const match = VietnameseVoiceHelper.findVoiceByName(voices, voiceName);
+      if (match) {
+        this.selectedVoice = match;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public applyVoiceConfig(config: { voiceName?: string; rate?: number; pitch?: number; volume?: number }): void {
+    if (!config) return;
+    if (config.voiceName) {
+      this.setVoiceByName(config.voiceName);
+      try {
+        localStorage.setItem('ptplay_tts_voice', config.voiceName);
+      } catch {}
+    }
+    if (config.rate !== undefined && !isNaN(Number(config.rate))) {
+      this.rate = Math.max(0.5, Math.min(2.0, Number(config.rate)));
+    }
+    if (config.pitch !== undefined && !isNaN(Number(config.pitch))) {
+      this.pitch = Math.max(0.5, Math.min(2.0, Number(config.pitch)));
+    }
+    if (config.volume !== undefined && !isNaN(Number(config.volume))) {
+      this.volume = Math.max(0, Math.min(1.0, Number(config.volume)));
+    }
+  }
+
+  public loadSavedVoiceConfig(): void {
+    if (typeof window === 'undefined') return;
+    try {
+      const local = localStorage.getItem('ptplay_tts_voice');
+      if (local) {
+        this.setVoiceByName(local);
+      }
+    } catch {}
+
+    if (typeof fetch !== 'undefined') {
+      fetch('http://127.0.0.1:8088/api/tts/config')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.success && data.config) {
+            this.applyVoiceConfig(data.config);
+          }
+        })
+        .catch(() => {});
+    }
   }
 
   public unlock(): boolean {
@@ -289,6 +361,7 @@ export class TTSController {
       voice: this.selectedVoice,
       rate: this.rate,
       pitch: this.pitch,
+      volume: this.volume,
     });
 
     if (!utterance) {

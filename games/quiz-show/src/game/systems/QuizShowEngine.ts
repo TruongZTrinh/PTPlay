@@ -12,6 +12,8 @@ export interface QuizShowEngineEvents {
   onQuestionLocked?: (question: QuestionData) => void;
   onQuestionRevealed?: (question: QuestionData, correctChoice: ChoiceLetter, winnersCount: number) => void;
   onCeremonyStarted?: () => void;
+  onHeartGoalProgress?: (current: number, target: number, enabled: boolean, actionLabel?: string) => void;
+  onHintTriggered?: (eliminatedChoices: ChoiceLetter[], hintType: string) => void;
 }
 
 export class QuizShowEngine {
@@ -33,6 +35,19 @@ export class QuizShowEngine {
   private roundAnswers = new Map<string, { choice: ChoiceLetter; timestamp: number }>();
   private timerHandle: any = null;
   private stateTimerHandle: any = null;
+
+  // Community Heart Goal (Tap Screen Milestones)
+  public heartGoalConfig = {
+    enabled: true,
+    targetCount: 10,
+    action: 'quiz_show.hint_5050',
+    actionLabel: 'Gợi ý 50:50',
+    currentHearts: 0,
+    hintTriggered: false,
+    doublePoints: false,
+    ttsAnnouncement: 'Khán giả đã thả đủ {count} tim! Gợi ý 50:50 loại bỏ 2 đáp án sai đã xuất hiện!',
+  };
+  public eliminatedChoices: ChoiceLetter[] = [];
 
   constructor(
     questionBank: QuestionBank,
@@ -96,6 +111,18 @@ export class QuizShowEngine {
     this.roundAnswers.clear();
     this.totalTimeMs = (this.currentQuestion.durationSec || 12) * 1000;
     this.remainingTimeMs = this.totalTimeMs;
+
+    // Reset round heart milestone
+    this.heartGoalConfig.currentHearts = 0;
+    this.heartGoalConfig.hintTriggered = false;
+    this.heartGoalConfig.doublePoints = false;
+    this.eliminatedChoices = [];
+    this.events.onHeartGoalProgress?.(
+      0,
+      this.heartGoalConfig.targetCount,
+      this.heartGoalConfig.enabled,
+      this.heartGoalConfig.actionLabel
+    );
 
     // 1. INTRO State
     this.setState('intro');
@@ -185,6 +212,9 @@ export class QuizShowEngine {
         const player = this.studentRoster.getPlayer(userId);
         const streakBonus = Math.min(this.config.maxStreakBonus, (player?.streak || 0) + 1);
         points = this.config.basePoints + speedBonus + streakBonus;
+        if (this.heartGoalConfig.doublePoints) {
+          points *= 2;
+        }
       }
       this.studentRoster.addScore(userId, points, isCorrect);
     }
@@ -253,6 +283,95 @@ export class QuizShowEngine {
       clearTimeout(this.stateTimerHandle);
       this.stateTimerHandle = null;
     }
+  }
+
+  public recordHearts(count = 1, nickname?: string): void {
+    if (!this.heartGoalConfig.enabled || this.currentState !== 'asking' || this.heartGoalConfig.hintTriggered) {
+      return;
+    }
+    this.heartGoalConfig.currentHearts += Math.max(1, count);
+    this.events.onHeartGoalProgress?.(
+      this.heartGoalConfig.currentHearts,
+      this.heartGoalConfig.targetCount,
+      this.heartGoalConfig.enabled,
+      this.heartGoalConfig.actionLabel
+    );
+    if (this.heartGoalConfig.currentHearts >= this.heartGoalConfig.targetCount) {
+      this.triggerHeartMilestone(nickname);
+    }
+  }
+
+  public triggerHeartMilestone(nickname?: string): void {
+    if (this.heartGoalConfig.hintTriggered || !this.currentQuestion) return;
+    this.heartGoalConfig.hintTriggered = true;
+    this.events.onHeartGoalProgress?.(
+      this.heartGoalConfig.currentHearts,
+      this.heartGoalConfig.targetCount,
+      this.heartGoalConfig.enabled,
+      this.heartGoalConfig.actionLabel
+    );
+
+    const action = this.heartGoalConfig.action || 'quiz_show.hint_5050';
+
+    if (action === 'quiz_show.hint_5050' || action === 'quiz_show.hint') {
+      const allChoices: ChoiceLetter[] = ['A', 'B', 'C', 'D'];
+      const wrongChoices = allChoices.filter((c) => c !== this.currentQuestion!.correct);
+      // Pick 2 random wrong choices to eliminate
+      const shuffled = [...wrongChoices].sort(() => Math.random() - 0.5);
+      const eliminated = shuffled.slice(0, 2);
+      this.eliminatedChoices = eliminated;
+
+      this.audioEngine.playLifeline();
+      this.events.onHintTriggered?.(eliminated, '50:50');
+
+      if (this.config.ttsEnabled) {
+        this.ttsController.speak(
+          `Khán giả đã thả đủ ${this.heartGoalConfig.targetCount} tim! Gợi ý 50:50 đã loại bỏ 2 đáp án sai!`,
+          true
+        );
+      }
+    } else if (action === 'quiz_show.hint_one') {
+      const allChoices: ChoiceLetter[] = ['A', 'B', 'C', 'D'];
+      const wrongChoices = allChoices.filter((c) => c !== this.currentQuestion!.correct);
+      const shuffled = [...wrongChoices].sort(() => Math.random() - 0.5);
+      const eliminated = shuffled.slice(0, 1);
+      this.eliminatedChoices = eliminated;
+
+      this.audioEngine.playLifeline();
+      this.events.onHintTriggered?.(eliminated, 'hint_1');
+
+      if (this.config.ttsEnabled) {
+        this.ttsController.speak(
+          `Khán giả đã thả đủ tim! Gợi ý loại bỏ 1 đáp án sai đã xuất hiện!`,
+          true
+        );
+      }
+    } else if (action === 'quiz_show.add_time') {
+      this.remainingTimeMs += 10000;
+      this.totalTimeMs += 10000;
+      this.audioEngine.playLifeline();
+
+      if (this.config.ttsEnabled) {
+        this.ttsController.speak('Khán giả đã thả đủ tim! Đấu trường được cộng thêm 10 giây suy nghĩ!', true);
+      }
+    } else if (action === 'quiz_show.double_points') {
+      this.heartGoalConfig.doublePoints = true;
+      this.audioEngine.playStreakFanfare();
+
+      if (this.config.ttsEnabled) {
+        this.ttsController.speak('Khán giả thả đủ tim mở quà! Điểm thưởng vòng này được nhân đôi!', true);
+      }
+    }
+  }
+
+  public setHeartGoalConfig(config: Partial<typeof this.heartGoalConfig>): void {
+    Object.assign(this.heartGoalConfig, config);
+    this.events.onHeartGoalProgress?.(
+      this.heartGoalConfig.currentHearts,
+      this.heartGoalConfig.targetCount,
+      this.heartGoalConfig.enabled,
+      this.heartGoalConfig.actionLabel
+    );
   }
 
   public destroy(): void {

@@ -1,10 +1,8 @@
 import Phaser from 'phaser';
 import { RebusPuzzle } from '../types';
-import { TextNormalizer } from '../utils/TextNormalizer';
 
 export class EaselBoardPresentation extends Phaser.GameObjects.Container {
   private stageBgImage?: Phaser.GameObjects.Image;
-  private logoImage?: Phaser.GameObjects.Image;
   private easelBg: Phaser.GameObjects.Graphics;
   private headerBadgesBg: Phaser.GameObjects.Graphics;
   private roundText: Phaser.GameObjects.Text;
@@ -21,6 +19,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
   private singleImageContainer: Phaser.GameObjects.Container;
   private singleImageSprite: Phaser.GameObjects.Image;
   private singleImageFrame: Phaser.GameObjects.Graphics;
+  private imageSideLabels: Phaser.GameObjects.Text[] = [];
 
   private hintBannerText: Phaser.GameObjects.Text;
   private hintBannerBg: Phaser.GameObjects.Graphics;
@@ -34,21 +33,26 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     // 1. Stage Background
     this.createStageBackground();
 
-    // 2. Game Show Top Logo
-    if (scene.textures.exists('rebus_logo')) {
-      this.logoImage = scene.add.image(270, 42, 'rebus_logo');
-      this.logoImage.setDisplaySize(250, 65);
-      this.add(this.logoImage);
-
-      scene.tweens.add({
-        targets: this.logoImage,
-        y: 45,
-        duration: 1800,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.easeInOut',
-      });
-    }
+    // A fixed, typeset title stays sharp at stream size.
+    const titlePlate = scene.add.graphics();
+    titlePlate.fillStyle(0x382416, 0.65);
+    titlePlate.fillRoundedRect(43, 15, 454, 56, 14);
+    titlePlate.fillStyle(0x925328, 1);
+    titlePlate.fillRoundedRect(41, 10, 458, 56, 14);
+    titlePlate.fillStyle(0xffe7a6, 1);
+    titlePlate.fillRoundedRect(44, 12, 452, 51, 12);
+    titlePlate.fillStyle(0xfff9df, 1);
+    titlePlate.fillRoundedRect(48, 15, 444, 44, 9);
+    titlePlate.lineStyle(1, 0xe7bd73, 1);
+    titlePlate.lineBetween(64, 25, 184, 25);
+    titlePlate.lineBetween(356, 25, 476, 25);
+    this.add(titlePlate);
+    this.add(scene.add.text(270, 25, 'LỚP HỌC ĐOÁN CHỮ', {
+      fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98632e', fontStyle: 'bold',
+    }).setOrigin(0.5));
+    this.add(scene.add.text(270, 45, 'ĐUỔI HÌNH BẮT CHỮ', {
+      fontFamily: 'system-ui, sans-serif', fontSize: '24px', color: '#07533e', fontStyle: 'bold',
+    }).setOrigin(0.5));
 
     // 3. Easel Board & Header Graphics
     this.easelBg = scene.add.graphics();
@@ -58,26 +62,26 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.headerBadgesBg);
 
     // Header info (3D Badges)
-    this.roundText = scene.add.text(84, 96, '🎮 CÂU 1', {
+    this.roundText = scene.add.text(91, 95, 'CÂU 1', {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '12px',
-      color: '#ffffff',
+      fontSize: '14px',
+      color: '#71421d',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.roundText);
 
-    this.categoryText = scene.add.text(270, 96, '💡 GHÉP TỪ TIẾNG VIỆT', {
+    this.categoryText = scene.add.text(270, 95, 'MỨC ĐỘ: DỄ', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
-      color: '#ffffff',
+      color: '#e3f6d6',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.categoryText);
 
-    this.timerText = scene.add.text(456, 96, '⏱ 20s', {
+    this.timerText = scene.add.text(449, 95, '20 GIÂY', {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '12px',
-      color: '#fef08a',
+      fontSize: '14px',
+      color: '#ffffff',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.timerText);
@@ -87,11 +91,11 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.timerBar);
 
     // Two Clue Cards (Fallback mode)
-    this.clueCard1 = scene.add.container(175, 205);
+    this.clueCard1 = scene.add.container(175, 202);
     const cardBg1 = scene.add.graphics();
-    cardBg1.fillStyle(0x0f172a, 0.95);
+    cardBg1.fillStyle(0xfff9df, 1);
     cardBg1.fillRoundedRect(-60, -60, 120, 120, 16);
-    cardBg1.lineStyle(2, 0x38bdf8, 1);
+    cardBg1.lineStyle(3, 0xb66b27, 1);
     cardBg1.strokeRoundedRect(-60, -60, 120, 120, 16);
     this.clueCard1.add(cardBg1);
 
@@ -101,7 +105,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.clueCard1);
 
     // Plus Sign
-    this.plusSign = scene.add.text(270, 205, '+', {
+    this.plusSign = scene.add.text(270, 202, '+', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '36px',
       color: '#f59e0b',
@@ -109,11 +113,11 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.add(this.plusSign);
 
-    this.clueCard2 = scene.add.container(365, 205);
+    this.clueCard2 = scene.add.container(365, 202);
     const cardBg2 = scene.add.graphics();
-    cardBg2.fillStyle(0x0f172a, 0.95);
+    cardBg2.fillStyle(0xfff9df, 1);
     cardBg2.fillRoundedRect(-60, -60, 120, 120, 16);
-    cardBg2.lineStyle(2, 0xf59e0b, 1);
+    cardBg2.lineStyle(3, 0xb66b27, 1);
     cardBg2.strokeRoundedRect(-60, -60, 120, 120, 16);
     this.clueCard2.add(cardBg2);
 
@@ -122,41 +126,41 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.clueCard2.add(this.clueSprite2);
     this.add(this.clueCard2);
 
-    // Single Picture Puzzle Card (3D Golden Picture Frame)
-    this.singleImageContainer = scene.add.container(270, 200);
+    // Single Picture Puzzle Card (Gilded Exhibition Screen)
+    this.singleImageContainer = scene.add.container(270, 202);
 
     this.singleImageFrame = scene.add.graphics();
-    // Drop shadow
-    this.singleImageFrame.fillStyle(0x000000, 0.5);
-    this.singleImageFrame.fillRoundedRect(-148, -77, 296, 154, 14);
-    // Gold metallic frame
-    this.singleImageFrame.fillStyle(0xd97706, 1);
-    this.singleImageFrame.fillRoundedRect(-145, -74, 290, 148, 12);
-    this.singleImageFrame.lineStyle(2.5, 0xfde047, 1);
-    this.singleImageFrame.strokeRoundedRect(-145, -74, 290, 148, 12);
-    // Inner bevel
-    this.singleImageFrame.fillStyle(0x020617, 1);
-    this.singleImageFrame.fillRect(-140, -69, 280, 138);
     this.singleImageContainer.add(this.singleImageFrame);
 
     this.singleImageSprite = scene.add.image(0, 0, 'props_board');
-    this.singleImageSprite.setDisplaySize(276, 136);
+    this.singleImageSprite.setDisplaySize(360, 146);
     this.singleImageContainer.add(this.singleImageSprite);
+    for (const [x, label] of [[-151, 'NHÌN\nHÌNH'], [151, 'BẮT\nCHỮ']] as const) {
+      const text = scene.add.text(x, 0, label, {
+        fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#96602b',
+        fontStyle: 'bold', align: 'center', lineSpacing: 3,
+      }).setOrigin(0.5);
+      this.imageSideLabels.push(text);
+      this.singleImageContainer.add(text);
+    }
+
     this.singleImageContainer.setVisible(false);
     this.add(this.singleImageContainer);
 
+    this.drawSingleImageFrame();
+
     // Letter Boxes Container (3D Tactile Game Tiles)
-    this.letterBoxesContainer = scene.add.container(270, 295);
+    this.letterBoxesContainer = scene.add.container(270, 300);
     this.add(this.letterBoxesContainer);
 
     // Hint banner container
     this.hintBannerBg = scene.add.graphics();
     this.add(this.hintBannerBg);
 
-    this.hintBannerText = scene.add.text(270, 332, '🔍 Gợi ý: Quan sát hình ảnh để bắt chữ...', {
+    this.hintBannerText = scene.add.text(270, 329, '🌹 Hoa Hồng: mở chữ đầu +10 giây  •  Follow: gợi ý 1', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
-      color: '#fde047',
+      color: '#fff7d6',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.hintBannerText);
@@ -165,10 +169,10 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.promptBg = scene.add.graphics();
     this.add(this.promptBg);
 
-    this.promptText = scene.add.text(270, 356, '💬 Nhập bình luận đáp án của bạn (VD: CẨU THẢ)', {
+    this.promptText = scene.add.text(270, 355, '💬 Gõ đáp án trong bình luận để ghi điểm!', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '11px',
-      color: '#93c5fd',
+      color: '#ffffff',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.promptText);
@@ -191,19 +195,49 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     if (bgKey) {
       this.stageBgImage = this.scene.add.image(270, 480, bgKey);
       this.stageBgImage.setDisplaySize(540, 960);
-      this.add(this.stageBgImage);
+      this.stageBgImage.setDepth(-100);
     } else {
       const bg = this.scene.add.graphics();
       bg.fillGradientStyle(0x0f172a, 0x0f172a, 0x064e3b, 0x064e3b, 1);
       bg.fillRect(0, 0, 540, 960);
-      this.add(bg);
+      bg.setDepth(-100);
     }
 
-    // Gentle dark vignette to emphasize chalkboard
+    // Studio Lighting Spotlight Cones from ceiling truss onto board
+    const spotlights = this.scene.add.graphics();
+    const lightX = [95, 195, 345, 445];
+    lightX.forEach((lx) => {
+      spotlights.fillStyle(0xfef08a, 0.05);
+      spotlights.fillTriangle(lx, 20, lx - 75, 420, lx + 75, 420);
+    });
+    spotlights.setDepth(-99);
+
+    // Gentle dark vignette to emphasize broadcast easel
     const vignette = this.scene.add.graphics();
-    vignette.fillStyle(0x000000, 0.25);
+    vignette.fillStyle(0x000000, 0.22);
     vignette.fillRect(0, 0, 540, 960);
-    this.add(vignette);
+    vignette.setDepth(-98);
+  }
+
+  private drawSingleImageFrame(): void {
+    this.singleImageFrame.clear();
+    // A wide paper card gives both square and landscape puzzles room to breathe.
+    this.singleImageFrame.fillStyle(0x031d18, 0.55);
+    this.singleImageFrame.fillRoundedRect(-206, -78, 412, 164, 13);
+    this.singleImageFrame.fillStyle(0xb66b27, 1);
+    this.singleImageFrame.fillRoundedRect(-205, -82, 410, 162, 12);
+    this.singleImageFrame.fillStyle(0xffe5a4, 1);
+    this.singleImageFrame.fillRoundedRect(-201, -78, 402, 154, 9);
+    this.singleImageFrame.fillStyle(0xfffcf1, 1);
+    this.singleImageFrame.fillRoundedRect(-195, -73, 390, 144, 6);
+    this.singleImageFrame.lineStyle(1.5, 0xd9a75c, 1);
+    this.singleImageFrame.strokeRoundedRect(-195, -73, 390, 144, 6);
+    for (const x of [-185, 185]) {
+      for (const y of [-63, 61]) {
+        this.singleImageFrame.fillStyle(0xd69640, 1);
+        this.singleImageFrame.fillCircle(x, y, 3);
+      }
+    }
   }
 
   private drawEaselBackground(): void {
@@ -212,77 +246,122 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.hintBannerBg.clear();
     this.promptBg.clear();
 
-    // 1. Deep 3D Drop Shadow
-    this.easelBg.fillStyle(0x000000, 0.45);
-    this.easelBg.fillRoundedRect(28, 80, 484, 298, 22);
+    // 1. Studio Lighting Ambient Aura behind Easel Board
+    this.easelBg.fillStyle(0xf59e0b, 0.08);
+    this.easelBg.fillRoundedRect(18, 68, 504, 316, 28);
 
-    // 2. Outer Golden Beveled Frame
-    this.easelBg.fillStyle(0xd97706, 1);
-    this.easelBg.fillRoundedRect(25, 76, 490, 300, 20);
+    // 2. Deep Multilayer Drop Shadow
+    this.easelBg.fillStyle(0x000000, 0.35);
+    this.easelBg.fillRoundedRect(23, 75, 494, 304, 24);
+    this.easelBg.fillStyle(0x000000, 0.55);
+    this.easelBg.fillRoundedRect(25, 78, 490, 298, 20);
 
-    // 3. Highlight Rim
-    this.easelBg.lineStyle(2.5, 0xfde047, 1);
-    this.easelBg.strokeRoundedRect(25, 76, 490, 300, 20);
+    // 3. Triple-Layer Gilded Broadcast Frame
+    // Base Gold Bevel
+    this.easelBg.fillStyle(0xb45309, 1);
+    this.easelBg.fillRoundedRect(22, 73, 496, 304, 20);
 
-    // 4. Blackboard Velvet Plate
-    this.easelBg.fillStyle(0x0f172a, 0.96);
-    this.easelBg.fillRoundedRect(29, 80, 482, 292, 16);
+    // Lustrous Gold Body
+    this.easelBg.fillStyle(0xf59e0b, 1);
+    this.easelBg.fillRoundedRect(24, 75, 492, 300, 18);
 
-    // 5. Header Separator Line
-    this.easelBg.lineStyle(1.5, 0x1e293b, 0.9);
-    this.easelBg.lineBetween(35, 110, 505, 110);
+    // Outer Specular Rim
+    this.easelBg.lineStyle(2, 0xfde047, 1);
+    this.easelBg.strokeRoundedRect(24, 75, 492, 300, 18);
 
-    // 6. Corner Golden Screws / Rivets
-    const rivets = [
-      { x: 37, y: 88 },
-      { x: 503, y: 88 },
-      { x: 37, y: 362 },
-      { x: 503, y: 362 },
+    // Dark Inner Bevel Shadow
+    this.easelBg.lineStyle(1.5, 0x78350f, 1);
+    this.easelBg.strokeRoundedRect(26, 77, 488, 296, 16);
+
+    // 4. Velvet Obsidian Blackboard Plate
+    this.easelBg.fillStyle(0x064e3b, 0.98);
+    this.easelBg.fillRoundedRect(28, 79, 484, 292, 15);
+
+    // Inset teaching surface around the puzzle and answer, like a classroom board.
+    this.easelBg.fillStyle(0x0b6149, 0.85);
+    this.easelBg.fillRoundedRect(38, 124, 464, 192, 12);
+    this.easelBg.lineStyle(1.5, 0x9bd6aa, 0.5);
+    this.easelBg.strokeRoundedRect(38, 124, 464, 192, 12);
+    this.easelBg.fillStyle(0xffe6a3, 0.75);
+    for (const x of [49, 491]) {
+      this.easelBg.fillCircle(x, 137, 2);
+      this.easelBg.fillCircle(x, 302, 2);
+    }
+
+    // 5. Ornate Golden Art-Deco Corner Caps
+    const corners = [
+      { x: 26, y: 77, dx: 1, dy: 1 },
+      { x: 514, y: 77, dx: -1, dy: 1 },
+      { x: 26, y: 369, dx: 1, dy: -1 },
+      { x: 514, y: 369, dx: -1, dy: -1 },
     ];
-    rivets.forEach((r) => {
-      this.easelBg.fillStyle(0xb45309, 1);
-      this.easelBg.fillCircle(r.x, r.y, 4);
+    corners.forEach((c) => {
       this.easelBg.fillStyle(0xfde047, 1);
-      this.easelBg.fillCircle(r.x - 1, r.y - 1, 2);
+      this.easelBg.fillTriangle(c.x, c.y, c.x + c.dx * 18, c.y, c.x, c.y + c.dy * 18);
+      this.easelBg.fillStyle(0xb45309, 1);
+      this.easelBg.fillTriangle(c.x + c.dx * 3, c.y + c.dy * 3, c.x + c.dx * 15, c.y + c.dy * 3, c.x + c.dx * 3, c.y + c.dy * 15);
+      this.easelBg.fillStyle(0xfef08a, 1);
+      this.easelBg.fillCircle(c.x + c.dx * 6, c.y + c.dy * 6, 2.5);
     });
 
-    // 7. Header Badges
-    // Round Badge (Red/Gold Game Pill)
-    this.headerBadgesBg.fillStyle(0xb91c1c, 1);
-    this.headerBadgesBg.fillRoundedRect(36, 84, 96, 24, 12);
-    this.headerBadgesBg.lineStyle(1.5, 0xfacc15, 1);
-    this.headerBadgesBg.strokeRoundedRect(36, 84, 96, 24, 12);
+    // One information rail: question, difficulty, and a prominent countdown.
+    const header = this.headerBadgesBg;
+    header.fillStyle(0x033d2e, 1);
+    header.fillRoundedRect(36, 81, 468, 28, 8);
+    header.fillStyle(0xffedbc, 1);
+    header.fillRoundedRect(40, 83, 102, 24, 6);
+    header.fillStyle(0xb34e32, 1);
+    header.fillRoundedRect(398, 83, 102, 24, 6);
+    header.lineStyle(1, 0x8bbf9a, 0.5);
+    header.lineBetween(158, 87, 158, 103);
+    header.lineBetween(382, 87, 382, 103);
 
-    // Category Badge (Ocean Cyan Pill)
-    this.headerBadgesBg.fillStyle(0x0369a1, 1);
-    this.headerBadgesBg.fillRoundedRect(178, 84, 184, 24, 12);
-    this.headerBadgesBg.lineStyle(1.5, 0x38bdf8, 1);
-    this.headerBadgesBg.strokeRoundedRect(178, 84, 184, 24, 12);
+    // 7. Interactive TikTok Callout Pill (Row 1)
+    this.hintBannerBg.fillStyle(0x78350f, 0.96);
+    this.hintBannerBg.fillRoundedRect(44, 317, 452, 25, 12);
+    this.hintBannerBg.lineStyle(1.5, 0xfacc15, 0.95);
+    this.hintBannerBg.strokeRoundedRect(44, 317, 452, 25, 12);
+    this.hintBannerBg.fillStyle(0x4338ca, 0.35);
+    this.hintBannerBg.fillRoundedRect(46, 318, 448, 12, 6);
 
-    // Timer Badge (Amber Fire Pill)
-    this.headerBadgesBg.fillStyle(0x78350f, 1);
-    this.headerBadgesBg.fillRoundedRect(408, 84, 96, 24, 12);
-    this.headerBadgesBg.lineStyle(1.5, 0xf59e0b, 1);
-    this.headerBadgesBg.strokeRoundedRect(408, 84, 96, 24, 12);
+    // 8. Prompt CTA Pill (Row 2)
+    this.promptBg.fillStyle(0x052e24, 0.96);
+    this.promptBg.fillRoundedRect(44, 344, 452, 23, 11);
+    this.promptBg.lineStyle(1.2, 0x0284c7, 0.85);
+    this.promptBg.strokeRoundedRect(44, 344, 452, 23, 11);
+  }
 
-    // 8. Hint Banner Pill
-    this.hintBannerBg.fillStyle(0x1e1b4b, 0.95);
-    this.hintBannerBg.fillRoundedRect(50, 319, 440, 24, 12);
-    this.hintBannerBg.lineStyle(1.5, 0xfacc15, 0.9);
-    this.hintBannerBg.strokeRoundedRect(50, 319, 440, 24, 12);
+  public updateDifficultyBadge(difficulty: number = 1): void {
+    let text = 'MỨC ĐỘ: DỄ';
+    let textColor = '#d7f5c0';
 
-    // 9. Prompt CTA Pill
-    this.promptBg.fillStyle(0x030712, 0.9);
-    this.promptBg.fillRoundedRect(50, 345, 440, 22, 11);
-    this.promptBg.lineStyle(1, 0x0284c7, 0.8);
-    this.promptBg.strokeRoundedRect(50, 345, 440, 22, 11);
+    if (difficulty >= 4) {
+      text = 'MỨC ĐỘ: SIÊU KHÓ';
+      textColor = '#fde047';
+    } else if (difficulty === 3) {
+      text = 'MỨC ĐỘ: KHÓ';
+      textColor = '#ffbca6';
+    } else if (difficulty === 2) {
+      text = 'MỨC ĐỘ: VỪA';
+      textColor = '#fef08a';
+    }
+
+    this.categoryText.setText(text);
+    this.categoryText.setColor(textColor);
   }
 
   public setPuzzle(puzzle: RebusPuzzle, round: number, totalRounds?: number): void {
     this.currentPuzzleAnswer = puzzle.answer;
-    this.roundText.setText(`🎮 CÂU ${round}`);
-    this.categoryText.setText(`💡 ${puzzle.category}`);
-    this.timerText.setText(`⏱ ${puzzle.durationSec || 20}s`);
+    this.roundText.setText(`CÂU ${round}`);
+    this.timerText.setText(`${puzzle.durationSec || 20} GIÂY`);
+
+    const diff = puzzle.difficulty || 1;
+    this.updateDifficultyBadge(diff);
+
+    const isHard = diff >= 3;
+    const ctaText = isHard
+      ? '🔥 CÂU SIÊU KHÓ!  🌹 Hoa Hồng: mở chữ đầu +10 giây'
+      : '🌹 Hoa Hồng: mở chữ đầu +10 giây  •  Follow: gợi ý 1';
 
     if (puzzle.image) {
       const pKey = `puzzle_${puzzle.id}`;
@@ -292,27 +371,31 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
           const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
           const w = tex.width || 400;
           const h = tex.height || 300;
-          const maxW = 276;
-          const maxH = 144;
+          const maxW = 380;
+          const maxH = 138;
           const scale = Math.min(maxW / w, maxH / h);
-          this.singleImageSprite.setDisplaySize(w * scale, h * scale);
+          const dispW = w * scale;
+          const dispH = h * scale;
+          this.singleImageSprite.setDisplaySize(dispW, dispH);
+          this.imageSideLabels.forEach(label => label.setVisible(dispW <= 225));
         } catch {
-          this.singleImageSprite.setDisplaySize(276, 144);
+          this.singleImageSprite.setDisplaySize(380, 138);
+          this.imageSideLabels.forEach(label => label.setVisible(false));
         }
       }
       this.singleImageContainer.setVisible(true);
       this.clueCard1.setVisible(false);
       this.plusSign.setVisible(false);
       this.clueCard2.setVisible(false);
-      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Bấm Follow Kênh: Mở Chữ Đầu!');
-      this.hintBannerText.setColor('#fde047');
+      this.hintBannerText.setText(ctaText);
+      this.hintBannerText.setColor(isHard ? '#fde047' : '#fff7d6');
     } else {
       this.singleImageContainer.setVisible(false);
       this.clueCard1.setVisible(true);
       this.plusSign.setVisible(true);
       this.clueCard2.setVisible(true);
-      this.hintBannerText.setText('🌹 Tặng Hoa Hồng: +10s Thời Gian  |  ➕ Bấm Follow Kênh: Mở Chữ Đầu!');
-      this.hintBannerText.setColor('#fde047');
+      this.hintBannerText.setText(ctaText);
+      this.hintBannerText.setColor(isHard ? '#fde047' : '#fff7d6');
 
       // Clue 1 icon
       const icon1Key = `clue_${puzzle.clues?.[0] || 'fish'}`;
@@ -337,15 +420,12 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
     const cleanAnswer = answer.trim();
     const words = cleanAnswer.split(/\s+/);
-    const boxW = 32;
-    const boxH = 34;
-    const gap = 5;
-
-    let totalWidth = 0;
-    words.forEach((w) => {
-      totalWidth += w.length * (boxW + gap) + 12;
-    });
-
+    const gap = 4;
+    const wordGap = 10;
+    const charCount = words.join('').length;
+    const boxW = Math.min(34, Math.floor((440 - wordGap * (words.length - 1) + gap) / charCount) - gap);
+    const boxH = 30;
+    const totalWidth = charCount * (boxW + gap) - gap + (words.length - 1) * wordGap;
     let startX = -totalWidth / 2;
 
     let charIndex = 0;
@@ -366,41 +446,35 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
         // Tactile 3D Box Graphics
         const box = this.scene.add.graphics();
         if (isRevealed) {
-          // Golden 3D Arcade Tile
-          // Bottom 3D shadow
-          box.fillStyle(0xb45309, 1);
-          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2 + 3, boxW, boxH, 7);
-          // Golden face
+          // 3D Revealed Golden Tile
+          box.fillStyle(0x78350f, 1);
+          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2 + 3, boxW, boxH, 8);
           box.fillStyle(0xf59e0b, 1);
-          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 7);
-          // Highlight rim
-          box.lineStyle(1.5, 0xfef08a, 1);
-          box.strokeRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 7);
+          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 8);
+          box.fillStyle(0xfde047, 1);
+          box.fillRoundedRect(boxX - boxW / 2 + 2, -boxH / 2 + 2, boxW - 4, (boxH - 2) / 2, 6);
+          box.lineStyle(1.8, 0xfef08a, 1);
+          box.strokeRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 8);
         } else {
-          // Inset Empty 3D Tile
-          // Bottom shadow
-          box.fillStyle(0x0284c7, 0.9);
-          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2 + 3, boxW, boxH, 7);
-          // Dark Navy Face
-          box.fillStyle(0x0f172a, 0.98);
-          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 7);
-          // Cyan rim
-          box.lineStyle(1.5, 0x38bdf8, 0.9);
-          box.strokeRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 7);
-          // Subtle dash inside
-          box.lineStyle(2, 0x0284c7, 0.6);
-          box.lineBetween(boxX - 6, 2, boxX + 6, 2);
+          box.fillStyle(0x52331d, 0.8);
+          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2 + 3, boxW, boxH, 6);
+          box.fillStyle(0xfff8df, 1);
+          box.fillRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 6);
+          box.lineStyle(1.5, 0xe6b357, 1);
+          box.strokeRoundedRect(boxX - boxW / 2, -boxH / 2, boxW, boxH - 2, 6);
+          box.fillStyle(0x97734d, 0.9);
+          box.fillRoundedRect(boxX - Math.min(6, boxW / 4), 4, Math.min(12, boxW / 2), 2, 1);
         }
         this.letterBoxesContainer.add(box);
 
         if (displayChar) {
           const charText = this.scene.add.text(boxX, -1, displayChar, {
             fontFamily: 'system-ui, sans-serif',
-            fontSize: '18px',
+            fontSize: `${Math.min(19, boxW - 3)}px`,
             color: '#ffffff',
             fontStyle: 'bold',
-            stroke: '#78350f',
-            strokeThickness: 3,
+            stroke: '#451a03',
+            strokeThickness: 3.5,
           }).setOrigin(0.5);
           this.letterBoxesContainer.add(charText);
 
@@ -418,44 +492,55 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
         startX += boxW + gap;
         charIndex++;
       }
-      startX += 12; // Gap between words
+      startX += wordGap - gap;
     });
   }
 
   public updateTimer(remainingSec: number, totalSec: number): void {
-    this.timerText.setText(`⏱ ${remainingSec}s`);
+    this.timerText.setText(`${remainingSec} GIÂY`);
     const ratio = Math.max(0, Math.min(1, remainingSec / totalSec));
 
     this.timerBar.clear();
     // Inset track groove
-    this.timerBar.fillStyle(0x020617, 0.85);
-    this.timerBar.fillRoundedRect(48, 114, 444, 8, 4);
-    this.timerBar.lineStyle(1, 0x1e293b, 0.8);
-    this.timerBar.strokeRoundedRect(48, 114, 444, 8, 4);
+    this.timerBar.fillStyle(0x020617, 0.95);
+    this.timerBar.fillRoundedRect(44, 113, 452, 9, 4.5);
+    this.timerBar.lineStyle(1, 0x1e293b, 0.9);
+    this.timerBar.strokeRoundedRect(44, 113, 452, 9, 4.5);
 
     // Dynamic energy gradient
     const isUrgent = remainingSec <= 5;
     const barColor = isUrgent ? 0xef4444 : ratio > 0.4 ? 0x10b981 : 0xf59e0b;
-    const fillWidth = Math.max(8, 440 * ratio);
+    const fillWidth = Math.max(8, 448 * ratio);
 
     this.timerBar.fillStyle(barColor, 1);
-    this.timerBar.fillRoundedRect(50, 115, fillWidth, 6, 3);
+    this.timerBar.fillRoundedRect(46, 114, fillWidth, 7, 3.5);
 
     // Glowing highlight line on top
-    this.timerBar.fillStyle(0xffffff, 0.5);
-    this.timerBar.fillRect(52, 115, Math.max(4, fillWidth - 4), 2);
+    this.timerBar.fillStyle(0xffffff, 0.55);
+    this.timerBar.fillRect(48, 114, Math.max(4, fillWidth - 4), 2);
+
+    // Spark on leading edge
+    if (fillWidth > 12) {
+      this.timerBar.fillStyle(0xffffff, 0.9);
+      this.timerBar.fillCircle(46 + fillWidth - 2, 117.5, 3);
+    }
 
     if (isUrgent) {
-      this.timerText.setColor('#f87171');
+      this.timerText.setColor('#fff1a8');
     } else {
-      this.timerText.setColor('#fef08a');
+      this.timerText.setColor('#ffffff');
     }
   }
 
   public showTimeAdded(seconds: number, sponsorName?: string): void {
-    const text = sponsorName
-      ? `🌹 ${sponsorName} tặng Hoa Hồng: +${seconds}s thời gian suy nghĩ!`
-      : `⏱ Cả lớp được cộng thêm +${seconds}s thời gian suy nghĩ!`;
+    let text = `⏱ Cả lớp được cộng thêm +${seconds}s thời gian suy nghĩ!`;
+    if (sponsorName) {
+      if (sponsorName.toLowerCase().includes('tim')) {
+        text = `❤️ ${sponsorName}: +${seconds}s thời gian suy nghĩ!`;
+      } else {
+        text = `🌹 ${sponsorName} tặng Hoa Hồng: +${seconds}s thời gian suy nghĩ!`;
+      }
+    }
     this.hintBannerText.setText(text);
     this.hintBannerText.setColor('#34d399');
     this.scene.tweens.add({
@@ -469,10 +554,10 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   public showHint1(hint1: string, sponsorName?: string): void {
     const text = sponsorName
-      ? `💡 Gợi ý (từ ${sponsorName}): ${hint1}`
-      : `💡 Gợi ý 1: ${hint1}`;
+      ? `➕ ${sponsorName} đã Follow: Gợi ý là "${hint1}"`
+      : `💡 Gợi ý: ${hint1}`;
     this.hintBannerText.setText(text);
-    this.hintBannerText.setColor('#fde047');
+    this.hintBannerText.setColor('#38bdf8');
     this.scene.tweens.add({
       targets: this.hintBannerText,
       scale: 1.08,
@@ -484,10 +569,10 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   public showHint2(hint2: string, firstChar: string, sponsorName?: string): void {
     const text = sponsorName
-      ? `➕ ${sponsorName} đã Bấm Follow: Mở chữ cái đầu là "${firstChar}"!`
+      ? `🌹 ${sponsorName} tặng Hoa Hồng: Chữ cái đầu là "${firstChar}" (+10s)!`
       : `💡 Chữ cái đầu tiên là "${firstChar}"!`;
     this.hintBannerText.setText(text);
-    this.hintBannerText.setColor('#38bdf8');
+    this.hintBannerText.setColor('#fde047');
     if (this.currentPuzzleAnswer) {
       this.renderLetterBoxes(this.currentPuzzleAnswer, false, firstChar);
     }

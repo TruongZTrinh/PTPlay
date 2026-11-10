@@ -51,6 +51,7 @@ export interface NormalizedLikeEvent extends BaseEvent {
   type: 'like';
   userId: string;
   uniqueId: string;
+  nickname?: string;
   likeCount: number;
   totalLikeCount?: number;
 }
@@ -60,6 +61,7 @@ export interface NormalizedFollowEvent extends BaseEvent {
   userId: string;
   uniqueId: string;
   nickname: string;
+  profilePictureUrl?: string;
 }
 
 export interface NormalizedRoomStatusEvent extends BaseEvent {

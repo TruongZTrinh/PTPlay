@@ -1,0 +1,70 @@
+{
+  "formatVersion": 1,
+  "updatedAt": "2026-11-10T13:32:32.544Z",
+  "triggers": {
+    "quiz-show": {
+      "gameType": "quiz-show",
+      "gameName": "PTPlay Quiz Show",
+      "likeGoal": {
+        "enabled": true,
+        "targetCount": 10,
+        "action": "quiz_show.hint_5050",
+        "actionLabel": "Gợi ý 50:50 (Loại 2 đáp án sai)",
+        "resetMode": "per_round",
+        "ttsAnnouncement": "Khán giả đã thả đủ {count} tim! Gợi ý 50:50 loại bỏ 2 đáp án sai đã xuất hiện!"
+      }
+    },
+    "duoi-hinh-bat-chu": {
+      "gameType": "duoi-hinh-bat-chu",
+      "gameName": "Đuổi Hình Bắt Chữ",
+      "likeGoal": {
+        "enabled": true,
+        "targetCount": 20,
+        "action": "rebus.add_time",
+        "actionLabel": "Cộng 5s thời gian suy nghĩ (1 lần/câu)",
+        "resetMode": "per_round",
+        "ttsAnnouncement": "Cả phòng đã thả đủ {count} tim! Tặng thêm 5 giây suy nghĩ cho cả lớp!",
+        "description": "Khi khán giả tap màn hình đạt 20 tim, tự động cộng thêm 5s thời gian suy nghĩ (tối đa 1 lần mỗi câu đố)."
+      }
+    },
+    "english-class": {
+      "gameType": "english-class",
+      "gameName": "Lớp Học Vui LIVE",
+      "likeGoal": {
+        "enabled": true,
+        "targetCount": 20,
+        "action": "english_class.hint_5050",
+        "actionLabel": "Gợi ý 50:50 cho cả lớp",
+        "resetMode": "per_round",
+        "ttsAnnouncement": "Cả lớp đã nhận được trợ giúp 50:50 nhờ {count} lượt thả tim từ khán giả!",
+        "description": "Khi khán giả thả đủ 20 tim, cô giáo trợ giúp loại bỏ 2 đáp án sai."
+      }
+    },
+    "cat-cafe": {
+      "gameType": "cat-cafe",
+      "gameName": "Café Mòe LIVE",
+      "likeGoal": {
+        "enabled": true,
+        "targetCount": 25,
+        "action": "cat_cafe.dance",
+        "actionLabel": "Mèo quẩy Disco tập thể",
+        "resetMode": "per_round",
+        "ttsAnnouncement": "Khán giả thả đủ {count} tim! Toàn bộ mèo trong quán đang nhảy Disco cực cháy!",
+        "description": "Khi đạt 25 tim, mèo mở tiệc quẩy disco và tăng điểm Purr."
+      }
+    },
+    "mini-war": {
+      "gameType": "mini-war",
+      "gameName": "Mini War Arena",
+      "likeGoal": {
+        "enabled": true,
+        "targetCount": 30,
+        "action": "boost_team",
+        "actionLabel": "Tăng tốc Morale sĩ khí",
+        "resetMode": "per_round",
+        "ttsAnnouncement": "Sĩ khí toàn quân tăng vọt nhờ {count} lượt thả tim cổ vũ từ khán giả!",
+        "description": "Khi khán giả thả đủ 30 tim, tăng tốc độ di chuyển và tấn công."
+      }
+    }
+  }
+}

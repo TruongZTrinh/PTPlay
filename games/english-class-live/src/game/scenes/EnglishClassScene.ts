@@ -162,18 +162,27 @@ export class EnglishClassScene extends Phaser.Scene {
   }
 
   private setupAudioUnlockTrigger(): void {
-    const btn = document.getElementById('audio-unlock-overlay');
-    if (btn) {
-      btn.onclick = () => {
-        const audioOk = this.audio.unlock();
-        const ttsOk = this.tts.unlock();
-        if (audioOk && ttsOk) {
-          btn.classList.add('hidden');
-          this.audio.playBell();
-          this.tts.announceWelcome();
-        }
-      };
-    }
+    let unlocked = false;
+    const unlockAll = () => {
+      if (unlocked) return;
+      unlocked = true;
+      try {
+        this.audio.unlock();
+        this.tts.unlock();
+      } catch {}
+      window.removeEventListener('click', unlockAll);
+      window.removeEventListener('pointerdown', unlockAll);
+      window.removeEventListener('keydown', unlockAll);
+    };
+
+    try {
+      this.audio.unlock();
+      this.tts.unlock();
+    } catch {}
+
+    window.addEventListener('click', unlockAll, { once: true });
+    window.addEventListener('pointerdown', unlockAll, { once: true });
+    window.addEventListener('keydown', unlockAll, { once: true });
   }
 
   private applyConfigChanges(newCfg: StreamerConfig): void {

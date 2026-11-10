@@ -280,3 +280,45 @@ test('13. Shared Music Manager: Controller methods, volume adjustment, music swi
 
 
 
+
+test('14. Interactive Confirm Modal Popup: Custom UI modal, showConfirmModal controller, keyboard shortcuts (Enter to OK, Esc to Close)', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('id="confirm-modal-backdrop"'));
+  assert.ok(html.includes('id="confirm-modal-title"'));
+  assert.ok(html.includes('id="confirm-modal-message"'));
+  assert.ok(html.includes('id="confirm-modal-btn-ok"'));
+  assert.ok(html.includes('id="confirm-modal-btn-cancel"'));
+  assert.ok(html.includes('confirm-kbd'));
+
+  const css = fs.readFileSync(path.join(ROOT_DIR, 'public', 'styles.css'), 'utf-8');
+  assert.ok(css.includes('#confirm-modal-backdrop'));
+  assert.ok(css.includes('.confirm-dialog-card'));
+  assert.ok(css.includes('.confirm-btn-ok'));
+  assert.ok(css.includes('.confirm-btn-cancel'));
+
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  assert.ok(appJs.includes('showConfirmModal'));
+  assert.ok(appJs.includes('handleConfirmDialogAction'));
+  assert.ok(appJs.includes('await showConfirmModal('));
+  assert.ok(!appJs.includes('if (!confirm('));
+});
+
+test('15. General Interactive Audience Triggers & Heart Goal Milestone across all games', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'public', 'index.html'), 'utf-8');
+  assert.ok(html.includes('id="btn-gsub-triggers"'));
+  assert.ok(html.includes('id="gsubpanel-triggers"'));
+  assert.ok(html.includes('id="select-trig-game"'));
+  assert.ok(html.includes('id="input-trig-target"'));
+  assert.ok(html.includes('id="select-trig-action"'));
+  assert.ok(html.includes('id="trigger-overview-tbody"'));
+  assert.ok(html.includes('simulateTapHeart'));
+  assert.ok(html.includes('simulateReachHeartMilestone'));
+
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  assert.ok(appJs.includes('fetchInteractiveTriggers'));
+  assert.ok(appJs.includes('switchTriggerGame'));
+  assert.ok(appJs.includes('saveCurrentTriggerConfig'));
+  assert.ok(appJs.includes('simulateTapHeart'));
+  assert.ok(appJs.includes('simulateReachHeartMilestone'));
+  assert.ok(appJs.includes('renderTriggerOverviewTable'));
+});

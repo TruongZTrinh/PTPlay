@@ -22,7 +22,9 @@ export interface GameCommandMessage {
     | 'boss_ability'
     | 'set_volume'
     | 'switch_music'
-    | 'tts_speak';
+    | 'tts_speak'
+    | 'set_voice'
+    | 'tts_config';
   team?: Team;
   unitType?: UnitType;
   count?: number;

@@ -18,11 +18,12 @@ export class SeatAllocator {
   }
 
   private initSeats(): void {
-    // 20 seats arranged in 3 tiered rows
+    // A compact classroom grid keeps every participant visible in portrait video.
     const rowsConfig = [
-      { count: 7, y: 640, scale: 0.42, depth: 30 },
-      { count: 7, y: 710, scale: 0.48, depth: 40 },
-      { count: 6, y: 790, scale: 0.55, depth: 50 },
+      { count: 5, y: 667, scale: 0.42, depth: 30 },
+      { count: 5, y: 737, scale: 0.42, depth: 35 },
+      { count: 5, y: 807, scale: 0.42, depth: 40 },
+      { count: 5, y: 877, scale: 0.42, depth: 45 },
     ];
 
     let index = 0;

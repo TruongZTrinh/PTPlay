@@ -28,6 +28,7 @@ export class TTSController {
   public vietnameseEnabled = true;
   public englishEnabled = true;
   public rate = 1.0;
+  public pitch = 1.0;
   public volume = 0.85;
   public maxQueue = 8;
   public maxAgeMs = 15000;
@@ -53,6 +54,67 @@ export class TTSController {
           }
         }
       }, 5000);
+
+      this.loadSavedVoiceConfig();
+
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'ptplay_tts_voice' && e.newValue) {
+          this.setVoiceByName(e.newValue);
+        }
+      });
+    }
+  }
+
+  public setVoiceByName(voiceName: string): boolean {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const voices = window.speechSynthesis.getVoices();
+      const match = VietnameseVoiceHelper.findVoiceByName(voices, voiceName);
+      if (match) {
+        this.viVoiceName = match.name;
+        return true;
+      }
+    }
+    this.viVoiceName = voiceName;
+    return false;
+  }
+
+  public applyVoiceConfig(config: { voiceName?: string; rate?: number; pitch?: number; volume?: number }): void {
+    if (!config) return;
+    if (config.voiceName) {
+      this.setVoiceByName(config.voiceName);
+      try {
+        localStorage.setItem('ptplay_tts_voice', config.voiceName);
+      } catch {}
+    }
+    if (config.rate !== undefined && !isNaN(Number(config.rate))) {
+      this.rate = Math.max(0.5, Math.min(2.0, Number(config.rate)));
+    }
+    if (config.pitch !== undefined && !isNaN(Number(config.pitch))) {
+      this.pitch = Math.max(0.5, Math.min(2.0, Number(config.pitch)));
+    }
+    if (config.volume !== undefined && !isNaN(Number(config.volume))) {
+      this.volume = Math.max(0, Math.min(1.0, Number(config.volume)));
+    }
+  }
+
+  public loadSavedVoiceConfig(): void {
+    if (typeof window === 'undefined') return;
+    try {
+      const local = localStorage.getItem('ptplay_tts_voice');
+      if (local) {
+        this.setVoiceByName(local);
+      }
+    } catch {}
+
+    if (typeof fetch !== 'undefined') {
+      fetch('http://127.0.0.1:8088/api/tts/config')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.success && data.config) {
+            this.applyVoiceConfig(data.config);
+          }
+        })
+        .catch(() => {});
     }
   }
 
@@ -163,6 +225,7 @@ export class TTSController {
     const utterance = new SpeechSynthesisUtterance(item.text);
     utterance.lang = item.lang;
     utterance.rate = this.rate;
+    utterance.pitch = this.pitch;
     utterance.volume = this.volume;
 
     // Guard against Chromium GC bug: retain references in class fields

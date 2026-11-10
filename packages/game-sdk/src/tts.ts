@@ -82,14 +82,48 @@ export class EnglishVoiceHelper {
 export class VietnameseVoiceHelper {
   // Voice name prioritization list (from most natural/expressive to basic fallback)
   public static readonly VIETNAMESE_PRIORITY_VOICES = [
+    'Microsoft Hoài My Online (Natural)',
     'Microsoft HoaiMy Online (Natural)',
-    'Microsoft NamMinh Online (Natural)',
+    'Microsoft Hoài My',
     'Microsoft HoaiMy',
+    'Microsoft NamMinh Online (Natural)',
+    'Microsoft Nam Minh Online (Natural)',
     'Microsoft NamMinh',
+    'Microsoft Nam Minh',
     'Google Tiếng Việt',
-    'Microsoft An',
     'Linh',
+    'Microsoft An',
   ];
+
+  /**
+   * Normalizes voice names by removing accents, spaces, and punctuation for robust matching.
+   */
+  public static normalizeVoiceKey(name: string): string {
+    if (!name) return '';
+    return name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  /**
+   * Finds a voice by exact name or normalized fuzzy search.
+   */
+  public static findVoiceByName(voices: SpeechSynthesisVoice[], targetName: string): SpeechSynthesisVoice | null {
+    if (!voices || !Array.isArray(voices) || voices.length === 0 || !targetName) return null;
+    const exact = voices.find((v) => v.name === targetName);
+    if (exact) return exact;
+
+    const normTarget = this.normalizeVoiceKey(targetName);
+    if (!normTarget) return null;
+
+    const fuzzy = voices.find((v) => {
+      const normName = this.normalizeVoiceKey(v.name);
+      return normName.includes(normTarget) || normTarget.includes(normName);
+    });
+    return fuzzy || null;
+  }
 
   /**
    * Checks whether a voice supports Vietnamese.
@@ -117,8 +151,15 @@ export class VietnameseVoiceHelper {
   }
 
   /**
+   * Checks whether at least one Vietnamese voice is available in the provided list.
+   */
+  public static hasVietnameseVoice(voices: SpeechSynthesisVoice[]): boolean {
+    return this.getVietnameseVoices(voices).length > 0;
+  }
+
+  /**
    * Selects the highest quality Vietnamese voice available on the host system.
-   * Prioritizes Edge Online Natural voices, Windows Neural voices, Google Tiếng Việt, and Apple Linh.
+   * Prioritizes Edge Online Natural voices (Hoài My), Windows Neural voices, Google Tiếng Việt, and Apple Linh.
    */
   public static selectBestVietnameseVoice(
     voices: SpeechSynthesisVoice[],
@@ -127,24 +168,25 @@ export class VietnameseVoiceHelper {
     const viVoices = this.getVietnameseVoices(voices);
     if (viVoices.length === 0) return null;
 
-    // 1. Gender preference matching
+    // 1. Gender preference matching (accent and whitespace insensitive)
     if (preferredGender === 'female') {
       const femaleVoice = viVoices.find((v) => {
-        const n = v.name.toLowerCase();
-        return n.includes('hoaimy') || n.includes('linh') || n.includes('female');
+        const norm = this.normalizeVoiceKey(v.name);
+        return norm.includes('hoaimy') || norm.includes('linh') || norm.includes('mai') || norm.includes('female');
       });
       if (femaleVoice) return femaleVoice;
     } else if (preferredGender === 'male') {
       const maleVoice = viVoices.find((v) => {
-        const n = v.name.toLowerCase();
-        return n.includes('namminh') || n.includes('an') || n.includes('male');
+        const norm = this.normalizeVoiceKey(v.name);
+        return norm.includes('namminh') || norm.includes('an') || norm.includes('quang') || norm.includes('male');
       });
       if (maleVoice) return maleVoice;
     }
 
-    // 2. Priority list lookup
+    // 2. Priority list lookup (accent and whitespace insensitive)
     for (const priorityName of this.VIETNAMESE_PRIORITY_VOICES) {
-      const match = viVoices.find((v) => v.name.includes(priorityName));
+      const normPri = this.normalizeVoiceKey(priorityName);
+      const match = viVoices.find((v) => this.normalizeVoiceKey(v.name).includes(normPri));
       if (match) return match;
     }
 

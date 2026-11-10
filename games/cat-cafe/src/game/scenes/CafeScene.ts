@@ -9,6 +9,7 @@ import { ParsedCafeCommand } from '../events/CafeCommandAdapter';
 import { CAFE_CONFIG, RoomId, TimeOfDay, WeatherType } from '../config/CafeConfig';
 import { ProgressionManager } from '../progression/ProgressionManager';
 import { CafeAudioEngine } from '../audio/CafeAudioEngine';
+import { TTSController } from '../systems/TTSController';
 import { GiftReactionFx } from '../visual-v2';
 import { GiftReactionVisuals } from '../cafe-moe-v3';
 
@@ -397,6 +398,38 @@ export class CafeScene extends Phaser.Scene {
         this.effectManager.clearAll();
         this.notifyCatCount();
         this.game.events.emit('toast_message', '🧹 Đã xóa mèo khách, giữ lại 3 NPC');
+        break;
+      }
+
+      case 'cat_cafe.tts_speak':
+      case 'tts_speak': {
+        const text = String(cmd.metadata?.text || cmd.metadata?.message || '');
+        if (text) {
+          const tts = TTSController.getInstance();
+          if (cmd.metadata?.voiceName) {
+            tts.setVoiceByName(String(cmd.metadata.voiceName));
+          }
+          if (cmd.metadata?.rate !== undefined) {
+            tts.rate = Number(cmd.metadata.rate);
+          }
+          if (cmd.metadata?.pitch !== undefined) {
+            tts.pitch = Number(cmd.metadata.pitch);
+          }
+          if (cmd.metadata?.volume !== undefined) {
+            tts.volume = Math.max(0, Math.min(1.0, Number(cmd.metadata.volume)));
+          }
+          tts.speak(text, true);
+        }
+        break;
+      }
+
+      case 'cat_cafe.set_voice':
+      case 'cat_cafe.tts_config':
+      case 'set_voice':
+      case 'tts_config': {
+        if (cmd.metadata) {
+          TTSController.getInstance().applyVoiceConfig(cmd.metadata as any);
+        }
         break;
       }
 

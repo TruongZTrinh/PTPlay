@@ -5,6 +5,8 @@ import { StudentRoster } from '../src/game/systems/StudentRoster';
 import { RebusEngine } from '../src/game/systems/RebusEngine';
 import { AudioEngine } from '../src/game/audio/AudioEngine';
 import { TTSController } from '../src/game/systems/TTSController';
+import { RebusLiveEventRouter } from '../src/game/events/RebusLiveEventRouter';
+import { SharedMusicManager } from '@ptplay/game-sdk';
 
 console.log('========================================================');
 console.log('🧪 RUNNING PTPLAY ĐUỔI HÌNH BẮT CHỮ TEST SUITE');
@@ -300,6 +302,115 @@ async function runTests() {
     assert.strictEqual(topPlayers[0].score, 31);
 
     engine.destroy();
+  });
+
+  // 10. 20 LIKES MECHANIC (+5S ONCE PER PUZZLE & RESETS NEXT ROUND)
+  test('10. Like Mechanic: 20 likes adds +5s once per puzzle, stops in current round, and resets on next puzzle', () => {
+    const alloc = new SeatAllocator();
+    const roster = new StudentRoster(alloc);
+    const audio = new AudioEngine();
+    const tts = new TTSController(audio);
+
+    let ttsSpokeLikeBonus = false;
+    tts.speak = (text: string) => {
+      if (text.includes('20 tim') || text.includes('5 giây')) {
+        ttsSpokeLikeBonus = true;
+      }
+    };
+
+    let timeAddedSeconds = 0;
+    const engine = new RebusEngine(roster, audio, tts);
+    engine.setEvents({
+      onTimeAdded: (sec) => {
+        timeAddedSeconds += sec;
+      },
+    });
+
+    const mockScoreboard = {
+      setChatTicker: () => {},
+      updateLeaderboard: () => {},
+    } as any;
+    const mockGiftController = {
+      triggerGiftReaction: () => {},
+    } as any;
+
+    const router = new RebusLiveEventRouter(
+      engine,
+      roster,
+      mockGiftController,
+      mockScoreboard,
+      tts
+    );
+
+    // Simulate Round 1 starting
+    engine.currentState = 'guessing';
+    engine.remainingTimeMs = 20000;
+    router.onPuzzleStarted();
+
+    const stats0 = router.getLikeStats();
+    assert.strictEqual(stats0.current, 0);
+    assert.strictEqual(stats0.claimed, false);
+
+    // Step 1: User sends 10 likes -> Not enough for bonus (target 20)
+    router.simulateLikes(10, 'ViewerA');
+    assert.strictEqual(router.getLikeStats().current, 10);
+    assert.strictEqual(router.getLikeStats().claimed, false);
+    assert.strictEqual(timeAddedSeconds, 0);
+    assert.strictEqual(engine.remainingTimeMs, 20000);
+
+    // Step 2: ViewerB sends 10 more likes (total 20) -> Bonus triggered!
+    router.simulateLikes(10, 'ViewerB');
+    assert.strictEqual(router.getLikeStats().current, 20);
+    assert.strictEqual(router.getLikeStats().claimed, true);
+    assert.strictEqual(timeAddedSeconds, 5, 'Should have added +5s');
+    assert.strictEqual(engine.remainingTimeMs, 25000, 'Remaining time should increase by 5000ms');
+    assert.strictEqual(ttsSpokeLikeBonus, true, 'TTS should announce 20 likes bonus');
+
+    // Step 3: ViewerC sends 50 more likes in same puzzle -> Must NOT add more time!
+    router.simulateLikes(50, 'ViewerC');
+    assert.strictEqual(router.getLikeStats().current, 70);
+    assert.strictEqual(router.getLikeStats().claimed, true);
+    assert.strictEqual(timeAddedSeconds, 5, 'Must remain capped at 5s added from likes for this puzzle');
+    assert.strictEqual(engine.remainingTimeMs, 25000);
+
+    // Step 4: Next puzzle starts (Round 2) -> Resets counter & claimed flag
+    timeAddedSeconds = 0;
+    ttsSpokeLikeBonus = false;
+    router.onPuzzleStarted();
+    engine.remainingTimeMs = 20000;
+
+    assert.strictEqual(router.getLikeStats().current, 0);
+    assert.strictEqual(router.getLikeStats().claimed, false);
+
+    // Step 5: In Round 2, sending 20 likes awards +5s again cleanly
+    router.simulateLikes(20, 'ViewerD');
+    assert.strictEqual(router.getLikeStats().claimed, true);
+    assert.strictEqual(timeAddedSeconds, 5);
+    assert.strictEqual(engine.remainingTimeMs, 25000);
+    assert.strictEqual(ttsSpokeLikeBonus, true);
+
+    router.stop();
+    engine.destroy();
+  });
+
+  test('11. Award music: party track keeps volume, mute, and its cue through audio unlock', () => {
+    const audio = new AudioEngine();
+    const music = SharedMusicManager.getInstance({ gameId: 'duoi-hinh-bat-chu' });
+    audio.setBGMVolume(0.23);
+    audio.playCeremonyCelebration();
+    assert.strictEqual(music.getState().currentCue, 'ceremony');
+    assert.strictEqual(music.getState().currentTrack?.id, 'english-class-results_bgm');
+    assert.strictEqual(music.getState().volume, 0.23);
+    audio.unlock();
+    assert.strictEqual(music.getState().currentCue, 'ceremony', 'Audio unlock must not replace award music with lobby music');
+    audio.toggleBGM();
+    assert.strictEqual(music.getState().isMuted, true);
+    audio.toggleBGM();
+    assert.strictEqual(music.getState().isMuted, false);
+    audio.playCue('thinking');
+    assert.strictEqual(music.getState().currentTrack?.id, 'duoi-hinh-bat-chu-thinking_bgm');
+    audio.setBGMVolume(0.28);
+    audio.stopBGM();
   });
 
   console.log('\n========================================================');

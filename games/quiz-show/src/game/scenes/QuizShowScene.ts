@@ -96,21 +96,25 @@ export class QuizShowScene extends Phaser.Scene {
   }
 
   private setupAudioUnlock(): void {
-    const unlockBtn = document.getElementById('audio-unlock-overlay');
-    if (unlockBtn) {
-      const unlockAudio = () => {
-        this.audioEngine.unlock();
-        unlockBtn.style.opacity = '0';
-        setTimeout(() => {
-          unlockBtn.style.display = 'none';
-        }, 300);
-        window.removeEventListener('click', unlockAudio);
-        window.removeEventListener('keydown', unlockAudio);
-      };
-      unlockBtn.addEventListener('click', unlockAudio);
-      window.addEventListener('click', unlockAudio, { once: true });
-      window.addEventListener('keydown', unlockAudio, { once: true });
-    }
+    let unlocked = false;
+    const unlockAudio = () => {
+      if (unlocked) return;
+      unlocked = true;
+      this.audioEngine.unlock();
+      this.ttsController?.unlock();
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      window.removeEventListener('pointerdown', unlockAudio);
+    };
+
+    try {
+      this.audioEngine.unlock();
+      this.ttsController?.unlock();
+    } catch {}
+
+    window.addEventListener('click', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
   }
 
   private renderInitialStudents(): void {
@@ -179,6 +183,15 @@ export class QuizShowScene extends Phaser.Scene {
           const char = this.studentCharacters.get(p.userId);
           if (char) char.reactCorrect();
         });
+      },
+
+      onHeartGoalProgress: (cur, tgt, enabled, label) => {
+        this.questionBoard.updateHeartGoalProgress(cur, tgt, enabled, label);
+      },
+
+      onHintTriggered: (eliminated) => {
+        this.questionBoard.eliminateOptions(eliminated);
+        this.teacher.cheer();
       },
     });
   }

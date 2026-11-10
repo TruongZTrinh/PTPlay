@@ -52,14 +52,14 @@ export class BootScene extends Phaser.Scene {
 
     // 2. Student Chibi Skins (8 colors)
     const studentColors = [
-      'blue', 'red', 'purple', 'pink',
-      'yellow', 'green', 'teal', 'orange'
+      'blue', 'coral', 'purple', 'pink',
+      'yellow', 'green', 'navy', 'orange'
     ];
     studentColors.forEach((color) => {
-      this.load.image(`student_${color}`, `${assetPath}/students/student_${color}_idle.png`);
-      this.load.image(`student_${color}_cheer`, `${assetPath}/students/student_${color}_cheer.png`);
-      this.load.image(`student_${color}_think`, `${assetPath}/students/student_${color}_think.png`);
-      this.load.image(`student_${color}_sad`, `${assetPath}/students/student_${color}_sad.png`);
+      this.load.image(`student_${color}`, `${assetPath}/students/${color}/${color}_idle.png`);
+      this.load.image(`student_${color}_cheer`, `${assetPath}/students/${color}/${color}_cheer.png`);
+      this.load.image(`student_${color}_think`, `${assetPath}/students/${color}/${color}_walk.png`);
+      this.load.image(`student_${color}_sad`, `${assetPath}/students/${color}/${color}_wrong.png`);
     });
 
     // 3. Props

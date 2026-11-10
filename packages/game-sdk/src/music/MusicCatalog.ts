@@ -324,6 +324,7 @@ export const GAME_MUSIC_PROFILES: Record<string, GameMusicProfile> = {
       thinking: ['duoi-hinh-bat-chu-thinking_bgm'],
       transition: ['duoi-hinh-bat-chu-round_transition'],
       celebration: ['duoi-hinh-bat-chu-round_transition'],
+      ceremony: ['english-class-results_bgm'],
     },
     playlist: ['duoi-hinh-bat-chu-main_bgm', 'duoi-hinh-bat-chu-thinking_bgm'],
     playlistRotation: false,

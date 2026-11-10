@@ -12,11 +12,16 @@ export class MCCharacter extends Phaser.GameObjects.Container {
     const initKey = scene.textures.exists('teacher_idle') ? 'teacher_idle' : 'props_board';
     this.mcSprite = scene.add.sprite(0, 0, initKey);
     this.mcSprite.setOrigin(0.5, 0.85);
-    this.mcSprite.setScale(0.55);
+    this.mcSprite.setScale(this.getBaseScale());
     this.add(this.mcSprite);
 
     this.startBreathingAnimation();
     scene.add.existing(this);
+  }
+
+  private getBaseScale(): number {
+    const width = this.mcSprite?.width || 512;
+    return (512 / width) * 0.38;
   }
 
   public setPose(poseKey: string): void {
@@ -25,13 +30,17 @@ export class MCCharacter extends Phaser.GameObjects.Container {
       this.currentPose = poseKey;
       this.mcSprite.setTexture(poseKey);
 
+      const baseScale = this.getBaseScale();
       this.scene.tweens.add({
         targets: this.mcSprite,
-        scaleX: 0.58,
-        scaleY: 0.52,
+        scaleX: baseScale * 1.08,
+        scaleY: baseScale * 0.95,
         duration: 120,
         yoyo: true,
         ease: 'Quad.easeInOut',
+        onComplete: () => {
+          this.mcSprite.setScale(baseScale);
+        },
       });
     }
   }
@@ -39,9 +48,10 @@ export class MCCharacter extends Phaser.GameObjects.Container {
   private startBreathingAnimation(): void {
     if (this.breathTween) this.breathTween.stop();
 
+    const baseScale = this.getBaseScale();
     this.breathTween = this.scene.tweens.add({
       targets: this.mcSprite,
-      scaleY: 0.56,
+      scaleY: baseScale * 1.025,
       y: -4,
       duration: 1600,
       yoyo: true,

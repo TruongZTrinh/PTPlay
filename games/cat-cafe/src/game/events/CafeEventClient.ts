@@ -123,7 +123,7 @@ export class CafeEventClient {
     this.lastEventTime = Date.now();
 
     // 1. If message is already a normalized Cat Café GameCommand
-    if (msg.action && typeof msg.action === 'string' && msg.action.startsWith('cat_cafe.')) {
+    if (msg.action && typeof msg.action === 'string' && (msg.action.startsWith('cat_cafe.') || msg.action === 'tts_speak' || msg.action === 'set_voice' || msg.action === 'tts_config')) {
       const cmd: ParsedCafeCommand = {
         action: msg.action as import('./CafeCommandAdapter').CatCafeAction,
         userId: msg.user?.userId || 'unknown',
