@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { readFileSync } from 'node:fs';
 import { TextNormalizer } from '../src/game/utils/TextNormalizer';
 import { SeatAllocator } from '../src/game/systems/SeatAllocator';
 import { StudentRoster } from '../src/game/systems/StudentRoster';
@@ -411,6 +412,21 @@ async function runTests() {
     assert.strictEqual(music.getState().currentTrack?.id, 'duoi-hinh-bat-chu-thinking_bgm');
     audio.setBGMVolume(0.28);
     audio.stopBGM();
+  });
+
+  test('12. Award audio: party music and recorded effects are available to the game', () => {
+    const files = [
+      '../public/shared-music/english-class/happy_party_loop.ogg',
+      '../public/assets/rebus-v1/audio/ceremony/crowd-applause.ogg',
+      '../public/assets/rebus-v1/audio/ceremony/firework-burst.ogg',
+      '../public/assets/rebus-v1/audio/ceremony/firework-crackle.ogg',
+      '../public/assets/rebus-v1/audio/ceremony/winner-fanfare.ogg',
+    ];
+    files.forEach(file => {
+      const data = readFileSync(new URL(file, import.meta.url));
+      assert(data.length > 8000, `${file} must contain audio`);
+      assert.strictEqual(data.subarray(0, 4).toString(), 'OggS', `${file} must be a valid Ogg file`);
+    });
   });
 
   console.log('\n========================================================');

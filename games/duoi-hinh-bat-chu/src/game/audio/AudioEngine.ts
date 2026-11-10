@@ -1,4 +1,5 @@
 import { SharedMusicManager } from '@ptplay/game-sdk';
+import { CeremonySoundEffects } from './CeremonySoundEffects';
 
 export interface BGMTrack {
   id: string;
@@ -37,6 +38,8 @@ export const BGM_TRACKS: BGMTrack[] = [
 export class AudioEngine {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
+  private ceremonyGain: GainNode | null = null;
+  private ceremonyEffects: CeremonySoundEffects | null = null;
   private soundVolume: number = 0.8;
   private isDucked: boolean = false;
   private sharedMusic = SharedMusicManager.getInstance({ gameId: 'duoi-hinh-bat-chu' });
@@ -60,6 +63,10 @@ export class AudioEngine {
           this.masterGain = this.ctx.createGain();
           this.masterGain.gain.setValueAtTime(this.soundVolume, this.ctx.currentTime);
           this.masterGain.connect(this.ctx.destination);
+          this.ceremonyGain = this.ctx.createGain();
+          this.ceremonyGain.gain.setValueAtTime(this.soundVolume, this.ctx.currentTime);
+          this.ceremonyGain.connect(this.ctx.destination);
+          this.ceremonyEffects = new CeremonySoundEffects(this.ctx, this.ceremonyGain);
         }
       } catch {
         return false;
@@ -96,6 +103,7 @@ export class AudioEngine {
   }
 
   public stopBGM(): void {
+    this.stopCeremonySounds();
     this.sharedMusic.pause();
   }
 
@@ -133,10 +141,7 @@ export class AudioEngine {
   public setVolume(vol: number): void {
     this.soundVolume = Math.max(0, Math.min(1, vol));
     this.sharedMusic.setVolume(this.soundVolume);
-    if (this.masterGain && this.ctx) {
-      const targetGain = this.isDucked ? this.soundVolume * 0.25 : this.soundVolume;
-      this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
-    }
+    this.updateSfxGains();
   }
 
   public setDucking(ducked: boolean): void {
@@ -146,10 +151,27 @@ export class AudioEngine {
     } else {
       this.sharedMusic.stopDucking();
     }
-    if (this.masterGain && this.ctx) {
-      const targetGain = ducked ? this.soundVolume * 0.25 : this.soundVolume;
-      this.masterGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.05);
-    }
+    this.updateSfxGains();
+  }
+
+  private updateSfxGains(): void {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const gains = [
+      { node: this.masterGain, factor: this.isDucked ? 0.25 : 1 },
+      { node: this.ceremonyGain, factor: this.isDucked ? 0.55 : 1 },
+    ];
+    gains.forEach(({ node, factor }) => {
+      if (!node) return;
+      const gain = node.gain;
+      if (typeof gain.cancelAndHoldAtTime === 'function') gain.cancelAndHoldAtTime(now);
+      else {
+        const current = gain.value;
+        gain.cancelScheduledValues(now);
+        gain.setValueAtTime(current, now);
+      }
+      gain.setTargetAtTime(this.soundVolume * factor, now, 0.05);
+    });
   }
 
   private playTone(freq: number, type: OscillatorType, duration: number, delay: number = 0, gainLevel: number = 0.2): void {
@@ -226,24 +248,25 @@ export class AudioEngine {
   }
 
   public playCeremonyCelebration(): void {
-    this.playFanfare();
+    if (this.ensureContext()) this.ceremonyEffects?.playEntrance();
     this.playCue('ceremony');
   }
 
   public playFirework(pan = 0): void {
-    this.playTone(800 + Math.random() * 400, 'triangle', 0.15, 0.0, 0.1);
+    if (this.ensureContext()) this.ceremonyEffects?.playFirework(pan);
   }
 
   public playApplause(): void {
-    this.playFanfare();
+    if (this.ensureContext()) this.ceremonyEffects?.playApplause();
   }
 
   public playPodiumReveal(rank: number): void {
-    const freqs = [523.25, 659.25, 783.99];
-    this.playTone(freqs[rank - 1] || 523.25, 'triangle', 0.25, 0.0, 0.3);
+    if (this.ensureContext()) this.ceremonyEffects?.playReveal(rank);
   }
 
-  public stopCeremonySounds(): void {}
+  public stopCeremonySounds(): void {
+    this.ceremonyEffects?.stop();
+  }
 
   public playGiftRose(): void {
     this.playTone(659.25, 'sine', 0.2, 0.0, 0.18);
