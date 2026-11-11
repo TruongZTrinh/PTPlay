@@ -322,3 +322,14 @@ test('15. General Interactive Audience Triggers & Heart Goal Milestone across al
   assert.ok(appJs.includes('simulateReachHeartMilestone'));
   assert.ok(appJs.includes('renderTriggerOverviewTable'));
 });
+
+test('16. Tab Persistence, URL Hash Sync and Reload Recovery (F5 fix)', () => {
+  const appJs = fs.readFileSync(path.join(ROOT_DIR, 'public', 'app.js'), 'utf-8');
+  assert.ok(appJs.includes('normalizeTabId'), 'Missing normalizeTabId helper');
+  assert.ok(appJs.includes('ptplay_admin_active_tab'), 'Missing localStorage key for active tab persistence');
+  assert.ok(appJs.includes('ptplay_admin_gift_subtab'), 'Missing localStorage key for gift subtab persistence');
+  assert.ok(appJs.includes("history.replaceState(null, '', '#' + resolvedTab)"), 'Missing URL hash sync via history.replaceState');
+  assert.ok(appJs.includes("window.addEventListener('hashchange'"), 'Missing hashchange event listener for browser navigation');
+  assert.ok(appJs.includes("localStorage.getItem('ptplay_admin_active_tab')"), 'initTabs must restore saved tab from localStorage');
+  assert.ok(appJs.includes('window.location.hash'), 'initTabs must check window.location.hash');
+});

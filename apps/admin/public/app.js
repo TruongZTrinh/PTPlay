@@ -102,6 +102,17 @@ const TAB_BREADCRUMBS = {
   queue: { cat: 'Operations & Control', name: 'Hàng Đợi & Quá Tải' },
 };
 
+function normalizeTabId(tab) {
+  if (!tab) return 'games';
+  const clean = String(tab).replace(/^#/, '').toLowerCase();
+  const validTabs = [
+    'games', 'miniwar', 'catcafe', 'englishclass', 'quizshow',
+    'duoihinh', 'preview', 'spectators', 'economy', 'ttsstudio',
+    'musicmanager', 'simulator', 'logs', 'queue'
+  ];
+  return validTabs.includes(clean) ? clean : 'games';
+}
+
 function initTabs() {
   const tabBtns = document.querySelectorAll('.tab-btn');
   tabBtns.forEach((btn) => {
@@ -111,18 +122,40 @@ function initTabs() {
       switchTab(targetTab);
     });
   });
+
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.slice(1);
+    if (hash) switchTab(hash);
+  });
+
+  const savedTab = window.location.hash ? window.location.hash.slice(1) : localStorage.getItem('ptplay_admin_active_tab');
+  if (savedTab) {
+    switchTab(savedTab);
+  }
+
+  const savedSubtab = localStorage.getItem('ptplay_admin_gift_subtab');
+  if (savedSubtab && typeof switchGiftSubtab === 'function') {
+    switchGiftSubtab(savedSubtab);
+  }
 }
 
 function switchTab(tabId) {
+  const resolvedTab = normalizeTabId(tabId);
   document.querySelectorAll('.tab-btn').forEach((b) => {
-    b.classList.toggle('active', b.getAttribute('data-tab') === tabId);
+    b.classList.toggle('active', b.getAttribute('data-tab') === resolvedTab);
   });
   document.querySelectorAll('.tab-panel').forEach((p) => {
-    p.classList.toggle('active', p.id === `panel-${tabId}`);
+    p.classList.toggle('active', p.id === `panel-${resolvedTab}`);
   });
 
+  // Save to localStorage & sync URL hash
+  try {
+    localStorage.setItem('ptplay_admin_active_tab', resolvedTab);
+    history.replaceState(null, '', '#' + resolvedTab);
+  } catch (e) {}
+
   // Update Breadcrumbs
-  const crumbInfo = TAB_BREADCRUMBS[tabId];
+  const crumbInfo = TAB_BREADCRUMBS[resolvedTab];
   if (crumbInfo) {
     const catEl = document.getElementById('crumb-category');
     const actEl = document.getElementById('crumb-active');
@@ -134,11 +167,11 @@ function switchTab(tabId) {
   const gameTargetMap = {
     miniwar: 'mini-war',
     catcafe: 'cat-cafe',
-    english: 'english-class',
+    englishclass: 'english-class',
     quizshow: 'quiz-show',
-    rebus: 'duoi-hinh-bat-chu',
+    duoihinh: 'duoi-hinh-bat-chu',
   };
-  const targetGame = gameTargetMap[tabId];
+  const targetGame = gameTargetMap[resolvedTab];
   if (targetGame && targetGame !== currentActiveGame) {
     currentActiveGame = targetGame;
     updateActiveGameUI(targetGame);
@@ -149,7 +182,7 @@ function switchTab(tabId) {
     }).then(() => fetchStatus()).catch(() => {});
   }
 
-  if (tabId === 'economy') {
+  if (resolvedTab === 'economy') {
     fetchGiftControlData();
   }
 }
@@ -965,6 +998,9 @@ let latestAnalyticsData = null;
 
 function switchGiftSubtab(tabName) {
   currentGiftSubtab = tabName;
+  try {
+    localStorage.setItem('ptplay_admin_gift_subtab', tabName);
+  } catch (e) {}
   playSound('click');
   document.querySelectorAll('.gift-subtab-btn').forEach(btn => {
     btn.classList.toggle('active', btn.id === `btn-gsub-${tabName}`);
@@ -2685,14 +2721,42 @@ function initAdminTts() {
   if (targetGame) targetGame.addEventListener('change', () => saveTtsVoiceToGame(false));
 }
 
+function updateTopVoiceIndicator(voiceOrName) {
+  const viNameEl = document.getElementById('lbl-vi-voice-name');
+  if (!viNameEl) return;
+  if (!voiceOrName) {
+    viNameEl.innerText = '⚠️ Chưa cài giọng Tiếng Việt (dùng giọng mặc định vi-VN)';
+    viNameEl.style.color = '#fbbf24';
+    return;
+  }
+  const name = typeof voiceOrName === 'string' ? voiceOrName : (voiceOrName.name || '');
+  if (name === 'google-chigoogle') {
+    viNameEl.innerText = `✓ 🌟 Giọng Chị Google (👩 Nữ Chuẩn Livestream) (vi-VN) (ACTIVE)`;
+    viNameEl.style.color = '#38bdf8';
+    return;
+  }
+  const lang = (typeof voiceOrName === 'object' && voiceOrName.lang) ? voiceOrName.lang : 'vi-VN';
+  const norm = normalizeVoiceName(name);
+  const isFemale = norm.includes('hoaimy') || norm.includes('linh') || norm.includes('mai');
+  const isMale = norm.includes('an') || norm.includes('namminh');
+  const genderLabel = isFemale ? '(👩 Nữ - Female)' : (isMale ? '(👨 Nam - Male)' : '');
+  const isOnline = name.toLowerCase().includes('natural') || name.toLowerCase().includes('online');
+  viNameEl.innerText = `✓ ${name} ${isOnline ? '★ [Neural Online]' : ''} ${genderLabel} (${lang}) (ACTIVE)`;
+  viNameEl.style.color = '#34d399';
+}
+
 function updateVoiceSupportHint(voiceName) {
   const hintEl = document.getElementById('tts-voice-support-hint');
   if (!hintEl) return;
+  if (voiceName === 'google-chigoogle') {
+    hintEl.innerHTML = `🌟 <strong>Giọng Chị Google (👩 Nữ Chuẩn Livestream):</strong> Phát âm thanh trực tiếp từ máy chủ Google TTS, ổn định trên mọi thiết bị và trình duyệt.`;
+    return;
+  }
   const isOnline = (voiceName || '').toLowerCase().includes('online') || (voiceName || '').toLowerCase().includes('natural');
   if (isOnline) {
-    hintEl.innerHTML = `💡 <strong>Giọng Neural Online (${(voiceName || '').split('-')[0].trim()}):</strong> Sử dụng mô hình AI của Microsoft Cloud. Tốc độ nói (Rate) được hỗ trợ đầy đủ. Cao độ và âm lượng giữ chuẩn theo mô hình ngữ điệu tự nhiên của AI. Để tinh chỉnh tự do Cao Độ (Pitch) & Âm Lượng (Volume), bạn có thể chọn giọng Windows gốc như <strong>Microsoft An</strong>.`;
+    hintEl.innerHTML = `💡 <strong>Giọng Neural Online (${(voiceName || '').split('-')[0].trim()}):</strong> Sử dụng mô hình AI của Microsoft Cloud. Tốc độ nói (Rate) được hỗ trợ đầy đủ. Cao độ và âm lượng giữ chuẩn theo mô hình ngữ điệu tự nhiên của AI.`;
   } else {
-    hintEl.innerHTML = `✓ <strong>Giọng Desktop Offline (${(voiceName || '').split('-')[0].trim()}):</strong> Hỗ trợ tinh chỉnh 100% cả Tốc Độ Nói (Rate), Cao Độ (Pitch - Trầm/Bổng) và Âm Lượng (Volume).`;
+    hintEl.innerHTML = `✓ <strong>Giọng Desktop Offline (${(voiceName || '').split('-')[0].trim()}):</strong> Cài đặt từ gói ngôn ngữ máy tính, hoạt động offline không cần mạng internet.`;
   }
 }
 
@@ -2709,7 +2773,7 @@ function refreshAdminVoices() {
   const otherVoices = adminTtsVoices.filter(v => !isVietnameseVoice(v) && (!v.lang || !v.lang.toLowerCase().startsWith('en')));
 
   if (countEl) {
-    countEl.innerText = `${adminTtsVoices.length} giọng (${viVoices.length} Tiếng Việt, ${enVoices.length} English)`;
+    countEl.innerText = `${adminTtsVoices.length + 1} giọng (${viVoices.length + 1} Tiếng Việt, ${enVoices.length} English)`;
   }
 
   // Check saved voice in localStorage
@@ -2724,7 +2788,9 @@ function refreshAdminVoices() {
 
   // Find best Vietnamese voice prioritizing Hoài My
   let bestViVoice = null;
-  if (savedVoiceName) {
+  if (savedVoiceName === 'google-chigoogle') {
+    bestViVoice = { name: 'google-chigoogle', lang: 'vi-VN' };
+  } else if (savedVoiceName) {
     bestViVoice = viVoices.find(v => v.name === savedVoiceName || normalizeVoiceName(v.name).includes(normalizeVoiceName(savedVoiceName)));
   }
 
@@ -2739,35 +2805,41 @@ function refreshAdminVoices() {
   }
 
   if (viNameEl) {
-    if (bestViVoice) {
-      const isFemale = normalizeVoiceName(bestViVoice.name).includes('hoaimy') || normalizeVoiceName(bestViVoice.name).includes('linh');
-      viNameEl.innerText = `✓ ${bestViVoice.name} ${isFemale ? '(Nữ - Female)' : ''} (${bestViVoice.lang})`;
-      viNameEl.style.color = '#34d399';
-    } else {
-      viNameEl.innerText = '⚠️ Chưa cài giọng Tiếng Việt (dùng giọng mặc định vi-VN)';
-      viNameEl.style.color = '#fbbf24';
-    }
+    updateTopVoiceIndicator(bestViVoice);
   }
 
   if (!select) return;
   select.innerHTML = '';
 
-  if (viVoices.length > 0) {
-    const optGroupVi = document.createElement('optgroup');
-    optGroupVi.label = '🇻🇳 GIỌNG TIẾNG VIỆT (VIETNAMESE VOICES)';
-    viVoices.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v.name;
-      const isOnline = v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('online');
-      const isFemale = normalizeVoiceName(v.name).includes('hoaimy') || normalizeVoiceName(v.name).includes('linh');
-      opt.textContent = `${v.name} ${isOnline ? '★ [Neural Online]' : ''} ${isFemale ? '👩 Nữ' : '👨 Nam'} (${v.lang})`;
-      if (bestViVoice && v.name === bestViVoice.name) {
-        opt.selected = true;
-      }
-      optGroupVi.appendChild(opt);
-    });
-    select.appendChild(optGroupVi);
+  const optGroupVi = document.createElement('optgroup');
+  optGroupVi.label = '🇻🇳 GIỌNG TIẾNG VIỆT (VIETNAMESE VOICES)';
+
+  // 1. Chị Google (Nữ Chuẩn Livestream qua HTTP MP3 audio)
+  const optGoogle = document.createElement('option');
+  optGoogle.value = 'google-chigoogle';
+  optGoogle.textContent = '🌟 Giọng Chị Google 👩 Nữ Chuẩn Livestream (vi-VN)';
+  if (bestViVoice && bestViVoice.name === 'google-chigoogle') {
+    optGoogle.selected = true;
   }
+  optGroupVi.appendChild(optGoogle);
+
+  // 2. Các giọng hệ thống có sẵn trên máy
+  viVoices.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    const isOnline = v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('online');
+    const norm = normalizeVoiceName(v.name);
+    const isFemale = norm.includes('hoaimy') || norm.includes('linh') || norm.includes('mai');
+    const isMale = norm.includes('an') || norm.includes('namminh');
+    const tag = isOnline ? '☁️ [AI Cloud]' : '🛡️ [Offline Gốc Máy]';
+    const gender = isFemale ? '👩 Nữ' : (isMale ? '👨 Nam' : '');
+    opt.textContent = `${v.name} ${tag} ${gender} (${v.lang})`;
+    if (bestViVoice && v.name === bestViVoice.name) {
+      opt.selected = true;
+    }
+    optGroupVi.appendChild(opt);
+  });
+  select.appendChild(optGroupVi);
 
   if (enVoices.length > 0) {
     const optGroupEn = document.createElement('optgroup');
@@ -2941,42 +3013,70 @@ function playLocalAdminTts(text, customLang = undefined) {
     return;
   }
 
-  // Cancel any running speech
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(cleanText);
-
-  // Language & Voice
-  const lang = customLang || document.getElementById('select-tts-lang')?.value || 'vi-VN';
-  utterance.lang = lang;
-
-  const voiceName = document.getElementById('select-tts-voice')?.value;
-  if (voiceName && adminTtsVoices.length > 0) {
-    const chosen = adminTtsVoices.find(v => v.name === voiceName);
-    if (chosen) utterance.voice = chosen;
-  } else if (lang.startsWith('vi')) {
-    const vi = adminTtsVoices.find(isVietnameseVoice);
-    if (vi) utterance.voice = vi;
-  }
-
-  // Sliders
+  const voiceName = document.getElementById('select-tts-voice')?.value || '';
   const rateVal = parseFloat(document.getElementById('slider-tts-rate')?.value || '1.05');
   const pitchVal = parseFloat(document.getElementById('slider-tts-pitch')?.value || '1.0');
   const volumeVal = parseFloat(document.getElementById('slider-tts-volume')?.value || '80') / 100;
 
-  utterance.rate = isNaN(rateVal) ? 1.05 : rateVal;
-  utterance.pitch = isNaN(pitchVal) ? 1.0 : pitchVal;
-  utterance.volume = isNaN(volumeVal) ? 0.8 : volumeVal;
+  // 1. Nếu chọn Giọng Chị Google (phát trực tiếp Audio MP3 qua Bridge proxy)
+  if (voiceName === 'google-chigoogle') {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    const audio = new Audio(`/api/tts/audio?text=${encodeURIComponent(cleanText)}&lang=vi`);
+    audio.volume = isNaN(volumeVal) ? 0.8 : volumeVal;
+    showToast(`🔊 [Chị Google Nữ] Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
+    audio.play().catch(e => {
+      console.warn('Audio play error:', e);
+      showToast('⚠️ Click chuột vào trang để mở khóa âm thanh!', 'warn');
+    });
+    return;
+  }
 
-  utterance.onstart = () => {
-    showToast(`🔊 Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
-  };
+  // 2. Web Speech API chuẩn — delay 80ms sau cancel để tránh lỗi 'interrupted' trên Chromium / Edge
+  window.speechSynthesis.cancel();
+  const lang = customLang || document.getElementById('select-tts-lang')?.value || 'vi-VN';
 
-  utterance.onerror = (e) => {
-    console.warn('[Admin TTS] Speak error:', e);
-  };
+  setTimeout(() => {
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = lang;
 
-  window.speechSynthesis.speak(utterance);
+    if (!adminTtsVoices || adminTtsVoices.length === 0) {
+      adminTtsVoices = window.speechSynthesis.getVoices();
+    }
+
+    if (voiceName && adminTtsVoices.length > 0) {
+      const chosen = adminTtsVoices.find(
+        v => v.name === voiceName || normalizeVoiceName(v.name).includes(normalizeVoiceName(voiceName))
+      );
+      if (chosen) {
+        utterance.voice = chosen;
+        utterance.lang = chosen.lang || lang;
+      }
+    } else if (lang.startsWith('vi')) {
+      const vi = adminTtsVoices.find(isVietnameseVoice);
+      if (vi) utterance.voice = vi;
+    }
+
+    utterance.rate = isNaN(rateVal) ? 1.05 : rateVal;
+    utterance.pitch = isNaN(pitchVal) ? 1.0 : pitchVal;
+    utterance.volume = isNaN(volumeVal) ? 0.8 : volumeVal;
+
+    utterance.onstart = () => {
+      showToast(`🔊 Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
+    };
+
+    utterance.onerror = (e) => {
+      console.warn('[Admin TTS] Speak error:', e);
+      // KHÔNG tự động fallback sang Chị Google hay An
+      showToast(`⚠️ Không thể phát âm thanh: ${e.error || 'Lỗi giọng nói'}`, 'warn');
+    };
+
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+    window.speechSynthesis.speak(utterance);
+  }, 80);
 }
 
 async function broadcastGameTts(targetGame, text, customLang = undefined) {
@@ -3014,7 +3114,10 @@ async function broadcastGameTts(targetGame, text, customLang = undefined) {
     let endpoint = '/api/game/command';
     let payload = { action: 'tts_speak', metadata: ttsMeta };
 
-    if (game === 'cat-cafe' || game === 'cat') {
+    if (game === 'all') {
+      endpoint = '/api/tts/broadcast';
+      payload = ttsMeta;
+    } else if (game === 'cat-cafe' || game === 'cat') {
       endpoint = '/api/catcafe/command';
       payload = { action: 'cat_cafe.tts_speak', metadata: ttsMeta };
     } else if (game === 'english-class' || game === 'english') {

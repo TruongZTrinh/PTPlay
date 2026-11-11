@@ -18,9 +18,10 @@ export class TTSController {
   private recentKeys = new Map<string, number>();
   private cleanupVoiceLoader?: () => void;
   private watchdogTimer?: any;
+  public savedVoiceName?: string;
 
   public rate: number = 1.05;
-  public pitch: number = 1.05; // Cheerful, warm host tone
+  public pitch: number = 1.0; // Natural tone for Neural/Standard voices
   public volume: number = 0.8;
 
   constructor(audioEngine: AudioEngine) {
@@ -32,19 +33,19 @@ export class TTSController {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
     this.cleanupVoiceLoader = VietnameseVoiceHelper.setupVoiceLoader((voices) => {
-      // 1. Check if user configured a voice in localStorage
-      const savedConfig = this.loadSavedVoiceConfig();
-      if (savedConfig?.voiceName) {
-        const matched = VietnameseVoiceHelper.findVoiceByName(voices, savedConfig.voiceName);
+      // 1. If explicit voice was configured or loaded via Admin UI, prioritize it!
+      const targetName = this.savedVoiceName || this.loadSavedVoiceConfig()?.voiceName;
+      if (targetName) {
+        if (targetName === 'google-chigoogle') return; // HTTP TTS — no SpeechSynthesisVoice needed
+        const matched = VietnameseVoiceHelper.findVoiceByName(voices, targetName);
         if (matched) {
           this.selectedVoice = matched;
-          if (typeof savedConfig.rate === 'number') this.rate = savedConfig.rate;
-          if (typeof savedConfig.pitch === 'number') this.pitch = savedConfig.pitch;
+          this.savedVoiceName = matched.name;
           return;
         }
       }
 
-      // 2. Default: Prioritize female friendly host voice (Microsoft Hoài My, Google Tiếng Việt, Linh)
+      // 2. Default: Prioritize natural host voice (Hoài My, Google Tiếng Việt, Apple Linh)
       const bestVoice =
         VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
         VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'any');
@@ -53,30 +54,66 @@ export class TTSController {
       }
     });
 
+    // Initial load from local storage & bridge REST API
+    this.loadSavedVoiceConfig();
+
     // Cross-tab synchronization from Admin UI
     if (typeof window !== 'undefined') {
       window.addEventListener('storage', (e) => {
-        if (e.key === 'ptplay_tts_config' && e.newValue) {
+        if ((e.key === 'ptplay_tts_config' || e.key === 'ptplay_tts_voice') && e.newValue) {
           try {
-            const cfg = JSON.parse(e.newValue);
-            this.applyVoiceConfig(cfg);
+            if (e.key === 'ptplay_tts_voice') {
+              this.setVoiceByName(e.newValue);
+            } else {
+              const cfg = JSON.parse(e.newValue);
+              this.applyVoiceConfig(cfg);
+            }
           } catch {}
         }
       });
     }
   }
 
-  private loadSavedVoiceConfig(): { voiceName?: string; rate?: number; pitch?: number; volume?: number } | null {
+  public loadSavedVoiceConfig(): { voiceName?: string; rate?: number; pitch?: number; volume?: number } | null {
     if (typeof window === 'undefined') return null;
+    let localConfig: any = null;
     try {
       const raw = localStorage.getItem('ptplay_tts_config');
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
+      if (raw) localConfig = JSON.parse(raw);
+      const voiceOnly = localStorage.getItem('ptplay_tts_voice');
+      if (voiceOnly && !localConfig) localConfig = { voiceName: voiceOnly };
+
+      if (localConfig?.voiceName) {
+        this.savedVoiceName = localConfig.voiceName;
+        this.setVoiceByName(localConfig.voiceName);
+        if (typeof localConfig.rate === 'number') this.rate = localConfig.rate;
+        if (typeof localConfig.pitch === 'number') this.pitch = localConfig.pitch;
+        if (typeof localConfig.volume === 'number') this.volume = localConfig.volume;
+      }
+    } catch {}
+
+    // Cross-origin REST API fetch from GameBridge (Port 8088)
+    if (typeof fetch !== 'undefined') {
+      fetch('http://127.0.0.1:8088/api/tts/config')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.success && data.config) {
+            this.applyVoiceConfig(data.config);
+          }
+        })
+        .catch(() => {});
     }
+
+    return localConfig;
   }
 
   public setVoiceByName(voiceName: string): boolean {
+    if (!voiceName) return false;
+    this.savedVoiceName = voiceName;
+    if (voiceName === 'google-chigoogle') {
+      this.selectedVoice = null;
+      return true;
+    }
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return false;
     const voices = window.speechSynthesis.getVoices();
     const matched = VietnameseVoiceHelper.findVoiceByName(voices, voiceName);
@@ -88,12 +125,31 @@ export class TTSController {
   }
 
   public applyVoiceConfig(config: { voiceName?: string; rate?: number; pitch?: number; volume?: number }): void {
+    if (!config) return;
     if (config.voiceName) {
+      this.savedVoiceName = config.voiceName;
       this.setVoiceByName(config.voiceName);
+      try {
+        localStorage.setItem('ptplay_tts_voice', config.voiceName);
+        localStorage.setItem(
+          'ptplay_tts_config',
+          JSON.stringify({
+            voiceName: config.voiceName,
+            rate: config.rate ?? this.rate,
+            pitch: config.pitch ?? this.pitch,
+            volume: config.volume ?? this.volume,
+            updatedAt: Date.now(),
+          })
+        );
+      } catch {}
     }
-    if (typeof config.rate === 'number') this.rate = config.rate;
-    if (typeof config.pitch === 'number') this.pitch = config.pitch;
-    if (typeof config.volume === 'number') this.volume = Math.max(0, Math.min(1.0, config.volume));
+    if (config.pitch !== undefined && !isNaN(Number(config.pitch))) {
+      this.pitch = config.pitch;
+    }
+    if (config.rate !== undefined && !isNaN(Number(config.rate))) this.rate = config.rate;
+    if (config.volume !== undefined && !isNaN(Number(config.volume))) {
+      this.volume = Math.max(0, Math.min(1.0, Number(config.volume)));
+    }
   }
 
   public getSelectedVoice(): SpeechSynthesisVoice | null {
@@ -163,19 +219,6 @@ export class TTSController {
     this.isSpeaking = true;
     this.audioEngine.setDucking(true);
 
-    const utterance = VietnameseVoiceHelper.createVietnameseUtterance(item.text, {
-      voice: this.selectedVoice,
-      rate: this.rate,
-      pitch: this.pitch,
-      volume: this.volume,
-    });
-
-    if (!utterance) {
-      this.isSpeaking = false;
-      this.audioEngine.setDucking(false);
-      return;
-    }
-
     let finished = false;
     const cleanup = () => {
       if (finished) return;
@@ -190,8 +233,29 @@ export class TTSController {
       setTimeout(() => this.processQueue(), 250);
     };
 
+    if (this.savedVoiceName === 'google-chigoogle') {
+      this.playHttpTts(item.text, cleanup);
+      return;
+    }
+
+    const utterance = VietnameseVoiceHelper.createVietnameseUtterance(item.text, {
+      voice: this.selectedVoice,
+      rate: this.rate,
+      pitch: this.pitch,
+      volume: this.volume,
+    });
+
+    if (!utterance) {
+      this.isSpeaking = false;
+      this.audioEngine.setDucking(false);
+      return;
+    }
+
     utterance.onend = cleanup;
-    utterance.onerror = cleanup;
+    utterance.onerror = (e) => {
+      console.warn('[Rebus TTS] Utterance error:', e.error || e);
+      cleanup();
+    };
 
     // Safety watchdog: Chromium speech synthesis can sometimes hang or fail to emit onend
     this.watchdogTimer = setTimeout(() => {
@@ -201,10 +265,54 @@ export class TTSController {
     }, 12000);
 
     try {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
       window.speechSynthesis.speak(utterance);
-    } catch {
+    } catch (err) {
+      console.warn('[Rebus TTS] Speak threw error:', err);
       cleanup();
     }
+  }
+
+  private playHttpTts(text: string, onEnd: () => void): void {
+    try {
+      const clean = encodeURIComponent(VietnameseVoiceHelper.sanitizeTTSText(text));
+      const audio = new Audio(`http://127.0.0.1:8088/api/tts/audio?text=${clean}&lang=vi`);
+      audio.volume = Math.max(0, Math.min(1.0, this.volume));
+      audio.onended = onEnd;
+      audio.onerror = () => {
+        console.warn('[Rebus TTS] HTTP Audio error, falling back to Web Speech');
+        this.fallbackWebSpeech(text, onEnd);
+      };
+      const p = audio.play();
+      if (p !== undefined) {
+        p.catch((err) => {
+          console.warn('[Rebus TTS] Audio autoplay blocked:', err);
+          this.fallbackWebSpeech(text, onEnd);
+        });
+      }
+    } catch {
+      onEnd();
+    }
+  }
+
+  private fallbackWebSpeech(text: string, onEnd: () => void): void {
+    const utterance = VietnameseVoiceHelper.createVietnameseUtterance(text, {
+      voice: this.selectedVoice,
+      rate: this.rate,
+      pitch: this.pitch,
+      volume: this.volume,
+    });
+    if (utterance) {
+      utterance.onend = onEnd;
+      utterance.onerror = onEnd;
+      try {
+        window.speechSynthesis.speak(utterance);
+        return;
+      } catch {}
+    }
+    onEnd();
   }
 
   // --- Rebus Host Vietnamese Announcements (Focused & Natural) ---

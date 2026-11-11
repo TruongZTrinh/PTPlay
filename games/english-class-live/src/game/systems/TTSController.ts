@@ -58,14 +58,25 @@ export class TTSController {
       this.loadSavedVoiceConfig();
 
       window.addEventListener('storage', (e) => {
-        if (e.key === 'ptplay_tts_voice' && e.newValue) {
-          this.setVoiceByName(e.newValue);
+        if ((e.key === 'ptplay_tts_voice' || e.key === 'ptplay_tts_config') && e.newValue) {
+          try {
+            if (e.key === 'ptplay_tts_voice') {
+              this.setVoiceByName(e.newValue);
+            } else {
+              const cfg = JSON.parse(e.newValue);
+              this.applyVoiceConfig(cfg);
+            }
+          } catch {}
         }
       });
     }
   }
 
   public setVoiceByName(voiceName: string): boolean {
+    this.viVoiceName = voiceName;
+    if (voiceName === 'google-chigoogle') {
+      return true;
+    }
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       const voices = window.speechSynthesis.getVoices();
       const match = VietnameseVoiceHelper.findVoiceByName(voices, voiceName);
@@ -74,7 +85,6 @@ export class TTSController {
         return true;
       }
     }
-    this.viVoiceName = voiceName;
     return false;
   }
 
@@ -86,11 +96,11 @@ export class TTSController {
         localStorage.setItem('ptplay_tts_voice', config.voiceName);
       } catch {}
     }
-    if (config.rate !== undefined && !isNaN(Number(config.rate))) {
-      this.rate = Math.max(0.5, Math.min(2.0, Number(config.rate)));
-    }
     if (config.pitch !== undefined && !isNaN(Number(config.pitch))) {
       this.pitch = Math.max(0.5, Math.min(2.0, Number(config.pitch)));
+    }
+    if (config.rate !== undefined && !isNaN(Number(config.rate))) {
+      this.rate = Math.max(0.5, Math.min(2.0, Number(config.rate)));
     }
     if (config.volume !== undefined && !isNaN(Number(config.volume))) {
       this.volume = Math.max(0, Math.min(1.0, Number(config.volume)));
@@ -100,6 +110,11 @@ export class TTSController {
   public loadSavedVoiceConfig(): void {
     if (typeof window === 'undefined') return;
     try {
+      const raw = localStorage.getItem('ptplay_tts_config');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.voiceName) this.setVoiceByName(parsed.voiceName);
+      }
       const local = localStorage.getItem('ptplay_tts_voice');
       if (local) {
         this.setVoiceByName(local);
@@ -239,6 +254,10 @@ export class TTSController {
 
     // Select explicit voice matching language
     if (item.lang.startsWith('vi')) {
+      if (this.viVoiceName === 'google-chigoogle') {
+        this.playHttpTts(item.text, cleanup);
+        return;
+      }
       const viVoice =
         voices.find((v) => v.name === this.viVoiceName) ||
         VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
@@ -293,7 +312,30 @@ export class TTSController {
     utterance.onend = cleanup;
     utterance.onerror = cleanup;
 
-    window.speechSynthesis.speak(utterance);
+    try {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      cleanup();
+    }
+  }
+
+  private playHttpTts(text: string, onEnd: () => void): void {
+    try {
+      const clean = encodeURIComponent(VietnameseVoiceHelper.sanitizeTTSText(text));
+      const audio = new Audio(`http://127.0.0.1:8088/api/tts/audio?text=${clean}&lang=vi`);
+      audio.volume = Math.max(0, Math.min(1.0, this.volume));
+      audio.onended = onEnd;
+      audio.onerror = () => onEnd();
+      const p = audio.play();
+      if (p !== undefined) {
+        p.catch(() => onEnd());
+      }
+    } catch {
+      onEnd();
+    }
   }
 
   public isSpeakingQuestion(): boolean {

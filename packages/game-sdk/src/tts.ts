@@ -337,12 +337,16 @@ export class VietnameseVoiceHelper {
     const utterance = new SpeechSynthesisUtterance(cleanedText);
     utterance.lang = 'vi-VN';
     utterance.rate = options?.rate ?? 1.05;
-    utterance.pitch = options?.pitch ?? 1.05;
+    utterance.pitch = options?.pitch ?? 1.0;
     // Set balanced default volume (0.80) so voice does not drown out or clip BGM
     utterance.volume = options?.volume ?? 0.8;
 
     if (options?.voice && this.isVietnameseVoice(options.voice)) {
       utterance.voice = options.voice;
+      // Edge Online Neural voices do not support custom pitch; normalize to 1.0
+      if (options.voice.name.toLowerCase().includes('online') || options.voice.name.toLowerCase().includes('natural')) {
+        utterance.pitch = 1.0;
+      }
     }
 
     return utterance;

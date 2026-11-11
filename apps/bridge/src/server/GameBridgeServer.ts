@@ -231,9 +231,9 @@ export class GameBridgeServer {
     }
 
     return new Promise((resolve) => {
-      this.httpServer.listen(this.port, '127.0.0.1', () => {
+      this.httpServer.listen(this.port, () => {
         if (!process.env.PTPLAY_MANAGED) {
-          console.log(`[PTPLAY LIVE BRIDGE] Running at http://127.0.0.1:${this.port}`);
+          console.log(`[PTPLAY LIVE BRIDGE] Running at http://127.0.0.1:${this.port} and http://localhost:${this.port}`);
         }
         resolve();
       });
@@ -1274,6 +1274,41 @@ export class GameBridgeServer {
       return;
     }
 
+    if (pathname === '/api/tts/audio' && req.method === 'GET') {
+      const text = String(url.searchParams.get('text') || '').trim().slice(0, 300);
+      const lang = String(url.searchParams.get('lang') || 'vi');
+      if (!text) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Text required' }));
+        return;
+      }
+      try {
+        const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${encodeURIComponent(lang)}&client=tw-ob&q=${encodeURIComponent(text)}`;
+        const upstream = await fetch(googleUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+          },
+        });
+        if (!upstream.ok) {
+          res.writeHead(502, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Upstream TTS error' }));
+          return;
+        }
+        const buffer = await upstream.arrayBuffer();
+        res.writeHead(200, {
+          'Content-Type': 'audio/mpeg',
+          'Content-Length': buffer.byteLength,
+          'Cache-Control': 'public, max-age=3600',
+        });
+        res.end(Buffer.from(buffer));
+        return;
+      } catch (err: any) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message }));
+        return;
+      }
+    }
+
     // Mutating endpoints require Token Authentication
     if (req.method === 'POST') {
       const token = req.headers['x-ptplay-token'] || url.searchParams.get('token');
@@ -2025,16 +2060,17 @@ export class GameBridgeServer {
             updatedAt: Date.now(),
           };
 
-          const targetGames = targetGame === 'all'
-            ? ['mini-war', 'cat-cafe', 'english-class-live', 'quiz-show', 'duoi-hinh-bat-chu']
-            : [targetGame];
+          const targetGames =
+            targetGame === 'all' || targetGame === 'active'
+              ? ['mini-war', 'cat-cafe', 'english-class-live', 'quiz-show', 'duoi-hinh-bat-chu']
+              : [targetGame];
 
           for (const g of targetGames) {
             let cmdAction = 'tts_config';
-            if (g === 'cat-cafe') cmdAction = 'cat_cafe.tts_config';
-            else if (g === 'english-class-live' || g === 'english-class') cmdAction = 'english_class.tts_config';
-            else if (g === 'quiz-show') cmdAction = 'quiz_show.tts_config';
-            else if (g === 'duoi-hinh-bat-chu') cmdAction = 'rebus.tts_config';
+            if (g === 'cat-cafe' || g === 'cat') cmdAction = 'cat_cafe.tts_config';
+            else if (g === 'english-class-live' || g === 'english-class' || g === 'english') cmdAction = 'english_class.tts_config';
+            else if (g === 'quiz-show' || g === 'quiz') cmdAction = 'quiz_show.tts_config';
+            else if (g === 'duoi-hinh-bat-chu' || g === 'rebus') cmdAction = 'rebus.tts_config';
 
             const cmd: GameCommand = {
               id: `cmd_tts_cfg_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -2047,6 +2083,50 @@ export class GameBridgeServer {
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true, config: this.ttsConfig }));
+          return;
+        }
+
+        if (pathname === '/api/tts/broadcast') {
+          const text = String(json.text || json.message || '').trim().slice(0, 300);
+          if (!text) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Text is required' }));
+            return;
+          }
+          const lang = String(json.lang || this.ttsConfig.lang || 'vi-VN');
+          const voiceName = String(json.voiceName || json.voice || this.ttsConfig.voiceName);
+          const rate = json.rate !== undefined ? Number(json.rate) : this.ttsConfig.rate;
+          const pitch = json.pitch !== undefined ? Number(json.pitch) : this.ttsConfig.pitch;
+          const volume = json.volume !== undefined ? Number(json.volume) : this.ttsConfig.volume;
+          const targetGame = String(json.targetGame || 'all');
+
+          const ttsMeta = { text, message: text, lang, voiceName, voice: voiceName, rate, pitch, volume };
+
+          const targetGames =
+            targetGame === 'all' || targetGame === 'active'
+              ? ['mini-war', 'cat-cafe', 'english-class-live', 'quiz-show', 'duoi-hinh-bat-chu']
+              : [targetGame];
+
+          let broadcastCount = 0;
+          for (const g of targetGames) {
+            let cmdAction = 'tts_speak';
+            if (g === 'cat-cafe' || g === 'cat') cmdAction = 'cat_cafe.tts_speak';
+            else if (g === 'english-class-live' || g === 'english-class' || g === 'english') cmdAction = 'english_class.tts_speak';
+            else if (g === 'quiz-show' || g === 'quiz') cmdAction = 'quiz_show.tts_speak';
+            else if (g === 'duoi-hinh-bat-chu' || g === 'rebus') cmdAction = 'rebus.tts_speak';
+
+            const cmd: GameCommand = {
+              id: `cmd_tts_spk_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              action: cmdAction as any,
+              metadata: ttsMeta,
+              timestamp: Date.now(),
+            };
+            this.broadcastToGame(cmd);
+            broadcastCount++;
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, count: broadcastCount, targetGames }));
           return;
         }
 

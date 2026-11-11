@@ -758,8 +758,8 @@ const server = http.createServer(async (req, res) => {
   serveStaticFile(res, safePath, contentType);
 });
 
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, () => {
   if (!process.env.PTPLAY_MANAGED) {
-    console.log(`[PTPLAY ADMIN WEB] Running at http://127.0.0.1:${PORT}`);
+    console.log(`[PTPLAY ADMIN WEB] Running at http://127.0.0.1:${PORT} and http://localhost:${PORT}`);
   }
 });
