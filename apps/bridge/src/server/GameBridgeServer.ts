@@ -12,6 +12,7 @@ import { GiftCatalogService } from '@ptplay/gift-catalog';
 import { EventQueue } from '../systems/EventQueue.js';
 import { ActiveGame, ErrorLogItem, GameCommand, NormalizedLiveEvent, NormalizedChatEvent, OverflowPolicy } from '../types/events.js';
 import { TikFinityProber } from '../utils/TikFinityProber.js';
+import { EdgeTtsService } from './EdgeTtsService.js';
 
 export class GameBridgeServer {
   private port: number;
@@ -31,6 +32,7 @@ export class GameBridgeServer {
   public giftMapper = new GiftMapper();
   public giftCatalog = GiftCatalogService.getInstance();
   public eventQueue = new EventQueue();
+  public edgeTtsService = new EdgeTtsService();
 
   // Providers & Provider Registry
   public mockProvider = new MockProvider();
@@ -47,9 +49,9 @@ export class GameBridgeServer {
 
   // Unified TTS Configuration (Persists selected voice, rate, pitch across games)
   public ttsConfig = {
-    voiceName: 'Microsoft Hoài My Online (Natural)',
+    voiceName: 'edge-hoaimy',
     rate: 1.05,
-    pitch: 1.05,
+    pitch: 1.0,
     volume: 0.8,
     lang: 'vi-VN',
     updatedAt: Date.now(),
@@ -1277,34 +1279,52 @@ export class GameBridgeServer {
     if (pathname === '/api/tts/audio' && req.method === 'GET') {
       const text = String(url.searchParams.get('text') || '').trim().slice(0, 300);
       const lang = String(url.searchParams.get('lang') || 'vi');
+      const voice = String(url.searchParams.get('voice') || this.ttsConfig.voiceName || 'edge-hoaimy');
+      const rate = parseFloat(url.searchParams.get('rate') || String(this.ttsConfig.rate || 1.05));
+      const pitch = parseFloat(url.searchParams.get('pitch') || String(this.ttsConfig.pitch || 1.0));
+
       if (!text) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Text required' }));
         return;
       }
+
       try {
-        const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${encodeURIComponent(lang)}&client=tw-ob&q=${encodeURIComponent(text)}`;
-        const upstream = await fetch(googleUrl, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-          },
-        });
-        if (!upstream.ok) {
-          res.writeHead(502, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Upstream TTS error' }));
+        if (voice === 'google-chigoogle') {
+          const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${encodeURIComponent(lang)}&client=tw-ob&q=${encodeURIComponent(text)}`;
+          const upstream = await fetch(googleUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            },
+          });
+          if (!upstream.ok) {
+            res.writeHead(502, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Upstream Google TTS error' }));
+            return;
+          }
+          const buffer = await upstream.arrayBuffer();
+          res.writeHead(200, {
+            'Content-Type': 'audio/mpeg',
+            'Content-Length': buffer.byteLength,
+            'Cache-Control': 'public, max-age=3600',
+          });
+          res.end(Buffer.from(buffer));
           return;
         }
-        const buffer = await upstream.arrayBuffer();
+
+        // Default & Server Edge Neural AI TTS (works identically on all OS/browsers)
+        const targetEdgeVoice = EdgeTtsService.isEdgeServerVoice(voice) ? voice : 'edge-hoaimy';
+        const mp3Buffer = await this.edgeTtsService.synthesize(text, targetEdgeVoice, rate, pitch);
         res.writeHead(200, {
           'Content-Type': 'audio/mpeg',
-          'Content-Length': buffer.byteLength,
+          'Content-Length': mp3Buffer.byteLength,
           'Cache-Control': 'public, max-age=3600',
         });
-        res.end(Buffer.from(buffer));
+        res.end(mp3Buffer);
         return;
       } catch (err: any) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: err.message }));
+        res.writeHead(502, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err?.message || 'Server TTS synthesis failed' }));
         return;
       }
     }

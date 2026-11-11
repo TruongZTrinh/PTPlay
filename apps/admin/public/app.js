@@ -2702,6 +2702,7 @@ function initAdminTts() {
 
   if (select) {
     select.addEventListener('change', () => {
+      updateTopVoiceIndicator(select.value);
       updateVoiceSupportHint(select.value);
       saveTtsVoiceToGame(false);
     });
@@ -2721,6 +2722,21 @@ function initAdminTts() {
   if (targetGame) targetGame.addEventListener('change', () => saveTtsVoiceToGame(false));
 }
 
+function isServerAudioVoice(voiceName) {
+  return (
+    voiceName === 'google-chigoogle' ||
+    (typeof voiceName === 'string' && (voiceName.startsWith('edge-') || /Neural$/i.test(voiceName)))
+  );
+}
+
+const SERVER_VOICE_LABELS = {
+  'edge-hoaimy': { title: '✨ Microsoft Hoài My [Server AI]', gender: '👩 Nữ - Female', lang: 'vi-VN', color: '#ec4899' },
+  'edge-namminh': { title: '✨ Microsoft Nam Minh [Server AI]', gender: '👨 Nam - Male', lang: 'vi-VN', color: '#38bdf8' },
+  'google-chigoogle': { title: '🌟 Giọng Chị Google [Server Audio]', gender: '👩 Nữ - Female', lang: 'vi-VN', color: '#38bdf8' },
+  'edge-jenny': { title: '✨ Microsoft Jenny [Server AI]', gender: '👩 Nữ - Female', lang: 'en-US', color: '#34d399' },
+  'edge-guy': { title: '✨ Microsoft Guy [Server AI]', gender: '👨 Nam - Male', lang: 'en-US', color: '#34d399' },
+};
+
 function updateTopVoiceIndicator(voiceOrName) {
   const viNameEl = document.getElementById('lbl-vi-voice-name');
   if (!viNameEl) return;
@@ -2730,9 +2746,10 @@ function updateTopVoiceIndicator(voiceOrName) {
     return;
   }
   const name = typeof voiceOrName === 'string' ? voiceOrName : (voiceOrName.name || '');
-  if (name === 'google-chigoogle') {
-    viNameEl.innerText = `✓ 🌟 Giọng Chị Google (👩 Nữ Chuẩn Livestream) (vi-VN) (ACTIVE)`;
-    viNameEl.style.color = '#38bdf8';
+  const srv = SERVER_VOICE_LABELS[name];
+  if (srv) {
+    viNameEl.innerText = `✓ ${srv.title} (${srv.gender}) (${srv.lang}) [Mọi Máy] (ACTIVE)`;
+    viNameEl.style.color = srv.color;
     return;
   }
   const lang = (typeof voiceOrName === 'object' && voiceOrName.lang) ? voiceOrName.lang : 'vi-VN';
@@ -2748,15 +2765,20 @@ function updateTopVoiceIndicator(voiceOrName) {
 function updateVoiceSupportHint(voiceName) {
   const hintEl = document.getElementById('tts-voice-support-hint');
   if (!hintEl) return;
+  if (voiceName && voiceName.startsWith('edge-')) {
+    const label = SERVER_VOICE_LABELS[voiceName]?.title || voiceName;
+    hintEl.innerHTML = `✨ <strong>${label} (Độc lập hệ điều hành):</strong> Giọng AI Neural được tạo trực tiếp từ <strong>Server GameBridge</strong> dưới dạng MP3. Hoạt động 100% giống nhau trên mọi máy tính, Windows/Mac, Chrome, Edge & OBS mà không cần cài gói ngôn ngữ!`;
+    return;
+  }
   if (voiceName === 'google-chigoogle') {
-    hintEl.innerHTML = `🌟 <strong>Giọng Chị Google (👩 Nữ Chuẩn Livestream):</strong> Phát âm thanh trực tiếp từ máy chủ Google TTS, ổn định trên mọi thiết bị và trình duyệt.`;
+    hintEl.innerHTML = `🌟 <strong>Giọng Chị Google (👩 Nữ Chuẩn Livestream):</strong> Phát âm thanh MP3 trực tiếp từ máy chủ Google TTS qua GameBridge, ổn định trên mọi thiết bị và trình duyệt.`;
     return;
   }
   const isOnline = (voiceName || '').toLowerCase().includes('online') || (voiceName || '').toLowerCase().includes('natural');
   if (isOnline) {
-    hintEl.innerHTML = `💡 <strong>Giọng Neural Online (${(voiceName || '').split('-')[0].trim()}):</strong> Sử dụng mô hình AI của Microsoft Cloud. Tốc độ nói (Rate) được hỗ trợ đầy đủ. Cao độ và âm lượng giữ chuẩn theo mô hình ngữ điệu tự nhiên của AI.`;
+    hintEl.innerHTML = `💡 <strong>Giọng Neural Trình Duyệt (${(voiceName || '').split('-')[0].trim()}):</strong> Phụ thuộc vào trình duyệt (Edge) & mạng. Nếu qua máy mới hoặc Chrome không phát được, hãy dùng giọng <strong>✨ Microsoft Hoài My [Server AI]</strong> ở đầu danh sách!`;
   } else {
-    hintEl.innerHTML = `✓ <strong>Giọng Desktop Offline (${(voiceName || '').split('-')[0].trim()}):</strong> Cài đặt từ gói ngôn ngữ máy tính, hoạt động offline không cần mạng internet.`;
+    hintEl.innerHTML = `✓ <strong>Giọng Desktop Offline (${(voiceName || '').split('-')[0].trim()}):</strong> Phụ thuộc vào gói ngôn ngữ đã cài trên máy tính hiện tại.`;
   }
 }
 
@@ -2773,7 +2795,7 @@ function refreshAdminVoices() {
   const otherVoices = adminTtsVoices.filter(v => !isVietnameseVoice(v) && (!v.lang || !v.lang.toLowerCase().startsWith('en')));
 
   if (countEl) {
-    countEl.innerText = `${adminTtsVoices.length + 1} giọng (${viVoices.length + 1} Tiếng Việt, ${enVoices.length} English)`;
+    countEl.innerText = `${adminTtsVoices.length + 5} giọng (${viVoices.length + 3} Tiếng Việt, ${enVoices.length + 2} English)`;
   }
 
   // Check saved voice in localStorage
@@ -2786,22 +2808,17 @@ function refreshAdminVoices() {
     }
   } catch {}
 
-  // Find best Vietnamese voice prioritizing Hoài My
+  // Resolve active voice: saved server voice -> saved local voice -> default 'edge-hoaimy' (cross-device!)
   let bestViVoice = null;
-  if (savedVoiceName === 'google-chigoogle') {
-    bestViVoice = { name: 'google-chigoogle', lang: 'vi-VN' };
+  if (isServerAudioVoice(savedVoiceName)) {
+    bestViVoice = { name: savedVoiceName, lang: SERVER_VOICE_LABELS[savedVoiceName]?.lang || 'vi-VN' };
   } else if (savedVoiceName) {
     bestViVoice = viVoices.find(v => v.name === savedVoiceName || normalizeVoiceName(v.name).includes(normalizeVoiceName(savedVoiceName)));
   }
 
   if (!bestViVoice) {
-    for (const pri of VIETNAMESE_VOICE_PRIORITIES) {
-      const found = viVoices.find(v => normalizeVoiceName(v.name).includes(pri));
-      if (found) { bestViVoice = found; break; }
-    }
-  }
-  if (!bestViVoice && viVoices.length > 0) {
-    bestViVoice = viVoices[0];
+    // Default to Server AI Hoài My so ANY machine works out of the box without OS voice packs
+    bestViVoice = { name: 'edge-hoaimy', lang: 'vi-VN' };
   }
 
   if (viNameEl) {
@@ -2814,16 +2831,23 @@ function refreshAdminVoices() {
   const optGroupVi = document.createElement('optgroup');
   optGroupVi.label = '🇻🇳 GIỌNG TIẾNG VIỆT (VIETNAMESE VOICES)';
 
-  // 1. Chị Google (Nữ Chuẩn Livestream qua HTTP MP3 audio)
-  const optGoogle = document.createElement('option');
-  optGoogle.value = 'google-chigoogle';
-  optGoogle.textContent = '🌟 Giọng Chị Google 👩 Nữ Chuẩn Livestream (vi-VN)';
-  if (bestViVoice && bestViVoice.name === 'google-chigoogle') {
-    optGoogle.selected = true;
-  }
-  optGroupVi.appendChild(optGoogle);
+  // 1. Server-side Voices (Cross-machine, OS-independent, MP3 streamed from GameBridge)
+  const serverViOptions = [
+    { value: 'edge-hoaimy', text: '✨ Microsoft Hoài My [Server AI] 👩 Nữ Tự Nhiên (vi-VN) [Chạy Mọi Máy]' },
+    { value: 'edge-namminh', text: '✨ Microsoft Nam Minh [Server AI] 👨 Nam Tự Nhiên (vi-VN) [Chạy Mọi Máy]' },
+    { value: 'google-chigoogle', text: '🌟 Giọng Chị Google [Server Audio] 👩 Nữ Chuẩn Livestream (vi-VN) [Chạy Mọi Máy]' },
+  ];
+  serverViOptions.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item.value;
+    opt.textContent = item.text;
+    if (bestViVoice && bestViVoice.name === item.value) {
+      opt.selected = true;
+    }
+    optGroupVi.appendChild(opt);
+  });
 
-  // 2. Các giọng hệ thống có sẵn trên máy
+  // 2. Các giọng hệ thống có sẵn trên máy (Local Web Speech API)
   viVoices.forEach(v => {
     const opt = document.createElement('option');
     opt.value = v.name;
@@ -2831,7 +2855,7 @@ function refreshAdminVoices() {
     const norm = normalizeVoiceName(v.name);
     const isFemale = norm.includes('hoaimy') || norm.includes('linh') || norm.includes('mai');
     const isMale = norm.includes('an') || norm.includes('namminh');
-    const tag = isOnline ? '☁️ [AI Cloud]' : '🛡️ [Offline Gốc Máy]';
+    const tag = isOnline ? '☁️ [Browser Cloud]' : '🛡️ [Offline Gốc Máy]';
     const gender = isFemale ? '👩 Nữ' : (isMale ? '👨 Nam' : '');
     opt.textContent = `${v.name} ${tag} ${gender} (${v.lang})`;
     if (bestViVoice && v.name === bestViVoice.name) {
@@ -2841,17 +2865,25 @@ function refreshAdminVoices() {
   });
   select.appendChild(optGroupVi);
 
-  if (enVoices.length > 0) {
-    const optGroupEn = document.createElement('optgroup');
-    optGroupEn.label = '🇺🇸 GIỌNG TIẾNG ANH (ENGLISH VOICES)';
-    enVoices.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v.name;
-      opt.textContent = `${v.name} (${v.lang})`;
-      optGroupEn.appendChild(opt);
-    });
-    select.appendChild(optGroupEn);
-  }
+  const optGroupEn = document.createElement('optgroup');
+  optGroupEn.label = '🇺🇸 GIỌNG TIẾNG ANH (ENGLISH VOICES)';
+  [
+    { value: 'edge-jenny', text: '✨ Microsoft Jenny [Server AI] 👩 Nữ (en-US) [Chạy Mọi Máy]' },
+    { value: 'edge-guy', text: '✨ Microsoft Guy [Server AI] 👨 Nam (en-US) [Chạy Mọi Máy]' },
+  ].forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item.value;
+    opt.textContent = item.text;
+    if (bestViVoice && bestViVoice.name === item.value) opt.selected = true;
+    optGroupEn.appendChild(opt);
+  });
+  enVoices.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    opt.textContent = `${v.name} (${v.lang})`;
+    optGroupEn.appendChild(opt);
+  });
+  select.appendChild(optGroupEn);
 
   if (otherVoices.length > 0) {
     const optGroupOther = document.createElement('optgroup');
@@ -2999,12 +3031,10 @@ function setSampleTtsText(preset) {
   }
 }
 
+let currentAdminAudio = null;
+
 function playLocalAdminTts(text, customLang = undefined) {
   playSound('click');
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-    showToast('Trình duyệt không hỗ trợ Web Speech Synthesis', 'error');
-    return;
-  }
 
   const rawText = text || document.getElementById('input-tts-custom-text')?.value || '';
   const cleanText = rawText.replace(/<[^>]*>/g, '').trim().slice(0, 300);
@@ -3013,23 +3043,45 @@ function playLocalAdminTts(text, customLang = undefined) {
     return;
   }
 
-  const voiceName = document.getElementById('select-tts-voice')?.value || '';
+  const voiceName = document.getElementById('select-tts-voice')?.value || 'edge-hoaimy';
   const rateVal = parseFloat(document.getElementById('slider-tts-rate')?.value || '1.05');
   const pitchVal = parseFloat(document.getElementById('slider-tts-pitch')?.value || '1.0');
   const volumeVal = parseFloat(document.getElementById('slider-tts-volume')?.value || '80') / 100;
+  const safeRate = isNaN(rateVal) ? 1.05 : rateVal;
+  const safePitch = isNaN(pitchVal) ? 1.0 : pitchVal;
+  const safeVolume = isNaN(volumeVal) ? 0.8 : volumeVal;
 
-  // 1. Nếu chọn Giọng Chị Google (phát trực tiếp Audio MP3 qua Bridge proxy)
-  if (voiceName === 'google-chigoogle') {
+  if (currentAdminAudio) {
+    try {
+      currentAdminAudio.pause();
+      currentAdminAudio = null;
+    } catch {}
+  }
+
+  // 1. Giọng Server-side Audio (Edge AI Hoài My / Nam Minh / Jenny / Guy hoặc Chị Google)
+  if (isServerAudioVoice(voiceName)) {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
-    const audio = new Audio(`/api/tts/audio?text=${encodeURIComponent(cleanText)}&lang=vi`);
-    audio.volume = isNaN(volumeVal) ? 0.8 : volumeVal;
-    showToast(`🔊 [Chị Google Nữ] Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
+    const langCode = customLang || (voiceName === 'edge-jenny' || voiceName === 'edge-guy' ? 'en' : 'vi');
+    const url = `/api/tts/audio?text=${encodeURIComponent(cleanText)}&lang=${encodeURIComponent(langCode)}&voice=${encodeURIComponent(voiceName)}&rate=${safeRate}&pitch=${safePitch}`;
+    const audio = new Audio(url);
+    currentAdminAudio = audio;
+    audio.volume = Math.max(0, Math.min(1, safeVolume));
+    const label = SERVER_VOICE_LABELS[voiceName]?.title || voiceName;
+    showToast(`🔊 [${label}] Đang phát: "${cleanText.slice(0, 45)}..."`, 'info');
+    audio.onerror = () => {
+      showToast(`⚠️ Server TTS (${label}) không phản hồi. Hãy kiểm tra GameBridge (8088) & kết nối mạng!`, 'warn');
+    };
     audio.play().catch(e => {
       console.warn('Audio play error:', e);
       showToast('⚠️ Click chuột vào trang để mở khóa âm thanh!', 'warn');
     });
+    return;
+  }
+
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    showToast('Trình duyệt không hỗ trợ Web Speech Synthesis', 'error');
     return;
   }
 
@@ -3163,6 +3215,12 @@ function broadcastCurrentTts() {
 
 function stopAdminTts() {
   playSound('warn');
+  if (currentAdminAudio) {
+    try {
+      currentAdminAudio.pause();
+      currentAdminAudio = null;
+    } catch {}
+  }
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }

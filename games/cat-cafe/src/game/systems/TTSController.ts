@@ -41,19 +41,19 @@ export class TTSController {
 
     this.cleanupVoiceLoader = VietnameseVoiceHelper.setupVoiceLoader((voices) => {
       if (this.savedVoiceName) {
+        if (VietnameseVoiceHelper.isServerAudioVoice(this.savedVoiceName)) {
+          this.selectedVoice = null;
+          return;
+        }
         const customVoice = VietnameseVoiceHelper.findVoiceByName(voices, this.savedVoiceName);
         if (customVoice) {
           this.selectedVoice = customVoice;
           return;
         }
       }
-      // Prioritize warm female cafe host voice (e.g. HoaiMy, Google Tiếng Việt, Linh)
-      const bestVoice =
-        VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
-        VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'any');
-      if (bestVoice) {
-        this.selectedVoice = bestVoice;
-      }
+      // Default: Server-side Neural Female Voice (edge-hoaimy) via GameBridge — works on ANY machine
+      this.savedVoiceName = VietnameseVoiceHelper.DEFAULT_SERVER_VOICE;
+      this.selectedVoice = null;
     });
 
     this.loadSavedVoiceConfig();
@@ -76,7 +76,7 @@ export class TTSController {
 
   public setVoiceByName(voiceName: string): boolean {
     this.savedVoiceName = voiceName;
-    if (voiceName === 'google-chigoogle') {
+    if (VietnameseVoiceHelper.isServerAudioVoice(voiceName)) {
       this.selectedVoice = null;
       return true;
     }
@@ -384,7 +384,7 @@ export class TTSController {
       setTimeout(() => this.processQueue(), 300);
     };
 
-    if (this.savedVoiceName === 'google-chigoogle') {
+    if (VietnameseVoiceHelper.isServerAudioVoice(this.savedVoiceName)) {
       this.playHttpTts(item.text, cleanup);
       return;
     }
@@ -420,42 +420,34 @@ export class TTSController {
 
   private playHttpTts(text: string, onEnd: () => void): void {
     try {
-      const clean = encodeURIComponent(VietnameseVoiceHelper.sanitizeTTSText(text));
-      const audio = new Audio(`http://127.0.0.1:8088/api/tts/audio?text=${clean}&lang=vi`);
+      const url = VietnameseVoiceHelper.buildServerTtsUrl(text, {
+        voiceName: this.savedVoiceName,
+        lang: 'vi',
+        rate: this.rate,
+        pitch: this.pitch,
+      });
+      const audio = new Audio(url);
       audio.volume = Math.max(0, Math.min(1.0, this.volume));
-      audio.onended = onEnd;
+      const guard = setTimeout(onEnd, 15000);
+      const done = () => {
+        clearTimeout(guard);
+        onEnd();
+      };
+      audio.onended = done;
       audio.onerror = () => {
-        console.warn('[CatCafe TTS] HTTP audio error, falling back to Web Speech');
-        this.fallbackWebSpeech(text, onEnd);
+        console.warn('[CatCafe TTS] Server HTTP audio error');
+        done();
       };
       const p = audio.play();
       if (p !== undefined) {
         p.catch((err) => {
-          console.warn('[CatCafe TTS] Audio play error:', err);
-          this.fallbackWebSpeech(text, onEnd);
+          console.warn('[CatCafe TTS] Audio play blocked:', err);
+          done();
         });
       }
     } catch {
       onEnd();
     }
-  }
-
-  private fallbackWebSpeech(text: string, onEnd: () => void): void {
-    const utterance = VietnameseVoiceHelper.createVietnameseUtterance(text, {
-      voice: this.selectedVoice,
-      rate: this.rate,
-      pitch: this.pitch,
-      volume: this.volume,
-    });
-    if (utterance) {
-      utterance.onend = onEnd;
-      utterance.onerror = onEnd;
-      try {
-        window.speechSynthesis.speak(utterance);
-        return;
-      } catch {}
-    }
-    onEnd();
   }
 
   public cancel(): void {

@@ -95,6 +95,37 @@ export class VietnameseVoiceHelper {
     'Microsoft An',
   ];
 
+  public static readonly DEFAULT_SERVER_VOICE = 'edge-hoaimy';
+
+  /**
+   * Returns true if the voice ID is synthesized server-side via GameBridge /api/tts/audio
+   * (independent of OS/browser voice packs).
+   */
+  public static isServerAudioVoice(voiceName?: string): boolean {
+    if (!voiceName) return false;
+    return (
+      voiceName === 'google-chigoogle' ||
+      voiceName.startsWith('edge-') ||
+      /^[a-z]{2,3}-[A-Z]{2}-[A-Za-z]+Neural$/.test(voiceName)
+    );
+  }
+
+  /**
+   * Builds the GameBridge HTTP audio URL for server-side TTS playback.
+   */
+  public static buildServerTtsUrl(
+    text: string,
+    options?: { voiceName?: string; lang?: string; rate?: number; pitch?: number; bridgeBaseUrl?: string }
+  ): string {
+    const base = options?.bridgeBaseUrl || 'http://127.0.0.1:8088';
+    const voice = options?.voiceName || this.DEFAULT_SERVER_VOICE;
+    const lang = options?.lang || 'vi';
+    const rate = options?.rate ?? 1.05;
+    const pitch = options?.pitch ?? 1.0;
+    const clean = encodeURIComponent(this.sanitizeTTSText(text));
+    return `${base}/api/tts/audio?text=${clean}&lang=${encodeURIComponent(lang)}&voice=${encodeURIComponent(voice)}&rate=${rate}&pitch=${pitch}`;
+  }
+
   /**
    * Normalizes voice names by removing accents, spaces, and punctuation for robust matching.
    */

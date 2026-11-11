@@ -73,8 +73,12 @@ export class TTSController {
   }
 
   public setVoiceByName(voiceName: string): boolean {
+    if (voiceName === 'edge-jenny' || voiceName === 'edge-guy') {
+      this.enVoiceName = voiceName;
+      return true;
+    }
     this.viVoiceName = voiceName;
-    if (voiceName === 'google-chigoogle') {
+    if (VietnameseVoiceHelper.isServerAudioVoice(voiceName)) {
       return true;
     }
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -136,15 +140,17 @@ export class TTSController {
   public loadVoices(): void {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     const voices = window.speechSynthesis.getVoices();
-    if (!voices || voices.length === 0) return;
-    this.availableVoices = voices;
+    if (voices && voices.length > 0) {
+      this.availableVoices = voices;
+    }
 
-    // Auto-select best Vietnamese and English voices
-    const bestVi = VietnameseVoiceHelper.selectBestVietnameseVoice(this.availableVoices, 'female');
-    if (bestVi) this.viVoiceName = bestVi.name;
-
-    const bestEn = EnglishVoiceHelper.selectBestEnglishVoice(this.availableVoices, 'female');
-    if (bestEn) this.enVoiceName = bestEn.name;
+    // Default to Server-side AI Neural voices (cross-machine consistent) if not explicitly configured
+    if (!this.viVoiceName) {
+      this.viVoiceName = VietnameseVoiceHelper.DEFAULT_SERVER_VOICE;
+    }
+    if (!this.enVoiceName) {
+      this.enVoiceName = 'edge-jenny';
+    }
   }
 
   public unlock(): boolean {
@@ -237,7 +243,54 @@ export class TTSController {
     }
 
     this.isBusy = true;
-    const utterance = new SpeechSynthesisUtterance(item.text);
+
+    let finished = false;
+    let utterance: SpeechSynthesisUtterance | null = null;
+    const cleanup = () => {
+      if (finished) return;
+      finished = true;
+      this.clearWatchdog();
+      if (utterance && this.currentUtterance === utterance) {
+        this.currentUtterance = null;
+      }
+      if (utterance) {
+        this.activeUtterances.delete(utterance);
+      }
+      this.isBusy = false;
+      if (item.onEnd) item.onEnd();
+      if (this.onSpeechEnd) this.onSpeechEnd(item);
+      void this.processQueue();
+    };
+
+    // Duck BGM during voice speech
+    if (this.audioEngine) {
+      const estimatedDurationMs = Math.max(1500, Math.floor((item.text.length / 14) * 1000));
+      this.audioEngine.duckBgm(estimatedDurationMs, 0.2);
+    }
+
+    // Watchdog timer to prevent hanging indefinitely
+    const estimatedMs = Math.max(2000, Math.floor((item.text.length / 10) * 1000));
+    const watchdogMs = Math.max(7000, estimatedMs + 4000);
+    this.clearWatchdog();
+    this.watchdogTimer = setTimeout(() => {
+      cleanup();
+    }, watchdogMs);
+
+    const isVi = item.lang.startsWith('vi');
+    if (!this.viVoiceName || !this.enVoiceName) {
+      this.loadVoices();
+    }
+
+    // Server-side HTTP Audio path (Edge AI Neural / Google TTS — works on ANY machine)
+    const serverVoice = isVi ? this.viVoiceName : this.enVoiceName;
+    if (VietnameseVoiceHelper.isServerAudioVoice(serverVoice)) {
+      if (item.onStart) item.onStart();
+      if (this.onSpeechStart) this.onSpeechStart(item);
+      this.playHttpTts(item.text, isVi ? 'vi' : 'en', serverVoice!, cleanup);
+      return;
+    }
+
+    utterance = new SpeechSynthesisUtterance(item.text);
     utterance.lang = item.lang;
     utterance.rate = this.rate;
     utterance.pitch = this.pitch;
@@ -248,16 +301,7 @@ export class TTSController {
     this.activeUtterances.add(utterance);
 
     const voices = window.speechSynthesis.getVoices();
-    if (voices && voices.length > 0 && (!this.viVoiceName || !this.enVoiceName)) {
-      this.loadVoices();
-    }
-
-    // Select explicit voice matching language
-    if (item.lang.startsWith('vi')) {
-      if (this.viVoiceName === 'google-chigoogle') {
-        this.playHttpTts(item.text, cleanup);
-        return;
-      }
+    if (isVi) {
       const viVoice =
         voices.find((v) => v.name === this.viVoiceName) ||
         VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
@@ -266,7 +310,6 @@ export class TTSController {
         utterance.voice = viVoice;
       }
     } else {
-      // English pronunciation: strictly assign English voice
       const enVoice =
         voices.find((v) => v.name === this.enVoiceName) ||
         EnglishVoiceHelper.selectBestEnglishVoice(voices, 'female') ||
@@ -275,35 +318,6 @@ export class TTSController {
         utterance.voice = enVoice;
       }
     }
-
-    // Duck BGM during voice speech
-    if (this.audioEngine) {
-      const estimatedDurationMs = Math.max(1500, Math.floor((item.text.length / 14) * 1000));
-      this.audioEngine.duckBgm(estimatedDurationMs, 0.2);
-    }
-
-    let finished = false;
-    const cleanup = () => {
-      if (finished) return;
-      finished = true;
-      this.clearWatchdog();
-      if (this.currentUtterance === utterance) {
-        this.currentUtterance = null;
-      }
-      this.activeUtterances.delete(utterance);
-      this.isBusy = false;
-      if (item.onEnd) item.onEnd();
-      if (this.onSpeechEnd) this.onSpeechEnd(item);
-      void this.processQueue();
-    };
-
-    // Watchdog timer to prevent Chromium synthesis hanging indefinitely
-    const estimatedMs = Math.max(2000, Math.floor((item.text.length / 10) * 1000));
-    const watchdogMs = Math.max(7000, estimatedMs + 4000);
-    this.clearWatchdog();
-    this.watchdogTimer = setTimeout(() => {
-      cleanup();
-    }, watchdogMs);
 
     utterance.onstart = () => {
       if (item.onStart) item.onStart();
@@ -322,10 +336,15 @@ export class TTSController {
     }
   }
 
-  private playHttpTts(text: string, onEnd: () => void): void {
+  private playHttpTts(text: string, lang: string, voiceName: string, onEnd: () => void): void {
     try {
-      const clean = encodeURIComponent(VietnameseVoiceHelper.sanitizeTTSText(text));
-      const audio = new Audio(`http://127.0.0.1:8088/api/tts/audio?text=${clean}&lang=vi`);
+      const url = VietnameseVoiceHelper.buildServerTtsUrl(text, {
+        voiceName,
+        lang,
+        rate: this.rate,
+        pitch: this.pitch,
+      });
+      const audio = new Audio(url);
       audio.volume = Math.max(0, Math.min(1.0, this.volume));
       audio.onended = onEnd;
       audio.onerror = () => onEnd();

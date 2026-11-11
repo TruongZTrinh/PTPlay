@@ -36,7 +36,11 @@ export class TTSController {
       // 1. If explicit voice was configured or loaded via Admin UI, prioritize it!
       const targetName = this.savedVoiceName || this.loadSavedVoiceConfig()?.voiceName;
       if (targetName) {
-        if (targetName === 'google-chigoogle') return; // HTTP TTS — no SpeechSynthesisVoice needed
+        if (VietnameseVoiceHelper.isServerAudioVoice(targetName)) {
+          this.savedVoiceName = targetName;
+          this.selectedVoice = null;
+          return;
+        }
         const matched = VietnameseVoiceHelper.findVoiceByName(voices, targetName);
         if (matched) {
           this.selectedVoice = matched;
@@ -45,13 +49,9 @@ export class TTSController {
         }
       }
 
-      // 2. Default: Prioritize natural host voice (Hoài My, Google Tiếng Việt, Apple Linh)
-      const bestVoice =
-        VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'female') ||
-        VietnameseVoiceHelper.selectBestVietnameseVoice(voices, 'any');
-      if (bestVoice) {
-        this.selectedVoice = bestVoice;
-      }
+      // 2. Default: Server-side Neural Female Voice (edge-hoaimy) via GameBridge — works identically on ANY machine
+      this.savedVoiceName = VietnameseVoiceHelper.DEFAULT_SERVER_VOICE;
+      this.selectedVoice = null;
     });
 
     // Initial load from local storage & bridge REST API
@@ -110,7 +110,7 @@ export class TTSController {
   public setVoiceByName(voiceName: string): boolean {
     if (!voiceName) return false;
     this.savedVoiceName = voiceName;
-    if (voiceName === 'google-chigoogle') {
+    if (VietnameseVoiceHelper.isServerAudioVoice(voiceName)) {
       this.selectedVoice = null;
       return true;
     }
@@ -233,7 +233,7 @@ export class TTSController {
       setTimeout(() => this.processQueue(), 250);
     };
 
-    if (this.savedVoiceName === 'google-chigoogle') {
+    if (VietnameseVoiceHelper.isServerAudioVoice(this.savedVoiceName)) {
       this.playHttpTts(item.text, cleanup);
       return;
     }
@@ -277,42 +277,30 @@ export class TTSController {
 
   private playHttpTts(text: string, onEnd: () => void): void {
     try {
-      const clean = encodeURIComponent(VietnameseVoiceHelper.sanitizeTTSText(text));
-      const audio = new Audio(`http://127.0.0.1:8088/api/tts/audio?text=${clean}&lang=vi`);
+      const url = VietnameseVoiceHelper.buildServerTtsUrl(text, {
+        voiceName: this.savedVoiceName,
+        lang: 'vi',
+        rate: this.rate,
+        pitch: this.pitch,
+      });
+      const audio = new Audio(url);
       audio.volume = Math.max(0, Math.min(1.0, this.volume));
+      this.watchdogTimer = setTimeout(onEnd, 15000);
       audio.onended = onEnd;
       audio.onerror = () => {
-        console.warn('[Rebus TTS] HTTP Audio error, falling back to Web Speech');
-        this.fallbackWebSpeech(text, onEnd);
+        console.warn('[Rebus TTS] Server HTTP audio error');
+        onEnd();
       };
       const p = audio.play();
       if (p !== undefined) {
         p.catch((err) => {
-          console.warn('[Rebus TTS] Audio autoplay blocked:', err);
-          this.fallbackWebSpeech(text, onEnd);
+          console.warn('[Rebus TTS] Audio play blocked:', err);
+          onEnd();
         });
       }
     } catch {
       onEnd();
     }
-  }
-
-  private fallbackWebSpeech(text: string, onEnd: () => void): void {
-    const utterance = VietnameseVoiceHelper.createVietnameseUtterance(text, {
-      voice: this.selectedVoice,
-      rate: this.rate,
-      pitch: this.pitch,
-      volume: this.volume,
-    });
-    if (utterance) {
-      utterance.onend = onEnd;
-      utterance.onerror = onEnd;
-      try {
-        window.speechSynthesis.speak(utterance);
-        return;
-      } catch {}
-    }
-    onEnd();
   }
 
   // --- Rebus Host Vietnamese Announcements (Focused & Natural) ---
