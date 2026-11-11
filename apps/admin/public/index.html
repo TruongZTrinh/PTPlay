@@ -313,28 +313,24 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>🎯 Bộ Phân Tuyến Sự Kiện TikTok LIVE (Active Game Router)</span>
+                <span>🎯 Chọn Game Nhận LIVE</span>
               </div>
-              <span style="font-size: 11px; color: var(--amber); font-weight: 600;">CƠ CHẾ CÁCH LY CHỐNG RÒ RỈ SỰ KIỆN</span>
             </div>
-            <p class="card-desc">
-              Chỉ game đang nhận LIVE mới xử lý bình luận và quà tặng từ luồng TikTok. Game còn lại hoạt động độc lập ở chế độ ngoại tuyến.
-            </p>
             <div class="btn-group">
               <button class="btn-blue" onclick="switchActiveGame('mini-war')">
-                ⚔️ Tiếp Nhận LIVE Cho: Mini War Arena (5173)
+                ⚔️ Mini War (5173)
               </button>
               <button class="btn-green" onclick="switchActiveGame('cat-cafe')">
-                🐱 Tiếp Nhận LIVE Cho: Café Mòe (5174)
+                🐱 Café Mòe (5174)
               </button>
               <button class="btn-gold" onclick="switchActiveGame('english-class')">
-                🎓 Tiếp Nhận LIVE Cho: Lớp Học Vui (5175)
+                🎓 Lớp Học Vui (5175)
               </button>
               <button class="btn-purple" onclick="switchActiveGame('quiz-show')">
-                🏆 Tiếp Nhận LIVE Cho: Đố Vui (5176)
+                🏆 Đố Vui (5176)
               </button>
               <button class="btn-amber" onclick="switchActiveGame('duoi-hinh-bat-chu')">
-                💡 Tiếp Nhận LIVE Cho: Đuổi Hình (5177)
+                💡 Đuổi Hình (5177)
               </button>
             </div>
           </div>
@@ -342,9 +338,9 @@
           <!-- PROCESS CONTROL CARDS -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🖥️ Quản Lý Tiến Trình Máy Chủ (Process Lifecycle & Terminal Logs)</div>
+              <div class="card-title">🖥️ Tiến Trình Máy Chủ</div>
               <div class="btn-group">
-                <button class="btn-outline" onclick="fetchProcessStatus()">🔄 Làm Mới Trạng Thái</button>
+                <button class="btn-outline" onclick="fetchProcessStatus()">🔄 Làm Mới</button>
               </div>
             </div>
 
@@ -622,15 +618,15 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>⚡ Trạng Thái Máy Chủ: Mini War Arena (Cổng 5173)</span>
+                <span>⚡ Mini War Arena (5173)</span>
                 <span id="badge-top-mw" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-green" onclick="startService('mini-war')">▶ Bật Mini War (5173)</button>
+                <button class="btn-green" onclick="startService('mini-war')">▶ Bật</button>
                 <button class="btn-red" onclick="stopService('mini-war')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('mini-war')">🔄 Khởi Động Lại</button>
-                <button class="btn-outline" onclick="window.open('http://localhost:5173', '_blank')">🌐 Mở Tab 5173</button>
-                <button class="btn-outline" onclick="setPreviewMode('mini-war'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5173', '_blank')">🌐 Mở Tab</button>
+                <button class="btn-outline" onclick="setPreviewMode('mini-war'); switchTab('preview');">📺 Xem 9:16</button>
               </div>
             </div>
           </div>
@@ -638,14 +634,14 @@
           <!-- ROUND LIFECYCLE & OVERRIDES -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">⚔️ Điều Khiển Trận Đấu & Vòng Đấu</div>
+              <div class="card-title">⚔️ Điều Khiển Trận Đấu</div>
               <div class="btn-group">
-                <button class="btn-green" onclick="sendMwCommand('start_round')">▶ Bắt Đầu Vòng Mới (Space)</button>
+                <button class="btn-green" onclick="sendMwCommand('start_round')">▶ Bắt Đầu (Space)</button>
                 <button class="btn-outline" onclick="sendMwCommand('pause_round')">⏸ Tạm Dừng</button>
                 <button class="btn-outline" onclick="sendMwCommand('resume_round')">⏯ Tiếp Tục</button>
-                <button class="btn-gold" onclick="sendMwCommand('reset_round')">↻ Đặt Lại Trận</button>
-                <button class="btn-red" onclick="sendMwCommand('force_end_round')">⏹ Kết Thúc Vòng</button>
-                <button class="btn-red" onclick="sendMwCommand('clear_units')">🧹 Xóa Hết Quân</button>
+                <button class="btn-gold" onclick="sendMwCommand('reset_round')">↻ Đặt Lại</button>
+                <button class="btn-red" onclick="sendMwCommand('force_end_round')">⏹ Kết Thúc</button>
+                <button class="btn-red" onclick="sendMwCommand('clear_units')">🧹 Xóa Quân</button>
               </div>
             </div>
 
@@ -673,28 +669,28 @@
           <!-- TACTICAL SPAWNER WITH LANE SELECTOR -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎯 Triệu Hồi Quân Chiến Thuật (Tactical Lane Spawner)</div>
+              <div class="card-title">🎯 Triệu Hồi Quân</div>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px;">
               <div>
-                <label>Binh Chủng:</label>
+                <label>Binh chủng:</label>
                 <select id="select-mw-unit-type" style="width: 100%;">
-                  <option value="warrior">Chiến Binh (Warrior - Cận chiến)</option>
-                  <option value="archer">Cung Thủ (Archer - Tầm xa)</option>
-                  <option value="tank">Hộ Vệ Giáp Thép (Tank - Giáp cao)</option>
-                  <option value="mage">Pháp Sư (Mage - Nổ AoE)</option>
-                  <option value="boss">👑 ĐẠI TƯỚNG BOSS</option>
+                  <option value="warrior">Chiến Binh (Cận chiến)</option>
+                  <option value="archer">Cung Thủ (Tầm xa)</option>
+                  <option value="tank">Tank (Giáp cao)</option>
+                  <option value="mage">Pháp Sư (AoE)</option>
+                  <option value="boss">👑 Boss</option>
                 </select>
               </div>
 
               <div>
-                <label>Đường Di Chuyển (Lane):</label>
+                <label>Đường (Lane):</label>
                 <select id="select-mw-lane" style="width: 100%;">
-                  <option value="random">Ngẫu nhiên (Tự động)</option>
-                  <option value="0">Đường Trên (Lane 0 - Top)</option>
-                  <option value="1">Đường Giữa (Lane 1 - Mid Boss)</option>
-                  <option value="2">Đường Dưới (Lane 2 - Bot)</option>
+                  <option value="random">Ngẫu nhiên</option>
+                  <option value="0">Trên (Top)</option>
+                  <option value="1">Giữa (Mid)</option>
+                  <option value="2">Dưới (Bot)</option>
                 </select>
               </div>
 
@@ -720,7 +716,7 @@
           <div class="grid-2">
             <div class="card">
               <div class="card-header">
-                <div class="card-title">🔴 Phím Nhanh Đội Đỏ (Red Legion)</div>
+                <div class="card-title">🔴 Đội Đỏ</div>
                 <button class="btn-red" style="font-size: 11px; padding: 3px 8px;" onclick="sendMwCommand('boost_team', 'red')">⚡ Morale Boost</button>
               </div>
               <div class="btn-group">
@@ -735,7 +731,7 @@
 
             <div class="card">
               <div class="card-header">
-                <div class="card-title">🔵 Phím Nhanh Đội Xanh (Blue Guard)</div>
+                <div class="card-title">🔵 Đội Xanh</div>
                 <button class="btn-blue" style="font-size: 11px; padding: 3px 8px;" onclick="sendMwCommand('boost_team', 'blue')">⚡ Morale Boost</button>
               </div>
               <div class="btn-group">
@@ -766,7 +762,7 @@
           <!-- MINI WAR TIKTOK GIFTS -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎁 Quà Tặng TikTok Chiến Trường (Mini War Arena Gifts)</div>
+              <div class="card-title">🎁 Quà Tặng Chiến Trường</div>
             </div>
             <div style="margin-bottom: 10px;">
               <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phím Nhanh Tặng Quà Tiếp Viện Chiến Trường:</label>
@@ -796,7 +792,7 @@
                   <input type="text" id="input-mini-war-gift-nick" value="TướngQuânVIP" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                 </div>
                 <div>
-                  <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                  <label style="font-size: 10px;">Loại Quà:</label>
                   <div style="display: flex; align-items: center; gap: 6px;">
                     <img id="preview-mini-war-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
                     <select id="select-mini-war-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('mini-war')">
@@ -822,7 +818,7 @@
           </div>
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🗣️ Bình Luận Viên Tiếng Việt (Vietnamese TTS Shoutcaster)</div>
+              <div class="card-title">🗣️ Bình Luận Viên TTS</div>
             </div>
             <div>
               <label style="font-size: 11px; color: var(--text-muted);">Phát Giọng BLV Chiến Trường Trực Tiếp:</label>
@@ -845,15 +841,15 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>⚡ Trạng Thái Máy Chủ: Café Mòe LIVE (Cổng 5174)</span>
+                <span>⚡ Café Mòe LIVE (5174)</span>
                 <span id="badge-top-cat" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-green" onclick="startService('cat-cafe')">▶ Bật Café Mòe (5174)</button>
+                <button class="btn-green" onclick="startService('cat-cafe')">▶ Bật</button>
                 <button class="btn-red" onclick="stopService('cat-cafe')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('cat-cafe')">🔄 Khởi Động Lại</button>
-                <button class="btn-outline" onclick="window.open('http://localhost:5174', '_blank')">🌐 Mở Tab 5174</button>
-                <button class="btn-outline" onclick="setPreviewMode('cat-cafe'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5174', '_blank')">🌐 Mở Tab</button>
+                <button class="btn-outline" onclick="setPreviewMode('cat-cafe'); switchTab('preview');">📺 Xem 9:16</button>
               </div>
             </div>
           </div>
@@ -861,10 +857,10 @@
           <!-- ENVIRONMENT & ROOMS -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🚪 Chuyển Phòng & Thời Tiết Quán Mèo</div>
+              <div class="card-title">🚪 Phòng & Thời Tiết</div>
               <div class="btn-group">
-                <button class="btn-gold" onclick="sendCatCommand('cat_cafe.reset')">🔄 Đặt Lại Quán Mèo</button>
-                <button class="btn-outline" onclick="sendCatCommand('cat_cafe.clear_cats')">🧹 Xóa Mèo Khách</button>
+                <button class="btn-gold" onclick="sendCatCommand('cat_cafe.reset')">🔄 Đặt Lại Quán</button>
+                <button class="btn-outline" onclick="sendCatCommand('cat_cafe.clear_cats')">🧹 Xóa Mèo</button>
               </div>
             </div>
 
@@ -892,7 +888,7 @@
           <!-- CUSTOM CAT CREATOR -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🐾 Tạo & Nhận Mèo Tùy Chỉnh (Custom Cat Creator)</div>
+              <div class="card-title">🐾 Tạo Mèo Tùy Chỉnh</div>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px;">
               <div>
@@ -900,7 +896,7 @@
                 <input type="text" id="input-cat-name" value="Bé Mèo Cam" style="width: 100%;">
               </div>
               <div>
-                <label>Giống Mèo (Coat Breed):</label>
+                <label>Giống Mèo:</label>
                 <select id="select-cat-breed" style="width: 100%;">
                   <option value="0">Mèo Mướp Cam (Ginger Tabby)</option>
                   <option value="1">Mèo Bạch Tuyết (Pure White)</option>
@@ -930,7 +926,7 @@
           <!-- PROGRESSION & AUDIO MIXER -->
           <div class="grid-2">
             <div class="card">
-              <div class="card-header"><div class="card-title">✨ Tiến Trình & Cấp Độ Quán (Level & Purrs)</div></div>
+              <div class="card-header"><div class="card-title">✨ Cấp Độ & Tim Quán Mèo</div></div>
               <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                 <label style="margin: 0;">Điểm Purrs:</label>
                 <button class="btn-green" onclick="addPurrs(50)">+50 Purrs</button>
@@ -952,7 +948,7 @@
             </div>
 
             <div class="card">
-              <div class="card-header"><div class="card-title">🔊 Bộ Hòa Âm Lofi (Audio Engine Mixer)</div></div>
+              <div class="card-header"><div class="card-title">🔊 Nhạc Nền Lofi</div></div>
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                 <div>
                   <label>BGM Lofi:</label>
@@ -1026,7 +1022,7 @@
               <!-- Interactive Custom Gift Dispatcher -->
               <div class="subcard-box">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <label class="subcard-title" style="margin-bottom: 0;">🎯 Bộ Gửi Quà Tùy Chỉnh (Custom Gift Dispatcher)</label>
+                  <label class="subcard-title" style="margin-bottom: 0;">🎯 Gửi Quà Tùy Chỉnh</label>
                   <button type="button" class="btn-outline" style="font-size: 10.5px; padding: 2px 8px; gap: 4px;" onclick="openCatalogGiftPicker('cat')">
                     <span>🔍</span> Chọn Từ Catalog (727+ Quà)
                   </button>
@@ -1037,7 +1033,7 @@
                     <input type="text" id="input-cat-gift-nick" value="ĐạiGiaMèoCam" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                   </div>
                   <div>
-                    <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                    <label style="font-size: 10px;">Loại Quà:</label>
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <img id="preview-cat-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
                       <select id="select-cat-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('cat')">
@@ -1096,15 +1092,15 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>🎓 Trạng Thái Máy Chủ: English Class LIVE (Cổng 5175)</span>
+                <span>🎓 Lớp Học Vui LIVE (5175)</span>
                 <span id="badge-top-ec" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-green" onclick="startService('english-class')">▶ Bật Lớp Học (5175)</button>
+                <button class="btn-green" onclick="startService('english-class')">▶ Bật</button>
                 <button class="btn-red" onclick="stopService('english-class')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('english-class')">🔄 Khởi Động Lại</button>
-                <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab 5175</button>
-                <button class="btn-outline" onclick="setPreviewMode('english-class'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5175', '_blank')">🌐 Mở Tab</button>
+                <button class="btn-outline" onclick="setPreviewMode('english-class'); switchTab('preview');">📺 Xem 9:16</button>
               </div>
             </div>
           </div>
@@ -1112,10 +1108,10 @@
           <!-- QUIZ CONTROLS & GAME MODES -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎯 Điều Khiển Vòng Đấu & 8 Chế Độ Học Tập</div>
+              <div class="card-title">🎯 Điều Khiển Lớp Học (8 Chế Độ)</div>
               <div class="btn-group">
-                <button class="btn-gold" onclick="sendEcCommand('next_question')">⏭ Câu Hỏi Kế Tiếp</button>
-                <button class="btn-red" onclick="sendEcCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
+                <button class="btn-gold" onclick="sendEcCommand('next_question')">⏭ Câu Kế Tiếp</button>
+                <button class="btn-red" onclick="sendEcCommand('reset')">↻ Đặt Lại</button>
               </div>
             </div>
 
@@ -1222,7 +1218,7 @@
                     <input type="text" id="input-english-gift-nick" value="PhụHuynhVIP" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                   </div>
                   <div>
-                    <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                    <label style="font-size: 10px;">Loại Quà:</label>
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <img id="preview-english-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
                       <select id="select-english-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('english')">
@@ -1267,15 +1263,15 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>🏆 Trạng Thái Máy Chủ: PTPlay Quiz Show (Cổng 5176)</span>
+                <span>🏆 PTPlay Quiz Show (5176)</span>
                 <span id="badge-top-qs" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-green" onclick="startService('quiz-show')">▶ Bật Quiz Show (5176)</button>
+                <button class="btn-green" onclick="startService('quiz-show')">▶ Bật</button>
                 <button class="btn-red" onclick="stopService('quiz-show')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('quiz-show')">🔄 Khởi Động Lại</button>
-                <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab 5176</button>
-                <button class="btn-outline" onclick="setPreviewMode('quiz-show'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5176', '_blank')">🌐 Mở Tab</button>
+                <button class="btn-outline" onclick="setPreviewMode('quiz-show'); switchTab('preview');">📺 Xem 9:16</button>
               </div>
             </div>
           </div>
@@ -1283,10 +1279,10 @@
           <!-- QUIZ CONTROLS & GAME MODES -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎯 Điều Khiển Vòng Gameshow & 8 Chế Độ (Ngân Hàng 529 Câu Hỏi)</div>
+              <div class="card-title">🎯 Điều Khiển Gameshow (529 Câu Hỏi)</div>
               <div class="btn-group">
-                <button class="btn-gold" onclick="sendQuizCommand('next_question')">⏭ Câu Hỏi Kế Tiếp</button>
-                <button class="btn-red" onclick="sendQuizCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
+                <button class="btn-gold" onclick="sendQuizCommand('next_question')">⏭ Câu Kế Tiếp</button>
+                <button class="btn-red" onclick="sendQuizCommand('reset')">↻ Đặt Lại</button>
               </div>
             </div>
 
@@ -1391,7 +1387,7 @@
                     <input type="text" id="input-quiz-gift-nick" value="ĐạiGiaNeon" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                   </div>
                   <div>
-                    <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                    <label style="font-size: 10px;">Loại Quà:</label>
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <img id="preview-quiz-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
                       <select id="select-quiz-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('quiz')">
@@ -1436,15 +1432,15 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>💡 Trạng Thái Máy Chủ: Đuổi Hình Bắt Chữ (Cổng 5177)</span>
+                <span>💡 Đuổi Hình Bắt Chữ (5177)</span>
                 <span id="badge-top-dh" class="badge badge-red">OFFLINE</span>
               </div>
               <div class="btn-group">
-                <button class="btn-green" onclick="startService('duoi-hinh-bat-chu')">▶ Bật Đuổi Hình (5177)</button>
+                <button class="btn-green" onclick="startService('duoi-hinh-bat-chu')">▶ Bật</button>
                 <button class="btn-red" onclick="stopService('duoi-hinh-bat-chu')">⏹ Dừng</button>
                 <button class="btn-outline" onclick="restartService('duoi-hinh-bat-chu')">🔄 Khởi Động Lại</button>
-                <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab 5177</button>
-                <button class="btn-outline" onclick="setPreviewMode('duoi-hinh-bat-chu'); switchTab('preview');">📺 Xem Dọc 9:16</button>
+                <button class="btn-outline" onclick="window.open('http://localhost:5177', '_blank')">🌐 Mở Tab</button>
+                <button class="btn-outline" onclick="setPreviewMode('duoi-hinh-bat-chu'); switchTab('preview');">📺 Xem 9:16</button>
               </div>
             </div>
           </div>
@@ -1452,15 +1448,15 @@
           <!-- REBUS PUZZLE CONTROLS & HINTS -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎯 Điều Khiển Ô Chữ & Gợi Ý Tự Động (Ngân Hàng 951 Câu Đố Tranh Hoạt Họa Gốc Chuẩn Xịn — Phân Loại Độ Khó & Gợi Ý Hoa Hồng)</div>
+              <div class="card-title">🎯 Điều Khiển Ô Chữ (951 Câu Đố)</div>
               <div class="btn-group">
-                <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Đổi Sang Câu Đố Khác</button>
-                <button class="btn-primary" onclick="sendRebusCommand('add_time', { seconds: 10 })">🌹 Tăng Thời Gian (+10s)</button>
-                <button class="btn-gold" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; font-weight: 700; box-shadow: 0 0 14px rgba(245, 158, 11, 0.45); border: 1px solid #fde047;" onclick="testRebusCeremony()">🏆 Test Vinh Danh 30 Câu (Top 1, 2, 3)</button>
-                <button class="btn-purple" style="background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; font-weight: 600;" onclick="sendRebusCommand('ceremony')">🏆 Trao Giải Hiện Tại</button>
-                <button class="btn-blue" onclick="sendMockFollow('rebus', 'FanCứngBấmFollow')">➕ Bấm Follow (Mở Gợi Ý 1)</button>
-                <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua Câu Này</button>
-                <button class="btn-red" onclick="sendRebusCommand('reset')">↻ Đặt Lại Điểm & Vòng</button>
+                <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Câu Khác</button>
+                <button class="btn-primary" onclick="sendRebusCommand('add_time', { seconds: 10 })">🌹 +10s</button>
+                <button class="btn-gold" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; font-weight: 700; box-shadow: 0 0 14px rgba(245, 158, 11, 0.45); border: 1px solid #fde047;" onclick="testRebusCeremony()">🏆 Test Vinh Danh</button>
+                <button class="btn-purple" style="background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; font-weight: 600;" onclick="sendRebusCommand('ceremony')">🏆 Trao Giải</button>
+                <button class="btn-blue" onclick="sendMockFollow('rebus', 'FanCứngBấmFollow')">➕ Follow (Gợi Ý 1)</button>
+                <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua</button>
+                <button class="btn-red" onclick="sendRebusCommand('reset')">↻ Đặt Lại</button>
               </div>
             </div>
 
@@ -1565,7 +1561,7 @@
                     <input type="text" id="input-rebus-gift-nick" value="TrùmĐoánChữ" style="width: 100%; font-size: 12px; padding: 4px 6px;">
                   </div>
                   <div>
-                    <label style="font-size: 10px;">Loại Quà (Gift TikTok):</label>
+                    <label style="font-size: 10px;">Loại Quà:</label>
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <img id="preview-rebus-gift-img" src="/assets/gifts/rose.webp" onerror="this.src='https://beetgames.com/images/gifts/rose.webp'" class="gift-preview-thumb" alt="Gift Preview">
                       <select id="select-rebus-gift-name" style="flex: 1; font-size: 12px; padding: 4px 6px;" onchange="updateGiftPreview('rebus')">
@@ -1610,10 +1606,10 @@
         <section id="panel-spectators" class="tab-panel">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">👥 Quản Lý Khán Giả & Đội Ngũ (Spectators CRM)</div>
+              <div class="card-title">👥 Khán Giả & Đội Ngũ</div>
               <div class="btn-group">
                 <button class="btn-outline" onclick="fetchSpectators()">🔄 Làm Mới</button>
-                <button class="btn-red" onclick="clearSpectators()">🧹 Xóa Toàn Bộ CĐV</button>
+                <button class="btn-red" onclick="clearSpectators()">🧹 Xóa Tất Cả</button>
               </div>
             </div>
 
@@ -1656,12 +1652,11 @@
           <div class="card server-banner" style="margin-bottom: 14px;">
             <div class="card-header">
               <div>
-                <div class="card-title">🎁 PTPlay Gift Control Center — Trung Tâm Quản Lý Quà Tặng & Mappings</div>
-                <p class="card-desc" style="margin: 4px 0 0;">Quản lý tập trung danh mục quà TikTok Live cho toàn bộ 5 game PTPlay, đồng bộ Bridge và phân tích sự kiện.</p>
+                <div class="card-title">🎁 Trung Tâm Quà Tặng & Mappings</div>
               </div>
               <div class="btn-group">
                 <button class="btn-outline" onclick="syncCatalogFromSource()">🔄 Đồng Bộ Catalog</button>
-                <button class="btn-gold" onclick="fetchGiftControlData()">⚡ Làm Mới Dữ Liệu</button>
+                <button class="btn-gold" onclick="fetchGiftControlData()">⚡ Làm Mới</button>
               </div>
             </div>
 
@@ -1915,12 +1910,11 @@
             <!-- UNKNOWN GIFTS PANEL -->
             <div class="card">
               <div class="card-header">
-                <div class="card-title">⚠️ Quà Chưa Rõ Cần Cấu Hình (Unknown Gifts Detected)</div>
-                <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="resetAnalyticsData()">↺ Reset Thống Kê</button>
+                <div class="card-title">⚠️ Quà Chưa Rõ</div>
+                <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="resetAnalyticsData()">↺ Reset</button>
               </div>
-              <p class="card-desc">Danh sách quà tặng được gửi trong luồng LIVE nhưng chưa có trong danh mục hoặc chưa được ánh xạ hành động.</p>
               <div id="analytics-unknown-gifts-container">
-                <div style="color: #10b981; font-size: 12px; padding: 10px;">✓ Không phát hiện quà chưa rõ nào. Toàn bộ quà đã được nhận diện hoặc ánh xạ chuẩn xác!</div>
+                <div style="color: #10b981; font-size: 12px; padding: 10px;">✓ Không phát hiện quà chưa rõ nào.</div>
               </div>
             </div>
           </div>
@@ -1970,7 +1964,7 @@
             <!-- PIPELINE HISTORY TABLE -->
             <div class="card">
               <div class="card-header">
-                <div class="card-title">📜 Nhật Ký Xử Lý Sự Kiện Quà Thời Gian Thực (Pipeline Trace)</div>
+                <div class="card-title">📜 Nhật Ký Pipeline Quà</div>
                 <div class="btn-group">
                   <select id="select-pipeline-filter-source" style="font-size: 11px; padding: 4px 8px;" onchange="renderPipelineHistory()">
                     <option value="all">Tất Cả Nguồn (Real + Mock)</option>
@@ -2019,8 +2013,7 @@
             <div class="card" style="margin-bottom: 14px;">
               <div class="card-header">
                 <div>
-                  <div class="card-title">🎯 Cấu Hình Mục Tiêu Tương Tác / Tap Màn Hình (Community Heart Milestone)</div>
-                  <p class="card-desc" style="margin: 4px 0 0;">Cấu hình số lượt tap màn hình (thả tim) hoặc hành động tương tác để tự động kích hoạt gợi ý 50:50, thêm thời gian hoặc buff trong game.</p>
+                  <div class="card-title">🎯 Cấu Hình Mục Tiêu Thả Tim / Tap</div>
                 </div>
                 <div class="btn-group">
                   <button class="btn-outline" onclick="fetchInteractiveTriggers()">🔄 Tải Lại</button>
@@ -2526,38 +2519,21 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>🎵 Thư Viện Nhạc Dùng Chung & Bộ Điều Khiển BGM (Shared Music Manager)</span>
-                <span id="badge-music-status" class="badge badge-green">15/15 TRACKS CC0 VERIFIED</span>
+                <span>🎵 Nhạc Nền & Âm Lượng</span>
+                <span id="badge-music-status" class="badge badge-green">15 TRACKS CC0</span>
               </div>
               <div class="btn-group">
-                <button class="btn-gold" id="btn-toggle-global-bgm" onclick="toggleGlobalBgm()">🔊 Bật / Tắt Toàn Bộ BGM</button>
-                <button class="btn-outline" onclick="testMusicDucking()">🎙️ Thử Nghiệm Ducking BGM (-12dB)</button>
+                <button class="btn-gold" id="btn-toggle-global-bgm" onclick="toggleGlobalBgm()">🔊 Bật / Tắt BGM</button>
+                <button class="btn-outline" onclick="testMusicDucking()">🎙️ Thử Ducking</button>
                 <button class="btn-outline" onclick="stopMusicPreview()">⏹ Dừng Nghe Thử</button>
               </div>
             </div>
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
-              <div>Kho nhạc: <strong style="color: #a78bfa;">15 bản nhạc tuyển chọn OpenGameArt</strong></div>
-              <div>Giấy phép bản quyền: <strong style="color: #10b981;">CC0 (Public Domain / Miễn phí thương mại)</strong></div>
-              <div>Audio Ducking: <strong style="color: #38bdf8;">Tự giảm ~10-15 dB khi TTS nói (không làm mất BGM)</strong></div>
-              <div>Độ lớn giọng TTS: <strong style="color: #f59e0b;">Cân bằng (0.80) — Tránh lấn át nhạc nền</strong></div>
-            </div>
-          </div>
-
-          <!-- STREAMER PC ECHO PROTECTION ALERT -->
-          <div class="card" style="border-left: 4px solid #38bdf8; background: rgba(56, 189, 248, 0.05); margin-bottom: 14px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-              <div>
-                <h4 style="margin: 0 0 4px 0; color: #38bdf8; font-size: 14px;">🛡️ Chế Độ Chống Tiếng Vọng Khi Livestream (OBS vs Chrome Double Audio)</h4>
-                <p style="margin: 0; font-size: 12px; color: var(--text-secondary);">
-                  Khi mở game trên cả Google Chrome (để theo dõi) và OBS Browser Source (để stream), âm thanh có thể bị phát trùng lặp gây tiếng vọng (echo). Bật chế độ dưới đây để tắt âm thanh trên trình duyệt kiểm tra, chỉ phát duy nhất trong OBS Studio.
-                </p>
-              </div>
-              <div style="display: flex; gap: 8px; align-items: center;">
-                <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                  <input type="checkbox" id="chk-obs-only-audio" onchange="toggleObsAudioProtection(this.checked)">
-                  <span style="font-weight: 600; color: #f59e0b;">Chỉ phát âm thanh trong OBS (Mute Chrome Preview)</span>
-                </label>
-              </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);">
+              <span style="font-size: 11px; color: var(--text-muted);">15 bản nhạc CC0 miễn phí bản quyền · Tự hạ nhạc khi TTS nói</span>
+              <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="chk-obs-only-audio" onchange="toggleObsAudioProtection(this.checked)">
+                <span style="font-weight: 600; color: #f59e0b;">🛡️ Chỉ phát âm thanh trong OBS (Tắt ở Chrome Preview)</span>
+              </label>
             </div>
           </div>
 
@@ -2586,19 +2562,19 @@
           <div class="card" style="margin-bottom: 14px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(56, 189, 248, 0.35); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);">
             <div class="card-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 10px; margin-bottom: 12px;">
               <div class="card-title">
-                <span style="font-size: 16px;">🎛️ Bảng Điều Khiển Âm Lượng Livestream (Master BGM & Game Audio Mixer)</span>
-                <span id="badge-master-status" class="badge badge-blue">MASTER LIVE MIXER</span>
+                <span style="font-size: 15px;">🎛️ Âm Lượng Tổng (Master Mixer)</span>
+                <span id="badge-master-status" class="badge badge-blue">MASTER</span>
               </div>
               <div class="btn-group">
-                <button id="btn-master-mute" class="btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="toggleMasterMute()">🔊 Bật Toàn Bộ BGM</button>
-                <button class="btn-gold" style="font-size: 11px; padding: 4px 10px;" onclick="resetAllVolumesToDefault()">🔄 Reset Chuẩn Livestream</button>
+                <button id="btn-master-mute" class="btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="toggleMasterMute()">🔊 Bật Tất Cả</button>
+                <button class="btn-gold" style="font-size: 11px; padding: 4px 10px;" onclick="resetAllVolumesToDefault()">🔄 Mặc Định</button>
               </div>
             </div>
 
             <!-- Master Volume Controls & Quick Presets -->
             <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
               <div style="flex: 1; min-width: 280px; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
-                <span style="font-size: 12px; font-weight: 700; color: #38bdf8; min-width: 130px;">Master BGM (Tất cả game):</span>
+                <span style="font-size: 12px; font-weight: 700; color: #38bdf8; min-width: 110px;">Master BGM:</span>
                 <button class="vol-btn-step" onclick="adjustMasterVolume(-0.05)" title="Giảm 5%">−</button>
                 <input type="range" id="slider-master-bgm" min="0" max="100" step="1" value="35" style="flex: 1;" oninput="onMasterVolumeInput(this.value)" onchange="onMasterVolumeChange(this.value)">
                 <button class="vol-btn-step" onclick="adjustMasterVolume(0.05)" title="Tăng 5%">+</button>
@@ -2607,19 +2583,11 @@
 
               <!-- Quick Presets -->
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                <span style="font-size: 11px; color: var(--text-muted); margin-right: 4px;">Preset Live:</span>
-                <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.20)">20% (Nói nhiều)</button>
-                <button class="btn-green" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.35)">35% (Chuẩn Livestream)</button>
-                <button class="btn-gold" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.50)">50% (Sôi động)</button>
-                <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.70)">70% (Cao trào)</button>
-              </div>
-            </div>
-
-            <!-- Voice & Ducking Balance Notice -->
-            <div style="display: flex; gap: 12px; align-items: center; margin-top: 10px; font-size: 11.5px; color: var(--text-secondary); background: rgba(56, 189, 248, 0.08); padding: 8px 12px; border-radius: 6px; border: 1px dashed rgba(56, 189, 248, 0.3);">
-              <span style="font-size: 18px;">🎙️</span>
-              <div>
-                <strong style="color: #38bdf8;">Độ Lớn Giọng Đọc & Tự Động Ducking:</strong> Giọng cô giáo / MC được cân bằng ở mức <strong>80%</strong> để không lấn át nhạc. Khi có tiếng đọc, BGM tự động <strong>hạ ~10–12 dB</strong> (duck factor 0.35–0.38) giúp lời thoại rõ mồn một mà nhạc nền vẫn nghe êm tai phía dưới, không bị tắt đột ngột!
+                <span style="font-size: 11px; color: var(--text-muted); margin-right: 4px;">Mức nhanh:</span>
+                <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.20)">20%</button>
+                <button class="btn-green" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.35)">35% (Chuẩn)</button>
+                <button class="btn-gold" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.50)">50%</button>
+                <button class="btn-outline" style="font-size: 11px; padding: 4px 8px;" onclick="setMasterBgmVolume(0.70)">70%</button>
               </div>
             </div>
           </div>
@@ -3135,38 +3103,36 @@
         <section id="panel-simulator" class="tab-panel">
           <div class="card server-banner">
             <div class="card-header">
-              <div class="card-title">🩺 Bảng Chẩn Đoán Cổng TikFinity (Port 21213)</div>
+              <div class="card-title">🩺 Kiểm Tra TikFinity (21213)</div>
               <div class="btn-group">
-                <button class="btn-gold" onclick="runDiagnosticProbe()">🔍 Chạy Kiểm Tra (Probe)</button>
-                <button class="btn-green" onclick="toggleProvider()">⚡ Dùng TikFinity LIVE Thật</button>
+                <button class="btn-gold" onclick="runDiagnosticProbe()">🔍 Kiểm Tra</button>
+                <button class="btn-green" onclick="toggleProvider()">⚡ Dùng TikFinity LIVE</button>
               </div>
             </div>
-            <p class="card-desc">Kiểm tra kết nối tới ứng dụng TikFinity Desktop và độ trễ phản hồi phòng phát sóng.</p>
             <pre id="probe-result-box" style="display:none; background: #040a16; border: 1px solid #1c3256; padding: 12px; border-radius: 6px; font-size: 12px; color: var(--amber); white-space: pre-wrap;"></pre>
           </div>
 
           <div class="grid-2">
             <div class="card">
               <div class="card-header">
-                <div class="card-title">⚡ Trình Giả Lập Tự Động (Auto Traffic Simulator)</div>
+                <div class="card-title">⚡ Giả Lập Tự Động</div>
                 <button id="btn-toggle-auto" class="btn-green" onclick="toggleAutoSim()">▶ Bật Auto Sim</button>
               </div>
-              <p class="card-desc">Tự động sinh tương tác ngẫu nhiên (chọn đội, bình luận, quà tặng) theo chu kỳ nhịp nhàng.</p>
             </div>
 
             <div class="card">
-              <div class="card-header"><div class="card-title">💬 Gửi Bình Luận Tuỳ Chỉnh (Custom Chat)</div></div>
+              <div class="card-header"><div class="card-title">💬 Gửi Bình Luận</div></div>
               <div class="form-group">
-                <label>Tên Khán Giả:</label>
+                <label>Tên khán giả:</label>
                 <input type="text" id="input-custom-nick" value="Khán Giả VIP" style="width: 100%;">
               </div>
               <div class="form-group">
-                <label>Nội Dung Bình Luận:</label>
+                <label>Nội dung:</label>
                 <input type="text" id="input-custom-comment" value="ĐỎ CỐ LÊN" style="width: 100%;">
               </div>
               <div class="btn-group">
                 <button class="btn-primary" onclick="sendMockChat(currentActiveGame === 'mini-war' ? 'miniwar' : 'cat', document.getElementById('input-custom-nick').value, document.getElementById('input-custom-comment').value)">
-                  📤 Gửi Vào Game Đang Active
+                  📤 Gửi
                 </button>
               </div>
             </div>
@@ -3177,8 +3143,8 @@
         <section id="panel-logs" class="tab-panel">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">📡 Nhật Ký Xử Lý Sự Kiện (Event Queue Logs)</div>
-              <button class="btn-outline" onclick="clearLogs()">🧹 Xóa Nhật Ký</button>
+              <div class="card-title">📡 Nhật Ký Sự Kiện</div>
+              <button class="btn-outline" onclick="clearLogs()">🧹 Xóa</button>
             </div>
             <div class="table-container">
               <table>
@@ -3192,20 +3158,20 @@
 
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🔍 Soi RAW JSON TikFinity (Privacy Masked)</div>
+              <div class="card-title">🔍 RAW JSON TikFinity</div>
               <div class="btn-group">
                 <button class="btn-outline" onclick="fetchRawLogs()">Làm Mới</button>
-                <button class="btn-outline" onclick="clearRawLogs()">Xóa RAW Logs</button>
+                <button class="btn-outline" onclick="clearRawLogs()">Xóa RAW</button>
               </div>
             </div>
             <div style="display: grid; grid-template-columns: 280px 1fr; gap: 12px;">
               <div class="table-container" style="max-height: 220px;">
                 <table>
                   <thead><tr><th>Thời Gian</th><th>Event</th></tr></thead>
-                  <tbody id="raw-list-tbody"><tr><td colspan="2" style="text-align: center; color: #64748b;">Chưa có RAW event nào</td></tr></tbody>
+                  <tbody id="raw-list-tbody"><tr><td colspan="2" style="text-align: center; color: #64748b;">Chưa có dữ liệu</td></tr></tbody>
                 </table>
               </div>
-              <div><pre id="raw-json-viewer" style="background:#040913; border:1px solid #1a3258; padding:12px; border-radius:6px; font-family:Consolas, monospace; font-size:11px; color:#93c5fd; max-height:220px; overflow:auto; white-space:pre-wrap;">// Chọn một sự kiện bên trái để xem JSON</pre></div>
+              <div><pre id="raw-json-viewer" style="background:#040913; border:1px solid #1a3258; padding:12px; border-radius:6px; font-family:Consolas, monospace; font-size:11px; color:#93c5fd; max-height:220px; overflow:auto; white-space:pre-wrap;">// Chọn sự kiện để xem JSON</pre></div>
             </div>
           </div>
         </section>
@@ -3214,34 +3180,34 @@
         <section id="panel-queue" class="tab-panel">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">⚙️ Điều Tiết Hàng Đợi & Chính Sách Quá Tải Quân (Queue Policy)</div>
+              <div class="card-title">⚙️ Hàng Đợi & Giới Hạn Quân</div>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 14px;">
               <div>
-                <label>Giới Hạn Quân Tối Đa Mỗi Đội (10 - 60):</label>
+                <label>Tối đa mỗi đội (10 - 60):</label>
                 <input type="range" id="range-queue-cap" value="35" min="10" max="60" style="width: 100%;" oninput="document.getElementById('lbl-cap-val').innerText = this.value + ' quân'">
                 <div id="lbl-cap-val" style="font-weight: bold; color: var(--amber); margin-top: 4px;">35 quân</div>
               </div>
 
               <div>
-                <label>Tốc Độ Xuất Lệnh (Batch Interval Ms):</label>
+                <label>Tốc độ xuất lệnh (ms):</label>
                 <input type="range" id="range-queue-interval" value="200" min="50" max="1000" step="50" style="width: 100%;" oninput="document.getElementById('lbl-interval-val').innerText = this.value + ' ms'">
                 <div id="lbl-interval-val" style="font-weight: bold; color: #60a5fa; margin-top: 4px;">200 ms</div>
               </div>
 
               <div>
-                <label>Chính Sách Khi Đầy Quân:</label>
+                <label>Khi đầy quân:</label>
                 <select id="select-queue-policy" style="width: 100%;">
-                  <option value="wait">1. Giữ trong hàng đợi chờ trống (Mặc định - An toàn)</option>
-                  <option value="convert_heal">2. Tự động đổi thành Hồi Máu Thành Trì</option>
-                  <option value="convert_buff">3. Tự động đổi thành Tăng Tốc & Tinh Thần</option>
-                  <option value="drop">4. Bỏ qua lệnh thừa</option>
+                  <option value="wait">Giữ hàng đợi (An toàn)</option>
+                  <option value="convert_heal">Đổi thành Hồi Máu</option>
+                  <option value="convert_buff">Đổi thành Buff</option>
+                  <option value="drop">Bỏ qua lệnh thừa</option>
                 </select>
               </div>
             </div>
 
-            <button class="btn-green" onclick="updateQueueConfig()">💾 Lưu Cấu Hình Hàng Đợi</button>
+            <button class="btn-green" onclick="updateQueueConfig()">💾 Lưu Cấu Hình</button>
           </div>
         </section>
 
