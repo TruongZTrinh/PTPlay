@@ -2189,20 +2189,19 @@
           <div class="card server-banner">
             <div class="card-header">
               <div class="card-title">
-                <span>🎙️ Phòng Thí Nghiệm TTS & Giọng Đọc Đa Năng (Voice Testing Studio)</span>
-                <span id="badge-tts-status" class="badge badge-green">SPEECH API READY</span>
+                <span>🎙️ Giọng Đọc TTS</span>
+                <span id="badge-tts-status" class="badge badge-green">SẴN SÀNG</span>
               </div>
               <div class="btn-group">
-                <button class="btn-gold" id="btn-unlock-tts" onclick="unlockAdminAudio()">🔓 Mở Khóa Âm Thanh (AudioContext)</button>
-                <button class="btn-outline" onclick="refreshAdminVoices()">🔄 Quét Lại Giọng</button>
-                <button class="btn-red" onclick="stopAdminTts()">⏹ Dừng Mọi Giọng (Stop All)</button>
+                <button class="btn-gold" id="btn-unlock-tts" onclick="unlockAdminAudio()">🔓 Mở Khóa Audio</button>
+                <button class="btn-outline" onclick="refreshAdminVoices()">🔄 Quét Lại</button>
+                <button class="btn-red" onclick="stopAdminTts()">⏹ Dừng</button>
               </div>
             </div>
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
-              <div>Hệ thống TTS: <strong style="color: #38bdf8;">Web Speech API (W3C Synthesizer)</strong></div>
-              <div>Trạng thái Audio: <strong id="lbl-audio-unlocked" style="color: #10b981;">✓ Sẵn sàng phát</strong></div>
-              <div>Tổng số giọng tìm thấy: <strong id="lbl-voice-count" style="color: #f59e0b;">Đang quét...</strong></div>
-              <div>Giọng Tiếng Việt chuẩn: <strong id="lbl-vi-voice-name" style="color: #34d399;">Đang nhận diện...</strong></div>
+            <div style="display: flex; gap: 18px; flex-wrap: wrap; margin-top: 6px; font-size: 12px; color: var(--text-secondary);">
+              <div>Đang dùng: <strong id="lbl-vi-voice-name" style="color: #ec4899;">Hoài My (Nữ AI)</strong></div>
+              <div>Audio: <strong id="lbl-audio-unlocked" style="color: #10b981;">✓ Sẵn sàng</strong></div>
+              <div>Khả dụng: <strong id="lbl-voice-count" style="color: #f59e0b;">Đang quét...</strong></div>
             </div>
           </div>
 
@@ -2212,111 +2211,104 @@
             <!-- LEFT: VOICE & AUDIO PARAMETERS -->
             <div class="card">
               <div class="card-header">
-                <div class="card-title">⚙️ Bộ Căn Chỉnh Tham Số Giọng Nói</div>
+                <div class="card-title">⚙️ Cài Đặt Giọng Nói</div>
                 <button class="btn-outline" style="font-size: 11px; padding: 2px 8px;" onclick="resetTtsSliders()">↺ Mặc Định</button>
               </div>
 
               <div class="form-group" style="margin-bottom: 10px;">
-                <label for="select-tts-voice" style="font-weight: 600; color: #38bdf8;">Chọn Giọng Đọc (Speech Voice):</label>
+                <label for="select-tts-voice" style="font-weight: 600; color: #38bdf8;">Giọng đọc:</label>
                 <select id="select-tts-voice" style="width: 100%; font-size: 12px; padding: 6px 8px;">
-                  <option value="">-- Đang quét danh sách giọng hệ thống --</option>
+                  <option value="">-- Đang tải danh sách giọng --</option>
                 </select>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
-                  <small style="color: var(--text-muted); font-size: 10px;">Ưu tiên giọng Neural Online tự nhiên (Microsoft Hoài My, NamMinh, Google Tiếng Việt, Apple Linh).</small>
-                  <button class="btn-primary" style="font-size: 11px; padding: 3px 10px; background: #0284c7; white-space: nowrap;" onclick="saveTtsVoiceToGame()">💾 Lưu Vào Game</button>
-                </div>
-                <div id="lbl-voice-save-status" style="font-size: 11px; color: #34d399; margin-top: 4px; display: none;">✓ Đã lưu giọng vào game!</div>
+                <div id="lbl-voice-save-status" style="font-size: 11px; color: #34d399; margin-top: 5px; display: none;">✓ Đã lưu</div>
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                 <div class="form-group" style="margin-bottom: 0;">
-                  <label for="select-tts-target-game" style="font-weight: 600;">Game Đích (Broadcast Target):</label>
+                  <label for="select-tts-target-game" style="font-weight: 600;">Game nhận:</label>
                   <select id="select-tts-target-game" style="width: 100%; font-size: 12px; padding: 6px 8px;">
-                    <option value="all" selected>🌐 Tất Cả Các Game (All 5 Games)</option>
-                    <option value="active">🎯 Game Đang Active Ở Header</option>
-                    <option value="mini-war">⚔️ Mini War Arena (5173)</option>
-                    <option value="cat-cafe">🐱 Café Mòe LIVE (5174)</option>
-                    <option value="english-class">🎓 Lớp Học Vui LIVE (5175)</option>
-                    <option value="quiz-show">🏆 Quiz Show Đố Vui (5176)</option>
-                    <option value="duoi-hinh-bat-chu">💡 Đuổi Hình Bắt Chữ (5177)</option>
+                    <option value="all" selected>🌐 Tất cả (5 Games)</option>
+                    <option value="active">🎯 Game đang Live</option>
+                    <option value="mini-war">⚔️ Mini War</option>
+                    <option value="cat-cafe">🐱 Café Mòe</option>
+                    <option value="english-class">🎓 Lớp Học Vui</option>
+                    <option value="quiz-show">🏆 Đố Vui</option>
+                    <option value="duoi-hinh-bat-chu">💡 Đuổi Hình</option>
                   </select>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
-                  <label for="select-tts-lang" style="font-weight: 600;">Ngôn Ngữ (Language Tag):</label>
+                  <label for="select-tts-lang" style="font-weight: 600;">Ngôn ngữ:</label>
                   <select id="select-tts-lang" style="width: 100%; font-size: 12px; padding: 6px 8px;">
-                    <option value="vi-VN">🇻🇳 Tiếng Việt (vi-VN)</option>
-                    <option value="en-US">🇺🇸 English US (en-US)</option>
+                    <option value="vi-VN">🇻🇳 Tiếng Việt</option>
+                    <option value="en-US">🇺🇸 English</option>
                   </select>
                 </div>
               </div>
 
               <!-- SLIDERS -->
               <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-card); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 10px;">
-                <!-- Rate -->
                 <div>
                   <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-                    <span>Tốc Độ Nói (Rate):</span>
+                    <span>Tốc độ</span>
                     <strong id="val-tts-rate" style="color: #38bdf8;">1.05x</strong>
                   </div>
                   <input type="range" id="slider-tts-rate" min="0.5" max="2.0" step="0.05" value="1.05" style="width: 100%;" oninput="updateTtsSliderLabel('rate')">
                 </div>
 
-                <!-- Pitch -->
                 <div>
                   <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-                    <span>Cao Độ Giọng (Pitch):</span>
+                    <span>Cao độ</span>
                     <strong id="val-tts-pitch" style="color: #f59e0b;">1.00</strong>
                   </div>
                   <input type="range" id="slider-tts-pitch" min="0.5" max="1.8" step="0.05" value="1.0" style="width: 100%;" oninput="updateTtsSliderLabel('pitch')">
                 </div>
 
-                <!-- Volume -->
                 <div>
                   <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-                    <span>Âm Lượng (Volume - Cân Bằng BGM):</span>
+                    <span>Âm lượng</span>
                     <strong id="val-tts-volume" style="color: #10b981;">80%</strong>
                   </div>
                   <input type="range" id="slider-tts-volume" min="0" max="100" step="5" value="80" style="width: 100%;" oninput="updateTtsSliderLabel('volume')">
                 </div>
               </div>
 
-              <div id="tts-voice-support-hint" style="font-size: 11px; color: var(--text-muted); line-height: 1.45; padding: 6px 10px; background: rgba(56, 189, 248, 0.06); border-left: 2px solid #38bdf8; border-radius: 4px; margin-top: 8px;">
-                💡 <strong>Lưu ý về giọng Neural Online (Hoài My):</strong> Giọng Online Natural của Microsoft sử dụng mô hình trí tuệ nhân tạo phát trực tiếp từ máy chủ nên giữ cao độ và âm lượng chuẩn theo âm sắc tự nhiên của diễn viên lồng tiếng. Tốc độ nói (Rate) được hỗ trợ đầy đủ. Để điều chỉnh tự do cả Cao Độ (Pitch) & Âm Lượng (Volume), bạn có thể chọn giọng Windows gốc như <strong>Microsoft An</strong>.
+              <div id="tts-voice-support-hint" style="font-size: 11px; color: var(--text-muted); line-height: 1.4; padding: 6px 10px; background: rgba(56, 189, 248, 0.06); border-left: 2px solid #38bdf8; border-radius: 4px; margin-top: 8px;">
+                ✨ <strong>Server AI:</strong> Phát MP3 từ Bridge, chạy đồng nhất trên mọi máy & trình duyệt.
               </div>
 
-              <button class="btn-primary" style="width: 100%; font-size: 12px; padding: 8px; margin-top: 10px; background: linear-gradient(135deg, #059669, #0284c7); border: none;" onclick="saveTtsVoiceToGame()">💾 Lưu & Đồng Bộ Giọng Này Vào Game</button>
+              <button class="btn-primary" style="width: 100%; font-size: 12px; padding: 8px; margin-top: 10px; background: linear-gradient(135deg, #059669, #0284c7); border: none;" onclick="saveTtsVoiceToGame()">💾 Lưu Vào Game</button>
             </div>
 
             <!-- RIGHT: CUSTOM TEXT SYNTHESIS & LIVE DISPATCH -->
             <div class="card" style="display: flex; flex-direction: column;">
               <div class="card-header">
-                <div class="card-title">💬 Khung Soạn Thảo Giọng Đọc Tự Do</div>
+                <div class="card-title">💬 Thử & Phát Giọng</div>
               </div>
 
               <div class="form-group" style="flex: 1; display: flex; flex-direction: column;">
-                <label for="input-tts-custom-text" style="font-weight: 600;">Nội Dung Cần Đọc / Phát:</label>
-                <textarea id="input-tts-custom-text" rows="4" style="width: 100%; flex: 1; min-height: 85px; font-size: 13px; padding: 8px; border-radius: 6px; background: var(--bg-input); border: 1px solid var(--border-card); color: #fff; resize: vertical;">Chào mừng quý khán giả thân yêu đã đến với phòng phát sóng trực tiếp PTPlay! Hãy thả tim và bình luận để cùng hòa nhịp trò chơi nhé!</textarea>
+                <label for="input-tts-custom-text" style="font-weight: 600;">Nội dung:</label>
+                <textarea id="input-tts-custom-text" rows="4" style="width: 100%; flex: 1; min-height: 85px; font-size: 13px; padding: 8px; border-radius: 6px; background: var(--bg-input); border: 1px solid var(--border-card); color: #fff; resize: vertical;">Chào mừng quý khán giả đã đến với PTPlay! Hãy thả tim và bình luận cùng chơi nhé!</textarea>
               </div>
 
               <!-- Quick Sentence Presets -->
               <div style="margin-bottom: 12px;">
-                <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Mẫu Câu Phổ Biến Nhanh:</label>
+                <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Mẫu nhanh:</label>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('welcome')">👋 Chào Khán Giả</button>
-                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('gift')">🎁 Cảm Ơn Quà Khủng</button>
-                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('hype')">🔥 Hào Hứng Cao Trào</button>
-                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('english')">🇺🇸 English Shoutout</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('welcome')">👋 Chào</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('gift')">🎁 Cảm ơn quà</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('hype')">🔥 Cao trào</button>
+                  <button class="btn-outline" style="font-size: 11px; padding: 3px 8px;" onclick="setSampleTtsText('english')">🇺🇸 English</button>
                 </div>
               </div>
 
               <!-- Action Buttons -->
               <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                 <button class="btn-gold" style="flex: 1; padding: 10px 14px; font-weight: 600;" onclick="testLocalAdminTts()">
-                  🔊 Phát Thử Tại Trình Duyệt (Local Preview)
+                  🔊 Nghe Thử
                 </button>
                 <button class="btn-green" style="flex: 1; padding: 10px 14px; font-weight: 600;" onclick="broadcastCurrentTts()">
-                  🚀 Phát Vào Game (Broadcast Bridge)
+                  🚀 Phát Vào Game
                 </button>
               </div>
             </div>
@@ -2326,10 +2318,9 @@
           <!-- UNIFIED 5-GAME SOUNDBOARD MATRIX -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🎹 Bàn Điều Khiển Phát Nhanh Âm Thanh Cho 5 Game (Unified Soundboard Matrix)</div>
-              <span class="badge badge-gold">20 PRESET SOUNDBOARD LINES</span>
+              <div class="card-title">🎹 Phát Nhanh Theo Game</div>
+              <span class="badge badge-gold">20 MẪU</span>
             </div>
-            <p class="card-desc">Bấm <strong>🔊 Thử</strong> để nghe trước tại Admin, hoặc bấm <strong>🚀 Phát Game</strong> để phát thanh trực tiếp vào game đang stream qua GameBridge.</p>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 10px;">
 
