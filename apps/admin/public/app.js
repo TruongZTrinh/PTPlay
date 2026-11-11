@@ -3912,13 +3912,7 @@ function initKeyboardShortcuts() {
 }
 
 function updateClockAndUptime() {
-  const clockEl = document.getElementById('header-clock');
   const uptimeEl = document.getElementById('sidebar-uptime');
-
-  if (clockEl) {
-    clockEl.innerText = new Date().toLocaleTimeString();
-  }
-
   if (uptimeEl) {
     const elapsedSec = Math.floor((Date.now() - sessionStartTime) / 1000);
     const hrs = String(Math.floor(elapsedSec / 3600)).padStart(2, '0');
