@@ -1997,6 +1997,7 @@ export class GameBridgeServer {
             'rebus.follow',
             'rebus.add_time',
             'rebus.ceremony',
+            'rebus.test_top5_swap',
             'rebus.next_puzzle',
             'rebus.skip_puzzle',
             'rebus.reset',

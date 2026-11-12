@@ -82,8 +82,8 @@ export class RebusLiveEventRouter {
   public handleCommand(cmd: GameCommand): void {
     if (!cmd || !cmd.action) return;
 
-    const userId = cmd.user?.userId || `user_${Date.now()}`;
-    const nickname = cmd.user?.nickname || 'Khán giả';
+    const userId = String(cmd.metadata?.userId || cmd.user?.userId || `user_${Date.now()}`);
+    const nickname = String(cmd.metadata?.nickname || cmd.user?.nickname || 'Khán giả');
     const avatarUrl = (cmd.metadata?.profilePictureUrl as string) || undefined;
 
     switch (cmd.action) {
@@ -238,7 +238,10 @@ export class RebusLiveEventRouter {
       }
 
       case 'rebus.test_top5_swap': {
-        this.runTestTop5Swap();
+        this.runTestTop5Swap(
+          cmd.metadata?.userId ? String(cmd.metadata.userId) : undefined,
+          cmd.metadata?.nickname ? String(cmd.metadata.nickname) : undefined
+        );
         break;
       }
 
@@ -297,14 +300,15 @@ export class RebusLiveEventRouter {
     }
   }
 
-  public runTestTop5Swap(): void {
+  public runTestTop5Swap(targetUserId?: string, targetNickname?: string): void {
     const players = this.roster.getAllPlayers();
     const scored = players.filter((p) => p.score > 0).sort((a, b) => b.score - a.score);
 
     // Ensure at least 5 players already hold Top-5 scores so a challenger can kick one out.
     if (scored.length < 5) {
       const seedScores = [500, 400, 300, 200, 100];
-      players.slice(0, 5).forEach((p, idx) => {
+      const candidates = players.filter((p) => p.userId !== targetUserId);
+      candidates.slice(0, 5).forEach((p, idx) => {
         if (p.score <= 0) {
           this.roster.addGiftPoints(p.userId, seedScores[idx] || 100);
         }
@@ -313,10 +317,17 @@ export class RebusLiveEventRouter {
 
     const updatedScored = this.roster.getAllPlayers().filter((p) => p.score > 0).sort((a, b) => b.score - a.score);
     const top5Ids = new Set(updatedScored.slice(0, 5).map((p) => p.userId));
-    let challenger = this.roster.getAllPlayers().find((p) => !top5Ids.has(p.userId));
+
+    let challenger = targetUserId ? this.roster.getPlayer(targetUserId) : undefined;
+    if (!challenger && targetUserId) {
+      challenger = this.roster.registerOrGet(targetUserId, targetNickname || 'Thám Tử Mới').player;
+    }
+    if (!challenger || top5Ids.has(challenger.userId)) {
+      challenger = this.roster.getAllPlayers().find((p) => !top5Ids.has(p.userId));
+    }
     if (!challenger) {
-      const id = `test_top5_${Date.now()}`;
-      challenger = this.roster.registerOrGet(id, `Siêu Nhân ${Math.floor(Math.random() * 90 + 10)}`).player;
+      const id = targetUserId || `test_top5_${Date.now()}`;
+      challenger = this.roster.registerOrGet(id, targetNickname || `Siêu Nhân ${Math.floor(Math.random() * 90 + 10)}`).player;
     }
 
     const targetBeat = (updatedScored[1]?.score || 400) + 150;

@@ -90,19 +90,19 @@ export class SeatAllocator {
   }
 
   private initWaitingSpots(): void {
-    // 6 rows x 2 staggered columns = 12 waiting spots with room for each viewer's name tag.
-    const rowYs = [638, 686, 734, 782, 830, 876];
+    // 6 rows x 2 staggered columns = 12 waiting spots below the ĐANG CHỜ pill.
+    const rowYs = [664, 708, 752, 796, 840, 882];
     const colXs = [450, 493];
     this.waitingSpots = [];
     let index = 0;
     rowYs.forEach((baseY, r) => {
       colXs.forEach((x, c) => {
-        const yOffset = c === 1 ? -4 : 3;
+        const yOffset = c === 1 ? -3 : 3;
         this.waitingSpots.push({
           index,
           x,
           y: baseY + yOffset,
-          scale: 0.36,
+          scale: 0.32,
           depth: 31 + r * 2 + c,
           assignedUserId: null,
         });

@@ -129,13 +129,14 @@ export class RebusScene extends Phaser.Scene {
     room.lineStyle(1.5, 0xb86b30, 0.45);
     room.strokeRoundedRect(432, 608, 80, 282, 10);
 
-    room.fillStyle(0x9a3412, 1);
-    room.fillRoundedRect(435, 576, 74, 25, 12);
-    room.lineStyle(1.5, 0xfacc15, 1);
-    room.strokeRoundedRect(435, 576, 74, 25, 12);
+    const waitHeader = this.add.graphics().setDepth(65);
+    waitHeader.fillStyle(0x9a3412, 1);
+    waitHeader.fillRoundedRect(435, 576, 74, 25, 12);
+    waitHeader.lineStyle(1.5, 0xfacc15, 1);
+    waitHeader.strokeRoundedRect(435, 576, 74, 25, 12);
     this.add.text(472, 588, 'ĐANG CHỜ', {
       fontFamily: 'system-ui, sans-serif', fontSize: '10.5px', color: '#fff7d6', fontStyle: 'bold',
-    }).setOrigin(0.5).setDepth(13);
+    }).setOrigin(0.5).setDepth(66);
 
     const deskLayers = new Map<number, Phaser.GameObjects.Graphics>();
 

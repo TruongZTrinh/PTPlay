@@ -2562,6 +2562,33 @@ async function sendMockRebusGuess(guess) {
   await sendMockChat('rebus', nick, guess);
 }
 
+function getRebusJourneyActor() {
+  const input = document.getElementById('input-rebus-journey-name');
+  const nickname = (input?.value || 'Thám Tử Tí Hon').trim() || 'Thám Tử Tí Hon';
+  const userId = 'journey_' + nickname.toLowerCase().replace(/[^a-z0-9]/gi, '_');
+  return { userId, nickname };
+}
+
+async function testRebusJourneyStep(step) {
+  const { userId, nickname } = getRebusJourneyActor();
+  if (step === 1) {
+    await sendRebusCommand('join', { userId, nickname });
+    showToast(`👋 Bước 1: ${nickname} đã vô Sảnh Chờ (ĐANG CHỜ)!`, 'success');
+  } else if (step === 2) {
+    await sendRebusCommand('follow', { userId, nickname });
+    showToast(`🪑 Bước 2: ${nickname} đã đi vô Bàn Nhỏ!`, 'success');
+  } else if (step === 3) {
+    await sendRebusCommand('test_top5_swap', { userId, nickname });
+    showToast(`🚀 Bước 3: ${nickname} đang nhảy lên Đá Bàn Top 5!`, 'success');
+  }
+}
+
+async function runFullRebusJourney() {
+  await testRebusJourneyStep(1);
+  setTimeout(() => testRebusJourneyStep(2), 2200);
+  setTimeout(() => testRebusJourneyStep(3), 4600);
+}
+
 async function testRebusCeremony() {
   playSound('celebrate');
   const mockTopPlayers = [
