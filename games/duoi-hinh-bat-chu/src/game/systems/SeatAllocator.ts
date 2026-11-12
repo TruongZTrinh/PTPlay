@@ -176,33 +176,34 @@ export class SeatAllocator {
   public rebalanceByRank(rankedUserIds: string[]): RebalanceResult {
     const top5Ids = rankedUserIds.slice(0, 5);
     const prevTop5BySlot = new Map<number, string | null>();
-    for (let i = 0; i < 5; i++) {
-      prevTop5BySlot.set(i, this.seats[i].assignedUserId);
-    }
+    const prevSeatByUser = new Map<string, SeatSlot>();
+    this.seats.forEach((s) => {
+      if (s.index < 5) {
+        prevTop5BySlot.set(s.index, s.assignedUserId);
+      }
+      if (s.assignedUserId) {
+        prevSeatByUser.set(s.assignedUserId, s);
+      }
+    });
 
     const moves: SeatMove[] = [];
     const top5Takeovers: { challengerId: string; displacedId?: string; rank: number }[] = [];
 
-    // 1. Identify any players currently in Top-5 seats who are no longer in top5Ids
+    // 1. Identify any players currently in Top-5 seats who are no longer in top5Ids, and clear all Top-5 slots
     const displacedIds: string[] = [];
     for (let i = 0; i < 5; i++) {
       const occupant = this.seats[i].assignedUserId;
       if (occupant && !top5Ids.includes(occupant)) {
         displacedIds.push(occupant);
-        this.seats[i].assignedUserId = null;
       }
+      this.seats[i].assignedUserId = null;
     }
 
-    // 2. Clear waiting or lower seats for new Top-5 entrants and place them into seats[0..4]
+    // 2. Clear waiting or lower seats for Top-5 entrants and place them cleanly into seats[0..4]
     top5Ids.forEach((uid, rankIdx) => {
       const targetSeat = this.seats[rankIdx];
-      const currentSeat = this.getAssignedSeat(uid);
-      if (currentSeat && currentSeat.index === rankIdx) {
-        return;
-      }
-
-      const wasTop5 = currentSeat?.isTop5 ?? false;
-      if (currentSeat) {
+      const currentSeat = prevSeatByUser.get(uid);
+      if (currentSeat && !currentSeat.isTop5) {
         currentSeat.assignedUserId = null;
       }
       const wait = this.getAssignedWaitingSpot(uid);
@@ -210,8 +211,14 @@ export class SeatAllocator {
         wait.assignedUserId = null;
       }
 
-      const prevOccupant = prevTop5BySlot.get(rankIdx) || undefined;
       targetSeat.assignedUserId = uid;
+
+      if (currentSeat && currentSeat.index === rankIdx) {
+        return;
+      }
+
+      const wasTop5 = currentSeat?.isTop5 ?? false;
+      const prevOccupant = prevTop5BySlot.get(rankIdx) || undefined;
 
       if (!wasTop5) {
         const displacedId = displacedIds.length > 0 ? displacedIds[0] : (prevOccupant && prevOccupant !== uid ? prevOccupant : undefined);
