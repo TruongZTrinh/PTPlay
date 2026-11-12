@@ -20,6 +20,8 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
   private singleImageSprite: Phaser.GameObjects.Image;
   private singleImageFrame: Phaser.GameObjects.Graphics;
   private imageSideLabels: Phaser.GameObjects.Text[] = [];
+  private activePuzzleKey: string | null = null;
+  private loadingPuzzleKey: string | null = null;
 
   private hintBannerText: Phaser.GameObjects.Text;
   private hintBannerBg: Phaser.GameObjects.Graphics;
@@ -366,21 +368,25 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     if (puzzle.image) {
       const pKey = `puzzle_${puzzle.id}`;
       if (this.scene.textures.exists(pKey)) {
-        this.singleImageSprite.setTexture(pKey);
-        try {
-          const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
-          const w = tex.width || 400;
-          const h = tex.height || 300;
-          const maxW = 380;
-          const maxH = 138;
-          const scale = Math.min(maxW / w, maxH / h);
-          const dispW = w * scale;
-          const dispH = h * scale;
-          this.singleImageSprite.setDisplaySize(dispW, dispH);
-          this.imageSideLabels.forEach(label => label.setVisible(dispW <= 225));
-        } catch {
-          this.singleImageSprite.setDisplaySize(380, 138);
-          this.imageSideLabels.forEach(label => label.setVisible(false));
+        this.loadingPuzzleKey = null;
+        this.applySingleImageTexture(pKey);
+        this.releaseUnusedPuzzleTexture(pKey);
+        this.activePuzzleKey = pKey;
+      } else {
+        this.loadingPuzzleKey = pKey;
+        this.singleImageSprite.setVisible(false);
+        this.imageSideLabels.forEach((label) => label.setVisible(false));
+        const url = `assets/rebus-v1/puzzles/${puzzle.image}`;
+        this.scene.load.once(`filecomplete-image-${pKey}`, () => {
+          if (this.loadingPuzzleKey !== pKey || !this.scene.textures.exists(pKey)) return;
+          this.applySingleImageTexture(pKey);
+          this.releaseUnusedPuzzleTexture(pKey);
+          this.activePuzzleKey = pKey;
+          this.loadingPuzzleKey = null;
+        });
+        this.scene.load.image(pKey, url);
+        if (!this.scene.load.isLoading()) {
+          this.scene.load.start();
         }
       }
       this.singleImageContainer.setVisible(true);
@@ -390,6 +396,8 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       this.hintBannerText.setText(ctaText);
       this.hintBannerText.setColor(isHard ? '#fde047' : '#fff7d6');
     } else {
+      this.loadingPuzzleKey = null;
+      this.releaseUnusedPuzzleTexture(null);
       this.singleImageContainer.setVisible(false);
       this.clueCard1.setVisible(true);
       this.plusSign.setVisible(true);
@@ -413,6 +421,39 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     // Render initial empty letter boxes
     this.renderLetterBoxes(puzzle.answer, false);
     this.updateTimer(puzzle.durationSec || 20, puzzle.durationSec || 20);
+  }
+
+  private applySingleImageTexture(pKey: string): void {
+    this.singleImageSprite.setTexture(pKey);
+    this.singleImageSprite.setVisible(true);
+    try {
+      const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
+      const w = tex.width || 400;
+      const h = tex.height || 300;
+      const maxW = 380;
+      const maxH = 138;
+      const scale = Math.min(maxW / w, maxH / h);
+      const dispW = w * scale;
+      const dispH = h * scale;
+      this.singleImageSprite.setDisplaySize(dispW, dispH);
+      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 225));
+    } catch {
+      this.singleImageSprite.setDisplaySize(380, 138);
+      this.imageSideLabels.forEach((label) => label.setVisible(false));
+    }
+  }
+
+  private releaseUnusedPuzzleTexture(keepKey: string | null): void {
+    const prevKey = this.activePuzzleKey;
+    if (keepKey === null) {
+      if (this.scene.textures.exists('props_board')) {
+        this.singleImageSprite.setTexture('props_board');
+      }
+      this.activePuzzleKey = null;
+    }
+    if (prevKey && prevKey !== keepKey && this.scene.textures.exists(prevKey)) {
+      this.scene.textures.remove(prevKey);
+    }
   }
 
   public renderLetterBoxes(answer: string, revealAll: boolean, revealedFirstChar?: string): void {

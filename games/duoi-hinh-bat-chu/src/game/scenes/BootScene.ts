@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import rawPuzzles from '../../data/puzzles.json';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -106,12 +105,8 @@ export class BootScene extends Phaser.Scene {
     this.load.image('effect_correct', `${assetPath}/effects/effect_correct.png`);
     this.load.image('effect_wrong', `${assetPath}/effects/effect_wrong.png`);
 
-    // 8. Authentic Picture Puzzles
-    (rawPuzzles as any[]).forEach((p) => {
-      if (p.image) {
-        this.load.image(`puzzle_${p.id}`, `${assetPath}/puzzles/${p.image}`);
-      }
-    });
+    // 8. Authentic Picture Puzzles are lazy-loaded per round in EaselBoardPresentation
+    // to avoid preloading 950+ textures into GPU/RAM at startup.
 
     // 9. Game Style UI & Mode UI Assets
     this.load.image('ui_hud_top', `${assetPath}/ui/hud_top.png`);
