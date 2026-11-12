@@ -109,9 +109,9 @@ export class StreamerModal extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.add(simLabel);
 
-    this.createButton(140, 470, '👤 Test Join Live', 0x0284c7, () => {
+    this.createButton(140, 470, '👤 Test Join (Khu Chờ)', 0x0284c7, () => {
       const id = `test_user_${Date.now()}`;
-      this.roster.registerOrGet(id, `Thám tử ${Math.floor(Math.random() * 900 + 100)}`);
+      this.roster.registerOrGet(id, `Thám tử ${Math.floor(Math.random() * 900 + 100)}`, undefined, undefined, 'waiting');
     });
 
     this.createButton(380, 470, '🎯 Đoán Đúng Đáp Án', 0x10b981, () => {

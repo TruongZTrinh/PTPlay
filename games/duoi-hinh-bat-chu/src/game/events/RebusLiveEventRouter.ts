@@ -237,6 +237,11 @@ export class RebusLiveEventRouter {
         break;
       }
 
+      case 'rebus.test_top5_swap': {
+        this.runTestTop5Swap();
+        break;
+      }
+
       case 'rebus.set_voice':
       case 'set_voice':
       case 'rebus.tts_config':
@@ -289,6 +294,38 @@ export class RebusLiveEventRouter {
         else if (trackId) mgr.playTrack(trackId);
         break;
       }
+    }
+  }
+
+  public runTestTop5Swap(): void {
+    const players = this.roster.getAllPlayers();
+    const scored = players.filter((p) => p.score > 0).sort((a, b) => b.score - a.score);
+
+    // Ensure at least 5 players already hold Top-5 scores so a challenger can kick one out.
+    if (scored.length < 5) {
+      const seedScores = [500, 400, 300, 200, 100];
+      players.slice(0, 5).forEach((p, idx) => {
+        if (p.score <= 0) {
+          this.roster.addGiftPoints(p.userId, seedScores[idx] || 100);
+        }
+      });
+    }
+
+    const updatedScored = this.roster.getAllPlayers().filter((p) => p.score > 0).sort((a, b) => b.score - a.score);
+    const top5Ids = new Set(updatedScored.slice(0, 5).map((p) => p.userId));
+    let challenger = this.roster.getAllPlayers().find((p) => !top5Ids.has(p.userId));
+    if (!challenger) {
+      const id = `test_top5_${Date.now()}`;
+      challenger = this.roster.registerOrGet(id, `Siêu Nhân ${Math.floor(Math.random() * 90 + 10)}`).player;
+    }
+
+    const targetBeat = (updatedScored[1]?.score || 400) + 150;
+    const boost = Math.max(200, targetBeat - challenger.score);
+    this.roster.addGiftPoints(challenger.userId, boost);
+    this.scoreboard.updateLeaderboard(this.roster.getAllPlayers());
+
+    if (this.engine.currentPuzzle) {
+      this.engine.submitGuess(challenger.userId, this.engine.currentPuzzle.answer);
     }
   }
 }

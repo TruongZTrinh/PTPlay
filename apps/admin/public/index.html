@@ -1450,6 +1450,7 @@
                 <button class="btn-gold" onclick="sendRebusCommand('next_puzzle')">⏭ Câu Khác</button>
                 <button class="btn-primary" onclick="sendRebusCommand('add_time', { seconds: 10 })">🌹 +10s</button>
                 <button class="btn-gold" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; font-weight: 700; box-shadow: 0 0 14px rgba(245, 158, 11, 0.45); border: 1px solid #fde047;" onclick="testRebusCeremony()">🏆 Test Vinh Danh</button>
+                <button class="btn-green" style="background: linear-gradient(135deg, #059669, #10b981); color: #fff; font-weight: 700;" onclick="sendRebusCommand('test_top5_swap')">🚀 Test Đá Bàn Top 5</button>
                 <button class="btn-purple" style="background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; font-weight: 600;" onclick="sendRebusCommand('ceremony')">🏆 Trao Giải</button>
                 <button class="btn-blue" onclick="sendMockFollow('rebus', 'FanCứngBấmFollow')">➕ Follow (Gợi Ý 1)</button>
                 <button class="btn-red" onclick="sendRebusCommand('skip_puzzle')">🔄 Bỏ Qua</button>
@@ -1493,6 +1494,7 @@
                   <button class="btn-blue" onclick="sendMockFollow('rebus', 'KhánGiảBấmFollow')">➕ Khán Giả Bấm Follow Kênh</button>
                   <button class="btn-green" onclick="['Cường Bo', 'Mai Trang', 'Hồng Nhung'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">👥 3 Thám Tử Vào Bàn</button>
                   <button class="btn-gold" onclick="['Bé Na', 'Minh Quân', 'Lan Anh', 'Huy', 'Khánh Vy'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 200))">🏫 5 Bàn Thám Tử Đầy Đủ</button>
+                  <button class="btn-blue" onclick="['Tuấn Anh', 'Bảo Ngọc', 'Hoàng Long', 'Thảo Vy', 'Quốc Bảo', 'Ngọc Hân', 'Gia Huy', 'Yến Nhi'].forEach((n, i) => setTimeout(() => sendMockChat('rebus', n, 'JOIN'), i * 150))">👥 Test 8 Người Vào Khu Chờ</button>
                 </div>
               </div>
 
