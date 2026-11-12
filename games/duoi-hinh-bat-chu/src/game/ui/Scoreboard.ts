@@ -38,13 +38,14 @@ export class Scoreboard extends Phaser.GameObjects.Container {
       fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98602c', fontStyle: 'bold',
     }).setOrigin(0.5));
     const interactionRules = [
-      { y: 464, label: '🌹 Hoa Hồng: Mở chữ +10s', color: '#fff0bf' },
-      { y: 481, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
-      { y: 498, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
+      { y: 459, label: '🌹 Hoa Hồng: Mở chữ +10s', color: '#fff0bf' },
+      { y: 474, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
+      { y: 489, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
+      { y: 504, label: '💖 Heart Me: Đá người ngủ vào bàn', color: '#fde68a' },
     ];
     for (const rule of interactionRules) {
-      this.add(scene.add.text(40, rule.y, rule.label, {
-        fontFamily: 'system-ui, sans-serif', fontSize: '10.5px', color: rule.color, fontStyle: 'bold',
+      this.add(scene.add.text(36, rule.y, rule.label, {
+        fontFamily: 'system-ui, sans-serif', fontSize: '9.8px', color: rule.color, fontStyle: 'bold',
       }).setOrigin(0, 0.5));
     }
 
@@ -98,7 +99,7 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     g.fillStyle(0xffedc6, 1);
     g.fillRoundedRect(122, 389, 86, 55, 8);
     g.fillStyle(0x07533e, 1);
-    g.fillRoundedRect(30, 452, 178, 58, 8);
+    g.fillRoundedRect(30, 449, 178, 64, 8);
 
     const rankColors = [0xc7952b, 0x8d9c9b, 0xb87c4b, 0xf0e4c8, 0xf0e4c8];
     for (let i = 0; i < 5; i++) {
