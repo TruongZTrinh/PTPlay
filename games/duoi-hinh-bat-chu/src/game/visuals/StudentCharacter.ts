@@ -36,9 +36,9 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     this.skinId = SKIN_KEYS[player.skinIndex % SKIN_KEYS.length];
     const baseKey = `student_${this.skinId}`;
     const textureKey = scene.textures.exists(baseKey) ? baseKey : 'props_desk';
-    this.chibiSprite = scene.add.sprite(0, 14, textureKey);
+    this.chibiSprite = scene.add.sprite(0, 12, textureKey);
     this.chibiSprite.setOrigin(0.5, 0.85);
-    this.chibiSprite.setScale(0.72);
+    this.chibiSprite.setScale(0.76);
     this.add(this.chibiSprite);
 
     // Overlay UI sits above the desk front layer (depth + 2)
@@ -48,12 +48,12 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     // Desk plate
     const plate = scene.add.graphics();
     plate.fillStyle(0x0f172a, 0.88);
-    plate.fillRoundedRect(-52, 8, 104, 34, 8);
+    plate.fillRoundedRect(-54, 6, 108, 34, 8);
     plate.lineStyle(1.5, player.team === 'blue' ? 0x38bdf8 : 0xf59e0b, 0.85);
-    plate.strokeRoundedRect(-52, 8, 104, 34, 8);
+    plate.strokeRoundedRect(-54, 6, 108, 34, 8);
     this.uiOverlay.add(plate);
 
-    this.nameText = scene.add.text(0, 17, player.nickname, {
+    this.nameText = scene.add.text(0, 15, player.nickname, {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '13px',
       color: '#ffffff',
@@ -61,7 +61,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.uiOverlay.add(this.nameText);
 
-    this.scoreText = scene.add.text(0, 32, `${player.score}`, {
+    this.scoreText = scene.add.text(0, 30, `${player.score}`, {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
       color: '#facc15',
@@ -154,7 +154,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     const delay = Math.random() * 1000;
     this.scene.tweens.add({
       targets: this.chibiSprite,
-      y: 11,
+      y: 9,
       duration: 1200 + Math.random() * 400,
       yoyo: true,
       repeat: -1,

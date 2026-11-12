@@ -119,15 +119,15 @@ export class RebusScene extends Phaser.Scene {
     const deskLayers = new Map<number, Phaser.GameObjects.Graphics>();
 
     this.seatAllocator.seats.forEach((seat) => {
-      // Back chair/cushion behind the student
+      // Back chair/cushion behind the student (compact 58px desk width)
       room.fillStyle(0x8b451f, 0.7);
-      room.fillRoundedRect(seat.x - 44, seat.y - 38, 88, 46, 11);
+      room.fillRoundedRect(seat.x - 29, seat.y - 34, 58, 38, 9);
       room.fillStyle(0xffe7ac, 1);
-      room.fillRoundedRect(seat.x - 42, seat.y - 40, 84, 44, 9);
+      room.fillRoundedRect(seat.x - 27, seat.y - 36, 54, 36, 8);
       room.lineStyle(1.5, 0xb86b30, 1);
-      room.strokeRoundedRect(seat.x - 42, seat.y - 40, 84, 44, 9);
+      room.strokeRoundedRect(seat.x - 27, seat.y - 36, 54, 36, 8);
       room.fillStyle(0xc7814d, 0.55);
-      room.fillCircle(seat.x, seat.y - 19, 11);
+      room.fillCircle(seat.x, seat.y - 18, 8);
 
       // Front wooden desk in front of the student's legs so they appear seated
       let desk = deskLayers.get(seat.depth);
@@ -136,13 +136,13 @@ export class RebusScene extends Phaser.Scene {
         deskLayers.set(seat.depth, desk);
       }
       desk.fillStyle(0x8b451f, 0.75);
-      desk.fillRoundedRect(seat.x - 45, seat.y - 2, 90, 23, 6);
+      desk.fillRoundedRect(seat.x - 30, seat.y - 3, 60, 19, 5);
       desk.fillStyle(0xe5a25b, 1);
-      desk.fillRoundedRect(seat.x - 44, seat.y - 2, 88, 21, 5);
+      desk.fillRoundedRect(seat.x - 29, seat.y - 3, 58, 17, 4);
       desk.lineStyle(1.5, 0x9c5522, 1);
-      desk.strokeRoundedRect(seat.x - 44, seat.y - 2, 88, 21, 5);
+      desk.strokeRoundedRect(seat.x - 29, seat.y - 3, 58, 17, 4);
       desk.fillStyle(0xffdf99, 1);
-      desk.fillRoundedRect(seat.x - 41, seat.y, 82, 6, 3);
+      desk.fillRoundedRect(seat.x - 27, seat.y - 1, 54, 5, 2.5);
     });
   }
 

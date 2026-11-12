@@ -11,25 +11,25 @@ export interface SeatSlot {
 
 export class SeatAllocator {
   public seats: SeatSlot[] = [];
-  public readonly totalSeats: number = 20;
+  public readonly totalSeats: number = 28;
 
   constructor() {
     this.initSeats();
   }
 
   private initSeats(): void {
-    // A compact classroom grid keeps every participant visible in portrait video.
+    // 4 rows x 7 cols = 28 compact desks sized proportionally to each seated student.
     const rowsConfig = [
-      { count: 5, y: 668, scale: 0.48, depth: 30 },
-      { count: 5, y: 740, scale: 0.48, depth: 35 },
-      { count: 5, y: 812, scale: 0.48, depth: 40 },
-      { count: 5, y: 884, scale: 0.48, depth: 45 },
+      { count: 7, y: 668, scale: 0.44, depth: 30 },
+      { count: 7, y: 740, scale: 0.44, depth: 35 },
+      { count: 7, y: 812, scale: 0.44, depth: 40 },
+      { count: 7, y: 884, scale: 0.44, depth: 45 },
     ];
 
     let index = 0;
     rowsConfig.forEach((cfg, rowIdx) => {
-      const startX = 82;
-      const stepX = 94;
+      const startX = 66;
+      const stepX = 68;
       for (let c = 0; c < cfg.count; c++) {
         this.seats.push({
           index,
