@@ -2589,6 +2589,21 @@ async function runFullRebusJourney() {
   setTimeout(() => testRebusJourneyStep(3), 4600);
 }
 
+async function addRebusTopPlayer() {
+  const nameInput = document.getElementById('input-rebus-vip-name');
+  const scoreInput = document.getElementById('input-rebus-vip-score');
+  const nickname = (nameInput?.value || 'Ngôi Sao Mới').trim() || 'Ngôi Sao Mới';
+  const score = Math.max(10, Number(scoreInput?.value) || 350);
+  const userId = 'vip_' + nickname.toLowerCase().replace(/[^a-z0-9]/gi, '_');
+  await sendRebusCommand('add_top_player', { userId, nickname, score });
+  showToast(`🏆 Đã thêm ${nickname} (${score}đ) vào Bảng Vinh Danh & Bàn Đầu!`, 'success');
+}
+
+async function seedRebusTop5Preset() {
+  await sendRebusCommand('add_top_player', { presetTop5: true });
+  showToast('🏆 Đã nạp đủ 5 người vào Bảng Vinh Danh & 5 Bàn Đầu!', 'success');
+}
+
 async function testRebusCeremony() {
   playSound('celebrate');
   const mockTopPlayers = [

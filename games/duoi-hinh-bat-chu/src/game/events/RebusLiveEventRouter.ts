@@ -245,6 +245,11 @@ export class RebusLiveEventRouter {
         break;
       }
 
+      case 'rebus.add_top_player': {
+        this.handleAddTopPlayer(cmd.metadata || {});
+        break;
+      }
+
       case 'rebus.set_voice':
       case 'set_voice':
       case 'rebus.tts_config':
@@ -338,6 +343,46 @@ export class RebusLiveEventRouter {
     if (this.engine.currentPuzzle) {
       this.engine.submitGuess(challenger.userId, this.engine.currentPuzzle.answer);
     }
+  }
+
+  public handleAddTopPlayer(meta: Record<string, unknown>): void {
+    if (meta.presetTop5) {
+      const presets = [
+        { userId: 'vip_top_1', nickname: 'Minh Anh', score: 500 },
+        { userId: 'vip_top_2', nickname: 'Tuấn Kiệt', score: 400 },
+        { userId: 'vip_top_3', nickname: 'Bảo Châu', score: 300 },
+        { userId: 'vip_top_4', nickname: 'Gia Hưng', score: 200 },
+        { userId: 'vip_top_5', nickname: 'Khánh Linh', score: 100 },
+      ];
+      presets.forEach((p) => {
+        const res = this.roster.registerOrGet(p.userId, p.nickname);
+        const delta = p.score - res.player.score;
+        if (delta > 0) {
+          this.roster.addGiftPoints(p.userId, delta);
+        } else {
+          res.player.score = p.score;
+        }
+      });
+      this.scoreboard.updateLeaderboard(this.roster.getAllPlayers());
+      this.engine.triggerSeatRebalance();
+      this.scoreboard.setChatTicker('🏆 Đã nạp Top 5 vào Bảng Vinh Danh & Bàn Đầu!', 'Admin');
+      return;
+    }
+
+    const nickname = String(meta.nickname || 'Ngôi Sao Mới').trim() || 'Ngôi Sao Mới';
+    const userId = String(meta.userId || `vip_${nickname.toLowerCase().replace(/[^a-z0-9]/gi, '_')}_${Date.now()}`);
+    const targetScore = Math.max(10, Number(meta.score) || 350);
+
+    const res = this.roster.registerOrGet(userId, nickname);
+    const delta = targetScore - res.player.score;
+    if (delta > 0) {
+      this.roster.addGiftPoints(userId, delta);
+    } else {
+      res.player.score = targetScore;
+    }
+    this.scoreboard.updateLeaderboard(this.roster.getAllPlayers());
+    this.engine.triggerSeatRebalance();
+    this.scoreboard.setChatTicker(`vừa được ghi ${targetScore}đ lên Bảng Vinh Danh!`, nickname);
   }
 }
 

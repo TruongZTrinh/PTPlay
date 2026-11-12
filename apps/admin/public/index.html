@@ -1509,6 +1509,16 @@
                 </div>
               </div>
 
+              <div style="margin-bottom: 12px; padding: 10px; border-radius: 8px; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.35);">
+                <label style="font-size: 11px; color: #fbbf24; font-weight: 700; display: block; margin-bottom: 6px;">🏆 Thêm Người Vào Bảng Vinh Danh & 5 Bàn Đầu:</label>
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                  <input type="text" id="input-rebus-vip-name" value="Ngôi Sao Mới" placeholder="Tên người chơi..." style="width: 135px; padding: 5px 8px; font-size: 12px;">
+                  <input type="number" id="input-rebus-vip-score" value="350" min="10" max="9999" step="50" style="width: 75px; padding: 5px 8px; font-size: 12px;">
+                  <button class="btn-gold" onclick="addRebusTopPlayer()">➕ Add Vinh Danh & Bàn Đầu</button>
+                  <button class="btn-outline" onclick="seedRebusTop5Preset()">🏆 Nạp Đủ 5 Người Top 5</button>
+                </div>
+              </div>
+
               <div style="margin-bottom: 12px;">
                 <label style="font-size: 11px; color: var(--text-muted);">Bình Luận Đoán Từ / Thành Ngữ Mẫu:</label>
                 <div class="btn-group" style="margin-top: 4px;">

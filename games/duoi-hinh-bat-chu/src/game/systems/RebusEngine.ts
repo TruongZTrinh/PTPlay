@@ -356,9 +356,13 @@ export class RebusEngine {
     }, this.config.revealDurationMs);
   }
 
+  public triggerSeatRebalance(): number {
+    return Math.max(0, this.events.onSeatRebalance?.() || 0);
+  }
+
   private celebrateAndContinue(): void {
     this.setState('celebrate');
-    const extraRebalanceMs = Math.max(0, this.events.onSeatRebalance?.() || 0);
+    const extraRebalanceMs = this.triggerSeatRebalance();
 
     this.stateTimerHandle = setTimeout(() => {
       // Automatic Grand Championship Ceremony every 30 questions
