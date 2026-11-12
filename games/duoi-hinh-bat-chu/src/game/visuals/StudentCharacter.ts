@@ -26,6 +26,8 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   private streakBadge: Phaser.GameObjects.Container;
   private streakText: Phaser.GameObjects.Text;
   private poseTimer?: Phaser.Time.TimerEvent;
+  private idleTween?: Phaser.Tweens.Tween;
+  private isWalkingIn: boolean = false;
 
   constructor(scene: Phaser.Scene, player: RebusPlayerRecord, avatarManager: AvatarManager, x: number, y: number, scale: number) {
     super(scene, x, y);
@@ -151,8 +153,9 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   }
 
   private startIdleAnimation(): void {
+    this.idleTween?.stop();
     const delay = Math.random() * 1000;
-    this.scene.tweens.add({
+    this.idleTween = this.scene.tweens.add({
       targets: this.chibiSprite,
       y: 9,
       duration: 1200 + Math.random() * 400,
@@ -161,6 +164,67 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
       delay,
       ease: 'Sine.easeInOut',
     });
+  }
+
+  public walkInFromEntrance(delayMs: number = 0): void {
+    const targetX = this.x;
+    const targetY = this.y;
+    const startX = targetX <= 270 ? -24 : 564;
+    const walkDuration = Math.round(380 + Math.abs(targetX - startX) * 1.4);
+
+    this.isWalkingIn = true;
+    this.idleTween?.stop();
+    this.setPosition(startX, targetY);
+    this.setAlpha(0);
+    this.uiOverlay.setAlpha(0);
+
+    const beginWalk = () => {
+      if (!this.scene || !this.chibiSprite.scene) return;
+      this.scene.tweens.add({
+        targets: this,
+        alpha: 1,
+        duration: 160,
+        ease: 'Quad.easeOut',
+      });
+
+      const stepTween = this.scene.tweens.add({
+        targets: this.chibiSprite,
+        angle: { from: -5, to: 5 },
+        y: 7,
+        duration: 120,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+
+      this.scene.tweens.add({
+        targets: this,
+        x: targetX,
+        duration: walkDuration,
+        ease: 'Cubic.easeOut',
+        onComplete: () => {
+          stepTween.stop();
+          this.isWalkingIn = false;
+          if (!this.scene || !this.chibiSprite.scene) return;
+          this.chibiSprite.setAngle(0);
+          this.chibiSprite.setY(12);
+          this.uiOverlay.setPosition(targetX, targetY);
+          this.scene.tweens.add({
+            targets: this.uiOverlay,
+            alpha: 1,
+            duration: 200,
+            ease: 'Quad.easeOut',
+          });
+          this.startIdleAnimation();
+        },
+      });
+    };
+
+    if (delayMs > 0) {
+      this.scene.time.delayedCall(delayMs, beginWalk);
+    } else {
+      beginWalk();
+    }
   }
 
   private setTemporaryPose(suffix: 'happy' | 'sleep', durationMs: number): void {
@@ -182,6 +246,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public reactCorrect(): void {
     this.setTemporaryPose('happy', 1400);
+    if (this.isWalkingIn) return;
     this.scene.tweens.add({
       targets: this,
       y: this.y - 18,

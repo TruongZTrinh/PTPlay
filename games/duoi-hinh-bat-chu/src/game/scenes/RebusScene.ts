@@ -19,6 +19,7 @@ export class RebusScene extends Phaser.Scene {
   private mc!: MCCharacter;
   private scoreboard!: Scoreboard;
   private studentCharacters: Map<string, StudentCharacter> = new Map();
+  private nextWalkInReadyAt: number = 0;
   private congratsPresenter!: CongratulationsPresenter;
 
   private audioEngine!: AudioEngine;
@@ -194,6 +195,12 @@ export class RebusScene extends Phaser.Scene {
       student = new StudentCharacter(this, player, this.avatarManager, seat.x, seat.y, seat.scale);
       student.setDepth(seat.depth);
       this.studentCharacters.set(player.userId, student);
+
+      const now = this.time.now;
+      const startAt = Math.max(now, this.nextWalkInReadyAt);
+      const delayMs = Math.max(0, startAt - now);
+      this.nextWalkInReadyAt = startAt + 160;
+      student.walkInFromEntrance(delayMs);
     } else {
       student.setPosition(seat.x, seat.y);
       student.setScale(seat.scale);
