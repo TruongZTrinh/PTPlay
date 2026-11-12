@@ -5,6 +5,7 @@ export interface TTSQueueItem {
   text: string;
   priority: boolean;
   createdAt: number;
+  onEnd?: () => void;
 }
 
 export class TTSController {
@@ -170,25 +171,37 @@ export class TTSController {
     }
   }
 
-  public speak(text: string, priority: boolean = false, dedupeKey?: string): void {
-    if (!this.isEnabled || !text || !text.trim()) return;
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  public speak(text: string, priority: boolean = false, dedupeKey?: string, onEnd?: () => void): void {
+    if (!this.isEnabled || !text || !text.trim()) {
+      onEnd?.();
+      return;
+    }
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      onEnd?.();
+      return;
+    }
 
     const now = Date.now();
     if (dedupeKey) {
       const last = this.recentKeys.get(dedupeKey) || 0;
-      if (now - last < 8000) return;
+      if (now - last < 8000) {
+        onEnd?.();
+        return;
+      }
       this.recentKeys.set(dedupeKey, now);
     }
 
     const cleanText = VietnameseVoiceHelper.sanitizeTTSText(text, 220);
-    if (!cleanText) return;
+    if (!cleanText) {
+      onEnd?.();
+      return;
+    }
 
     if (priority) {
       try {
         window.speechSynthesis.cancel();
       } catch {}
-      this.queue = [{ text: cleanText, priority: true, createdAt: now }];
+      this.queue = [{ text: cleanText, priority: true, createdAt: now, onEnd }];
       this.isSpeaking = false;
       // Allow 60ms for Chromium audio engine to reset cleanly before firing new utterance
       setTimeout(() => this.processQueue(), 60);
@@ -198,7 +211,7 @@ export class TTSController {
     if (this.queue.length >= 3) {
       this.queue.shift();
     }
-    this.queue.push({ text: cleanText, priority: false, createdAt: now });
+    this.queue.push({ text: cleanText, priority: false, createdAt: now, onEnd });
 
     this.processQueue();
   }
@@ -230,6 +243,7 @@ export class TTSController {
       this.isSpeaking = false;
       this.lastSpeakTime = Date.now();
       this.audioEngine.setDucking(false);
+      item.onEnd?.();
       setTimeout(() => this.processQueue(), 250);
     };
 
@@ -248,6 +262,7 @@ export class TTSController {
     if (!utterance) {
       this.isSpeaking = false;
       this.audioEngine.setDucking(false);
+      item.onEnd?.();
       return;
     }
 
@@ -412,20 +427,22 @@ export class TTSController {
     this.speak(`Vinh danh nhà vô địch: ${cleanChamp}! Chúc mừng bạn đã đoạt Cúp Vàng!`, true);
   }
 
-  public announceTop5Takeover(challengerName: string, rank: number, displacedName?: string): void {
+  public announceTop5Takeover(challengerName: string, rank: number, displacedName?: string, onEnd?: () => void): void {
     const cleanChallenger = VietnameseVoiceHelper.formatNicknameForSpeech(challengerName, 'bạn');
     if (displacedName) {
       const cleanDisplaced = VietnameseVoiceHelper.formatNicknameForSpeech(displacedName, 'bạn');
       this.speak(
         `Yeah! ${cleanChallenger} bứt phá đá bay ${cleanDisplaced} để chiếm ghế VIP hạng ${rank}!`,
         true,
-        `top5_${challengerName}_${rank}`
+        `top5_${challengerName}_${rank}`,
+        onEnd
       );
     } else {
       this.speak(
         `Yeah! Tuyệt vời! ${cleanChallenger} nhảy thẳng lên ghế VIP hạng ${rank}!`,
         true,
-        `top5_${challengerName}_${rank}`
+        `top5_${challengerName}_${rank}`,
+        onEnd
       );
     }
   }

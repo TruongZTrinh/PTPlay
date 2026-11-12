@@ -329,7 +329,7 @@ export class RebusScene extends Phaser.Scene {
         this.scoreboard.updateLeaderboard(allPlayers);
       },
 
-      onSeatRebalance: () => {
+      onSeatRebalance: (onComplete) => {
         const rankedIds = [...this.studentRoster.getAllPlayers()]
           .filter((p) => p.score > 0)
           .sort((a, b) => b.score - a.score || b.correctCount - a.correctCount)
@@ -352,11 +352,27 @@ export class RebusScene extends Phaser.Scene {
           if (challenger) {
             this.mc.cheer();
             this.audioEngine.playTop5Yeah();
-            this.ttsController.announceTop5Takeover(challenger.nickname, lead.rank, displaced?.nickname);
             const msg = displaced
               ? `🎉 YEAH! Đá bay ${displaced.nickname} để chiếm ghế Top #${lead.rank}!`
               : `🎉 YEAH! Nhảy thẳng lên ghế VIP Top #${lead.rank}!`;
             this.scoreboard.setChatTicker(msg, challenger.nickname);
+
+            let animDone = false;
+            let ttsDone = false;
+            const tryFinish = () => {
+              if (animDone && ttsDone) {
+                onComplete?.();
+              }
+            };
+            this.time.delayedCall(1400, () => {
+              animDone = true;
+              tryFinish();
+            });
+            this.ttsController.announceTop5Takeover(challenger.nickname, lead.rank, displaced?.nickname, () => {
+              ttsDone = true;
+              tryFinish();
+            });
+            return 'async';
           }
           return 1800;
         }

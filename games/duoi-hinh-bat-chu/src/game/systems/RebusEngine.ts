@@ -16,7 +16,7 @@ export interface RebusEngineEvents {
   onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean, solverRank?: number, points?: number) => void;
   onPuzzleSolved?: (puzzle: RebusPuzzle, winner: RebusPlayerRecord, points: number) => void;
   onPuzzleRevealed?: (puzzle: RebusPuzzle, solved: boolean, winner?: RebusPlayerRecord) => void;
-  onSeatRebalance?: () => number;
+  onSeatRebalance?: (onComplete?: () => void) => number | 'async';
   onCeremonyStarted?: () => void;
 }
 
@@ -356,22 +356,32 @@ export class RebusEngine {
     }, this.config.revealDurationMs);
   }
 
-  public triggerSeatRebalance(): number {
-    return Math.max(0, this.events.onSeatRebalance?.() || 0);
+  public triggerSeatRebalance(): void {
+    this.events.onSeatRebalance?.();
   }
 
   private celebrateAndContinue(): void {
     this.setState('celebrate');
-    const extraRebalanceMs = this.triggerSeatRebalance();
-
-    this.stateTimerHandle = setTimeout(() => {
-      // Automatic Grand Championship Ceremony every 30 questions
+    let finished = false;
+    const proceed = () => {
+      if (finished) return;
+      finished = true;
       if (this.roundNumber > 0 && this.roundNumber % 30 === 0) {
         this.triggerCeremony();
       } else {
         this.nextRound();
       }
-    }, this.config.celebrateDurationMs + extraRebalanceMs);
+    };
+
+    const result = this.events.onSeatRebalance?.(proceed);
+    if (result === 'async') {
+      // Safety fallback in case TTS/animation callback never fires
+      this.stateTimerHandle = setTimeout(proceed, Math.max(this.config.celebrateDurationMs, 8000));
+      return;
+    }
+
+    const extraRebalanceMs = Math.max(0, result || 0);
+    this.stateTimerHandle = setTimeout(proceed, this.config.celebrateDurationMs + extraRebalanceMs);
   }
 
   public triggerCeremony(): void {
