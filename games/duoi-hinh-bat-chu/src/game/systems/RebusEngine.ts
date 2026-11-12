@@ -13,6 +13,7 @@ export interface RebusEngineEvents {
   onTimeAdded?: (seconds: number, sponsorName?: string) => void;
   onHint1Triggered?: (hint1: string, sponsorName?: string) => void;
   onHint2Triggered?: (hint2: string, firstChar: string, sponsorName?: string) => void;
+  onLettersRevealed?: (revealedCount: number, addedCount: number, sponsorName?: string) => void;
   onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean, solverRank?: number, points?: number) => void;
   onPuzzleSolved?: (puzzle: RebusPuzzle, winner: RebusPlayerRecord, points: number) => void;
   onPuzzleRevealed?: (puzzle: RebusPuzzle, solved: boolean, winner?: RebusPlayerRecord) => void;
@@ -40,6 +41,7 @@ export class RebusEngine {
 
   private hint1Given: boolean = false;
   private hint2Given: boolean = false;
+  private revealedLetterCount: number = 0;
   private isSolvedInCurrentRound: boolean = false;
   private roundWinner: RebusPlayerRecord | null = null;
   private roundSolvers: string[] = [];
@@ -112,6 +114,7 @@ export class RebusEngine {
     this.studentRoster.resetRoundAttempts();
     this.hint1Given = false;
     this.hint2Given = false;
+    this.revealedLetterCount = 0;
     this.isSolvedInCurrentRound = false;
     this.roundWinner = null;
     this.roundSolvers = [];
@@ -291,6 +294,22 @@ export class RebusEngine {
     if (this.config.ttsEnabled && !silentTTS) {
       this.ttsController.announceTimeAdded(seconds, sponsorName);
     }
+  }
+
+  public revealLetters(count: number = 1, sponsorName?: string): number {
+    if (this.currentState !== 'guessing' || !this.currentPuzzle) return 0;
+    const totalChars = this.currentPuzzle.answer.replace(/\s+/g, '').length;
+    const maxReveal = Math.max(1, totalChars - 1);
+    const prev = this.revealedLetterCount;
+    const next = Math.min(maxReveal, prev + Math.max(1, Math.floor(count)));
+    const added = next - prev;
+    if (added <= 0) return 0;
+
+    this.revealedLetterCount = next;
+    if (next >= 1) this.hint2Given = true;
+    this.audioEngine.playHintChime();
+    this.events.onLettersRevealed?.(this.revealedLetterCount, added, sponsorName);
+    return added;
   }
 
   public triggerFirstCharHint(sponsorName?: string, addedSeconds?: number): boolean {

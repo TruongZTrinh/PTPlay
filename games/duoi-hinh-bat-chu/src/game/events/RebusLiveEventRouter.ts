@@ -160,39 +160,40 @@ export class RebusLiveEventRouter {
 
       case 'rebus.gift': {
         const giftName = (cmd.metadata?.giftName as string) || 'Rose';
+        const giftCount = Math.max(1, Number(cmd.metadata?.count || cmd.metadata?.repeatCount || 1));
         const cleanGift = giftName.toLowerCase();
         this.roster.registerOrGet(userId, nickname, avatarUrl);
         this.giftController.triggerGiftReaction(giftName, nickname, avatarUrl);
 
-        let perkText = '+25đ VIP & hồi lượt đoán!';
+        const openedCount = this.engine.revealLetters(giftCount, nickname);
+        const letterNote = openedCount > 0 ? `Mở ${openedCount} chữ` : '';
+        let perkText = letterNote ? `${letterNote} (+20đ)!` : '+25đ VIP & hồi lượt đoán!';
         let handledTTS = false;
         if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
-          this.roster.addGiftPoints(userId, 10);
-          perkText = '+10đ cổ vũ!';
+          this.roster.addGiftPoints(userId, 10 * giftCount);
+          perkText = letterNote ? `${letterNote} (+${10 * giftCount}đ)!` : `+${10 * giftCount}đ cổ vũ!`;
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
-          this.roster.addGiftPoints(userId, 50);
+          this.roster.addGiftPoints(userId, 50 * giftCount);
           this.roster.grantExtraGuesses(userId, 5);
-          this.engine.addTime(10, nickname, true);
-          this.engine.triggerFirstCharHint(nickname, 10);
-          perkText = '🌹 Tặng Hoa Hồng: Mở Chữ Đầu & +10s (+50đ VIP)!';
+          perkText = letterNote
+            ? `🌹 Tặng ${giftCount} Hoa Hồng: ${letterNote} (+${50 * giftCount}đ VIP)!`
+            : `🌹 Tặng ${giftCount} Hoa Hồng (+${50 * giftCount}đ VIP)!`;
           handledTTS = true;
         } else if (cleanGift.includes('lion') || cleanGift.includes('su tu')) {
           this.roster.addGiftPoints(userId, 150);
           this.roster.grantExtraGuesses(userId, 10);
           this.engine.addTime(30, nickname, true);
-          this.engine.triggerFirstCharHint(nickname, 30);
-          perkText = '🦁 Đại gia tặng Sư Tử: +30s & Mở Chữ Đầu (+150đ)!';
+          perkText = `🦁 Đại gia tặng Sư Tử: +30s & ${letterNote || 'Mở Chữ'} (+150đ)!`;
           handledTTS = true;
         } else if (cleanGift.includes('universe') || cleanGift.includes('vu tru')) {
           this.roster.addGiftPoints(userId, 300);
           this.roster.grantExtraGuesses(userId, 20);
           this.engine.addTime(60, nickname, true);
           this.engine.triggerHint1(nickname, 'rose');
-          this.engine.triggerFirstCharHint(nickname, 60);
-          perkText = '🌌 Vũ Trụ giải cứu: +60s & Mở toàn bộ gợi ý (+300đ)!';
+          perkText = `🌌 Vũ Trụ giải cứu: +60s & Mở toàn bộ gợi ý (+300đ)!`;
           handledTTS = true;
         } else {
-          this.roster.addGiftPoints(userId, 20);
+          this.roster.addGiftPoints(userId, 20 * giftCount);
         }
 
         this.scoreboard.setChatTicker(`tặng ${giftName}: ${perkText}`, nickname);

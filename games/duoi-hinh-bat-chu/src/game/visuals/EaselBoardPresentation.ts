@@ -344,7 +344,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }
   }
 
-  public renderLetterBoxes(answer: string, revealAll: boolean, revealedFirstChar?: string): void {
+  public renderLetterBoxes(answer: string, revealAll: boolean, revealedFirstChar?: string | number): void {
     this.letterBoxesContainer.removeAll(true);
 
     const cleanAnswer = answer.trim();
@@ -366,6 +366,10 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
         let displayChar = '';
         if (revealAll) {
           displayChar = char;
+        } else if (typeof revealedFirstChar === 'number') {
+          if (charIndex < revealedFirstChar) {
+            displayChar = char;
+          }
         } else if (charIndex === 0 && revealedFirstChar) {
           displayChar = revealedFirstChar;
         }
@@ -468,6 +472,12 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
   public showHint2(_hint2: string, firstChar: string, _sponsorName?: string): void {
     if (this.currentPuzzleAnswer) {
       this.renderLetterBoxes(this.currentPuzzleAnswer, false, firstChar);
+    }
+  }
+
+  public showRevealedLetters(revealedCount: number): void {
+    if (this.currentPuzzleAnswer) {
+      this.renderLetterBoxes(this.currentPuzzleAnswer, false, revealedCount);
     }
   }
 

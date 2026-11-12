@@ -289,6 +289,10 @@ export class RebusScene extends Phaser.Scene {
         this.easelBoard.showHint2(h2, firstChar, sponsorName);
       },
 
+      onLettersRevealed: (revealedCount) => {
+        this.easelBoard.showRevealedLetters(revealedCount);
+      },
+
       onGuessAttempt: (userId, guess, isCorrect, solverRank, points) => {
         const student = this.studentCharacters.get(userId);
         if (student) {
