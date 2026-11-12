@@ -270,7 +270,7 @@ export class RebusScene extends Phaser.Scene {
       onPuzzleStarted: (p, round, totalRounds) => {
         this.easelBoard.setPuzzle(p, round, totalRounds);
         this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
-        this.liveRouter?.onPuzzleStarted();
+        this.liveRouter?.onPuzzleStarted(p.answer, round);
       },
 
       onTick: (rem, tot) => {

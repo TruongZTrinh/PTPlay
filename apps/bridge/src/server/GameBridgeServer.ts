@@ -56,6 +56,8 @@ export class GameBridgeServer {
     lang: 'vi-VN',
     updatedAt: Date.now(),
   };
+  private rebusCurrentAnswer = '';
+  private rebusCurrentRound = 0;
 
   constructor(port = 8088) {
     this.port = port;
@@ -165,7 +167,12 @@ export class GameBridgeServer {
             console.log(`[GameBridge] Client registered as: ${this.clientApps.get(ws)}`);
           }
           if (msg.type === 'game_state') {
-            this.eventQueue.updateGameState(Number(msg.redUnits) || 0, Number(msg.blueUnits) || 0);
+            if (msg.gameId === 'duoi-hinh-bat-chu') {
+              this.rebusCurrentAnswer = String(msg.currentAnswer || '');
+              this.rebusCurrentRound = Number(msg.round) || 0;
+            } else {
+              this.eventQueue.updateGameState(Number(msg.redUnits) || 0, Number(msg.blueUnits) || 0);
+            }
           }
         } catch {
           // Ignore malformed client heartbeat
@@ -1054,6 +1061,10 @@ export class GameBridgeServer {
         synthetic: this.syntheticProvider.getStatus(),
         gameConnected: this.gameClients.size > 0,
         gameClientsCount: this.gameClients.size,
+        rebusState: {
+          currentAnswer: this.rebusCurrentAnswer,
+          round: this.rebusCurrentRound,
+        },
         gameClientsApps: {
           miniWar: Array.from(this.clientApps.values()).filter((a) => a === 'mini-war').length,
           catCafe: Array.from(this.clientApps.values()).filter((a) => a === 'cat-cafe').length,

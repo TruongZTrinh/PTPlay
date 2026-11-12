@@ -324,6 +324,14 @@ async function fetchStatus() {
       qTotal.innerText = `${data.queueStats.queueLength || 0} lệnh (Đã xử lý: ${data.totalProcessedEvents || 0})`;
     }
 
+    if (data.rebusState) {
+      latestRebusAnswer = data.rebusState.currentAnswer || '';
+      const ansEl = document.getElementById('lbl-rebus-current-answer');
+      if (ansEl) {
+        ansEl.innerText = latestRebusAnswer ? `"${latestRebusAnswer}"` : 'Đang chờ câu mới...';
+      }
+    }
+
     renderLogs(data.recentLogs || [], data.errorLogs || []);
   } catch (e) {}
 }
@@ -2611,6 +2619,16 @@ async function seedRebusJoinSeat() {
   const { userId, nickname } = getRebusSeedActor();
   await sendRebusCommand('join', { userId, nickname });
   showToast(`🪑 ${nickname} đã vào lớp ngồi như người xem thật!`, 'info');
+}
+
+let latestRebusAnswer = '';
+
+function sendCurrentRebusAnswer() {
+  if (!latestRebusAnswer) {
+    showToast('Chưa có đáp án câu hiện tại (hãy bật game Đuổi Hình Bắt Chữ).', 'warning');
+    return;
+  }
+  sendMockRebusGuess(latestRebusAnswer);
 }
 
 async function seedRebusSolveCurrent() {

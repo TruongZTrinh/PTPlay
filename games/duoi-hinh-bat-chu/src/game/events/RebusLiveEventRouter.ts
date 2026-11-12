@@ -34,12 +34,28 @@ export class RebusLiveEventRouter {
     this.client.onCommand((cmd: GameCommand) => this.handleCommand(cmd));
     this.client.onStatusChange((connected: boolean, statusText: string) => {
       console.log(`[RebusLiveRouter] Bridge status: ${connected} (${statusText})`);
+      if (connected && this.engine.currentPuzzle) {
+        this.client.sendGameState({
+          gameId: 'duoi-hinh-bat-chu',
+          currentAnswer: this.engine.currentPuzzle.answer,
+          round: this.engine.roundNumber,
+        });
+      }
     });
   }
 
-  public onPuzzleStarted(): void {
+  public onPuzzleStarted(answer?: string, round?: number): void {
     this.likeCountThisPuzzle = 0;
     this.likeRewardClaimedThisPuzzle = false;
+    const currentAnswer = answer ?? this.engine.currentPuzzle?.answer ?? '';
+    const currentRound = round ?? this.engine.roundNumber;
+    if (currentAnswer) {
+      this.client.sendGameState({
+        gameId: 'duoi-hinh-bat-chu',
+        currentAnswer,
+        round: currentRound,
+      });
+    }
   }
 
   public simulateLikes(count: number = 20, nickname: string = 'KhánGiảThảTim'): void {
