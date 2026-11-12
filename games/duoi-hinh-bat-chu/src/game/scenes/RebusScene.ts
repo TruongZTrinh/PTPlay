@@ -248,10 +248,7 @@ export class RebusScene extends Phaser.Scene {
       this.nextWalkInReadyAt = startAt + 160;
       student.walkInFromEntrance(delayMs);
     } else {
-      student.setPosition(slot.x, slot.y);
-      student.setScale(slot.scale);
-      student.setDepth(slot.depth);
-      student.setWaitingMode(slot.isWaiting);
+      student.walkToSeat(slot.x, slot.y, slot.scale, slot.depth, slot.isWaiting);
       student.updatePlayer(player);
     }
   }

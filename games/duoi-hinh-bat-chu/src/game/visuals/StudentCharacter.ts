@@ -183,6 +183,62 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     }
   }
 
+  public walkToSeat(targetX: number, targetY: number, targetScale: number, targetDepth: number, isWaiting: boolean): void {
+    if (!this.scene || !this.chibiSprite.scene) return;
+    if (this.isWalkingIn) return;
+    const dist = Math.hypot(targetX - this.x, targetY - this.y);
+    if (dist < 4) {
+      this.setPosition(targetX, targetY);
+      this.setScale(targetScale);
+      this.setDepth(targetDepth);
+      this.setWaitingMode(isWaiting);
+      return;
+    }
+
+    this.isWalkingIn = true;
+    this.isWaitingMode = isWaiting;
+    this.idleTween?.stop();
+    this.waitCheerTimer?.remove(false);
+    this.waitCheerTimer = undefined;
+    this.setDepth(80);
+
+    const walkDuration = Math.round(320 + dist * 1.6);
+    const stepTween = this.scene.tweens.add({
+      targets: this.chibiSprite,
+      angle: { from: -6, to: 6 },
+      y: 6,
+      duration: 110,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    this.scene.tweens.add({
+      targets: this,
+      x: targetX,
+      y: targetY,
+      scaleX: targetScale,
+      scaleY: targetScale,
+      duration: walkDuration,
+      ease: 'Cubic.easeOut',
+      onUpdate: () => {
+        this.uiOverlay?.setPosition(this.x, this.y);
+      },
+      onComplete: () => {
+        stepTween.stop();
+        this.isWalkingIn = false;
+        if (!this.scene || !this.chibiSprite.scene) return;
+        this.chibiSprite.setAngle(0);
+        this.chibiSprite.setY(12);
+        this.setPosition(targetX, targetY);
+        this.setScale(targetScale);
+        this.setDepth(targetDepth);
+        this.syncOverlayScale();
+        this.startIdleAnimation();
+      },
+    });
+  }
+
   public jumpToSeat(
     targetX: number,
     targetY: number,
