@@ -33,27 +33,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     // 1. Stage Background
     this.createStageBackground();
 
-    // A fixed, typeset title stays sharp at stream size.
-    const titlePlate = scene.add.graphics();
-    titlePlate.fillStyle(0x382416, 0.65);
-    titlePlate.fillRoundedRect(43, 15, 454, 56, 14);
-    titlePlate.fillStyle(0x925328, 1);
-    titlePlate.fillRoundedRect(41, 10, 458, 56, 14);
-    titlePlate.fillStyle(0xffe7a6, 1);
-    titlePlate.fillRoundedRect(44, 12, 452, 51, 12);
-    titlePlate.fillStyle(0xfff9df, 1);
-    titlePlate.fillRoundedRect(48, 15, 444, 44, 9);
-    titlePlate.lineStyle(1, 0xe7bd73, 1);
-    titlePlate.lineBetween(64, 25, 184, 25);
-    titlePlate.lineBetween(356, 25, 476, 25);
-    this.add(titlePlate);
-    this.add(scene.add.text(270, 25, 'LỚP HỌC ĐOÁN CHỮ', {
-      fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98632e', fontStyle: 'bold',
-    }).setOrigin(0.5));
-    this.add(scene.add.text(270, 45, 'ĐUỔI HÌNH BẮT CHỮ', {
-      fontFamily: 'system-ui, sans-serif', fontSize: '24px', color: '#07533e', fontStyle: 'bold',
-    }).setOrigin(0.5));
-
     // 3. Easel Board & Header Graphics
     this.easelBg = scene.add.graphics();
     this.add(this.easelBg);
@@ -62,7 +41,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.headerBadgesBg);
 
     // Header info (3D Badges)
-    this.roundText = scene.add.text(91, 95, 'CÂU 1', {
+    this.roundText = scene.add.text(80, 34, 'CÂU 1', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '14px',
       color: '#71421d',
@@ -70,7 +49,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.add(this.roundText);
 
-    this.categoryText = scene.add.text(270, 95, 'MỨC ĐỘ: DỄ', {
+    this.categoryText = scene.add.text(270, 34, 'MỨC ĐỘ: DỄ', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
       color: '#e3f6d6',
@@ -78,7 +57,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.add(this.categoryText);
 
-    this.timerText = scene.add.text(449, 95, '20 GIÂY', {
+    this.timerText = scene.add.text(460, 34, '20 GIÂY', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '14px',
       color: '#ffffff',
@@ -91,7 +70,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.timerBar);
 
     // Two Clue Cards (Fallback mode)
-    this.clueCard1 = scene.add.container(175, 202);
+    this.clueCard1 = scene.add.container(175, 173);
     const cardBg1 = scene.add.graphics();
     cardBg1.fillStyle(0xfff9df, 1);
     cardBg1.fillRoundedRect(-60, -60, 120, 120, 16);
@@ -105,7 +84,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.clueCard1);
 
     // Plus Sign
-    this.plusSign = scene.add.text(270, 202, '+', {
+    this.plusSign = scene.add.text(270, 173, '+', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '36px',
       color: '#f59e0b',
@@ -113,7 +92,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.add(this.plusSign);
 
-    this.clueCard2 = scene.add.container(365, 202);
+    this.clueCard2 = scene.add.container(365, 173);
     const cardBg2 = scene.add.graphics();
     cardBg2.fillStyle(0xfff9df, 1);
     cardBg2.fillRoundedRect(-60, -60, 120, 120, 16);
@@ -127,15 +106,15 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.clueCard2);
 
     // Single Picture Puzzle Card (Gilded Exhibition Screen)
-    this.singleImageContainer = scene.add.container(270, 202);
+    this.singleImageContainer = scene.add.container(270, 173);
 
     this.singleImageFrame = scene.add.graphics();
     this.singleImageContainer.add(this.singleImageFrame);
 
     this.singleImageSprite = scene.add.image(0, 0, 'props_board');
-    this.singleImageSprite.setDisplaySize(360, 146);
+    this.singleImageSprite.setDisplaySize(428, 172);
     this.singleImageContainer.add(this.singleImageSprite);
-    for (const [x, label] of [[-151, 'NHÌN\nHÌNH'], [151, 'BẮT\nCHỮ']] as const) {
+    for (const [x, label] of [[-170, 'NHÌN\nHÌNH'], [170, 'BẮT\nCHỮ']] as const) {
       const text = scene.add.text(x, 0, label, {
         fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#96602b',
         fontStyle: 'bold', align: 'center', lineSpacing: 3,
@@ -150,14 +129,14 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.drawSingleImageFrame();
 
     // Letter Boxes Container (3D Tactile Game Tiles)
-    this.letterBoxesContainer = scene.add.container(270, 300);
+    this.letterBoxesContainer = scene.add.container(270, 306);
     this.add(this.letterBoxesContainer);
 
     // Hint banner container
     this.hintBannerBg = scene.add.graphics();
     this.add(this.hintBannerBg);
 
-    this.hintBannerText = scene.add.text(270, 329, '🌹 Hoa Hồng: mở chữ đầu +10 giây  •  Follow: gợi ý 1', {
+    this.hintBannerText = scene.add.text(270, 337, '🌹 Hoa Hồng: mở chữ đầu +10 giây  •  Follow: gợi ý 1', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '12px',
       color: '#fff7d6',
@@ -211,17 +190,17 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.singleImageFrame.clear();
     // A wide paper card gives both square and landscape puzzles room to breathe.
     this.singleImageFrame.fillStyle(0x031d18, 0.55);
-    this.singleImageFrame.fillRoundedRect(-206, -78, 412, 164, 13);
+    this.singleImageFrame.fillRoundedRect(-229, -96, 458, 200, 13);
     this.singleImageFrame.fillStyle(0xb66b27, 1);
-    this.singleImageFrame.fillRoundedRect(-205, -82, 410, 162, 12);
+    this.singleImageFrame.fillRoundedRect(-228, -99, 456, 198, 12);
     this.singleImageFrame.fillStyle(0xffe5a4, 1);
-    this.singleImageFrame.fillRoundedRect(-201, -78, 402, 154, 9);
+    this.singleImageFrame.fillRoundedRect(-224, -95, 448, 190, 9);
     this.singleImageFrame.fillStyle(0xfffcf1, 1);
-    this.singleImageFrame.fillRoundedRect(-195, -73, 390, 144, 6);
+    this.singleImageFrame.fillRoundedRect(-219, -91, 438, 182, 6);
     this.singleImageFrame.lineStyle(1.5, 0xd9a75c, 1);
-    this.singleImageFrame.strokeRoundedRect(-195, -73, 390, 144, 6);
-    for (const x of [-185, 185]) {
-      for (const y of [-63, 61]) {
+    this.singleImageFrame.strokeRoundedRect(-219, -91, 438, 182, 6);
+    for (const x of [-209, 209]) {
+      for (const y of [-81, 81]) {
         this.singleImageFrame.fillStyle(0xd69640, 1);
         this.singleImageFrame.fillCircle(x, y, 3);
       }
@@ -235,52 +214,52 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
     // 1. Studio Lighting Ambient Aura behind Easel Board
     this.easelBg.fillStyle(0xf59e0b, 0.08);
-    this.easelBg.fillRoundedRect(18, 68, 504, 294, 28);
+    this.easelBg.fillRoundedRect(8, 8, 524, 354, 28);
 
     // 2. Deep Multilayer Drop Shadow
     this.easelBg.fillStyle(0x000000, 0.35);
-    this.easelBg.fillRoundedRect(23, 75, 494, 282, 24);
+    this.easelBg.fillRoundedRect(13, 14, 514, 344, 24);
     this.easelBg.fillStyle(0x000000, 0.55);
-    this.easelBg.fillRoundedRect(25, 78, 490, 276, 20);
+    this.easelBg.fillRoundedRect(15, 17, 510, 338, 20);
 
     // 3. Triple-Layer Gilded Broadcast Frame
     // Base Gold Bevel
     this.easelBg.fillStyle(0xb45309, 1);
-    this.easelBg.fillRoundedRect(22, 73, 496, 282, 20);
+    this.easelBg.fillRoundedRect(12, 12, 516, 342, 20);
 
     // Lustrous Gold Body
     this.easelBg.fillStyle(0xf59e0b, 1);
-    this.easelBg.fillRoundedRect(24, 75, 492, 278, 18);
+    this.easelBg.fillRoundedRect(14, 14, 512, 338, 18);
 
     // Outer Specular Rim
     this.easelBg.lineStyle(2, 0xfde047, 1);
-    this.easelBg.strokeRoundedRect(24, 75, 492, 278, 18);
+    this.easelBg.strokeRoundedRect(14, 14, 512, 338, 18);
 
     // Dark Inner Bevel Shadow
     this.easelBg.lineStyle(1.5, 0x78350f, 1);
-    this.easelBg.strokeRoundedRect(26, 77, 488, 274, 16);
+    this.easelBg.strokeRoundedRect(16, 16, 508, 334, 16);
 
     // 4. Velvet Obsidian Blackboard Plate
     this.easelBg.fillStyle(0x064e3b, 0.98);
-    this.easelBg.fillRoundedRect(28, 79, 484, 270, 15);
+    this.easelBg.fillRoundedRect(18, 18, 504, 330, 15);
 
     // Inset teaching surface around the puzzle and answer, like a classroom board.
     this.easelBg.fillStyle(0x0b6149, 0.85);
-    this.easelBg.fillRoundedRect(38, 124, 464, 192, 12);
+    this.easelBg.fillRoundedRect(24, 66, 492, 222, 12);
     this.easelBg.lineStyle(1.5, 0x9bd6aa, 0.5);
-    this.easelBg.strokeRoundedRect(38, 124, 464, 192, 12);
+    this.easelBg.strokeRoundedRect(24, 66, 492, 222, 12);
     this.easelBg.fillStyle(0xffe6a3, 0.75);
-    for (const x of [49, 491]) {
-      this.easelBg.fillCircle(x, 137, 2);
-      this.easelBg.fillCircle(x, 302, 2);
+    for (const x of [35, 505]) {
+      this.easelBg.fillCircle(x, 79, 2);
+      this.easelBg.fillCircle(x, 275, 2);
     }
 
     // 5. Ornate Golden Art-Deco Corner Caps
     const corners = [
-      { x: 26, y: 77, dx: 1, dy: 1 },
-      { x: 514, y: 77, dx: -1, dy: 1 },
-      { x: 26, y: 347, dx: 1, dy: -1 },
-      { x: 514, y: 347, dx: -1, dy: -1 },
+      { x: 16, y: 16, dx: 1, dy: 1 },
+      { x: 524, y: 16, dx: -1, dy: 1 },
+      { x: 16, y: 350, dx: 1, dy: -1 },
+      { x: 524, y: 350, dx: -1, dy: -1 },
     ];
     corners.forEach((c) => {
       this.easelBg.fillStyle(0xfde047, 1);
@@ -294,22 +273,22 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     // One information rail: question, difficulty, and a prominent countdown.
     const header = this.headerBadgesBg;
     header.fillStyle(0x033d2e, 1);
-    header.fillRoundedRect(36, 81, 468, 28, 8);
+    header.fillRoundedRect(26, 20, 488, 28, 8);
     header.fillStyle(0xffedbc, 1);
-    header.fillRoundedRect(40, 83, 102, 24, 6);
+    header.fillRoundedRect(30, 22, 102, 24, 6);
     header.fillStyle(0xb34e32, 1);
-    header.fillRoundedRect(398, 83, 102, 24, 6);
+    header.fillRoundedRect(408, 22, 102, 24, 6);
     header.lineStyle(1, 0x8bbf9a, 0.5);
-    header.lineBetween(158, 87, 158, 103);
-    header.lineBetween(382, 87, 382, 103);
+    header.lineBetween(150, 26, 150, 42);
+    header.lineBetween(390, 26, 390, 42);
 
     // 7. Interactive TikTok Callout Pill (Row 1)
     this.hintBannerBg.fillStyle(0x78350f, 0.96);
-    this.hintBannerBg.fillRoundedRect(44, 317, 452, 25, 12);
+    this.hintBannerBg.fillRoundedRect(32, 325, 476, 25, 12);
     this.hintBannerBg.lineStyle(1.5, 0xfacc15, 0.95);
-    this.hintBannerBg.strokeRoundedRect(44, 317, 452, 25, 12);
+    this.hintBannerBg.strokeRoundedRect(32, 325, 476, 25, 12);
     this.hintBannerBg.fillStyle(0x4338ca, 0.35);
-    this.hintBannerBg.fillRoundedRect(46, 318, 448, 12, 6);
+    this.hintBannerBg.fillRoundedRect(34, 326, 472, 12, 6);
   }
 
   public updateDifficultyBadge(difficulty: number = 1): void {
@@ -409,15 +388,15 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
       const w = tex.width || 400;
       const h = tex.height || 300;
-      const maxW = 380;
-      const maxH = 138;
+      const maxW = 428;
+      const maxH = 172;
       const scale = Math.min(maxW / w, maxH / h);
       const dispW = w * scale;
       const dispH = h * scale;
       this.singleImageSprite.setDisplaySize(dispW, dispH);
-      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 225));
+      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 265));
     } catch {
-      this.singleImageSprite.setDisplaySize(380, 138);
+      this.singleImageSprite.setDisplaySize(428, 172);
       this.imageSideLabels.forEach((label) => label.setVisible(false));
     }
   }
@@ -523,26 +502,26 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.timerBar.clear();
     // Inset track groove
     this.timerBar.fillStyle(0x020617, 0.95);
-    this.timerBar.fillRoundedRect(44, 113, 452, 9, 4.5);
+    this.timerBar.fillRoundedRect(34, 52, 472, 9, 4.5);
     this.timerBar.lineStyle(1, 0x1e293b, 0.9);
-    this.timerBar.strokeRoundedRect(44, 113, 452, 9, 4.5);
+    this.timerBar.strokeRoundedRect(34, 52, 472, 9, 4.5);
 
     // Dynamic energy gradient
     const isUrgent = remainingSec <= 5;
     const barColor = isUrgent ? 0xef4444 : ratio > 0.4 ? 0x10b981 : 0xf59e0b;
-    const fillWidth = Math.max(8, 448 * ratio);
+    const fillWidth = Math.max(8, 468 * ratio);
 
     this.timerBar.fillStyle(barColor, 1);
-    this.timerBar.fillRoundedRect(46, 114, fillWidth, 7, 3.5);
+    this.timerBar.fillRoundedRect(36, 53, fillWidth, 7, 3.5);
 
     // Glowing highlight line on top
     this.timerBar.fillStyle(0xffffff, 0.55);
-    this.timerBar.fillRect(48, 114, Math.max(4, fillWidth - 4), 2);
+    this.timerBar.fillRect(38, 53, Math.max(4, fillWidth - 4), 2);
 
     // Spark on leading edge
     if (fillWidth > 12) {
       this.timerBar.fillStyle(0xffffff, 0.9);
-      this.timerBar.fillCircle(46 + fillWidth - 2, 117.5, 3);
+      this.timerBar.fillCircle(36 + fillWidth - 2, 56.5, 3);
     }
 
     if (isUrgent) {
