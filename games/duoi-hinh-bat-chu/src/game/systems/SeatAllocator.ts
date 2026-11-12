@@ -20,21 +20,22 @@ export class SeatAllocator {
   private initSeats(): void {
     // A compact classroom grid keeps every participant visible in portrait video.
     const rowsConfig = [
-      { count: 5, y: 667, scale: 0.42, depth: 30 },
-      { count: 5, y: 737, scale: 0.42, depth: 35 },
-      { count: 5, y: 807, scale: 0.42, depth: 40 },
-      { count: 5, y: 877, scale: 0.42, depth: 45 },
+      { count: 5, y: 668, scale: 0.48, depth: 30 },
+      { count: 5, y: 740, scale: 0.48, depth: 35 },
+      { count: 5, y: 812, scale: 0.48, depth: 40 },
+      { count: 5, y: 884, scale: 0.48, depth: 45 },
     ];
 
     let index = 0;
     rowsConfig.forEach((cfg, rowIdx) => {
-      const stepX = 540 / (cfg.count + 1);
+      const startX = 82;
+      const stepX = 94;
       for (let c = 0; c < cfg.count; c++) {
         this.seats.push({
           index,
           row: rowIdx,
           col: c,
-          x: Math.round(stepX * (c + 1)),
+          x: Math.round(startX + stepX * c),
           y: cfg.y,
           scale: cfg.scale,
           depth: cfg.depth,
