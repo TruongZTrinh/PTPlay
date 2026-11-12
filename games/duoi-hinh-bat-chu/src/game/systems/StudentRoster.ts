@@ -35,7 +35,7 @@ export class StudentRoster {
 
     npcs.forEach((npc, idx) => {
       const id = `npc_${idx + 1}`;
-      const seat = this.seatAllocator.assignSeat(id);
+      const seat = this.seatAllocator.assignSeatOrWaiting(id);
       this.players.set(id, {
         userId: id,
         uniqueId: `@${id}`,

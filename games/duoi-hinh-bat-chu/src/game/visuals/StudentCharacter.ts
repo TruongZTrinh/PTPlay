@@ -200,19 +200,23 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
     const startX = this.x;
     const startY = this.y;
-    const peakLift = kind === 'promote_top5' ? 52 : kind === 'bumped_down' ? 38 : 24;
-    const duration = kind === 'promote_top5' ? 760 : kind === 'bumped_down' ? 680 : 520;
-    const delay = kind === 'bumped_down' ? 140 : 0;
+    const dir = targetX >= startX ? 1 : -1;
+    const peakLift = kind === 'promote_top5' ? 58 : kind === 'bumped_down' ? 46 : 24;
+    const duration = kind === 'promote_top5' ? 780 : kind === 'bumped_down' ? 680 : 520;
+    const delay = kind === 'bumped_down' ? 360 : 0;
 
     if (kind === 'promote_top5') {
-      this.setTemporaryPose('happy', 1800);
+      this.setTemporaryPose('happy', 2000);
     } else if (kind === 'bumped_down') {
-      this.setTemporaryPose('sleep', 1100);
+      this.setTemporaryPose('sleep', 1300);
     }
 
     this.setDepth(85);
     this.chibiSprite.setAngle(0);
     this.chibiSprite.setY(12);
+
+    let impactShown = false;
+    let lastTrailAt = 0;
 
     this.scene.tweens.add({
       targets: { t: 0 },
@@ -226,10 +230,31 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
         const curX = Phaser.Math.Linear(startX, targetX, p);
         const curY = Phaser.Math.Linear(startY, targetY, p) - arc;
         this.setPosition(curX, curY);
-        if (kind === 'bumped_down') {
-          this.chibiSprite.setAngle(Math.sin(p * Math.PI * 3) * 16);
-        } else if (kind === 'promote_top5') {
-          this.chibiSprite.setAngle(Math.sin(p * Math.PI * 2) * 8);
+
+        if (kind === 'promote_top5') {
+          // Dynamic flying-kick tilt during flight
+          const kickWeight = Math.sin(p * Math.PI);
+          this.chibiSprite.setAngle(dir * 34 * kickWeight);
+
+          if (p - lastTrailAt > 0.16 && p < 0.85) {
+            lastTrailAt = p;
+            const puff = this.scene.add.circle(curX, curY - 14, 9, 0xfef08a, 0.55).setDepth(82);
+            this.scene.tweens.add({
+              targets: puff,
+              scale: 0.2,
+              alpha: 0,
+              duration: 240,
+              onComplete: () => puff.destroy(),
+            });
+          }
+
+          if (!impactShown && p >= 0.72) {
+            impactShown = true;
+            this.spawnKickImpactVfx(targetX, targetY - 14);
+          }
+        } else if (kind === 'bumped_down') {
+          // 360-degree knockback tumble spin
+          this.chibiSprite.setAngle(p * 360 * -dir);
         }
       },
       onComplete: () => {
@@ -242,15 +267,49 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
         if (kind === 'promote_top5') {
           this.scene.tweens.add({
             targets: this,
-            scaleX: targetScale * 1.15,
-            scaleY: targetScale * 1.15,
-            duration: 140,
+            scaleX: targetScale * 1.18,
+            scaleY: targetScale * 1.18,
+            duration: 150,
             yoyo: true,
             ease: 'Quad.easeOut',
           });
         }
         this.startIdleAnimation();
       },
+    });
+  }
+
+  private spawnKickImpactVfx(x: number, y: number): void {
+    if (!this.scene) return;
+    const ring = this.scene.add.circle(x, y, 10, 0xf59e0b, 0.25).setDepth(88);
+    ring.setStrokeStyle(3, 0xfef08a, 1);
+    this.scene.tweens.add({
+      targets: ring,
+      scale: 3.4,
+      alpha: 0,
+      duration: 380,
+      ease: 'Quad.easeOut',
+      onComplete: () => ring.destroy(),
+    });
+
+    const burst = this.scene.add.text(x, y - 16, '💥 ĐÁ BAY!', {
+      fontFamily: 'system-ui, sans-serif',
+      fontSize: '13px',
+      color: '#fef08a',
+      fontStyle: 'bold',
+      stroke: '#991b1b',
+      strokeThickness: 4,
+      resolution: 3,
+    }).setOrigin(0.5).setDepth(90);
+
+    this.scene.tweens.add({
+      targets: burst,
+      y: y - 42,
+      scale: { from: 0.7, to: 1.15 },
+      alpha: { from: 1, to: 0 },
+      duration: 750,
+      ease: 'Cubic.easeOut',
+      onComplete: () => burst.destroy(),
     });
   }
 
