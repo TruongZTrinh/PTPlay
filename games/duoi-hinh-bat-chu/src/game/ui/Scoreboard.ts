@@ -41,7 +41,7 @@ export class Scoreboard extends Phaser.GameObjects.Container {
       { y: 459, label: '🌹 Hoa Hồng: Mở chữ +10s', color: '#fff0bf' },
       { y: 474, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
       { y: 489, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
-      { y: 504, label: '💖 Heart Me: Đá người ngủ vào bàn', color: '#fde68a' },
+      { y: 504, label: '🎁 Quà 1 Xu+: Đá người ngủ vào bàn', color: '#fde68a' },
     ];
     for (const rule of interactionRules) {
       this.add(scene.add.text(36, rule.y, rule.label, {

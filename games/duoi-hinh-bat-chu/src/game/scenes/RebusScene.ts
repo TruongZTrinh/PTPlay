@@ -469,7 +469,7 @@ export class RebusScene extends Phaser.Scene {
         });
         if (challenger && sleeper) {
           this.scoreboard.setChatTicker(
-            `💖💥 Tặng Heart Me! Bay đá ${sleeper.nickname} (đang ngủ) để vào bàn ngay!`,
+            `🎁💥 Tặng quà! Bay đá ${sleeper.nickname} vì ngủ gật để vào bàn ngay!`,
             challenger.nickname
           );
         }

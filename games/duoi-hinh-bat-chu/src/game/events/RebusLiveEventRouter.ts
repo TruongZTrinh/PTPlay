@@ -168,8 +168,7 @@ export class RebusLiveEventRouter {
         let handledTTS = false;
         if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
           this.roster.addGiftPoints(userId, 10);
-          perkText = '+10đ & đá người ngủ để vào bàn!';
-          this.engine.triggerImmediateSleeperKick(userId);
+          perkText = '+10đ cổ vũ!';
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
           this.roster.addGiftPoints(userId, 50);
           this.roster.grantExtraGuesses(userId, 5);
@@ -198,6 +197,7 @@ export class RebusLiveEventRouter {
 
         this.scoreboard.setChatTicker(`tặng ${giftName}: ${perkText}`, nickname);
         this.scoreboard.updateLeaderboard(this.roster.getAllPlayers());
+        this.engine.triggerImmediateSleeperKick(userId);
         if (!handledTTS) {
           this.tts?.announceGift(nickname, giftName);
         }
