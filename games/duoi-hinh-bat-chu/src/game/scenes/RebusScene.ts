@@ -53,7 +53,7 @@ export class RebusScene extends Phaser.Scene {
     // 3. Visuals & Presentation
     this.easelBoard = new EaselBoardPresentation(this);
     this.createClassroomSeats();
-    this.mc = new MCCharacter(this, 270, 548);
+    this.mc = new MCCharacter(this, 270, 514);
     this.mc.setDepth(55);
 
     this.scoreboard = new Scoreboard(this);

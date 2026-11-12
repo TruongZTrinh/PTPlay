@@ -15,32 +15,32 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     this.add(this.graphics);
     this.drawPanels();
 
-    this.add(scene.add.text(119, 402, 'HOẠT ĐỘNG LỚP', {
+    this.add(scene.add.text(119, 368, 'HOẠT ĐỘNG LỚP', {
       fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#07533e', fontStyle: 'bold',
     }).setOrigin(0.5));
-    this.add(scene.add.text(423, 402, 'BẢNG VINH DANH', {
+    this.add(scene.add.text(423, 368, 'BẢNG VINH DANH', {
       fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#07533e', fontStyle: 'bold',
     }).setOrigin(0.5));
 
-    this.classCount = scene.add.text(73, 444, '0', {
+    this.classCount = scene.add.text(73, 410, '0', {
       fontFamily: 'system-ui, sans-serif', fontSize: '26px', color: '#07533e', fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.classCount);
-    this.add(scene.add.text(73, 466, 'TRONG LỚP', {
+    this.add(scene.add.text(73, 432, 'TRONG LỚP', {
       fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#376b54', fontStyle: 'bold',
     }).setOrigin(0.5));
 
-    this.activeCount = scene.add.text(165, 444, '0', {
+    this.activeCount = scene.add.text(165, 410, '0', {
       fontFamily: 'system-ui, sans-serif', fontSize: '26px', color: '#98602c', fontStyle: 'bold',
     }).setOrigin(0.5);
     this.add(this.activeCount);
-    this.add(scene.add.text(165, 466, 'ĐÃ GHI ĐIỂM', {
+    this.add(scene.add.text(165, 432, 'ĐÃ GHI ĐIỂM', {
       fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98602c', fontStyle: 'bold',
     }).setOrigin(0.5));
     const interactionRules = [
-      { y: 498, label: '🌹 Hoa Hồng: Mở chữ +10s', color: '#fff0bf' },
-      { y: 515, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
-      { y: 532, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
+      { y: 464, label: '🌹 Hoa Hồng: Mở chữ +10s', color: '#fff0bf' },
+      { y: 481, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
+      { y: 498, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
     ];
     for (const rule of interactionRules) {
       this.add(scene.add.text(40, rule.y, rule.label, {
@@ -49,7 +49,7 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     }
 
     for (let i = 0; i < 5; i++) {
-      const y = 429 + i * 25;
+      const y = 395 + i * 25;
       this.add(scene.add.text(346, y, String(i + 1), {
         fontFamily: 'system-ui, sans-serif', fontSize: '10px', color: i < 3 ? '#ffffff' : '#87633d', fontStyle: 'bold',
       }).setOrigin(0.5));
@@ -82,27 +82,27 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     const g = this.graphics;
     for (const x of [18, 322]) {
       g.fillStyle(0x382416, 0.6);
-      g.fillRoundedRect(x + 2, 388, 202, 173, 12);
+      g.fillRoundedRect(x + 2, 354, 202, 173, 12);
       g.fillStyle(0x925328, 1);
-      g.fillRoundedRect(x, 384, 202, 173, 12);
+      g.fillRoundedRect(x, 350, 202, 173, 12);
       g.fillStyle(0xffe7a6, 1);
-      g.fillRoundedRect(x + 3, 387, 196, 167, 10);
+      g.fillRoundedRect(x + 3, 353, 196, 167, 10);
       g.fillStyle(0xfff9df, 1);
-      g.fillRoundedRect(x + 6, 390, 190, 161, 8);
+      g.fillRoundedRect(x + 6, 356, 190, 161, 8);
       g.lineStyle(1, 0xe7bd73, 1);
-      g.lineBetween(x + 13, 414, x + 189, 414);
+      g.lineBetween(x + 13, 380, x + 189, 380);
     }
     // Two equally sized counters read at a glance on a phone screen.
     g.fillStyle(0xe5efdc, 1);
-    g.fillRoundedRect(30, 423, 86, 55, 8);
+    g.fillRoundedRect(30, 389, 86, 55, 8);
     g.fillStyle(0xffedc6, 1);
-    g.fillRoundedRect(122, 423, 86, 55, 8);
+    g.fillRoundedRect(122, 389, 86, 55, 8);
     g.fillStyle(0x07533e, 1);
-    g.fillRoundedRect(30, 486, 178, 58, 8);
+    g.fillRoundedRect(30, 452, 178, 58, 8);
 
     const rankColors = [0xc7952b, 0x8d9c9b, 0xb87c4b, 0xf0e4c8, 0xf0e4c8];
     for (let i = 0; i < 5; i++) {
-      const y = 429 + i * 25;
+      const y = 395 + i * 25;
       g.fillStyle(i === 0 ? 0xffecc1 : i % 2 === 0 ? 0xfff3d8 : 0xfffcf1, 1);
       g.fillRoundedRect(332, y - 11, 182, 23, 6);
       g.fillStyle(rankColors[i], 1);
