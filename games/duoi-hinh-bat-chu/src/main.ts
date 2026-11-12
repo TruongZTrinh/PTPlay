@@ -12,6 +12,10 @@ const config: Phaser.Types.Core.GameConfig = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   backgroundColor: '#0d131f',
+  render: {
+    antialias: true,
+    mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
+  },
   physics: {
     default: 'arcade',
     arcade: {
