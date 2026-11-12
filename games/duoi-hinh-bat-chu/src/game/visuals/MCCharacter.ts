@@ -11,7 +11,7 @@ export class MCCharacter extends Phaser.GameObjects.Container {
 
     const initKey = scene.textures.exists('teacher_idle') ? 'teacher_idle' : 'props_board';
     this.mcSprite = scene.add.sprite(0, 0, initKey);
-    this.mcSprite.setOrigin(0.5, 0.85);
+    this.mcSprite.setOrigin(0.5, 0.90);
     this.mcSprite.setScale(this.getBaseScale());
     this.add(this.mcSprite);
 
@@ -21,7 +21,7 @@ export class MCCharacter extends Phaser.GameObjects.Container {
 
   private getBaseScale(): number {
     const width = this.mcSprite?.width || 512;
-    return (512 / width) * 0.38;
+    return (512 / width) * 0.22;
   }
 
   public setPose(poseKey: string): void {

@@ -26,8 +26,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
   private hintBannerText: Phaser.GameObjects.Text;
   private hintBannerBg: Phaser.GameObjects.Graphics;
   private letterBoxesContainer: Phaser.GameObjects.Container;
-  private promptText: Phaser.GameObjects.Text;
-  private promptBg: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 0, 0);
@@ -167,18 +165,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     }).setOrigin(0.5);
     this.add(this.hintBannerText);
 
-    // Prompt banner (Interaction CTA)
-    this.promptBg = scene.add.graphics();
-    this.add(this.promptBg);
-
-    this.promptText = scene.add.text(270, 355, '💬 Gõ đáp án trong bình luận để ghi điểm!', {
-      fontFamily: 'system-ui, sans-serif',
-      fontSize: '11px',
-      color: '#ffffff',
-      fontStyle: 'bold',
-    }).setOrigin(0.5);
-    this.add(this.promptText);
-
     this.drawEaselBackground();
 
     scene.add.existing(this);
@@ -246,38 +232,37 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.easelBg.clear();
     this.headerBadgesBg.clear();
     this.hintBannerBg.clear();
-    this.promptBg.clear();
 
     // 1. Studio Lighting Ambient Aura behind Easel Board
     this.easelBg.fillStyle(0xf59e0b, 0.08);
-    this.easelBg.fillRoundedRect(18, 68, 504, 316, 28);
+    this.easelBg.fillRoundedRect(18, 68, 504, 294, 28);
 
     // 2. Deep Multilayer Drop Shadow
     this.easelBg.fillStyle(0x000000, 0.35);
-    this.easelBg.fillRoundedRect(23, 75, 494, 304, 24);
+    this.easelBg.fillRoundedRect(23, 75, 494, 282, 24);
     this.easelBg.fillStyle(0x000000, 0.55);
-    this.easelBg.fillRoundedRect(25, 78, 490, 298, 20);
+    this.easelBg.fillRoundedRect(25, 78, 490, 276, 20);
 
     // 3. Triple-Layer Gilded Broadcast Frame
     // Base Gold Bevel
     this.easelBg.fillStyle(0xb45309, 1);
-    this.easelBg.fillRoundedRect(22, 73, 496, 304, 20);
+    this.easelBg.fillRoundedRect(22, 73, 496, 282, 20);
 
     // Lustrous Gold Body
     this.easelBg.fillStyle(0xf59e0b, 1);
-    this.easelBg.fillRoundedRect(24, 75, 492, 300, 18);
+    this.easelBg.fillRoundedRect(24, 75, 492, 278, 18);
 
     // Outer Specular Rim
     this.easelBg.lineStyle(2, 0xfde047, 1);
-    this.easelBg.strokeRoundedRect(24, 75, 492, 300, 18);
+    this.easelBg.strokeRoundedRect(24, 75, 492, 278, 18);
 
     // Dark Inner Bevel Shadow
     this.easelBg.lineStyle(1.5, 0x78350f, 1);
-    this.easelBg.strokeRoundedRect(26, 77, 488, 296, 16);
+    this.easelBg.strokeRoundedRect(26, 77, 488, 274, 16);
 
     // 4. Velvet Obsidian Blackboard Plate
     this.easelBg.fillStyle(0x064e3b, 0.98);
-    this.easelBg.fillRoundedRect(28, 79, 484, 292, 15);
+    this.easelBg.fillRoundedRect(28, 79, 484, 270, 15);
 
     // Inset teaching surface around the puzzle and answer, like a classroom board.
     this.easelBg.fillStyle(0x0b6149, 0.85);
@@ -294,8 +279,8 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     const corners = [
       { x: 26, y: 77, dx: 1, dy: 1 },
       { x: 514, y: 77, dx: -1, dy: 1 },
-      { x: 26, y: 369, dx: 1, dy: -1 },
-      { x: 514, y: 369, dx: -1, dy: -1 },
+      { x: 26, y: 347, dx: 1, dy: -1 },
+      { x: 514, y: 347, dx: -1, dy: -1 },
     ];
     corners.forEach((c) => {
       this.easelBg.fillStyle(0xfde047, 1);
@@ -325,12 +310,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.hintBannerBg.strokeRoundedRect(44, 317, 452, 25, 12);
     this.hintBannerBg.fillStyle(0x4338ca, 0.35);
     this.hintBannerBg.fillRoundedRect(46, 318, 448, 12, 6);
-
-    // 8. Prompt CTA Pill (Row 2)
-    this.promptBg.fillStyle(0x052e24, 0.96);
-    this.promptBg.fillRoundedRect(44, 344, 452, 23, 11);
-    this.promptBg.lineStyle(1.2, 0x0284c7, 0.85);
-    this.promptBg.strokeRoundedRect(44, 344, 452, 23, 11);
   }
 
   public updateDifficultyBadge(difficulty: number = 1): void {
