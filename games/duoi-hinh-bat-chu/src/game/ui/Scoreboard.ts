@@ -37,13 +37,16 @@ export class Scoreboard extends Phaser.GameObjects.Container {
     this.add(scene.add.text(165, 466, 'ĐÃ GHI ĐIỂM', {
       fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98602c', fontStyle: 'bold',
     }).setOrigin(0.5));
-    this.add(scene.add.text(119, 500, 'ĐẾN LƯỢT BẠN!', {
-      fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#fff0bf', fontStyle: 'bold',
-    }).setOrigin(0.5));
-    this.add(scene.add.text(119, 526, 'Bình luận đáp án\nđể ghi điểm lên bảng', {
-      fontFamily: 'system-ui, sans-serif', fontSize: '10px', color: '#e0efdc',
-      align: 'center', lineSpacing: 2,
-    }).setOrigin(0.5));
+    const interactionRules = [
+      { y: 498, label: '🌹 Hoa Hồng: Mở chữ +10s', color: '#fff0bf' },
+      { y: 515, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
+      { y: 532, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
+    ];
+    for (const rule of interactionRules) {
+      this.add(scene.add.text(40, rule.y, rule.label, {
+        fontFamily: 'system-ui, sans-serif', fontSize: '10.5px', color: rule.color, fontStyle: 'bold',
+      }).setOrigin(0, 0.5));
+    }
 
     for (let i = 0; i < 5; i++) {
       const y = 429 + i * 25;

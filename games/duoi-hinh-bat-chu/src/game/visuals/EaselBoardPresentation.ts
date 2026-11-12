@@ -18,8 +18,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   private singleImageContainer: Phaser.GameObjects.Container;
   private singleImageSprite: Phaser.GameObjects.Image;
-  private singleImageFrame: Phaser.GameObjects.Graphics;
-  private imageSideLabels: Phaser.GameObjects.Text[] = [];
   private activePuzzleKey: string | null = null;
   private loadingPuzzleKey: string | null = null;
 
@@ -105,28 +103,15 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.clueCard2.add(this.clueSprite2);
     this.add(this.clueCard2);
 
-    // Single Picture Puzzle Card (Gilded Exhibition Screen)
+    // Single Picture Puzzle Card (directly fills the inset board without an outer frame)
     this.singleImageContainer = scene.add.container(270, 177);
 
-    this.singleImageFrame = scene.add.graphics();
-    this.singleImageContainer.add(this.singleImageFrame);
-
     this.singleImageSprite = scene.add.image(0, 0, 'props_board');
-    this.singleImageSprite.setDisplaySize(456, 192);
+    this.singleImageSprite.setDisplaySize(480, 212);
     this.singleImageContainer.add(this.singleImageSprite);
-    for (const [x, label] of [[-186, 'ĐUỔI\nHÌNH'], [186, 'BẮT\nCHỮ']] as const) {
-      const text = scene.add.text(x, 0, label, {
-        fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#96602b',
-        fontStyle: 'bold', align: 'center', lineSpacing: 3,
-      }).setOrigin(0.5);
-      this.imageSideLabels.push(text);
-      this.singleImageContainer.add(text);
-    }
 
     this.singleImageContainer.setVisible(false);
     this.add(this.singleImageContainer);
-
-    this.drawSingleImageFrame();
 
     // Letter Boxes Container (3D Tactile Game Tiles)
     this.letterBoxesContainer = scene.add.container(270, 306);
@@ -184,27 +169,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     vignette.fillStyle(0x000000, 0.22);
     vignette.fillRect(0, 0, 540, 960);
     vignette.setDepth(-98);
-  }
-
-  private drawSingleImageFrame(): void {
-    this.singleImageFrame.clear();
-    // Fill the inset teaching area closely so the puzzle image gets maximum room.
-    this.singleImageFrame.fillStyle(0x031d18, 0.55);
-    this.singleImageFrame.fillRoundedRect(-243, -104, 486, 216, 12);
-    this.singleImageFrame.fillStyle(0xb66b27, 1);
-    this.singleImageFrame.fillRoundedRect(-242, -107, 484, 214, 11);
-    this.singleImageFrame.fillStyle(0xffe5a4, 1);
-    this.singleImageFrame.fillRoundedRect(-238, -103, 476, 206, 8);
-    this.singleImageFrame.fillStyle(0xfffcf1, 1);
-    this.singleImageFrame.fillRoundedRect(-234, -99, 468, 198, 6);
-    this.singleImageFrame.lineStyle(1.5, 0xd9a75c, 1);
-    this.singleImageFrame.strokeRoundedRect(-234, -99, 468, 198, 6);
-    for (const x of [-224, 224]) {
-      for (const y of [-89, 89]) {
-        this.singleImageFrame.fillStyle(0xd69640, 1);
-        this.singleImageFrame.fillCircle(x, y, 3);
-      }
-    }
   }
 
   private drawEaselBackground(): void {
@@ -333,7 +297,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       } else {
         this.loadingPuzzleKey = pKey;
         this.singleImageSprite.setVisible(false);
-        this.imageSideLabels.forEach((label) => label.setVisible(false));
         const url = `assets/rebus-v1/puzzles/${puzzle.image}`;
         this.scene.load.once(`filecomplete-image-${pKey}`, () => {
           if (this.loadingPuzzleKey !== pKey || !this.scene.textures.exists(pKey)) return;
@@ -388,16 +351,14 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
       const w = tex.width || 400;
       const h = tex.height || 300;
-      const maxW = 456;
-      const maxH = 192;
+      const maxW = 480;
+      const maxH = 212;
       const scale = Math.min(maxW / w, maxH / h);
       const dispW = w * scale;
       const dispH = h * scale;
       this.singleImageSprite.setDisplaySize(dispW, dispH);
-      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 295));
     } catch {
-      this.singleImageSprite.setDisplaySize(456, 192);
-      this.imageSideLabels.forEach((label) => label.setVisible(false));
+      this.singleImageSprite.setDisplaySize(480, 212);
     }
   }
 
