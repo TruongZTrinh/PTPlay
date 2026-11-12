@@ -1094,7 +1094,7 @@ function renderCatalogGrid(gifts) {
     const iconUrl = g.iconUrl || g.localIcon || '';
     const safeName = (g.name || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
     const cleanName = g.cleanName || g.name;
-    const diamonds = g.diamonds || 1;
+    const diamonds = g.coins ?? g.diamonds ?? 1;
     const isVn = g.isVN || (g.regions && g.regions.includes('VN'));
     const obsId = g.observedId || g.id;
     const hasVerifiedId = !!g.observedId;

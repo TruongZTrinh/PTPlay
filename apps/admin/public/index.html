@@ -1727,20 +1727,20 @@
           <div id="gsubpanel-catalog" class="gift-subpanel active">
             <div class="card" style="margin-bottom: 14px;">
               <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
-                <div style="display: flex; gap: 10px; flex: 1; min-width: 320px;">
-                  <input type="text" id="input-catalog-search" placeholder="🔍 Tìm kiếm quà: Rose, Lion, Galaxy, Cake, Capybara..." style="flex: 1;" oninput="onCatalogSearchInput()">
-                  <select id="select-catalog-region" style="width: 170px;" onchange="fetchCatalogGifts()">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1; min-width: 260px;">
+                  <input type="text" id="input-catalog-search" placeholder="🔍 Tìm kiếm quà: Rose, Lion, Galaxy, Cake, Capybara..." style="flex: 1; min-width: 180px;" oninput="onCatalogSearchInput()">
+                  <select id="select-catalog-region" style="width: auto; min-width: 175px;" onchange="fetchCatalogGifts()">
                     <option value="VN" selected>🇻🇳 Việt Nam (727 quà)</option>
                     <option value="ALL">🌐 Toàn Cầu (1.711 quà)</option>
                   </select>
-                  <select id="select-catalog-tier" style="width: 150px;" onchange="fetchCatalogGifts()">
+                  <select id="select-catalog-tier" style="width: auto; min-width: 175px;" onchange="fetchCatalogGifts()">
                     <option value="all" selected>Mọi mức Xu</option>
                     <option value="low">1–99 Xu (Phổ thông)</option>
                     <option value="mid">100–999 Xu (Trung cấp)</option>
                     <option value="high">1.000+ Xu (Siêu quà)</option>
                   </select>
                 </div>
-                <div style="font-size: 12px; color: var(--text-muted);">
+                <div style="font-size: 12px; color: var(--text-muted); white-space: nowrap;">
                   Hiển thị: <strong id="lbl-catalog-count" style="color: #38bdf8;">0</strong> quà
                 </div>
               </div>
