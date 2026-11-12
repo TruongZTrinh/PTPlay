@@ -18,6 +18,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   private singleImageContainer: Phaser.GameObjects.Container;
   private singleImageSprite: Phaser.GameObjects.Image;
+  private imageSideLabels: Phaser.GameObjects.Text[] = [];
   private activePuzzleKey: string | null = null;
   private loadingPuzzleKey: string | null = null;
 
@@ -101,12 +102,20 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.clueCard2.add(this.clueSprite2);
     this.add(this.clueCard2);
 
-    // Single Picture Puzzle Card (directly fills the inset board without an outer frame)
+    // Single Picture Puzzle Card (directly on the blackboard, with side labels when room permits)
     this.singleImageContainer = scene.add.container(270, 177);
 
     this.singleImageSprite = scene.add.image(0, 0, 'props_board');
-    this.singleImageSprite.setDisplaySize(480, 212);
+    this.singleImageSprite.setDisplaySize(488, 222);
     this.singleImageContainer.add(this.singleImageSprite);
+    for (const [x, label] of [[-196, 'ĐUỔI\nHÌNH'], [196, 'BẮT\nCHỮ']] as const) {
+      const text = scene.add.text(x, 0, label, {
+        fontFamily: 'system-ui, sans-serif', fontSize: '15px', color: '#fde68a',
+        fontStyle: 'bold', align: 'center', lineSpacing: 4,
+      }).setOrigin(0.5);
+      this.imageSideLabels.push(text);
+      this.singleImageContainer.add(text);
+    }
 
     this.singleImageContainer.setVisible(false);
     this.add(this.singleImageContainer);
@@ -192,17 +201,6 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.easelBg.fillStyle(0x064e3b, 0.98);
     this.easelBg.fillRoundedRect(18, 18, 504, 308, 15);
 
-    // Inset teaching surface around the puzzle and answer, like a classroom board.
-    this.easelBg.fillStyle(0x0b6149, 0.85);
-    this.easelBg.fillRoundedRect(24, 66, 492, 222, 12);
-    this.easelBg.lineStyle(1.5, 0x9bd6aa, 0.5);
-    this.easelBg.strokeRoundedRect(24, 66, 492, 222, 12);
-    this.easelBg.fillStyle(0xffe6a3, 0.75);
-    for (const x of [35, 505]) {
-      this.easelBg.fillCircle(x, 79, 2);
-      this.easelBg.fillCircle(x, 275, 2);
-    }
-
     // 5. Ornate Golden Art-Deco Corner Caps
     const corners = [
       { x: 16, y: 16, dx: 1, dy: 1 },
@@ -269,6 +267,7 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       } else {
         this.loadingPuzzleKey = pKey;
         this.singleImageSprite.setVisible(false);
+        this.imageSideLabels.forEach((label) => label.setVisible(false));
         const url = `assets/rebus-v1/puzzles/${puzzle.image}`;
         this.scene.load.once(`filecomplete-image-${pKey}`, () => {
           if (this.loadingPuzzleKey !== pKey || !this.scene.textures.exists(pKey)) return;
@@ -319,14 +318,16 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
       const w = tex.width || 400;
       const h = tex.height || 300;
-      const maxW = 480;
-      const maxH = 212;
+      const maxW = 488;
+      const maxH = 222;
       const scale = Math.min(maxW / w, maxH / h);
       const dispW = w * scale;
       const dispH = h * scale;
       this.singleImageSprite.setDisplaySize(dispW, dispH);
+      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 330));
     } catch {
-      this.singleImageSprite.setDisplaySize(480, 212);
+      this.singleImageSprite.setDisplaySize(488, 222);
+      this.imageSideLabels.forEach((label) => label.setVisible(false));
     }
   }
 
