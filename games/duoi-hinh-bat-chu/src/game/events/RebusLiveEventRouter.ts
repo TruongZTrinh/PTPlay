@@ -88,7 +88,7 @@ export class RebusLiveEventRouter {
 
     switch (cmd.action) {
       case 'rebus.join': {
-        this.roster.registerOrGet(userId, nickname, avatarUrl);
+        this.roster.registerOrGet(userId, nickname, avatarUrl, undefined, 'waiting');
         this.scoreboard.setChatTicker('vừa tham gia phòng chơi!', nickname);
         this.tts?.announcePlayerJoin(nickname);
         break;
@@ -118,6 +118,9 @@ export class RebusLiveEventRouter {
       }
 
       case 'rebus.like': {
+        if (cmd.user?.userId) {
+          this.roster.registerOrGet(userId, nickname, avatarUrl, undefined, 'waiting');
+        }
         const count = Math.max(1, Number(cmd.metadata?.likeCount) || 1);
         this.likeCountThisPuzzle += count;
 

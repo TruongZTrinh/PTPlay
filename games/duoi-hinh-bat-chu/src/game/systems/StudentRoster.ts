@@ -6,6 +6,7 @@ export class StudentRoster {
   private players = new Map<string, RebusPlayerRecord>();
   private seatAllocator: SeatAllocator;
   private onScoreChanged?: (player: RebusPlayerRecord) => void;
+  private onPlayerRegistered?: (player: RebusPlayerRecord) => void;
 
   constructor(seatAllocator: SeatAllocator) {
     this.seatAllocator = seatAllocator;
@@ -14,6 +15,10 @@ export class StudentRoster {
 
   public setOnScoreChanged(callback: (player: RebusPlayerRecord) => void): void {
     this.onScoreChanged = callback;
+  }
+
+  public setOnPlayerRegistered(callback: (player: RebusPlayerRecord) => void): void {
+    this.onPlayerRegistered = callback;
   }
 
   private seedNpcContestants(): void {
@@ -50,14 +55,23 @@ export class StudentRoster {
     });
   }
 
-  public registerOrGet(userId: string, nickname: string, avatarUrl?: string, team?: 'red' | 'blue'): { player: RebusPlayerRecord; isNew: boolean } {
+  public registerOrGet(
+    userId: string,
+    nickname: string,
+    avatarUrl?: string,
+    team?: 'red' | 'blue',
+    mode: 'seat' | 'waiting' = 'seat'
+  ): { player: RebusPlayerRecord; isNew: boolean } {
     let player = this.players.get(userId);
     let isNew = false;
+    let slotChanged = false;
 
     if (!player) {
       isNew = true;
       const cleanNick = TextNormalizer.sanitizeNickname(nickname);
-      const seat = this.seatAllocator.assignSeat(userId);
+      const slot = mode === 'waiting'
+        ? this.seatAllocator.assignWaiting(userId)
+        : this.seatAllocator.assignSeatOrWaiting(userId);
       const skinIndex = Math.abs(this.hashCode(userId)) % 8;
 
       player = {
@@ -73,11 +87,12 @@ export class StudentRoster {
         correctCount: 0,
         lastActiveTime: Date.now(),
         skinIndex,
-        seatIndex: seat.index,
+        seatIndex: slot.index,
         lastGuessTime: 0,
         guessesInCurrentRound: 0,
       };
       this.players.set(userId, player);
+      slotChanged = true;
     } else {
       player.lastActiveTime = Date.now();
       if (avatarUrl && !player.avatarUrl) {
@@ -86,6 +101,17 @@ export class StudentRoster {
       if (team) {
         player.team = team;
       }
+      if (mode === 'seat' && this.seatAllocator.getAssignedWaitingSpot(userId)) {
+        const promoted = this.seatAllocator.assignSeatOrWaiting(userId);
+        if (!promoted.isWaiting) {
+          player.seatIndex = promoted.index;
+          slotChanged = true;
+        }
+      }
+    }
+
+    if (slotChanged) {
+      this.onPlayerRegistered?.(player);
     }
 
     return { player, isNew };

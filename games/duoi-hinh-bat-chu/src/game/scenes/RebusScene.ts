@@ -19,7 +19,6 @@ export class RebusScene extends Phaser.Scene {
   private mc!: MCCharacter;
   private scoreboard!: Scoreboard;
   private studentCharacters: Map<string, StudentCharacter> = new Map();
-  private waitingSpectators: Map<number, Phaser.GameObjects.Sprite> = new Map();
   private nextWalkInReadyAt: number = 0;
   private congratsPresenter!: CongratulationsPresenter;
 
@@ -54,7 +53,6 @@ export class RebusScene extends Phaser.Scene {
     // 3. Visuals & Presentation
     this.easelBoard = new EaselBoardPresentation(this);
     this.createClassroomSeats();
-    this.createWaitingSpectators();
     this.mc = new MCCharacter(this, 270, 520);
     this.mc.setDepth(75);
 
@@ -65,6 +63,10 @@ export class RebusScene extends Phaser.Scene {
     this.studentRoster.setOnScoreChanged((player) => {
       this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
       this.spawnOrUpdateStudent(player);
+    });
+    this.studentRoster.setOnPlayerRegistered((player) => {
+      this.spawnOrUpdateStudent(player);
+      this.scoreboard.updateLeaderboard(this.studentRoster.getAllPlayers());
     });
 
     // 4. Instantiate visible chibi students
@@ -197,57 +199,6 @@ export class RebusScene extends Phaser.Scene {
     this.input.once('pointerdown', unlockAudio);
   }
 
-  private createWaitingSpectators(): void {
-    const skins = ['boy_02', 'girl_03', 'boy_04', 'girl_01', 'boy_03', 'girl_02'];
-    this.seatAllocator.waitingSpots.forEach((spot, i) => {
-      const skinId = skins[i % skins.length];
-      const baseKey = `student_${skinId}`;
-      const happyKey = `student_${skinId}_happy`;
-      const textureKey = this.textures.exists(baseKey) ? baseKey : 'props_desk';
-      const sprite = this.add.sprite(spot.x, spot.y + 4, textureKey);
-      sprite.setOrigin(0.5, 0.85);
-      sprite.setScale(spot.scale * 0.76);
-      sprite.setDepth(spot.depth);
-      this.waitingSpectators.set(spot.index, sprite);
-
-      const swayDir = i % 2 === 0 ? 1 : -1;
-      this.tweens.add({
-        targets: sprite,
-        y: spot.y - 5,
-        angle: { from: -6 * swayDir, to: 6 * swayDir },
-        duration: 340 + (i % 3) * 70,
-        yoyo: true,
-        repeat: -1,
-        delay: i * 140,
-        ease: 'Sine.easeInOut',
-      });
-
-      this.time.addEvent({
-        delay: 2400 + i * 650,
-        loop: true,
-        callback: () => {
-          if (!sprite.visible || !sprite.scene) return;
-          if (this.textures.exists(happyKey)) {
-            sprite.setTexture(happyKey);
-            this.time.delayedCall(1100, () => {
-              if (sprite.scene && this.textures.exists(baseKey)) {
-                sprite.setTexture(baseKey);
-              }
-            });
-          }
-          this.tweens.add({
-            targets: sprite,
-            scaleX: spot.scale * 0.84,
-            scaleY: spot.scale * 0.84,
-            duration: 160,
-            yoyo: true,
-            ease: 'Quad.easeOut',
-          });
-        },
-      });
-    });
-  }
-
   private renderInitialStudents(): void {
     const players = this.studentRoster.getAllPlayers();
     players.forEach((player) => {
@@ -257,15 +208,7 @@ export class RebusScene extends Phaser.Scene {
   }
 
   private spawnOrUpdateStudent(player: any): void {
-    const slot = this.seatAllocator.assignSeatOrWaiting(player.userId);
-    if (slot.isWaiting) {
-      const waitSpot = this.seatAllocator.getAssignedWaitingSpot(player.userId);
-      if (waitSpot) {
-        const spectator = this.waitingSpectators.get(waitSpot.index);
-        if (spectator) spectator.setVisible(false);
-      }
-    }
-
+    const slot = this.seatAllocator.getSlotForUser(player.userId) || this.seatAllocator.assignSeatOrWaiting(player.userId);
     let student = this.studentCharacters.get(player.userId);
 
     if (!student) {
