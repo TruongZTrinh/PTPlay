@@ -413,6 +413,41 @@ export class RebusScene extends Phaser.Scene {
         return 800;
       },
 
+      onTestSleepKick: (userId, nickname) => {
+        const { player } = this.studentRoster.registerOrGet(userId, nickname);
+        let student = this.studentCharacters.get(userId);
+        let slot = this.seatAllocator.getSlotForUser(userId);
+        if (!slot || slot.isWaiting) {
+          slot = this.seatAllocator.assignSeatOrWaiting(userId);
+        }
+        if (student && slot) {
+          student.jumpToSeat(slot.x, slot.y, slot.scale, slot.depth, 'shift', slot.isWaiting);
+        }
+
+        // Switch seated student to sleeping sprite immediately
+        player.roundsWithoutAnswer = 6;
+        if (student) {
+          student.updatePlayer(player);
+        }
+        this.scoreboard.setChatTicker('💤 đang ngủ gật quá 5 câu trong lớp...', player.nickname);
+
+        // Ensure a waiting viewer exists in ĐANG CHỜ to fly-kick the sleeper
+        if (!this.seatAllocator.hasOccupiedWaitingSpot()) {
+          const waitId = `wait_kick_${Date.now()}`;
+          const { player: waitPlayer } = this.studentRoster.registerOrGet(waitId, 'Học Sinh Mới');
+          const waitSlot = this.seatAllocator.placeInWaiting(waitId);
+          const waitChar = new StudentCharacter(this, waitPlayer, this.avatarManager, waitSlot.x, waitSlot.y, waitSlot.scale);
+          waitChar.setDepth(waitSlot.depth);
+          waitChar.setWaitingMode(true);
+          this.studentCharacters.set(waitId, waitChar);
+          waitChar.walkInFromEntrance(0);
+        }
+
+        this.time.delayedCall(750, () => {
+          this.rebusEngine.triggerSeatRebalance();
+        });
+      },
+
       onCeremonyStarted: () => {
         this.mc.cheer();
         const top3 = this.studentRoster.getTopPlayers(3);

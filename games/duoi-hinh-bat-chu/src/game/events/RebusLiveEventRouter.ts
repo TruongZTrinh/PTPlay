@@ -245,6 +245,13 @@ export class RebusLiveEventRouter {
         break;
       }
 
+      case 'rebus.test_sleep': {
+        const uId = String(cmd.metadata?.userId || cmd.user?.userId || `test_sleep_${Date.now()}`);
+        const nick = String(cmd.metadata?.nickname || cmd.user?.nickname || 'Thám Tử Tí Hon');
+        this.engine.triggerTestSleepKick(uId, nick);
+        break;
+      }
+
       case 'rebus.add_top_player': {
         this.handleAddTopPlayer(cmd.metadata || {});
         break;

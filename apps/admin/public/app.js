@@ -2580,6 +2580,9 @@ async function testRebusJourneyStep(step) {
   } else if (step === 3) {
     await sendRebusCommand('test_top5_swap', { userId, nickname });
     showToast(`🚀 Bước 3: ${nickname} đang nhảy lên Đá Bàn Top 5!`, 'success');
+  } else if (step === 4) {
+    await sendRebusCommand('test_sleep', { userId, nickname });
+    showToast(`💤 ${nickname} đang ngủ gật — người ngoài sảnh chờ sẽ bay vô đá!`, 'warning');
   }
 }
 

@@ -280,6 +280,14 @@ export class SeatAllocator {
    * Waiting viewers in ĐANG CHỜ fly-kick sleeping seated students (> 5 unanswered rounds)
    * out of their desks and take their seats.
    */
+  public hasOccupiedWaitingSpot(): boolean {
+    return this.waitingSpots.some((w) => w.assignedUserId !== null);
+  }
+
+  public placeInWaiting(userId: string): { index: number; x: number; y: number; scale: number; depth: number; isWaiting: boolean } {
+    return this.assignWaiting(userId);
+  }
+
   public kickSleepersForWaiting(sleepyUserIds: string[]): { moves: SeatMove[]; kickEvents: { challengerId: string; sleeperId: string }[] } {
     const moves: SeatMove[] = [];
     const kickEvents: { challengerId: string; sleeperId: string }[] = [];
