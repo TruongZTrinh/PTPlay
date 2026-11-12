@@ -278,7 +278,8 @@ export class SeatAllocator {
     const kickEvents: { challengerId: string; sleeperId: string }[] = [];
     if (sleepyUserIds.length === 0) return { moves, kickEvents };
 
-    const sleeperSeats = this.seats.filter((s) => s.assignedUserId && sleepyUserIds.includes(s.assignedUserId));
+    // Protect Top-5 VIP desks (seats[0..4]); waiting viewers only kick sleepers in lower desks
+    const sleeperSeats = this.seats.filter((s) => !s.isTop5 && s.assignedUserId && sleepyUserIds.includes(s.assignedUserId));
     const occupiedWaits = this.waitingSpots.filter((w) => w.assignedUserId !== null);
 
     const pairCount = Math.min(sleeperSeats.length, occupiedWaits.length);
