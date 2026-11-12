@@ -129,6 +129,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public override destroy(fromScene?: boolean): void {
     this.poseTimer?.remove(false);
+    this.waitCheerTimer?.remove(false);
     this.uiOverlay?.destroy(fromScene);
     super.destroy(fromScene);
   }
@@ -162,6 +163,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public setWaitingMode(enabled: boolean): void {
     this.isWaitingMode = enabled;
+    this.uiOverlay.setScale(enabled ? 0.76 : 1);
     if (!this.isWalkingIn) {
       this.startIdleAnimation();
     }

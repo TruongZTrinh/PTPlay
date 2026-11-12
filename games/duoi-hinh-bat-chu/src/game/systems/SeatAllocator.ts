@@ -58,20 +58,20 @@ export class SeatAllocator {
   }
 
   private initWaitingSpots(): void {
-    // 5 rows x 3 staggered columns = 15 waiting spots for live viewers on the right.
-    const rowYs = [648, 704, 760, 816, 872];
-    const colXs = [446, 474, 501];
+    // 6 rows x 2 staggered columns = 12 waiting spots with room for each viewer's name tag.
+    const rowYs = [638, 686, 734, 782, 830, 876];
+    const colXs = [450, 493];
     this.waitingSpots = [];
     let index = 0;
     rowYs.forEach((baseY, r) => {
       colXs.forEach((x, c) => {
-        const yOffset = (c % 2 === 1 ? -4 : 3) + (r % 2 === 0 ? 0 : 2);
+        const yOffset = c === 1 ? -4 : 3;
         this.waitingSpots.push({
           index,
           x,
           y: baseY + yOffset,
-          scale: 0.35,
-          depth: 31 + r * 3 + c,
+          scale: 0.36,
+          depth: 31 + r * 2 + c,
           assignedUserId: null,
         });
         index++;
