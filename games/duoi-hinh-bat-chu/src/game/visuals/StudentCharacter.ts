@@ -29,6 +29,8 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   private idleTween?: Phaser.Tweens.Tween;
   private activeMoveTween?: Phaser.Tweens.Tween;
   private activeStepTween?: Phaser.Tweens.Tween;
+  private activeFadeTween?: Phaser.Tweens.Tween;
+  private walkInDelayTimer?: Phaser.Time.TimerEvent;
   private waitCheerTimer?: Phaser.Time.TimerEvent;
   private isWalkingIn: boolean = false;
   private isWaitingMode: boolean = false;
@@ -145,6 +147,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   }
 
   public override destroy(fromScene?: boolean): void {
+    this.stopMovementTweens();
     this.poseTimer?.remove(false);
     this.waitCheerTimer?.remove(false);
     this.uiOverlay?.destroy(fromScene);
@@ -203,10 +206,16 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   }
 
   private stopMovementTweens(): void {
+    this.walkInDelayTimer?.remove(false);
+    this.walkInDelayTimer = undefined;
     this.activeMoveTween?.stop();
     this.activeMoveTween = undefined;
     this.activeStepTween?.stop();
     this.activeStepTween = undefined;
+    this.activeFadeTween?.stop();
+    this.activeFadeTween = undefined;
+    this.setAlpha(1);
+    this.uiOverlay?.setAlpha(1);
   }
 
   public walkToSeat(targetX: number, targetY: number, targetScale: number, targetDepth: number, isWaiting: boolean): void {
@@ -542,6 +551,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     const startX = targetX <= 270 ? -24 : 564;
     const walkDuration = Math.round(380 + Math.abs(targetX - startX) * 1.4);
 
+    this.stopMovementTweens();
     this.isWalkingIn = true;
     this.idleTween?.stop();
     this.setPosition(startX, targetY);
@@ -549,15 +559,16 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     this.uiOverlay.setAlpha(0);
 
     const beginWalk = () => {
+      this.walkInDelayTimer = undefined;
       if (!this.scene || !this.chibiSprite.scene) return;
-      this.scene.tweens.add({
+      this.activeFadeTween = this.scene.tweens.add({
         targets: this,
         alpha: 1,
         duration: 160,
         ease: 'Quad.easeOut',
       });
 
-      const stepTween = this.scene.tweens.add({
+      this.activeStepTween = this.scene.tweens.add({
         targets: this.chibiSprite,
         angle: { from: -5, to: 5 },
         y: 7,
@@ -567,17 +578,21 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
         ease: 'Sine.easeInOut',
       });
 
-      this.scene.tweens.add({
+      this.activeMoveTween = this.scene.tweens.add({
         targets: this,
         x: targetX,
         duration: walkDuration,
         ease: 'Cubic.easeOut',
+        onUpdate: () => {
+          this.uiOverlay?.setPosition(this.x, this.y);
+        },
         onComplete: () => {
-          stepTween.stop();
+          this.stopMovementTweens();
           this.isWalkingIn = false;
           if (!this.scene || !this.chibiSprite.scene) return;
           this.chibiSprite.setAngle(0);
           this.chibiSprite.setY(12);
+          this.setPosition(targetX, targetY);
           this.uiOverlay.setPosition(targetX, targetY);
           this.scene.tweens.add({
             targets: this.uiOverlay,
@@ -591,7 +606,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     };
 
     if (delayMs > 0) {
-      this.scene.time.delayedCall(delayMs, beginWalk);
+      this.walkInDelayTimer = this.scene.time.delayedCall(delayMs, beginWalk);
     } else {
       beginWalk();
     }
