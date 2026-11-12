@@ -59,6 +59,7 @@ export class BootScene extends Phaser.Scene {
       this.load.image(`student_${skin}`, `${assetPath}/students/chibi_students_24/student_${skin}_idle.png`);
       this.load.image(`student_${skin}_happy`, `${assetPath}/students/chibi_students_24/student_${skin}_happy.png`);
       this.load.image(`student_${skin}_sleep`, `${assetPath}/students/chibi_students_24/student_${skin}_sleep.png`);
+      this.load.image(`student_${skin}_flykick`, `${assetPath}/students/chibi_students_24/student_${skin}_flykick.png`);
     });
 
     // 3. Props

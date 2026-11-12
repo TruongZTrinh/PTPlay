@@ -262,7 +262,13 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     const delay = kind === 'bumped_down' ? 360 : 0;
 
     if (kind === 'promote_top5') {
-      this.setTemporaryPose('happy', 2000);
+      const flykickKey = `student_${this.skinId}_flykick`;
+      if (this.scene.textures.exists(flykickKey)) {
+        this.chibiSprite.setTexture(flykickKey);
+        this.chibiSprite.setFlipX(dir < 0);
+      } else {
+        this.setTemporaryPose('happy', 2000);
+      }
     } else if (kind === 'bumped_down') {
       this.setTemporaryPose('sleep', 1300);
     }
@@ -317,10 +323,12 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
         this.isWalkingIn = false;
         if (!this.scene || !this.chibiSprite.scene) return;
         this.chibiSprite.setAngle(0);
+        this.chibiSprite.setFlipX(false);
         this.setPosition(targetX, targetY);
         this.setScale(targetScale);
         this.setDepth(targetDepth);
         if (kind === 'promote_top5') {
+          this.setTemporaryPose('happy', 1500);
           this.scene.tweens.add({
             targets: this,
             scaleX: targetScale * 1.18,
