@@ -37,6 +37,8 @@ export class RebusScene extends Phaser.Scene {
   }
 
   public create(): void {
+    this.cameras.main.setZoom(2).centerOn(270, 480);
+
     // 1. Audio and Systems
     this.audioEngine = new AudioEngine();
     this.ttsController = new TTSController(this.audioEngine);

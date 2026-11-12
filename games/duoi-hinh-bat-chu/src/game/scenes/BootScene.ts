@@ -6,6 +6,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   public preload(): void {
+    this.cameras.main.setZoom(2).centerOn(270, 480);
     const width = 540;
     const height = 960;
 

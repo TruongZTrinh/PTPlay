@@ -43,54 +43,56 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     this.chibiSprite.setScale(0.76);
     this.add(this.chibiSprite);
 
-    // Overlay UI sits above the desk front layer (depth + 2)
+    // Overlay UI sits at 1:1 world scale above the desk front layer (depth + 2) for crisp text
     this.uiOverlay = scene.add.container(x, y);
-    this.uiOverlay.setScale(scale);
 
     // Desk plate
     const plate = scene.add.graphics();
-    plate.fillStyle(0x0f172a, 0.88);
-    plate.fillRoundedRect(-54, 6, 108, 34, 8);
-    plate.lineStyle(1.5, player.team === 'blue' ? 0x38bdf8 : 0xf59e0b, 0.85);
-    plate.strokeRoundedRect(-54, 6, 108, 34, 8);
+    plate.fillStyle(0x0f172a, 0.9);
+    plate.fillRoundedRect(-27, 2, 54, 18, 4);
+    plate.lineStyle(1, player.team === 'blue' ? 0x38bdf8 : 0xf59e0b, 0.9);
+    plate.strokeRoundedRect(-27, 2, 54, 18, 4);
     this.uiOverlay.add(plate);
 
-    this.nameText = scene.add.text(0, 15, player.nickname, {
+    this.nameText = scene.add.text(0, 7.5, this.formatName(player.nickname), {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '13px',
+      fontSize: '7.5px',
       color: '#ffffff',
       fontStyle: 'bold',
+      resolution: 3,
     }).setOrigin(0.5);
     this.uiOverlay.add(this.nameText);
 
-    this.scoreText = scene.add.text(0, 30, `${player.score}`, {
+    this.scoreText = scene.add.text(0, 15.5, `${player.score}`, {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '12px',
+      fontSize: '7px',
       color: '#facc15',
       fontStyle: 'bold',
+      resolution: 3,
     }).setOrigin(0.5);
     this.uiOverlay.add(this.scoreText);
 
     this.avatarCircle = scene.add.graphics();
     this.avatarCircle.fillStyle(0x0f172a, 0.9);
-    this.avatarCircle.fillCircle(-34, -44, 15);
-    this.avatarCircle.lineStyle(2, 0xffd700, 1);
-    this.avatarCircle.strokeCircle(-34, -44, 15);
+    this.avatarCircle.fillCircle(-16, -20, 7);
+    this.avatarCircle.lineStyle(1, 0xffd700, 1);
+    this.avatarCircle.strokeCircle(-16, -20, 7);
     this.uiOverlay.add(this.avatarCircle);
 
-    this.streakBadge = scene.add.container(34, -44);
+    this.streakBadge = scene.add.container(16, -20);
     const flameBg = scene.add.graphics();
     flameBg.fillStyle(0xf97316, 0.95);
-    flameBg.fillCircle(0, 0, 13);
-    flameBg.lineStyle(1.5, 0xfef08a, 1);
-    flameBg.strokeCircle(0, 0, 13);
+    flameBg.fillCircle(0, 0, 6);
+    flameBg.lineStyle(1, 0xfef08a, 1);
+    flameBg.strokeCircle(0, 0, 6);
     this.streakBadge.add(flameBg);
 
     this.streakText = scene.add.text(0, 0, `x${player.streak}`, {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '11px',
+      fontSize: '6px',
       color: '#ffffff',
       fontStyle: 'bold',
+      resolution: 3,
     }).setOrigin(0.5);
     this.streakBadge.add(this.streakText);
     this.streakBadge.setVisible(player.streak >= 2);
@@ -101,6 +103,11 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  private formatName(name: string): string {
+    const trimmed = name.trim();
+    return trimmed.length > 10 ? `${trimmed.slice(0, 9)}…` : trimmed;
+  }
+
   public override setPosition(x?: number, y?: number, z?: number, w?: number): this {
     super.setPosition(x, y, z, w);
     this.uiOverlay?.setPosition(this.x, this.y);
@@ -109,7 +116,6 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public override setScale(x: number, y?: number): this {
     super.setScale(x, y);
-    this.uiOverlay?.setScale(this.scaleX, this.scaleY);
     return this;
   }
 
@@ -131,8 +137,8 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
         const texKey = this.avatarManager.getTextureKey(this.player.userId);
         if (this.scene.textures.exists(texKey)) {
           if (this.avatarImage) this.avatarImage.destroy();
-          this.avatarImage = this.scene.add.image(-34, -44, texKey);
-          this.avatarImage.setDisplaySize(28, 28);
+          this.avatarImage = this.scene.add.image(-16, -20, texKey);
+          this.avatarImage.setDisplaySize(13, 13);
           this.uiOverlay.add(this.avatarImage);
         }
       });
@@ -141,7 +147,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public updatePlayer(player: RebusPlayerRecord): void {
     this.player = player;
-    this.nameText.setText(player.nickname);
+    this.nameText.setText(this.formatName(player.nickname));
     this.scoreText.setText(`${player.score}`);
 
     if (player.streak >= 2) {
