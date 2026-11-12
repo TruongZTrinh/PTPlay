@@ -152,7 +152,16 @@ export class StudentRoster {
     if (player) {
       player.lastGuessTime = Date.now();
       player.guessesInCurrentRound++;
+      player.roundsWithoutAnswer = 0;
     }
+  }
+
+  public advanceInactiveCounters(): void {
+    this.players.forEach((p) => {
+      if (this.seatAllocator.getAssignedSeat(p.userId)) {
+        p.roundsWithoutAnswer = p.guessesInCurrentRound === 0 ? (p.roundsWithoutAnswer || 0) + 1 : 0;
+      }
+    });
   }
 
   public resetRoundAttempts(): void {
@@ -165,6 +174,7 @@ export class StudentRoster {
     const player = this.players.get(userId);
     if (!player) return;
     player.score += points;
+    player.roundsWithoutAnswer = 0;
     player.lastActiveTime = Date.now();
     this.onScoreChanged?.(player);
   }

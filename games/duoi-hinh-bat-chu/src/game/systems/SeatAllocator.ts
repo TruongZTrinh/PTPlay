@@ -269,6 +269,52 @@ export class SeatAllocator {
     return { moves, top5Takeovers };
   }
 
+  /**
+   * Waiting viewers in ĐANG CHỜ fly-kick sleeping seated students (> 5 unanswered rounds)
+   * out of their desks and take their seats.
+   */
+  public kickSleepersForWaiting(sleepyUserIds: string[]): { moves: SeatMove[]; kickEvents: { challengerId: string; sleeperId: string }[] } {
+    const moves: SeatMove[] = [];
+    const kickEvents: { challengerId: string; sleeperId: string }[] = [];
+    if (sleepyUserIds.length === 0) return { moves, kickEvents };
+
+    const sleeperSeats = this.seats.filter((s) => s.assignedUserId && sleepyUserIds.includes(s.assignedUserId));
+    const occupiedWaits = this.waitingSpots.filter((w) => w.assignedUserId !== null);
+
+    const pairCount = Math.min(sleeperSeats.length, occupiedWaits.length);
+    for (let i = 0; i < pairCount; i++) {
+      const seat = sleeperSeats[i];
+      const waitSpot = occupiedWaits[i];
+      const sleeperId = seat.assignedUserId!;
+      const challengerId = waitSpot.assignedUserId!;
+
+      seat.assignedUserId = challengerId;
+      waitSpot.assignedUserId = sleeperId;
+
+      kickEvents.push({ challengerId, sleeperId });
+      moves.push({
+        userId: challengerId,
+        x: seat.x,
+        y: seat.y,
+        scale: seat.scale,
+        depth: seat.depth,
+        isWaiting: false,
+        kind: 'promote_top5',
+      });
+      moves.push({
+        userId: sleeperId,
+        x: waitSpot.x,
+        y: waitSpot.y,
+        scale: waitSpot.scale,
+        depth: waitSpot.depth,
+        isWaiting: true,
+        kind: 'bumped_down',
+      });
+    }
+
+    return { moves, kickEvents };
+  }
+
   public assignSeat(userId: string): SeatSlot {
     const existing = this.getAssignedSeat(userId);
     if (existing) return existing;

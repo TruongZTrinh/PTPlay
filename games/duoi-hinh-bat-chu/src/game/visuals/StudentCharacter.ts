@@ -30,6 +30,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   private waitCheerTimer?: Phaser.Time.TimerEvent;
   private isWalkingIn: boolean = false;
   private isWaitingMode: boolean = false;
+  private isSleeping: boolean = false;
 
   constructor(scene: Phaser.Scene, player: RebusPlayerRecord, avatarManager: AvatarManager, x: number, y: number, scale: number) {
     super(scene, x, y);
@@ -172,6 +173,22 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
       this.streakText.setText(`x${player.streak}`);
     } else {
       this.streakBadge.setVisible(false);
+    }
+
+    this.setSleeping(!this.isWaitingMode && (player.roundsWithoutAnswer || 0) >= 1);
+  }
+
+  public setSleeping(sleeping: boolean): void {
+    if (this.isSleeping === sleeping) return;
+    this.isSleeping = sleeping;
+    if (this.isWalkingIn || !this.chibiSprite.scene) return;
+
+    const sleepKey = `student_${this.skinId}_sleep`;
+    const idleKey = `student_${this.skinId}`;
+    if (sleeping && this.scene.textures.exists(sleepKey)) {
+      this.chibiSprite.setTexture(sleepKey);
+    } else if (!sleeping && this.scene.textures.exists(idleKey)) {
+      this.chibiSprite.setTexture(idleKey);
     }
   }
 

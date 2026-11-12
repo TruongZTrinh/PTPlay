@@ -52,6 +52,7 @@ export interface RebusPlayerRecord {
   seatIndex: number;
   lastGuessTime: number;
   guessesInCurrentRound: number;
+  roundsWithoutAnswer?: number;
 }
 
 export interface GuessSubmission {

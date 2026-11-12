@@ -322,6 +322,7 @@ export class RebusScene extends Phaser.Scene {
 
       onPuzzleRevealed: (puzzle, solved, winner) => {
         this.easelBoard.revealAnswer(puzzle.answer, solved, winner?.nickname);
+        this.studentRoster.advanceInactiveCounters();
         const allPlayers = this.studentRoster.getAllPlayers();
         allPlayers.forEach((p) => {
           this.spawnOrUpdateStudent(p);
@@ -330,12 +331,25 @@ export class RebusScene extends Phaser.Scene {
       },
 
       onSeatRebalance: (onComplete) => {
-        const rankedIds = [...this.studentRoster.getAllPlayers()]
+        const allPlayers = this.studentRoster.getAllPlayers();
+        const rankedIds = [...allPlayers]
           .filter((p) => p.score > 0)
           .sort((a, b) => b.score - a.score || b.correctCount - a.correctCount)
           .map((p) => p.userId);
 
-        const { moves, top5Takeovers } = this.seatAllocator.rebalanceByRank(rankedIds);
+        const { moves: rankMoves, top5Takeovers } = this.seatAllocator.rebalanceByRank(rankedIds);
+
+        // Waiting viewers fly-kick seated students who haven't answered for > 5 rounds
+        const sleepyIds = allPlayers
+          .filter((p) => (p.roundsWithoutAnswer || 0) > 5)
+          .map((p) => p.userId);
+        const { moves: kickMoves, kickEvents } = this.seatAllocator.kickSleepersForWaiting(sleepyIds);
+        kickEvents.forEach((ev) => {
+          const sleeper = this.studentRoster.getPlayer(ev.sleeperId);
+          if (sleeper) sleeper.roundsWithoutAnswer = 0;
+        });
+
+        const moves = [...rankMoves, ...kickMoves];
         if (moves.length === 0) return 0;
 
         moves.forEach((move) => {
@@ -344,6 +358,20 @@ export class RebusScene extends Phaser.Scene {
             student.jumpToSeat(move.x, move.y, move.scale, move.depth, move.kind, move.isWaiting);
           }
         });
+
+        if (kickEvents.length > 0 && top5Takeovers.length === 0) {
+          const firstKick = kickEvents[0];
+          const challenger = this.studentRoster.getPlayer(firstKick.challengerId);
+          const sleeper = this.studentRoster.getPlayer(firstKick.sleeperId);
+          if (challenger && sleeper) {
+            this.audioEngine.playTop5Yeah();
+            this.scoreboard.setChatTicker(
+              `💤➡️💥 bay đá ${sleeper.nickname} (ngủ gật >5 câu) để lấy chỗ ngồi!`,
+              challenger.nickname
+            );
+          }
+          return 1200;
+        }
 
         if (top5Takeovers.length > 0) {
           const lead = top5Takeovers[0];
