@@ -284,6 +284,12 @@ export class SeatAllocator {
     return this.waitingSpots.some((w) => w.assignedUserId !== null);
   }
 
+  public getOccupiedLowerUserIds(): string[] {
+    return this.seats
+      .filter((s) => !s.isTop5 && s.assignedUserId !== null)
+      .map((s) => s.assignedUserId!);
+  }
+
   public placeInWaiting(userId: string): { index: number; x: number; y: number; scale: number; depth: number; isWaiting: boolean } {
     return this.assignWaiting(userId);
   }

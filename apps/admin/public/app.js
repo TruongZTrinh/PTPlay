@@ -2586,6 +2586,11 @@ async function testRebusJourneyStep(step) {
   }
 }
 
+async function testRandomLowerKick() {
+  await sendRebusCommand('test_random_lower_kick', {});
+  showToast('⚡ Đang cho 1 người ở 3 bàn dưới ngủ gật và bị người ngoài sảnh chờ bay vào đá!', 'warning');
+}
+
 async function runFullRebusJourney() {
   await testRebusJourneyStep(1);
   setTimeout(() => testRebusJourneyStep(2), 2200);

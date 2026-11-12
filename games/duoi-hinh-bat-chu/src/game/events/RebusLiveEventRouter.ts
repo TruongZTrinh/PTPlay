@@ -252,6 +252,11 @@ export class RebusLiveEventRouter {
         break;
       }
 
+      case 'rebus.test_random_lower_kick': {
+        this.engine.triggerTestRandomLowerKick();
+        break;
+      }
+
       case 'rebus.add_top_player': {
         this.handleAddTopPlayer(cmd.metadata || {});
         break;
