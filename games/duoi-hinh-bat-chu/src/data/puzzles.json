@@ -3292,27 +3292,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0178",
-    "category": "Đời sống",
-    "answer": "BẢNH TRAI",
-    "aliases": [
-      "BANH TRAI",
-      "BANHTRAI"
-    ],
-    "clues": [
-      "bảnh",
-      "trai"
-    ],
-    "image": "dhbc_extra_banhtrai.webp",
-    "hint1": "Một chàng trai vuốt tóc bảnh bao đứng bên con hàu con trai ngọc...",
-    "hint2": "Phong thái bảnh bao (Bảnh) + Con trai dưới đáy sông (Trai)... Đẹp trai sáng láng!",
-    "explanation": "Bảnh bao + Con trai ngọc = BẢNH TRAI",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0179",
     "category": "Tình cảm",
     "answer": "THÂN THƯƠNG",
@@ -11258,27 +11237,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0555",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "VĨ ĐẠI",
-    "aliases": [
-      "VI DAI",
-      "VIDAI"
-    ],
-    "clues": [
-      "vĩ",
-      "đại"
-    ],
-    "image": "dhbc_extra_vidai.webp",
-    "hint1": "Gợi ý hình ảnh: Newton",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'V'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VĨ ĐẠI",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0556",
     "category": "Đuổi hình bắt chữ",
     "answer": "CẦU TIÊU",
@@ -16660,70 +16618,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0807",
-    "category": "Cụm từ dân gian",
-    "answer": "ANH HÙNG NÚP",
-    "aliases": [
-      "ANH HUNG NUP",
-      "ANHHUNGNUP"
-    ],
-    "clues": [
-      "anh",
-      "hùng",
-      "núp"
-    ],
-    "image": "dhbc_extra_anhhungnup.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'A'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ANH HÙNG NÚP",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0808",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ĂN VẶT",
-    "aliases": [
-      "AN VAT",
-      "ANVAT"
-    ],
-    "clues": [
-      "ăn",
-      "vặt"
-    ],
-    "image": "dhbc_extra_anvat.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Ă'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĂN VẶT",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0809",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "BÁNH MÌ",
-    "aliases": [
-      "BANH MI",
-      "BANHMI"
-    ],
-    "clues": [
-      "bánh",
-      "mì"
-    ],
-    "image": "dhbc_extra_banhmi.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'B'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÁNH MÌ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0810",
     "category": "Cụm từ dân gian",
     "answer": "BÁN VÉ SỐ",
@@ -16807,27 +16701,6 @@
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BA LÔ NGƯỢC",
     "durationSec": 25,
     "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0814",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "BÀ TƯNG",
-    "aliases": [
-      "BA TUNG",
-      "BATUNG"
-    ],
-    "clues": [
-      "bà",
-      "tưng"
-    ],
-    "image": "dhbc_extra_batung.jpg",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'B'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÀ TƯNG",
-    "durationSec": 20,
-    "difficulty": 1,
     "mode": "word",
     "verified": true
   },
@@ -17065,135 +16938,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0826",
-    "category": "Thành ngữ & Tục ngữ",
-    "answer": "CÀ PHÊ SÂN VƯỜN",
-    "aliases": [
-      "CA PHE SAN VUON",
-      "CAPHESANVUON"
-    ],
-    "clues": [
-      "cà",
-      "phê",
-      "sân",
-      "vườn"
-    ],
-    "image": "dhbc_extra_caphesanvuon.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 4 từ...",
-    "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'C'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CÀ PHÊ SÂN VƯỜN",
-    "durationSec": 30,
-    "difficulty": 3,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0827",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "CA SĨ",
-    "aliases": [
-      "CA SI",
-      "CASI"
-    ],
-    "clues": [
-      "ca",
-      "sĩ"
-    ],
-    "image": "dhbc_extra_casi.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'C'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CA SĨ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0828",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "CHÉM GIÓ",
-    "aliases": [
-      "CHEM GIO",
-      "CHEMGIO"
-    ],
-    "clues": [
-      "chém",
-      "gió"
-    ],
-    "image": "dhbc_extra_chemgio.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'C'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHÉM GIÓ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0829",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "CHÚA TỂ",
-    "aliases": [
-      "CHUA TE",
-      "CHUATE"
-    ],
-    "clues": [
-      "chúa",
-      "tể"
-    ],
-    "image": "dhbc_extra_chuate.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'C'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHÚA TỂ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0830",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "CHỨNG KHOÁN",
-    "aliases": [
-      "CHUNG KHOAN",
-      "CHUNGKHOAN"
-    ],
-    "clues": [
-      "chứng",
-      "khoán"
-    ],
-    "image": "dhbc_extra_chungkhoan.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'C'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHỨNG KHOÁN",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0831",
-    "category": "Cụm từ dân gian",
-    "answer": "CHƯỚNG NGẠI VẬT",
-    "aliases": [
-      "CHUONG NGAI VAT",
-      "CHUONGNGAIVAT"
-    ],
-    "clues": [
-      "chướng",
-      "ngại",
-      "vật"
-    ],
-    "image": "dhbc_extra_chuongngaivat.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'C'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHƯỚNG NGẠI VẬT",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0832",
     "category": "Đuổi hình bắt chữ",
     "answer": "CÔNG NGHỆ",
@@ -17278,27 +17022,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0836",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ĐẶC SẢN",
-    "aliases": [
-      "DAC SAN",
-      "DACSAN"
-    ],
-    "clues": [
-      "đặc",
-      "sản"
-    ],
-    "image": "dhbc_extra_dacsan.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Đ'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐẶC SẢN",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0837",
     "category": "Đuổi hình bắt chữ",
     "answer": "ĐẠI DƯƠNG",
@@ -17356,27 +17079,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'D'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: DÂN CA",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0840",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ĐÁ GÀ",
-    "aliases": [
-      "DA GA",
-      "DAGA"
-    ],
-    "clues": [
-      "đá",
-      "gà"
-    ],
-    "image": "dhbc_extra_daga.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Đ'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐÁ GÀ",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -17507,70 +17209,6 @@
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐỘC THÂN",
     "durationSec": 20,
     "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0847",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ĐỒNG TÌNH",
-    "aliases": [
-      "DONG TINH",
-      "DONGTINH"
-    ],
-    "clues": [
-      "đồng",
-      "tình"
-    ],
-    "image": "dhbc_extra_dongtinh.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Đ'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐỒNG TÌNH",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0848",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ĐỘT BIẾN",
-    "aliases": [
-      "DOT BIEN",
-      "DOTBIEN"
-    ],
-    "clues": [
-      "đột",
-      "biến"
-    ],
-    "image": "dhbc_extra_dotbien.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Đ'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐỘT BIẾN",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0849",
-    "category": "Cụm từ dân gian",
-    "answer": "DU LỊCH BỤI",
-    "aliases": [
-      "DU LICH BUI",
-      "DULICHBUI"
-    ],
-    "clues": [
-      "du",
-      "lịch",
-      "bụi"
-    ],
-    "image": "dhbc_extra_dulichbui.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'D'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: DU LỊCH BỤI",
-    "durationSec": 25,
-    "difficulty": 2,
     "mode": "word",
     "verified": true
   },
@@ -17766,27 +17404,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0859",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "HIỆP SĨ",
-    "aliases": [
-      "HIEP SI",
-      "HIEPSI"
-    ],
-    "clues": [
-      "hiệp",
-      "sĩ"
-    ],
-    "image": "dhbc_extra_hiepsi.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'H'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HIỆP SĨ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0860",
     "category": "Đuổi hình bắt chữ",
     "answer": "HÓA TRANG",
@@ -17808,27 +17425,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0861",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "HỌC SINH",
-    "aliases": [
-      "HOC SINH",
-      "HOCSINH"
-    ],
-    "clues": [
-      "học",
-      "sinh"
-    ],
-    "image": "dhbc_extra_hocsinh.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'H'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỌC SINH",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0862",
     "category": "Đuổi hình bắt chữ",
     "answer": "HỘI AN",
@@ -17844,27 +17440,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỘI AN",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0863",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "HỘI BIA",
-    "aliases": [
-      "HOI BIA",
-      "HOIBIA"
-    ],
-    "clues": [
-      "hội",
-      "bia"
-    ],
-    "image": "dhbc_extra_hoibia.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'H'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỘI BIA",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -17998,27 +17573,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0870",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "KHIÊU VŨ",
-    "aliases": [
-      "KHIEU VU",
-      "KHIEUVU"
-    ],
-    "clues": [
-      "khiêu",
-      "vũ"
-    ],
-    "image": "dhbc_extra_khieuvu.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'K'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: KHIÊU VŨ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0871",
     "category": "Đuổi hình bắt chữ",
     "answer": "KHOA HỌC",
@@ -18097,27 +17651,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'K'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: KIM LOẠI",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0875",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "KỲ THÚ",
-    "aliases": [
-      "KY THU",
-      "KYTHU"
-    ],
-    "clues": [
-      "kỳ",
-      "thú"
-    ],
-    "image": "dhbc_extra_kythu.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'K'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: KỲ THÚ",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -18272,27 +17805,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0883",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "MẠO HIỂM",
-    "aliases": [
-      "MAO HIEM",
-      "MAOHIEM"
-    ],
-    "clues": [
-      "mạo",
-      "hiểm"
-    ],
-    "image": "dhbc_extra_maohiem.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'M'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MẠO HIỂM",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0884",
     "category": "Đuổi hình bắt chữ",
     "answer": "MÁY BAY",
@@ -18441,70 +17953,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0891",
-    "category": "Cụm từ dân gian",
-    "answer": "NẤU BÁNH CHƯNG",
-    "aliases": [
-      "NAU BANH CHUNG",
-      "NAUBANHCHUNG"
-    ],
-    "clues": [
-      "nấu",
-      "bánh",
-      "chưng"
-    ],
-    "image": "dhbc_extra_naubanhchung.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NẤU BÁNH CHƯNG",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0892",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "NEM NƯỚNG",
-    "aliases": [
-      "NEM NUONG",
-      "NEMNUONG"
-    ],
-    "clues": [
-      "nem",
-      "nướng"
-    ],
-    "image": "dhbc_extra_nemnuong.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NEM NƯỚNG",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0893",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "NGHỆ SĨ",
-    "aliases": [
-      "NGHE SI",
-      "NGHESI"
-    ],
-    "clues": [
-      "nghệ",
-      "sĩ"
-    ],
-    "image": "dhbc_extra_nghesi.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGHỆ SĨ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0894",
     "category": "Thành ngữ & Tục ngữ",
     "answer": "NGHĨA VỤ QUÂN SỰ",
@@ -18522,115 +17970,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 4 từ...",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGHĨA VỤ QUÂN SỰ",
-    "durationSec": 30,
-    "difficulty": 3,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0895",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "NGHIÊM TÚC",
-    "aliases": [
-      "NGHIEM TUC",
-      "NGHIEMTUC"
-    ],
-    "clues": [
-      "nghiêm",
-      "túc"
-    ],
-    "image": "dhbc_extra_nghiemtuc.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGHIÊM TÚC",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0896",
-    "category": "Cụm từ dân gian",
-    "answer": "NGƯỜI GIẤU MẶT",
-    "aliases": [
-      "NGUOI GIAU MAT",
-      "NGUOIGIAUMAT"
-    ],
-    "clues": [
-      "người",
-      "giấu",
-      "mặt"
-    ],
-    "image": "dhbc_extra_nguoigiaumat.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGƯỜI GIẤU MẶT",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0897",
-    "category": "Cụm từ dân gian",
-    "answer": "NGƯỜI HÂM MỘ",
-    "aliases": [
-      "NGUOI HAM MO",
-      "NGUOIHAMMO"
-    ],
-    "clues": [
-      "người",
-      "hâm",
-      "mộ"
-    ],
-    "image": "dhbc_extra_nguoihammo.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGƯỜI HÂM MỘ",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0898",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "NGƯỜI MẪU",
-    "aliases": [
-      "NGUOI MAU",
-      "NGUOIMAU"
-    ],
-    "clues": [
-      "người",
-      "mẫu"
-    ],
-    "image": "dhbc_extra_nguoimau.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGƯỜI MẪU",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0899",
-    "category": "Thành ngữ & Tục ngữ",
-    "answer": "NHÂN BẢN VÔ TÍNH",
-    "aliases": [
-      "NHAN BAN VO TINH",
-      "NHANBANVOTINH"
-    ],
-    "clues": [
-      "nhân",
-      "bản",
-      "vô",
-      "tính"
-    ],
-    "image": "dhbc_extra_nhanbanvotinh.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 4 từ...",
-    "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHÂN BẢN VÔ TÍNH",
     "durationSec": 30,
     "difficulty": 3,
     "mode": "word",
@@ -18681,48 +18020,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0902",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "NỘI TRỢ",
-    "aliases": [
-      "NOI TRO",
-      "NOITRO"
-    ],
-    "clues": [
-      "nội",
-      "trợ"
-    ],
-    "image": "dhbc_extra_noitro.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'N'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NỘI TRỢ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0903",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ÔNG ĐỒ",
-    "aliases": [
-      "ONG DO",
-      "ONGDO"
-    ],
-    "clues": [
-      "ông",
-      "đồ"
-    ],
-    "image": "dhbc_extra_ongdo.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Ô'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ÔNG ĐỒ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0904",
     "category": "Đuổi hình bắt chữ",
     "answer": "ÔNG TÁO",
@@ -18738,90 +18035,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Ô'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ÔNG TÁO",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0905",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ÔNG TRÙM",
-    "aliases": [
-      "ONG TRUM",
-      "ONGTRUM"
-    ],
-    "clues": [
-      "ông",
-      "trùm"
-    ],
-    "image": "dhbc_extra_ongtrum.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Ô'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ÔNG TRÙM",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0906",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "PHÉP THUẬT",
-    "aliases": [
-      "PHEP THUAT",
-      "PHEPTHUAT"
-    ],
-    "clues": [
-      "phép",
-      "thuật"
-    ],
-    "image": "dhbc_extra_phepthuat.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'P'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: PHÉP THUẬT",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0907",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "PHI CÔNG",
-    "aliases": [
-      "PHI CONG",
-      "PHICONG"
-    ],
-    "clues": [
-      "phi",
-      "công"
-    ],
-    "image": "dhbc_extra_phicong.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'P'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: PHI CÔNG",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0908",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "PHÓNG SINH",
-    "aliases": [
-      "PHONG SINH",
-      "PHONGSINH"
-    ],
-    "clues": [
-      "phóng",
-      "sinh"
-    ],
-    "image": "dhbc_extra_phongsinh.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'P'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: PHÓNG SINH",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -18849,28 +18062,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0910",
-    "category": "Cụm từ dân gian",
-    "answer": "PHÔ MAI QUE",
-    "aliases": [
-      "PHO MAI QUE",
-      "PHOMAIQUE"
-    ],
-    "clues": [
-      "phô",
-      "mai",
-      "que"
-    ],
-    "image": "dhbc_extra_phomaique.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'P'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: PHÔ MAI QUE",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0911",
     "category": "Đuổi hình bắt chữ",
     "answer": "PHÙ THỦY",
@@ -18886,48 +18077,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'P'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: PHÙ THỦY",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0912",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "QUAY ĐẦU",
-    "aliases": [
-      "QUAY DAU",
-      "QUAYDAU"
-    ],
-    "clues": [
-      "quay",
-      "đầu"
-    ],
-    "image": "dhbc_extra_quaydau.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Q'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: QUAY ĐẦU",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0913",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "QUÁ GIANG",
-    "aliases": [
-      "QUA GIANG",
-      "QUAGIANG"
-    ],
-    "clues": [
-      "quá",
-      "giang"
-    ],
-    "image": "dhbc_extra_quagiang.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Q'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: QUÁ GIANG",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -19102,28 +18251,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0922",
-    "category": "Cụm từ dân gian",
-    "answer": "TẬP THỂ DỤC",
-    "aliases": [
-      "TAP THE DUC",
-      "TAPTHEDUC"
-    ],
-    "clues": [
-      "tập",
-      "thể",
-      "dục"
-    ],
-    "image": "dhbc_extra_taptheduc.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TẬP THỂ DỤC",
-    "durationSec": 25,
-    "difficulty": 2,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0923",
     "category": "Đuổi hình bắt chữ",
     "answer": "THẠCH SANH",
@@ -19181,27 +18308,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: THỜI GIAN",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0926",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "THỜI SỰ",
-    "aliases": [
-      "THOI SU",
-      "THOISU"
-    ],
-    "clues": [
-      "thời",
-      "sự"
-    ],
-    "image": "dhbc_extra_thoisu.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: THỜI SỰ",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -19377,27 +18483,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0935",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "TRIỀU CƯỜNG",
-    "aliases": [
-      "TRIEU CUONG",
-      "TRIEUCUONG"
-    ],
-    "clues": [
-      "triều",
-      "cường"
-    ],
-    "image": "dhbc_extra_trieucuong.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRIỀU CƯỜNG",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0936",
     "category": "Đuổi hình bắt chữ",
     "answer": "TRỐNG ĐỒNG",
@@ -19413,69 +18498,6 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
     "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRỐNG ĐỒNG",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0937",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "TRÒ CHƠI",
-    "aliases": [
-      "TRO CHOI",
-      "TROCHOI"
-    ],
-    "clues": [
-      "trò",
-      "chơi"
-    ],
-    "image": "dhbc_extra_trochoi.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRÒ CHƠI",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0938",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "TRỢ GIÚP",
-    "aliases": [
-      "TRO GIUP",
-      "TROGIUP"
-    ],
-    "clues": [
-      "trợ",
-      "giúp"
-    ],
-    "image": "dhbc_extra_trogiup.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRỢ GIÚP",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0939",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "TRUNG THÀNH",
-    "aliases": [
-      "TRUNG THANH",
-      "TRUNGTHANH"
-    ],
-    "clues": [
-      "trung",
-      "thành"
-    ],
-    "image": "dhbc_extra_trungthanh.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRUNG THÀNH",
     "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
@@ -19587,48 +18609,6 @@
     "verified": true
   },
   {
-    "id": "dhbc-0945",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "TỰ SƯỚNG",
-    "aliases": [
-      "TU SUONG",
-      "TUSUONG"
-    ],
-    "clues": [
-      "tự",
-      "sướng"
-    ],
-    "image": "dhbc_extra_tusuong.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỰ SƯỚNG",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0946",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "TỬ THẦN",
-    "aliases": [
-      "TU THAN",
-      "TUTHAN"
-    ],
-    "clues": [
-      "tử",
-      "thần"
-    ],
-    "image": "dhbc_extra_tuthan.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'T'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỬ THẦN",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
     "id": "dhbc-0947",
     "category": "Đuổi hình bắt chữ",
     "answer": "TỪ THIỆN",
@@ -19646,49 +18626,6 @@
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỪ THIỆN",
     "durationSec": 20,
     "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0948",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "ƯỚC MƠ",
-    "aliases": [
-      "UOC MO",
-      "UOCMO"
-    ],
-    "clues": [
-      "ước",
-      "mơ"
-    ],
-    "image": "dhbc_extra_uocmo.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'Ư'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ƯỚC MƠ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0949",
-    "category": "Cụm từ dân gian",
-    "answer": "VẬN ĐỘNG VIÊN",
-    "aliases": [
-      "VAN DONG VIEN",
-      "VANDONGVIEN"
-    ],
-    "clues": [
-      "vận",
-      "động",
-      "viên"
-    ],
-    "image": "dhbc_extra_vandongvien.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'V'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VẬN ĐỘNG VIÊN",
-    "durationSec": 25,
-    "difficulty": 2,
     "mode": "word",
     "verified": true
   },
@@ -19731,70 +18668,6 @@
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VỆ SINH",
     "durationSec": 20,
     "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0952",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "VỈA HÈ",
-    "aliases": [
-      "VIA HE",
-      "VIAHE"
-    ],
-    "clues": [
-      "vỉa",
-      "hè"
-    ],
-    "image": "dhbc_extra_viahe.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'V'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VỈA HÈ",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0953",
-    "category": "Đuổi hình bắt chữ",
-    "answer": "VIỆT NAM",
-    "aliases": [
-      "VIET NAM",
-      "VIETNAM"
-    ],
-    "clues": [
-      "việt",
-      "nam"
-    ],
-    "image": "dhbc_extra_vietnam.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 2 từ...",
-    "hint2": "Đáp án gồm 2 từ, chữ cái đầu tiên là 'V'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VIỆT NAM",
-    "durationSec": 20,
-    "difficulty": 1,
-    "mode": "word",
-    "verified": true
-  },
-  {
-    "id": "dhbc-0954",
-    "category": "Cụm từ dân gian",
-    "answer": "VÔ GIA CƯ",
-    "aliases": [
-      "VO GIA CU",
-      "VOGIACU"
-    ],
-    "clues": [
-      "vô",
-      "gia",
-      "cư"
-    ],
-    "image": "dhbc_extra_vogiacu.webp",
-    "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
-    "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'V'...",
-    "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VÔ GIA CƯ",
-    "durationSec": 25,
-    "difficulty": 2,
     "mode": "word",
     "verified": true
   },
