@@ -247,6 +247,20 @@ export class AudioEngine {
     });
   }
 
+  public playTop5Yeah(): void {
+    // Punchy kick impact + rising celebratory chord + crowd applause
+    this.playTone(130, 'sine', 0.14, 0.0, 0.35);
+    this.playTone(90, 'triangle', 0.18, 0.03, 0.28);
+    const cheerNotes = [523.25, 659.25, 783.99, 1046.5];
+    cheerNotes.forEach((freq, idx) => {
+      this.playTone(freq, 'triangle', 0.22, 0.12 + idx * 0.055, 0.24);
+    });
+    this.playTone(1318.51, 'sine', 0.42, 0.34, 0.26);
+    if (this.ensureContext()) {
+      this.ceremonyEffects?.playApplause();
+    }
+  }
+
   public playCeremonyCelebration(): void {
     if (this.ensureContext()) this.ceremonyEffects?.playEntrance();
     this.playCue('ceremony');

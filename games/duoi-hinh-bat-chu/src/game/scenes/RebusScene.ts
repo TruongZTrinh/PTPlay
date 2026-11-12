@@ -351,10 +351,11 @@ export class RebusScene extends Phaser.Scene {
           const displaced = lead.displacedId ? this.studentRoster.getPlayer(lead.displacedId) : undefined;
           if (challenger) {
             this.mc.cheer();
+            this.audioEngine.playTop5Yeah();
             this.ttsController.announceTop5Takeover(challenger.nickname, lead.rank, displaced?.nickname);
             const msg = displaced
-              ? `🚀 bứt phá đá bay ${displaced.nickname} để chiếm ghế Top #${lead.rank}!`
-              : `🚀 nhảy thẳng lên ghế VIP Top #${lead.rank}!`;
+              ? `🎉 YEAH! Đá bay ${displaced.nickname} để chiếm ghế Top #${lead.rank}!`
+              : `🎉 YEAH! Nhảy thẳng lên ghế VIP Top #${lead.rank}!`;
             this.scoreboard.setChatTicker(msg, challenger.nickname);
           }
           return 1800;

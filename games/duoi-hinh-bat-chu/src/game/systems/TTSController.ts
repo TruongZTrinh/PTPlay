@@ -417,13 +417,13 @@ export class TTSController {
     if (displacedName) {
       const cleanDisplaced = VietnameseVoiceHelper.formatNicknameForSpeech(displacedName, 'bạn');
       this.speak(
-        `Ồ! ${cleanChallenger} bứt phá đá bay ${cleanDisplaced} để chiếm ghế VIP hạng ${rank}!`,
+        `Yeah! ${cleanChallenger} bứt phá đá bay ${cleanDisplaced} để chiếm ghế VIP hạng ${rank}!`,
         true,
         `top5_${challengerName}_${rank}`
       );
     } else {
       this.speak(
-        `Tuyệt vời! ${cleanChallenger} nhảy thẳng lên ghế VIP hạng ${rank}!`,
+        `Yeah! Tuyệt vời! ${cleanChallenger} nhảy thẳng lên ghế VIP hạng ${rank}!`,
         true,
         `top5_${challengerName}_${rank}`
       );
