@@ -186,8 +186,8 @@ export class RebusLiveEventRouter {
         let perkText = letterNote ? `${letterNote} (+20đ)!` : '+25đ VIP & hồi lượt đoán!';
         let handledTTS = false;
         if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
-          this.roster.addGiftPoints(userId, 10 * giftCount);
-          perkText = letterNote ? `${letterNote} (+${10 * giftCount}đ)!` : `+${10 * giftCount}đ cổ vũ!`;
+          this.roster.addGiftPoints(userId, 20 * giftCount);
+          perkText = letterNote ? `${letterNote} (+${20 * giftCount}đ)!` : `+${20 * giftCount}đ cổ vũ!`;
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
           this.roster.addGiftPoints(userId, 50 * giftCount);
           this.roster.grantExtraGuesses(userId, 5);

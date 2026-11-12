@@ -38,14 +38,14 @@ export class Scoreboard extends Phaser.GameObjects.Container {
       fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98602c', fontStyle: 'bold',
     }).setOrigin(0.5));
     const interactionRules = [
-      { y: 459, label: '🎁 Quà 1 Xu+: Mở 1 chữ/quà', color: '#fff0bf' },
+      { y: 459, label: '🎁 Quà 1 Xu+: +20đ, Mở 1 chữ/quà', color: '#fff0bf' },
       { y: 474, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
       { y: 489, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
       { y: 504, label: '💥 Quà 1 Xu+: Đá người ngủ vào bàn', color: '#fde68a' },
     ];
     for (const rule of interactionRules) {
       this.add(scene.add.text(36, rule.y, rule.label, {
-        fontFamily: 'system-ui, sans-serif', fontSize: '9.8px', color: rule.color, fontStyle: 'bold',
+        fontFamily: 'system-ui, sans-serif', fontSize: '9.5px', color: rule.color, fontStyle: 'bold',
       }).setOrigin(0, 0.5));
     }
 
