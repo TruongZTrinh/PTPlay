@@ -168,7 +168,8 @@ export class RebusLiveEventRouter {
         let handledTTS = false;
         if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
           this.roster.addGiftPoints(userId, 10);
-          perkText = '+10đ cổ vũ!';
+          perkText = '+10đ & đá người ngủ để vào bàn!';
+          this.engine.triggerImmediateSleeperKick(userId);
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
           this.roster.addGiftPoints(userId, 50);
           this.roster.grantExtraGuesses(userId, 5);

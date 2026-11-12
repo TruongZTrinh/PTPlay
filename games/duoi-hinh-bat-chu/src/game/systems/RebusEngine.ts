@@ -19,6 +19,7 @@ export interface RebusEngineEvents {
   onSeatRebalance?: (onComplete?: () => void) => number | 'async';
   onTestSleepKick?: (userId: string, nickname: string) => void;
   onTestRandomLowerKick?: () => void;
+  onImmediateSleeperKick?: (challengerId: string) => void;
   onCeremonyStarted?: () => void;
 }
 
@@ -368,6 +369,10 @@ export class RebusEngine {
 
   public triggerTestRandomLowerKick(): void {
     this.events.onTestRandomLowerKick?.();
+  }
+
+  public triggerImmediateSleeperKick(challengerId: string): void {
+    this.events.onImmediateSleeperKick?.(challengerId);
   }
 
   private celebrateAndContinue(): void {

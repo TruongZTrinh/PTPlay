@@ -441,6 +441,40 @@ export class RebusScene extends Phaser.Scene {
         }
       },
 
+      onImmediateSleeperKick: (challengerId) => {
+        const sleepyIds = this.studentRoster
+          .getAllPlayers()
+          .filter((p) => (p.roundsWithoutAnswer || 0) >= 1)
+          .sort((a, b) => (b.roundsWithoutAnswer || 0) - (a.roundsWithoutAnswer || 0))
+          .map((p) => p.userId);
+        const res = this.seatAllocator.kickSpecificSleeperByChallenger(challengerId, sleepyIds);
+        if (!res) return;
+
+        const sleeper = this.studentRoster.getPlayer(res.kickEvent.sleeperId);
+        const challenger = this.studentRoster.getPlayer(res.kickEvent.challengerId);
+        if (sleeper) {
+          sleeper.roundsWithoutAnswer = 0;
+        }
+
+        res.moves.forEach((move) => {
+          const student = this.studentCharacters.get(move.userId);
+          if (student) {
+            student.jumpToSeat(move.x, move.y, move.scale, move.depth, move.kind, move.isWaiting);
+          }
+        });
+
+        this.audioEngine.playKungfuFlyKick(0.88);
+        this.time.delayedCall(980, () => {
+          this.audioEngine.playTop5Yeah();
+        });
+        if (challenger && sleeper) {
+          this.scoreboard.setChatTicker(
+            `💖💥 Tặng Heart Me! Bay đá ${sleeper.nickname} (đang ngủ) để vào bàn ngay!`,
+            challenger.nickname
+          );
+        }
+      },
+
       onCeremonyStarted: () => {
         this.mc.cheer();
         const top3 = this.studentRoster.getTopPlayers(3);

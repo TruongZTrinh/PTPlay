@@ -337,6 +337,58 @@ export class SeatAllocator {
     return { moves, kickEvents };
   }
 
+  /**
+   * Immediately swaps a specific waiting viewer (e.g., Heart Me gift sender)
+   * into a sleeping lower-desk student's seat.
+   */
+  public kickSpecificSleeperByChallenger(
+    challengerId: string,
+    sleepyUserIds: string[]
+  ): { moves: SeatMove[]; kickEvent: { challengerId: string; sleeperId: string } } | null {
+    if (sleepyUserIds.length === 0) return null;
+    const waitSpot = this.getAssignedWaitingSpot(challengerId);
+    if (!waitSpot) return null;
+
+    // Pick the sleepiest seated lower-row student following sleepyUserIds priority order
+    let targetSeat: SeatSlot | undefined;
+    for (const sid of sleepyUserIds) {
+      const found = this.seats.find((s) => !s.isTop5 && s.assignedUserId === sid);
+      if (found) {
+        targetSeat = found;
+        break;
+      }
+    }
+    if (!targetSeat || !targetSeat.assignedUserId) return null;
+
+    const sleeperId = targetSeat.assignedUserId;
+    targetSeat.assignedUserId = challengerId;
+    waitSpot.assignedUserId = sleeperId;
+
+    return {
+      kickEvent: { challengerId, sleeperId },
+      moves: [
+        {
+          userId: challengerId,
+          x: targetSeat.x,
+          y: targetSeat.y,
+          scale: targetSeat.scale,
+          depth: targetSeat.depth,
+          isWaiting: false,
+          kind: 'promote_top5',
+        },
+        {
+          userId: sleeperId,
+          x: waitSpot.x,
+          y: waitSpot.y,
+          scale: waitSpot.scale,
+          depth: waitSpot.depth,
+          isWaiting: true,
+          kind: 'bumped_down',
+        },
+      ],
+    };
+  }
+
   public assignSeat(userId: string): SeatSlot {
     const existing = this.getAssignedSeat(userId);
     if (existing) return existing;
