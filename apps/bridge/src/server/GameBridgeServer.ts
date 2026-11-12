@@ -1998,6 +1998,8 @@ export class GameBridgeServer {
             'rebus.add_time',
             'rebus.ceremony',
             'rebus.test_top5_swap',
+            'rebus.test_sleep',
+            'rebus.test_random_lower_kick',
             'rebus.add_top_player',
             'rebus.next_puzzle',
             'rebus.skip_puzzle',
