@@ -369,7 +369,7 @@ export class RebusScene extends Phaser.Scene {
               this.audioEngine.playTop5Yeah();
             });
             this.scoreboard.setChatTicker(
-              `💤➡️💥 bay đá ${sleeper.nickname} (ngủ gật >5 câu) để lấy chỗ ngồi!`,
+              `💥 Bay đá ${sleeper.nickname} vì ngủ gật để chiếm chỗ ngồi!`,
               challenger.nickname
             );
           }
@@ -459,7 +459,7 @@ export class RebusScene extends Phaser.Scene {
     if (student) {
       student.updatePlayer(player);
     }
-    this.scoreboard.setChatTicker('💤 đang ngủ gật quá 5 câu trong lớp...', player.nickname);
+    this.scoreboard.setChatTicker('💤 đang ngủ gật trong lớp...', player.nickname);
 
     if (!this.seatAllocator.hasOccupiedWaitingSpot()) {
       const waitId = `wait_kick_${Date.now()}`;
