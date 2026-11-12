@@ -106,15 +106,15 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
     this.add(this.clueCard2);
 
     // Single Picture Puzzle Card (Gilded Exhibition Screen)
-    this.singleImageContainer = scene.add.container(270, 173);
+    this.singleImageContainer = scene.add.container(270, 177);
 
     this.singleImageFrame = scene.add.graphics();
     this.singleImageContainer.add(this.singleImageFrame);
 
     this.singleImageSprite = scene.add.image(0, 0, 'props_board');
-    this.singleImageSprite.setDisplaySize(428, 172);
+    this.singleImageSprite.setDisplaySize(456, 192);
     this.singleImageContainer.add(this.singleImageSprite);
-    for (const [x, label] of [[-170, 'NHÌN\nHÌNH'], [170, 'BẮT\nCHỮ']] as const) {
+    for (const [x, label] of [[-186, 'ĐUỔI\nHÌNH'], [186, 'BẮT\nCHỮ']] as const) {
       const text = scene.add.text(x, 0, label, {
         fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#96602b',
         fontStyle: 'bold', align: 'center', lineSpacing: 3,
@@ -188,19 +188,19 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
 
   private drawSingleImageFrame(): void {
     this.singleImageFrame.clear();
-    // A wide paper card gives both square and landscape puzzles room to breathe.
+    // Fill the inset teaching area closely so the puzzle image gets maximum room.
     this.singleImageFrame.fillStyle(0x031d18, 0.55);
-    this.singleImageFrame.fillRoundedRect(-229, -96, 458, 200, 13);
+    this.singleImageFrame.fillRoundedRect(-243, -104, 486, 216, 12);
     this.singleImageFrame.fillStyle(0xb66b27, 1);
-    this.singleImageFrame.fillRoundedRect(-228, -99, 456, 198, 12);
+    this.singleImageFrame.fillRoundedRect(-242, -107, 484, 214, 11);
     this.singleImageFrame.fillStyle(0xffe5a4, 1);
-    this.singleImageFrame.fillRoundedRect(-224, -95, 448, 190, 9);
+    this.singleImageFrame.fillRoundedRect(-238, -103, 476, 206, 8);
     this.singleImageFrame.fillStyle(0xfffcf1, 1);
-    this.singleImageFrame.fillRoundedRect(-219, -91, 438, 182, 6);
+    this.singleImageFrame.fillRoundedRect(-234, -99, 468, 198, 6);
     this.singleImageFrame.lineStyle(1.5, 0xd9a75c, 1);
-    this.singleImageFrame.strokeRoundedRect(-219, -91, 438, 182, 6);
-    for (const x of [-209, 209]) {
-      for (const y of [-81, 81]) {
+    this.singleImageFrame.strokeRoundedRect(-234, -99, 468, 198, 6);
+    for (const x of [-224, 224]) {
+      for (const y of [-89, 89]) {
         this.singleImageFrame.fillStyle(0xd69640, 1);
         this.singleImageFrame.fillCircle(x, y, 3);
       }
@@ -388,15 +388,15 @@ export class EaselBoardPresentation extends Phaser.GameObjects.Container {
       const tex = this.scene.textures.get(pKey).getSourceImage() as HTMLImageElement;
       const w = tex.width || 400;
       const h = tex.height || 300;
-      const maxW = 428;
-      const maxH = 172;
+      const maxW = 456;
+      const maxH = 192;
       const scale = Math.min(maxW / w, maxH / h);
       const dispW = w * scale;
       const dispH = h * scale;
       this.singleImageSprite.setDisplaySize(dispW, dispH);
-      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 265));
+      this.imageSideLabels.forEach((label) => label.setVisible(dispW <= 295));
     } catch {
-      this.singleImageSprite.setDisplaySize(428, 172);
+      this.singleImageSprite.setDisplaySize(456, 192);
       this.imageSideLabels.forEach((label) => label.setVisible(false));
     }
   }
