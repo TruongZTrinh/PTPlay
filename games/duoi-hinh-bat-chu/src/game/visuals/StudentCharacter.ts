@@ -118,7 +118,21 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public override setScale(x: number, y?: number): this {
     super.setScale(x, y);
+    this.syncOverlayScale();
     return this;
+  }
+
+  private syncOverlayScale(): void {
+    if (!this.uiOverlay) return;
+    if (this.isWaitingMode) {
+      this.uiOverlay.setScale(0.76);
+    } else if (this.scaleX >= 0.48) {
+      this.uiOverlay.setScale(1.04);
+    } else if (this.scaleX <= 0.36) {
+      this.uiOverlay.setScale(0.8);
+    } else {
+      this.uiOverlay.setScale(1);
+    }
   }
 
   public override setDepth(value: number): this {
@@ -163,10 +177,81 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   public setWaitingMode(enabled: boolean): void {
     this.isWaitingMode = enabled;
-    this.uiOverlay.setScale(enabled ? 0.76 : 1);
+    this.syncOverlayScale();
     if (!this.isWalkingIn) {
       this.startIdleAnimation();
     }
+  }
+
+  public jumpToSeat(
+    targetX: number,
+    targetY: number,
+    targetScale: number,
+    targetDepth: number,
+    kind: 'promote_top5' | 'bumped_down' | 'shift',
+    isWaiting: boolean = false
+  ): void {
+    if (!this.scene || !this.chibiSprite.scene) return;
+    this.isWalkingIn = true;
+    this.isWaitingMode = isWaiting;
+    this.idleTween?.stop();
+    this.waitCheerTimer?.remove(false);
+    this.waitCheerTimer = undefined;
+
+    const startX = this.x;
+    const startY = this.y;
+    const peakLift = kind === 'promote_top5' ? 52 : kind === 'bumped_down' ? 38 : 24;
+    const duration = kind === 'promote_top5' ? 760 : kind === 'bumped_down' ? 680 : 520;
+    const delay = kind === 'bumped_down' ? 140 : 0;
+
+    if (kind === 'promote_top5') {
+      this.setTemporaryPose('happy', 1800);
+    } else if (kind === 'bumped_down') {
+      this.setTemporaryPose('sleep', 1100);
+    }
+
+    this.setDepth(85);
+    this.chibiSprite.setAngle(0);
+    this.chibiSprite.setY(12);
+
+    this.scene.tweens.add({
+      targets: { t: 0 },
+      t: 1,
+      duration,
+      delay,
+      ease: kind === 'promote_top5' ? 'Cubic.easeInOut' : 'Quad.easeOut',
+      onUpdate: (tween) => {
+        const p = tween.getValue() || 0;
+        const arc = Math.sin(p * Math.PI) * peakLift;
+        const curX = Phaser.Math.Linear(startX, targetX, p);
+        const curY = Phaser.Math.Linear(startY, targetY, p) - arc;
+        this.setPosition(curX, curY);
+        if (kind === 'bumped_down') {
+          this.chibiSprite.setAngle(Math.sin(p * Math.PI * 3) * 16);
+        } else if (kind === 'promote_top5') {
+          this.chibiSprite.setAngle(Math.sin(p * Math.PI * 2) * 8);
+        }
+      },
+      onComplete: () => {
+        this.isWalkingIn = false;
+        if (!this.scene || !this.chibiSprite.scene) return;
+        this.chibiSprite.setAngle(0);
+        this.setPosition(targetX, targetY);
+        this.setScale(targetScale);
+        this.setDepth(targetDepth);
+        if (kind === 'promote_top5') {
+          this.scene.tweens.add({
+            targets: this,
+            scaleX: targetScale * 1.15,
+            scaleY: targetScale * 1.15,
+            duration: 140,
+            yoyo: true,
+            ease: 'Quad.easeOut',
+          });
+        }
+        this.startIdleAnimation();
+      },
+    });
   }
 
   private startIdleAnimation(): void {

@@ -140,30 +140,54 @@ export class RebusScene extends Phaser.Scene {
     const deskLayers = new Map<number, Phaser.GameObjects.Graphics>();
 
     this.seatAllocator.seats.forEach((seat) => {
-      // Back chair/cushion behind the student (compact 58px desk width)
-      room.fillStyle(0x8b451f, 0.7);
-      room.fillRoundedRect(seat.x - 29, seat.y - 34, 58, 38, 9);
-      room.fillStyle(0xffe7ac, 1);
-      room.fillRoundedRect(seat.x - 27, seat.y - 36, 54, 36, 8);
-      room.lineStyle(1.5, 0xb86b30, 1);
-      room.strokeRoundedRect(seat.x - 27, seat.y - 36, 54, 36, 8);
-      room.fillStyle(0xc7814d, 0.55);
-      room.fillCircle(seat.x, seat.y - 18, 8);
-
-      // Front wooden desk in front of the student's legs so they appear seated
       let desk = deskLayers.get(seat.depth);
       if (!desk) {
         desk = this.add.graphics().setDepth(seat.depth + 1);
         deskLayers.set(seat.depth, desk);
       }
-      desk.fillStyle(0x8b451f, 0.75);
-      desk.fillRoundedRect(seat.x - 30, seat.y - 3, 60, 19, 5);
-      desk.fillStyle(0xe5a25b, 1);
-      desk.fillRoundedRect(seat.x - 29, seat.y - 3, 58, 17, 4);
-      desk.lineStyle(1.5, 0x9c5522, 1);
-      desk.strokeRoundedRect(seat.x - 29, seat.y - 3, 58, 17, 4);
-      desk.fillStyle(0xffdf99, 1);
-      desk.fillRoundedRect(seat.x - 27, seat.y - 1, 54, 5, 2.5);
+
+      if (seat.isTop5) {
+        // Large Top-5 VIP desk corresponding to BẢNG VINH DANH
+        room.fillStyle(0x92400e, 0.75);
+        room.fillRoundedRect(seat.x - 35, seat.y - 40, 70, 44, 10);
+        room.fillStyle(0xfff1be, 1);
+        room.fillRoundedRect(seat.x - 33, seat.y - 42, 66, 42, 9);
+        room.lineStyle(2, 0xd97706, 1);
+        room.strokeRoundedRect(seat.x - 33, seat.y - 42, 66, 42, 9);
+        room.fillStyle(0xf59e0b, 0.35);
+        room.fillCircle(seat.x, seat.y - 21, 10);
+        this.add.text(seat.x, seat.y - 21, `${seat.col + 1}`, {
+          fontFamily: 'system-ui, sans-serif', fontSize: '10px', color: '#92400e', fontStyle: 'bold',
+        }).setOrigin(0.5).setDepth(13);
+
+        desk.fillStyle(0x78350f, 0.8);
+        desk.fillRoundedRect(seat.x - 36, seat.y - 3, 72, 21, 5);
+        desk.fillStyle(0xf59e0b, 1);
+        desk.fillRoundedRect(seat.x - 35, seat.y - 3, 70, 19, 5);
+        desk.lineStyle(1.5, 0xfef08a, 0.95);
+        desk.strokeRoundedRect(seat.x - 35, seat.y - 3, 70, 19, 5);
+        desk.fillStyle(0xffebad, 1);
+        desk.fillRoundedRect(seat.x - 32, seat.y - 1, 64, 5, 2.5);
+      } else {
+        // Compact lower-row desk (8 per row)
+        room.fillStyle(0x8b451f, 0.68);
+        room.fillRoundedRect(seat.x - 22, seat.y - 28, 44, 30, 7);
+        room.fillStyle(0xffe7ac, 1);
+        room.fillRoundedRect(seat.x - 21, seat.y - 29, 42, 29, 6);
+        room.lineStyle(1.2, 0xb86b30, 1);
+        room.strokeRoundedRect(seat.x - 21, seat.y - 29, 42, 29, 6);
+        room.fillStyle(0xc7814d, 0.5);
+        room.fillCircle(seat.x, seat.y - 15, 6);
+
+        desk.fillStyle(0x8b451f, 0.75);
+        desk.fillRoundedRect(seat.x - 23, seat.y - 2, 46, 15, 4);
+        desk.fillStyle(0xe5a25b, 1);
+        desk.fillRoundedRect(seat.x - 22, seat.y - 2, 44, 14, 3.5);
+        desk.lineStyle(1.2, 0x9c5522, 1);
+        desk.strokeRoundedRect(seat.x - 22, seat.y - 2, 44, 14, 3.5);
+        desk.fillStyle(0xffdf99, 1);
+        desk.fillRoundedRect(seat.x - 20, seat.y, 40, 4, 2);
+      }
     });
   }
 
@@ -305,6 +329,39 @@ export class RebusScene extends Phaser.Scene {
           this.spawnOrUpdateStudent(p);
         });
         this.scoreboard.updateLeaderboard(allPlayers);
+      },
+
+      onSeatRebalance: () => {
+        const rankedIds = [...this.studentRoster.getAllPlayers()]
+          .filter((p) => p.score > 0)
+          .sort((a, b) => b.score - a.score || b.correctCount - a.correctCount)
+          .map((p) => p.userId);
+
+        const { moves, top5Takeovers } = this.seatAllocator.rebalanceByRank(rankedIds);
+        if (moves.length === 0) return 0;
+
+        moves.forEach((move) => {
+          const student = this.studentCharacters.get(move.userId);
+          if (student) {
+            student.jumpToSeat(move.x, move.y, move.scale, move.depth, move.kind, move.isWaiting);
+          }
+        });
+
+        if (top5Takeovers.length > 0) {
+          const lead = top5Takeovers[0];
+          const challenger = this.studentRoster.getPlayer(lead.challengerId);
+          const displaced = lead.displacedId ? this.studentRoster.getPlayer(lead.displacedId) : undefined;
+          if (challenger) {
+            this.mc.cheer();
+            this.ttsController.announceTop5Takeover(challenger.nickname, lead.rank, displaced?.nickname);
+            const msg = displaced
+              ? `🚀 bứt phá đá bay ${displaced.nickname} để chiếm ghế Top #${lead.rank}!`
+              : `🚀 nhảy thẳng lên ghế VIP Top #${lead.rank}!`;
+            this.scoreboard.setChatTicker(msg, challenger.nickname);
+          }
+          return 1800;
+        }
+        return 800;
       },
 
       onCeremonyStarted: () => {

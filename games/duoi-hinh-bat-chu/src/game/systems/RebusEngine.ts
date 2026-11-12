@@ -16,6 +16,7 @@ export interface RebusEngineEvents {
   onGuessAttempt?: (userId: string, guess: string, isCorrect: boolean, solverRank?: number, points?: number) => void;
   onPuzzleSolved?: (puzzle: RebusPuzzle, winner: RebusPlayerRecord, points: number) => void;
   onPuzzleRevealed?: (puzzle: RebusPuzzle, solved: boolean, winner?: RebusPlayerRecord) => void;
+  onSeatRebalance?: () => number;
   onCeremonyStarted?: () => void;
 }
 
@@ -357,6 +358,7 @@ export class RebusEngine {
 
   private celebrateAndContinue(): void {
     this.setState('celebrate');
+    const extraRebalanceMs = Math.max(0, this.events.onSeatRebalance?.() || 0);
 
     this.stateTimerHandle = setTimeout(() => {
       // Automatic Grand Championship Ceremony every 30 questions
@@ -365,7 +367,7 @@ export class RebusEngine {
       } else {
         this.nextRound();
       }
-    }, this.config.celebrateDurationMs);
+    }, this.config.celebrateDurationMs + extraRebalanceMs);
   }
 
   public triggerCeremony(): void {

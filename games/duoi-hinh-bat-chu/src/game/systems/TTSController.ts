@@ -412,6 +412,24 @@ export class TTSController {
     this.speak(`Vinh danh nhà vô địch: ${cleanChamp}! Chúc mừng bạn đã đoạt Cúp Vàng!`, true);
   }
 
+  public announceTop5Takeover(challengerName: string, rank: number, displacedName?: string): void {
+    const cleanChallenger = VietnameseVoiceHelper.formatNicknameForSpeech(challengerName, 'bạn');
+    if (displacedName) {
+      const cleanDisplaced = VietnameseVoiceHelper.formatNicknameForSpeech(displacedName, 'bạn');
+      this.speak(
+        `Ồ! ${cleanChallenger} bứt phá đá bay ${cleanDisplaced} để chiếm ghế VIP hạng ${rank}!`,
+        true,
+        `top5_${challengerName}_${rank}`
+      );
+    } else {
+      this.speak(
+        `Tuyệt vời! ${cleanChallenger} nhảy thẳng lên ghế VIP hạng ${rank}!`,
+        true,
+        `top5_${challengerName}_${rank}`
+      );
+    }
+  }
+
   public announceCeremony(top1?: string, top2?: string, top3?: string): void {
     if (!top1) {
       this.speak('Đại lễ trao giải vinh danh các thám tử xuất sắc nhất phòng Live! Chúc mừng cả lớp!', true);
