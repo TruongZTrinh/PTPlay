@@ -27,7 +27,9 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   private streakText: Phaser.GameObjects.Text;
   private poseTimer?: Phaser.Time.TimerEvent;
   private idleTween?: Phaser.Tweens.Tween;
+  private waitCheerTimer?: Phaser.Time.TimerEvent;
   private isWalkingIn: boolean = false;
+  private isWaitingMode: boolean = false;
 
   constructor(scene: Phaser.Scene, player: RebusPlayerRecord, avatarManager: AvatarManager, x: number, y: number, scale: number) {
     super(scene, x, y);
@@ -158,8 +160,52 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     }
   }
 
+  public setWaitingMode(enabled: boolean): void {
+    this.isWaitingMode = enabled;
+    if (!this.isWalkingIn) {
+      this.startIdleAnimation();
+    }
+  }
+
   private startIdleAnimation(): void {
     this.idleTween?.stop();
+    this.waitCheerTimer?.remove(false);
+    this.waitCheerTimer = undefined;
+    this.chibiSprite.setAngle(0);
+    this.chibiSprite.setY(12);
+
+    if (this.isWaitingMode) {
+      const delay = Math.random() * 450;
+      const swayDir = Math.random() < 0.5 ? -1 : 1;
+      this.idleTween = this.scene.tweens.add({
+        targets: this.chibiSprite,
+        y: 2,
+        angle: { from: -6 * swayDir, to: 6 * swayDir },
+        duration: 360 + Math.random() * 140,
+        yoyo: true,
+        repeat: -1,
+        delay,
+        ease: 'Sine.easeInOut',
+      });
+      this.waitCheerTimer = this.scene.time.addEvent({
+        delay: 2600 + Math.random() * 2400,
+        loop: true,
+        callback: () => {
+          if (!this.scene || !this.chibiSprite.scene || this.isWalkingIn) return;
+          this.setTemporaryPose('happy', 1100);
+          this.scene.tweens.add({
+            targets: this,
+            y: this.y - 12,
+            duration: 160,
+            yoyo: true,
+            repeat: 1,
+            ease: 'Quad.easeOut',
+          });
+        },
+      });
+      return;
+    }
+
     const delay = Math.random() * 1000;
     this.idleTween = this.scene.tweens.add({
       targets: this.chibiSprite,

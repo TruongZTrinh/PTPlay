@@ -21,7 +21,7 @@ export class MCCharacter extends Phaser.GameObjects.Container {
 
   private getBaseScale(): number {
     const width = this.mcSprite?.width || 512;
-    return (512 / width) * 0.22;
+    return (512 / width) * 0.265;
   }
 
   public setPose(poseKey: string): void {
