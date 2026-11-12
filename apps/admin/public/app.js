@@ -2591,6 +2591,34 @@ async function testRandomLowerKick() {
   showToast('⚡ Đang cho 1 người ở 3 bàn dưới ngủ gật và bị người ngoài sảnh chờ bay vào đá!', 'warning');
 }
 
+function getRebusSeedActor() {
+  const input = document.getElementById('input-rebus-seed-name');
+  const nickname = (input?.value || 'Minh Tú').trim() || 'Minh Tú';
+  const slug = nickname.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '_') || 'viewer';
+  return { userId: `live_viewer_${slug}`, nickname };
+}
+
+function randomizeRebusSeedName() {
+  const names = ['Minh Tú', 'Hà My', 'Quốc Trung', 'Thảo Nhi', 'Bảo Long', 'Ngọc Diệp', 'Anh Khoa', 'Thanh Trúc', 'Gia Bảo', 'Yến Vy', 'Hoàng Phúc', 'Khánh Ngọc'];
+  const input = document.getElementById('input-rebus-seed-name');
+  if (input) {
+    const pick = names[Math.floor(Math.random() * names.length)];
+    input.value = pick;
+  }
+}
+
+async function seedRebusJoinSeat() {
+  const { userId, nickname } = getRebusSeedActor();
+  await sendRebusCommand('join', { userId, nickname });
+  showToast(`🪑 ${nickname} đã vào lớp ngồi như người xem thật!`, 'info');
+}
+
+async function seedRebusSolveCurrent() {
+  const { userId, nickname } = getRebusSeedActor();
+  await sendRebusCommand('seed_solve_current', { userId, nickname });
+  showToast(`✅ ${nickname} vừa trả lời đúng câu hiện tại!`, 'success');
+}
+
 async function runFullRebusJourney() {
   await testRebusJourneyStep(1);
   setTimeout(() => testRebusJourneyStep(2), 2200);

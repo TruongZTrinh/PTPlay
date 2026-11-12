@@ -2000,6 +2000,7 @@ export class GameBridgeServer {
             'rebus.test_top5_swap',
             'rebus.test_sleep',
             'rebus.test_random_lower_kick',
+            'rebus.seed_solve_current',
             'rebus.add_top_player',
             'rebus.next_puzzle',
             'rebus.skip_puzzle',

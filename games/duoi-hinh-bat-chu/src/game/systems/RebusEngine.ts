@@ -394,6 +394,12 @@ export class RebusEngine {
     this.events.onImmediateSleeperKick?.(challengerId);
   }
 
+  public solveCurrentPuzzleAs(userId: string): boolean {
+    if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
+    this.submitGuess(userId, this.currentPuzzle.answer);
+    return true;
+  }
+
   private celebrateAndContinue(): void {
     this.setState('celebrate');
     let finished = false;

@@ -259,6 +259,14 @@ export class RebusLiveEventRouter {
         break;
       }
 
+      case 'rebus.seed_solve_current': {
+        const seedId = String(cmd.metadata?.userId || userId);
+        const seedNick = String(cmd.metadata?.nickname || nickname || 'Khán Giả');
+        this.roster.registerOrGet(seedId, seedNick, avatarUrl);
+        this.engine.solveCurrentPuzzleAs(seedId);
+        break;
+      }
+
       case 'rebus.add_top_player': {
         this.handleAddTopPlayer(cmd.metadata || {});
         break;
