@@ -3,20 +3,22 @@ import { RebusPlayerRecord } from '../types';
 import { AvatarManager } from '../systems/AvatarManager';
 
 const SKIN_KEYS = [
-  'student_blue',
-  'student_coral',
-  'student_purple',
-  'student_pink',
-  'student_yellow',
-  'student_green',
-  'student_navy',
-  'student_orange',
+  'boy_01',
+  'girl_01',
+  'boy_02',
+  'girl_02',
+  'boy_03',
+  'girl_03',
+  'boy_04',
+  'girl_04',
 ];
 
 export class StudentCharacter extends Phaser.GameObjects.Container {
   public player: RebusPlayerRecord;
   private avatarManager: AvatarManager;
+  private skinId: string;
   private chibiSprite: Phaser.GameObjects.Sprite;
+  private poseTimer?: Phaser.Time.TimerEvent;
   private nameText: Phaser.GameObjects.Text;
   private scoreText: Phaser.GameObjects.Text;
   private avatarImage: Phaser.GameObjects.Image | null = null;
@@ -30,11 +32,12 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     this.avatarManager = avatarManager;
     this.setScale(scale);
 
-    const skinKey = SKIN_KEYS[player.skinIndex % SKIN_KEYS.length];
-    const textureKey = scene.textures.exists(skinKey) ? skinKey : 'props_desk';
+    this.skinId = SKIN_KEYS[player.skinIndex % SKIN_KEYS.length];
+    const baseKey = `student_${this.skinId}`;
+    const textureKey = scene.textures.exists(baseKey) ? baseKey : 'props_desk';
     this.chibiSprite = scene.add.sprite(0, 0, textureKey);
     this.chibiSprite.setOrigin(0.5, 0.85);
-    this.chibiSprite.setScale(0.5);
+    this.chibiSprite.setScale(0.56);
     this.add(this.chibiSprite);
 
     // Desk plate
@@ -131,7 +134,25 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     });
   }
 
+  private setTemporaryPose(suffix: 'happy' | 'sleep', durationMs: number): void {
+    const poseKey = `student_${this.skinId}_${suffix}`;
+    const idleKey = `student_${this.skinId}`;
+    if (this.poseTimer) {
+      this.poseTimer.remove(false);
+      this.poseTimer = undefined;
+    }
+    if (this.scene.textures.exists(poseKey)) {
+      this.chibiSprite.setTexture(poseKey);
+      this.poseTimer = this.scene.time.delayedCall(durationMs, () => {
+        if (this.chibiSprite.scene && this.scene.textures.exists(idleKey)) {
+          this.chibiSprite.setTexture(idleKey);
+        }
+      });
+    }
+  }
+
   public reactCorrect(): void {
+    this.setTemporaryPose('happy', 1400);
     this.scene.tweens.add({
       targets: this,
       y: this.y - 18,
@@ -143,6 +164,7 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
   }
 
   public reactWrong(): void {
+    this.setTemporaryPose('sleep', 800);
     this.scene.tweens.add({
       targets: this.chibiSprite,
       angle: -10,

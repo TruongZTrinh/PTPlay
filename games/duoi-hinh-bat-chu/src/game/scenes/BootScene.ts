@@ -49,16 +49,15 @@ export class BootScene extends Phaser.Scene {
       this.load.image(`teacher_${pose}`, `${assetPath}/teacher/teacher_${pose}.png`);
     });
 
-    // 2. Student Chibi Skins (8 colors)
-    const studentColors = [
-      'blue', 'coral', 'purple', 'pink',
-      'yellow', 'green', 'navy', 'orange'
+    // 2. Student Chibi Skins (8 characters: 4 boys + 4 girls, 3 poses each)
+    const studentSkins = [
+      'boy_01', 'girl_01', 'boy_02', 'girl_02',
+      'boy_03', 'girl_03', 'boy_04', 'girl_04',
     ];
-    studentColors.forEach((color) => {
-      this.load.image(`student_${color}`, `${assetPath}/students/${color}/${color}_idle.png`);
-      this.load.image(`student_${color}_cheer`, `${assetPath}/students/${color}/${color}_cheer.png`);
-      this.load.image(`student_${color}_think`, `${assetPath}/students/${color}/${color}_walk.png`);
-      this.load.image(`student_${color}_sad`, `${assetPath}/students/${color}/${color}_wrong.png`);
+    studentSkins.forEach((skin) => {
+      this.load.image(`student_${skin}`, `${assetPath}/students/chibi_students_24/student_${skin}_idle.png`);
+      this.load.image(`student_${skin}_happy`, `${assetPath}/students/chibi_students_24/student_${skin}_happy.png`);
+      this.load.image(`student_${skin}_sleep`, `${assetPath}/students/chibi_students_24/student_${skin}_sleep.png`);
     });
 
     // 3. Props
