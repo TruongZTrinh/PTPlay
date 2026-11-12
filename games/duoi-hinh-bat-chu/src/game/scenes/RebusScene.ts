@@ -364,13 +364,16 @@ export class RebusScene extends Phaser.Scene {
           const challenger = this.studentRoster.getPlayer(firstKick.challengerId);
           const sleeper = this.studentRoster.getPlayer(firstKick.sleeperId);
           if (challenger && sleeper) {
-            this.audioEngine.playTop5Yeah();
+            this.audioEngine.playKungfuFlyKick(0.88);
+            this.time.delayedCall(980, () => {
+              this.audioEngine.playTop5Yeah();
+            });
             this.scoreboard.setChatTicker(
               `💤➡️💥 bay đá ${sleeper.nickname} (ngủ gật >5 câu) để lấy chỗ ngồi!`,
               challenger.nickname
             );
           }
-          return 1200;
+          return 2050;
         }
 
         if (top5Takeovers.length > 0) {
@@ -379,7 +382,10 @@ export class RebusScene extends Phaser.Scene {
           const displaced = lead.displacedId ? this.studentRoster.getPlayer(lead.displacedId) : undefined;
           if (challenger) {
             this.mc.cheer();
-            this.audioEngine.playTop5Yeah();
+            this.audioEngine.playKungfuFlyKick(0.88);
+            this.time.delayedCall(980, () => {
+              this.audioEngine.playTop5Yeah();
+            });
             const msg = displaced
               ? `🎉 YEAH! Đá bay ${displaced.nickname} để chiếm ghế Top #${lead.rank}!`
               : `🎉 YEAH! Nhảy thẳng lên ghế VIP Top #${lead.rank}!`;
@@ -392,7 +398,7 @@ export class RebusScene extends Phaser.Scene {
                 onComplete?.();
               }
             };
-            this.time.delayedCall(1400, () => {
+            this.time.delayedCall(2100, () => {
               animDone = true;
               tryFinish();
             });

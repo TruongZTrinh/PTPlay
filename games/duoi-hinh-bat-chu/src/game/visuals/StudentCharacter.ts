@@ -274,20 +274,33 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
     const startX = this.x;
     const startY = this.y;
     const dir = targetX >= startX ? 1 : -1;
-    const peakLift = kind === 'promote_top5' ? 58 : kind === 'bumped_down' ? 46 : 24;
-    const duration = kind === 'promote_top5' ? 780 : kind === 'bumped_down' ? 680 : 520;
-    const delay = kind === 'bumped_down' ? 360 : 0;
+    const peakLift = kind === 'promote_top5' ? 86 : kind === 'bumped_down' ? 72 : 28;
+    const duration = kind === 'promote_top5' ? 1350 : kind === 'bumped_down' ? 950 : 600;
+    const delay = kind === 'bumped_down' ? 900 : 0;
+
+    const flykickKey = `student_${this.skinId}_flykick`;
+    const hasFlykickTex = kind === 'promote_top5' && this.scene.textures.exists(flykickKey);
 
     if (kind === 'promote_top5') {
-      const flykickKey = `student_${this.skinId}_flykick`;
-      if (this.scene.textures.exists(flykickKey)) {
+      if (hasFlykickTex) {
         this.chibiSprite.setTexture(flykickKey);
         this.chibiSprite.setFlipX(dir < 0);
       } else {
-        this.setTemporaryPose('happy', 2000);
+        this.setTemporaryPose('happy', 2200);
       }
+      // Takeoff energy ring at launch spot
+      const launchRing = this.scene.add.circle(startX, startY - 8, 8, 0x38bdf8, 0.35).setDepth(81);
+      launchRing.setStrokeStyle(2.5, 0xfef08a, 0.9);
+      this.scene.tweens.add({
+        targets: launchRing,
+        scale: 2.8,
+        alpha: 0,
+        duration: 360,
+        ease: 'Quad.easeOut',
+        onComplete: () => launchRing.destroy(),
+      });
     } else if (kind === 'bumped_down') {
-      this.setTemporaryPose('sleep', 1300);
+      this.setTemporaryPose('sleep', 1800);
     }
 
     this.setDepth(85);
@@ -311,29 +324,47 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
         this.setPosition(curX, curY);
 
         if (kind === 'promote_top5') {
-          // Dynamic flying-kick tilt during flight
+          // Dynamic flying-kick tilt + mid-air pop scale
           const kickWeight = Math.sin(p * Math.PI);
-          this.chibiSprite.setAngle(dir * 34 * kickWeight);
+          this.chibiSprite.setAngle(dir * 38 * kickWeight);
+          const popScale = targetScale * (1 + 0.22 * kickWeight);
+          this.setScale(popScale);
 
-          if (p - lastTrailAt > 0.16 && p < 0.85) {
+          if (p - lastTrailAt > 0.085 && p < 0.88) {
             lastTrailAt = p;
-            const puff = this.scene.add.circle(curX, curY - 14, 9, 0xfef08a, 0.55).setDepth(82);
+            if (hasFlykickTex) {
+              const ghost = this.scene.add.image(curX, curY + 6, flykickKey)
+                .setScale(popScale * 0.42)
+                .setFlipX(dir < 0)
+                .setAngle(dir * 38 * kickWeight)
+                .setTint(0xfef08a)
+                .setAlpha(0.45)
+                .setDepth(82);
+              this.scene.tweens.add({
+                targets: ghost,
+                alpha: 0,
+                scale: popScale * 0.28,
+                duration: 280,
+                onComplete: () => ghost.destroy(),
+              });
+            }
+            const puff = this.scene.add.circle(curX, curY - 10, 7, 0xfb923c, 0.65).setDepth(83);
             this.scene.tweens.add({
               targets: puff,
-              scale: 0.2,
+              scale: 0.15,
               alpha: 0,
-              duration: 240,
+              duration: 260,
               onComplete: () => puff.destroy(),
             });
           }
 
-          if (!impactShown && p >= 0.72) {
+          if (!impactShown && p >= 0.66) {
             impactShown = true;
             this.spawnKickImpactVfx(targetX, targetY - 14);
           }
         } else if (kind === 'bumped_down') {
-          // 360-degree knockback tumble spin
-          this.chibiSprite.setAngle(p * 360 * -dir);
+          // 540-degree knockback tumble spin
+          this.chibiSprite.setAngle(p * 540 * -dir);
         }
       },
       onComplete: () => {
@@ -362,35 +393,77 @@ export class StudentCharacter extends Phaser.GameObjects.Container {
 
   private spawnKickImpactVfx(x: number, y: number): void {
     if (!this.scene) return;
-    const ring = this.scene.add.circle(x, y, 10, 0xf59e0b, 0.25).setDepth(88);
-    ring.setStrokeStyle(3, 0xfef08a, 1);
+    // Camera micro-shake for martial-arts impact punch
+    this.scene.cameras.main.shake(180, 0.0055);
+
+    // Inner bright shockwave + outer fiery ring
+    const ring = this.scene.add.circle(x, y, 12, 0xfef08a, 0.35).setDepth(88);
+    ring.setStrokeStyle(3.5, 0xffffff, 1);
     this.scene.tweens.add({
       targets: ring,
-      scale: 3.4,
+      scale: 3.8,
       alpha: 0,
-      duration: 380,
+      duration: 460,
       ease: 'Quad.easeOut',
       onComplete: () => ring.destroy(),
     });
 
+    const outerRing = this.scene.add.circle(x, y, 14, 0xf97316, 0.2).setDepth(87);
+    outerRing.setStrokeStyle(3, 0xf59e0b, 0.95);
+    this.scene.tweens.add({
+      targets: outerRing,
+      scale: 4.8,
+      alpha: 0,
+      duration: 560,
+      ease: 'Cubic.easeOut',
+      onComplete: () => outerRing.destroy(),
+    });
+
+    // Radial spark bursts
+    const sparkCount = 10;
+    for (let i = 0; i < sparkCount; i++) {
+      const angle = (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.25;
+      const dist = 34 + Math.random() * 24;
+      const spark = this.scene.add.circle(x, y, 4.5, i % 2 === 0 ? 0xfef08a : 0xf97316, 1).setDepth(89);
+      this.scene.tweens.add({
+        targets: spark,
+        x: x + Math.cos(angle) * dist,
+        y: y + Math.sin(angle) * dist,
+        scale: 0.1,
+        alpha: 0,
+        duration: 420 + Math.random() * 120,
+        ease: 'Cubic.easeOut',
+        onComplete: () => spark.destroy(),
+      });
+    }
+
     const burst = this.scene.add.text(x, y - 16, '💥 ĐÁ BAY!', {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '13px',
+      fontSize: '15px',
       color: '#fef08a',
       fontStyle: 'bold',
       stroke: '#991b1b',
       strokeThickness: 4,
       resolution: 3,
-    }).setOrigin(0.5).setDepth(90);
+    }).setOrigin(0.5).setScale(0.3).setDepth(90);
 
     this.scene.tweens.add({
       targets: burst,
-      y: y - 42,
-      scale: { from: 0.7, to: 1.15 },
-      alpha: { from: 1, to: 0 },
-      duration: 750,
-      ease: 'Cubic.easeOut',
-      onComplete: () => burst.destroy(),
+      y: y - 52,
+      scale: { from: 0.3, to: 1.3 },
+      duration: 240,
+      ease: 'Back.easeOut',
+      onComplete: () => {
+        if (!this.scene || !burst.scene) return;
+        this.scene.tweens.add({
+          targets: burst,
+          y: y - 68,
+          alpha: 0,
+          duration: 720,
+          ease: 'Cubic.easeOut',
+          onComplete: () => burst.destroy(),
+        });
+      },
     });
   }
 

@@ -40,6 +40,8 @@ export class AudioEngine {
   private masterGain: GainNode | null = null;
   private ceremonyGain: GainNode | null = null;
   private ceremonyEffects: CeremonySoundEffects | null = null;
+  private sfxBuffers = new Map<string, AudioBuffer>();
+  private sfxPreloaded = false;
   private soundVolume: number = 0.8;
   private isDucked: boolean = false;
   private sharedMusic = SharedMusicManager.getInstance({ gameId: 'duoi-hinh-bat-chu' });
@@ -67,6 +69,7 @@ export class AudioEngine {
           this.ceremonyGain.gain.setValueAtTime(this.soundVolume, this.ctx.currentTime);
           this.ceremonyGain.connect(this.ctx.destination);
           this.ceremonyEffects = new CeremonySoundEffects(this.ctx, this.ceremonyGain);
+          this.preloadKungfuSfx();
         }
       } catch {
         return false;
@@ -247,15 +250,63 @@ export class AudioEngine {
     });
   }
 
+  private preloadKungfuSfx(): void {
+    if (this.sfxPreloaded || !this.ctx || typeof fetch === 'undefined') return;
+    this.sfxPreloaded = true;
+    const files = ['kungfu-whoosh.mp3', 'kungfu-kick.mp3', 'kungfu-punch.mp3'];
+    files.forEach((file) => {
+      fetch(`/assets/rebus-v1/audio/sfx/${file}`)
+        .then((res) => (res.ok ? res.arrayBuffer() : null))
+        .then((buf) => (buf && this.ctx ? this.ctx.decodeAudioData(buf) : null))
+        .then((decoded) => {
+          if (decoded) this.sfxBuffers.set(file, decoded);
+        })
+        .catch(() => {});
+    });
+  }
+
+  private playSfxSample(file: string, delaySec = 0, gainLevel = 0.85, playbackRate = 1): boolean {
+    if (!this.ensureContext() || !this.ctx || !this.masterGain) return false;
+    const buffer = this.sfxBuffers.get(file);
+    if (!buffer) return false;
+    try {
+      const src = this.ctx.createBufferSource();
+      src.buffer = buffer;
+      src.playbackRate.setValueAtTime(playbackRate, this.ctx.currentTime + delaySec);
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(gainLevel, this.ctx.currentTime + delaySec);
+      src.connect(gain);
+      gain.connect(this.masterGain);
+      src.start(this.ctx.currentTime + delaySec);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public playKungfuFlyKick(impactDelaySec = 0.88): void {
+    if (!this.ensureContext()) return;
+    this.preloadKungfuSfx();
+    // 1. Takeoff air whoosh
+    if (!this.playSfxSample('kungfu-whoosh.mp3', 0, 0.85, 1.05)) {
+      this.playTone(320, 'sine', 0.25, 0, 0.14);
+    }
+    // 2. Martial arts kick + punch impact right as the foot lands
+    const kickPlayed = this.playSfxSample('kungfu-kick.mp3', impactDelaySec, 0.95, 1.0);
+    const punchPlayed = this.playSfxSample('kungfu-punch.mp3', impactDelaySec + 0.03, 0.55, 0.95);
+    if (!kickPlayed && !punchPlayed) {
+      this.playTone(130, 'sine', 0.16, impactDelaySec, 0.35);
+      this.playTone(85, 'triangle', 0.2, impactDelaySec + 0.02, 0.28);
+    }
+  }
+
   public playTop5Yeah(): void {
-    // Punchy kick impact + rising celebratory chord + crowd applause
-    this.playTone(130, 'sine', 0.14, 0.0, 0.35);
-    this.playTone(90, 'triangle', 0.18, 0.03, 0.28);
+    // Rising celebratory chord + crowd applause
     const cheerNotes = [523.25, 659.25, 783.99, 1046.5];
     cheerNotes.forEach((freq, idx) => {
-      this.playTone(freq, 'triangle', 0.22, 0.12 + idx * 0.055, 0.24);
+      this.playTone(freq, 'triangle', 0.22, 0.04 + idx * 0.055, 0.24);
     });
-    this.playTone(1318.51, 'sine', 0.42, 0.34, 0.26);
+    this.playTone(1318.51, 'sine', 0.42, 0.28, 0.26);
     if (this.ensureContext()) {
       this.ceremonyEffects?.playApplause();
     }
