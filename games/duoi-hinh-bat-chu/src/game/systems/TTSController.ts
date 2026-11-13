@@ -395,10 +395,9 @@ export class TTSController {
   public announceInteractiveGuide(): void {
     if (this.isSpeakingNow()) return;
     const guides = [
-      'Bấm Follow mở chữ đầu, tặng hoa mở thêm chữ và cộng 10 giây, thả 20 tim nhận gợi ý nhé cả lớp!',
-      'Follow kênh mở ngay chữ cái đầu, tặng quà một xu cộng 10 giây và mở thêm chữ, thả tim để mở gợi ý nào!',
-      'Ai chưa Follow bấm Follow mở chữ đầu, tặng hoa hồng cứu phòng cộng 10 giây và mở thêm chữ nhé!',
-      'Cả lớp ơi, Follow mở chữ đầu, tặng bông cộng 10 giây và mở thêm chữ, thả đủ 20 tim mở một chữ gợi ý nào!',
+      'Follow mở chữ đầu, tặng hoa cộng 10 giây, thả tim mở gợi ý nào!',
+      'Bấm Follow mở chữ đầu, tặng một bông hoa cộng 10 giây và mở thêm chữ nhé!',
+      'Follow mở chữ cái đầu, thả tim nhận gợi ý, tặng hoa cứu giờ nào cả lớp!',
     ];
     const picked = guides[Math.floor(Math.random() * guides.length)];
     this.speak(picked, false, 'guide_reminder');
