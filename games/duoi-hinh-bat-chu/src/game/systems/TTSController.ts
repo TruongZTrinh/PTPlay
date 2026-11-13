@@ -460,13 +460,9 @@ export class TTSController {
     }
   }
 
-  public announceTimeWarning(isHard: boolean = false): void {
+  public announceTimeWarning(_isHard: boolean = false): void {
     if (this.isSpeaking || this.queue.length > 0 || this.currentHttpAudio) return;
-    if (isHard) {
-      this.speak('Còn 5 giây! Tặng Hoa Hồng để mở chữ đầu cứu cả lớp nào!', false, 'time_warning');
-    } else {
-      this.speak('Còn 5 giây cuối cùng! Nhanh tay gõ đáp án nào!', false, 'time_warning');
-    }
+    this.speak('Còn 5 giây, tặng Hoa Hồng để thêm giờ và mở chữ!', false, 'time_warning');
   }
 
   public announceCorrect(nickname: string, answer: string): void {
