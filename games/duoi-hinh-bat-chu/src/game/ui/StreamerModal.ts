@@ -161,13 +161,17 @@ export class StreamerModal extends Phaser.GameObjects.Container {
       }
     });
 
-    this.createButton(270, 608, '❤️ Test Thả 20 Tim (+5s / 1 Lần)', 0xe11d48, () => {
+    this.createButton(140, 608, '❤️ Test Thả 20 Tim', 0xe11d48, () => {
       if (this.liveRouter) {
         this.liveRouter.simulateLikes(20, 'Khán giả Live');
       } else {
-        this.engine.addTime(5, '20 Tim Cổ Vũ', true);
-        this.tts.announceLikeBonus(20, 5);
+        this.engine.revealLetters(1, '20 Tim Cổ Vũ');
+        this.tts.announceLikeBonus(20, 1);
       }
+    });
+
+    this.createButton(380, 608, '📢 Nhắc Quyền Lợi (Bảng)', 0x0d9488, () => {
+      this.engine.triggerInteractiveGuide();
     });
 
     // Sound & Funny Chill BGM Section

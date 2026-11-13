@@ -199,6 +199,7 @@ async function runTests() {
     tts.announceShowWelcome();
     tts.announcePlayerJoin('Thám Tử Lừng Danh');
     tts.announceRoundStart(1);
+    tts.announceInteractiveGuide();
     tts.announceHint('Một hiện tượng thời tiết tự nhiên');
     tts.announceFirstChar('C');
     tts.announceTimeWarning();

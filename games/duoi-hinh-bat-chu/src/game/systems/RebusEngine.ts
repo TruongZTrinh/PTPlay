@@ -45,6 +45,8 @@ export class RebusEngine {
   private isSolvedInCurrentRound: boolean = false;
   private roundWinner: RebusPlayerRecord | null = null;
   private roundSolvers: string[] = [];
+  private lastInteractiveGuideRound: number = -2;
+  private guideAnnouncedThisRound: boolean = false;
 
   private timerHandle: any = null;
   private stateTimerHandle: any = null;
@@ -118,6 +120,7 @@ export class RebusEngine {
     this.isSolvedInCurrentRound = false;
     this.roundWinner = null;
     this.roundSolvers = [];
+    this.guideAnnouncedThisRound = false;
 
     this.totalTimeMs = (this.currentPuzzle.durationSec || 20) * 1000;
     this.remainingTimeMs = this.totalTimeMs;
@@ -181,6 +184,20 @@ export class RebusEngine {
       const elapsedRatio = 1 - this.remainingTimeMs / this.totalTimeMs;
 
       // Hints are NOT automatically revealed by time - only shown when users send Rose or Follow!
+
+      // Periodic interactive guide reminder every 3 rounds around second 13 (while waiting)
+      if (this.remainingTimeMs <= 13500 && this.remainingTimeMs > 13000 && this.config.ttsEnabled) {
+        if (
+          !this.guideAnnouncedThisRound &&
+          this.roundNumber - this.lastInteractiveGuideRound >= 3 &&
+          !this.isSolvedInCurrentRound &&
+          !this.ttsController.isSpeakingNow()
+        ) {
+          this.guideAnnouncedThisRound = true;
+          this.lastInteractiveGuideRound = this.roundNumber;
+          this.ttsController.announceInteractiveGuide();
+        }
+      }
 
       // Time warning at 5 seconds remaining
       if (this.remainingTimeMs <= 5000 && this.remainingTimeMs > 4800 && this.config.ttsEnabled) {
@@ -351,6 +368,12 @@ export class RebusEngine {
 
     if (this.config.ttsEnabled) {
       this.ttsController.announceFirstChar(firstChar, sponsorName, reason, addedSeconds);
+    }
+  }
+
+  public triggerInteractiveGuide(): void {
+    if (this.config.ttsEnabled) {
+      this.ttsController.announceInteractiveGuide();
     }
   }
 

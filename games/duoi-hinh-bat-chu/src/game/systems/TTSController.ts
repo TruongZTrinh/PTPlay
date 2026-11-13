@@ -164,6 +164,10 @@ export class TTSController {
     return VietnameseVoiceHelper.unlockAudioContext();
   }
 
+  public isSpeakingNow(): boolean {
+    return this.isSpeaking || this.currentHttpAudio !== null || this.queue.length > 0;
+  }
+
   public setEnabled(enabled: boolean): void {
     this.isEnabled = enabled;
     if (!enabled && typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -386,6 +390,18 @@ export class TTSController {
     } else {
       this.speak(`Câu ${roundNumber}! Nhìn hình đoán nhanh nào!`, false, `round_${roundNumber}`);
     }
+  }
+
+  public announceInteractiveGuide(): void {
+    if (this.isSpeakingNow()) return;
+    const guides = [
+      'Bấm Follow mở chữ đầu, tặng hoa mở thêm chữ và cộng 10 giây, thả 20 tim nhận gợi ý nhé cả lớp!',
+      'Follow kênh mở ngay chữ cái đầu, tặng quà một xu cộng 10 giây và mở thêm chữ, thả tim để mở gợi ý nào!',
+      'Ai chưa Follow bấm Follow mở chữ đầu, tặng hoa hồng cứu phòng cộng 10 giây và mở thêm chữ nhé!',
+      'Cả lớp ơi, Follow mở chữ đầu, tặng bông cộng 10 giây và mở thêm chữ, thả đủ 20 tim mở một chữ gợi ý nào!',
+    ];
+    const picked = guides[Math.floor(Math.random() * guides.length)];
+    this.speak(picked, false, 'guide_reminder');
   }
 
   public announceTimeAdded(seconds: number, sponsorName?: string): void {
