@@ -137,27 +137,33 @@ export class RebusLiveEventRouter {
         if (cmd.user?.userId) {
           this.roster.registerOrGet(userId, nickname, avatarUrl, undefined, 'waiting');
         }
+
+        // Only process like goals while the round is actively in the guessing phase.
+        // If the puzzle is already solved or ended (locked / reveal / celebrate / finished / idle),
+        // do not trigger hints, audio, or add time.
+        if (this.engine.currentState !== 'guessing') {
+          break;
+        }
+
+        // When goal already achieved for this puzzle, ignore counting and stop ticker spam
+        if (this.likeRewardClaimedThisPuzzle) {
+          break;
+        }
+
         const count = Math.max(1, Number(cmd.metadata?.likeCount) || 1);
         this.likeCountThisPuzzle += count;
 
-        if (!this.likeRewardClaimedThisPuzzle) {
-          if (this.likeCountThisPuzzle >= this.targetLikeCount) {
-            this.likeRewardClaimedThisPuzzle = true;
-            this.engine.addTime(5, '20 Tim Cổ Vũ', true);
-            this.scoreboard.setChatTicker(
-              `❤️ Cả phòng đã thả đủ ${this.targetLikeCount} tim: +5s thời gian suy nghĩ!`,
-              nickname
-            );
-            this.tts?.announceLikeBonus(this.targetLikeCount, 5);
-          } else {
-            this.scoreboard.setChatTicker(
-              `thả +${count} tim! ❤️ (${this.likeCountThisPuzzle}/${this.targetLikeCount} để nhận +5s)`,
-              nickname
-            );
-          }
+        if (this.likeCountThisPuzzle >= this.targetLikeCount) {
+          this.likeRewardClaimedThisPuzzle = true;
+          this.engine.revealLetters(1, '20 Tim Cổ Vũ');
+          this.scoreboard.setChatTicker(
+            `❤️ Cả phòng đã thả đủ ${this.targetLikeCount} tim: Mở 1 ký tự gợi ý ô chữ!`,
+            nickname
+          );
+          this.tts?.announceLikeBonus(this.targetLikeCount, 1);
         } else {
           this.scoreboard.setChatTicker(
-            `thả +${count} tim! ❤️ (Đã nhận +5s câu này)`,
+            `thả +${count} tim! ❤️ (${this.likeCountThisPuzzle}/${this.targetLikeCount} để mở 1 chữ)`,
             nickname
           );
         }
@@ -183,17 +189,22 @@ export class RebusLiveEventRouter {
 
         const openedCount = this.engine.revealLetters(giftCount, nickname);
         const letterNote = openedCount > 0 ? `Mở ${openedCount} chữ` : '';
-        let perkText = letterNote ? `${letterNote} (+20đ)!` : '+25đ VIP & hồi lượt đoán!';
+        const timeBonusSec = 10 * giftCount;
+        this.engine.addTime(timeBonusSec, nickname, true);
+
+        let perkText = letterNote ? `${letterNote} & +${timeBonusSec}s (+20đ)!` : `+${timeBonusSec}s & +25đ VIP!`;
         let handledTTS = false;
         if (cleanGift.includes('heart') || cleanGift.includes('tim')) {
           this.roster.addGiftPoints(userId, 20 * giftCount);
-          perkText = letterNote ? `${letterNote} (+${20 * giftCount}đ)!` : `+${20 * giftCount}đ cổ vũ!`;
+          perkText = letterNote ? `${letterNote} & +${timeBonusSec}s (+${20 * giftCount}đ)!` : `+${timeBonusSec}s & +${20 * giftCount}đ cổ vũ!`;
         } else if (cleanGift.includes('rose') || cleanGift.includes('hoa')) {
           this.roster.addGiftPoints(userId, 50 * giftCount);
           this.roster.grantExtraGuesses(userId, 5);
           perkText = letterNote
-            ? `🌹 Tặng ${giftCount} Hoa Hồng: ${letterNote} (+${50 * giftCount}đ VIP)!`
-            : `🌹 Tặng ${giftCount} Hoa Hồng (+${50 * giftCount}đ VIP)!`;
+            ? `🌹 Tặng ${giftCount} Hoa Hồng: ${letterNote} & +${timeBonusSec}s (+${50 * giftCount}đ VIP)!`
+            : `🌹 Tặng ${giftCount} Hoa Hồng: +${timeBonusSec}s (+${50 * giftCount}đ VIP)!`;
+          const firstChar = this.engine.currentPuzzle?.answer.trim().charAt(0).toUpperCase() || '';
+          this.tts?.announceFirstChar(firstChar, nickname, 'rose', timeBonusSec);
           handledTTS = true;
         } else if (cleanGift.includes('lion') || cleanGift.includes('su tu')) {
           this.roster.addGiftPoints(userId, 150);
@@ -226,8 +237,11 @@ export class RebusLiveEventRouter {
       case 'tiktok.follow':
       case 'follow': {
         this.roster.registerOrGet(userId, nickname, avatarUrl);
-        this.engine.triggerHint1(nickname, 'follow');
-        this.scoreboard.setChatTicker('đã Follow kênh và mở Gợi Ý 1!', nickname);
+        // Follow opens the first character (or next character) directly!
+        this.engine.revealLetters(1, nickname);
+        const firstChar = this.engine.currentPuzzle?.answer.trim().charAt(0).toUpperCase() || '';
+        this.engine.triggerHint2(nickname, 'follow');
+        this.scoreboard.setChatTicker(`đã Follow kênh và mở chữ: "${firstChar}"!`, nickname);
         break;
       }
 

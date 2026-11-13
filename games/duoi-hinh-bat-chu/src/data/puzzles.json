@@ -158,7 +158,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: K...",
     "hint2": "Gợi ý: Khẩu súng / Cái miệng + Cây cung",
     "explanation": "Khẩu súng / Cái miệng + Cây cung = KHẨU CUNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -212,7 +212,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: H...",
     "hint2": "Gợi ý: Củ hành + Con chó lang",
     "explanation": "Củ hành + Con chó lang = HÀNH LANG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -230,7 +230,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: T...",
     "hint2": "Gợi ý: Tấm thảm + Thanh sắt thép / thiết",
     "explanation": "Tấm thảm + Thanh sắt thép / thiết = THẢM THIẾT",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -249,7 +249,7 @@
     "hint1": "Câu đố gồm 5 chữ cái: Ô...",
     "hint2": "Gợi ý: Cái ô + Số 3 (ba) + Con ma",
     "explanation": "Cái ô + Số 3 (ba) + Con ma = Ô BA MA (Obama)",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -321,7 +321,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Bàn tay màu trắng",
     "explanation": "Bàn tay màu trắng = TAY TRẮNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -357,7 +357,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: K...",
     "hint2": "Gợi ý: Con kiến + Sắt thép (thiết)",
     "explanation": "Con kiến + Sắt thép (thiết) = KIẾN THIẾT",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -376,7 +376,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: M...",
     "hint2": "Gợi ý: Người đẹp đuôi cá",
     "explanation": "Người đẹp đuôi cá = MỸ NHÂN NGƯ",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -394,7 +394,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: C...",
     "hint2": "Gợi ý: Bàn chân + Bức tường thành",
     "explanation": "Bàn chân + Bức tường thành = CHÂN THÀNH",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -430,7 +430,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: H...",
     "hint2": "Gợi ý: Học sinh + Con đường",
     "explanation": "Học sinh + Con đường = HỌC ĐƯỜNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -502,7 +502,7 @@
     "hint1": "Câu đố gồm 10 chữ cái: T...",
     "hint2": "Gợi ý: Trái tim (tình) + Trường học",
     "explanation": "Trái tim (tình) + Trường học = TÌNH TRƯỜNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -538,7 +538,7 @@
     "hint1": "Câu đố gồm 6 chữ cái: B...",
     "hint2": "Gợi ý: Cái bao tải + Hàm răng",
     "explanation": "Cái bao tải + Hàm răng = BAO HÀM",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -556,7 +556,7 @@
     "hint1": "Câu đố gồm 6 chữ cái: K...",
     "hint2": "Gợi ý: Cuốn kinh Phật + Thước đo độ",
     "explanation": "Cuốn kinh Phật + Thước đo độ = KINH ĐỘ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -610,7 +610,7 @@
     "hint1": "Câu đố gồm 5 chữ cái: M...",
     "hint2": "Gợi ý: Nước Mỹ (cờ Mỹ) + Trái tim (tâm)",
     "explanation": "Nước Mỹ (cờ Mỹ) + Trái tim (tâm) = MỸ TÂM",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -682,7 +682,7 @@
     "hint1": "Câu đố gồm 7 chữ cái: N...",
     "hint2": "Gợi ý: Nội thất bên trong + Con gián",
     "explanation": "Nội thất bên trong + Con gián = NỘI GIÁN",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -718,7 +718,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: L...",
     "hint2": "Gợi ý: Chó lang + Cái thang",
     "explanation": "Chó lang + Cái thang = LANG THANG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -736,7 +736,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: C...",
     "hint2": "Gợi ý: Con công + Trái tim / quả",
     "explanation": "Con công + Trái tim / quả = CÔNG TRÁI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -772,7 +772,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Bức tranh + Thủ môn",
     "explanation": "Bức tranh + Thủ môn = TRANH THỦ",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -828,7 +828,7 @@
     "hint1": "Câu đố gồm 12 chữ cái: N...",
     "hint2": "Gợi ý: Tay ném viên đá rồi giấu đi",
     "explanation": "Tay ném viên đá rồi giấu đi = NÉM ĐÁ GIẤU TAY",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -900,7 +900,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: C...",
     "hint2": "Gợi ý: Bàn chân + Quân cờ tướng",
     "explanation": "Bàn chân + Quân cờ tướng = CHÂN TƯỚNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -920,7 +920,7 @@
     "hint1": "Câu đố gồm 14 chữ cái: Đ...",
     "hint2": "Gợi ý: Cánh đồng + Quả cam + Dấu cộng + Quả khổ qua",
     "explanation": "Cánh đồng + Quả cam + Dấu cộng + Quả khổ qua = ĐỒNG CAM CỘNG KHỔ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 4,
     "mode": "word",
     "verified": true
@@ -938,7 +938,7 @@
     "hint1": "Câu đố gồm 10 chữ cái: K...",
     "hint2": "Gợi ý: Thanh kiếm + Cuốn truyện",
     "explanation": "Thanh kiếm + Cuốn truyện = KIẾM CHUYỆN",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1028,7 +1028,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Hòn than hoa + Mặt em bé khóc",
     "explanation": "Hòn than hoa + Mặt em bé khóc = THAN KHÓC",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1118,7 +1118,7 @@
     "hint1": "Câu đố gồm 7 chữ cái: N...",
     "hint2": "Gợi ý: Bên trong (nội) + Số 7 (thất)",
     "explanation": "Bên trong (nội) + Số 7 (thất) = NỘI THẤT",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1136,7 +1136,7 @@
     "hint1": "Câu đố gồm 7 chữ cái: C...",
     "hint2": "Gợi ý: Cái can + Con gián",
     "explanation": "Cái can + Con gián = CAN GIÁN",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1228,7 +1228,7 @@
     "hint1": "Câu đố gồm 11 chữ cái: B...",
     "hint2": "Gợi ý: 3 cái đầu + 6 cánh tay",
     "explanation": "3 cái đầu + 6 cánh tay = BA ĐẦU SÁU TAY",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1264,7 +1264,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: X...",
     "hint2": "Gợi ý: Khung xương + Con rồng",
     "explanation": "Khung xương + Con rồng = XƯƠNG RỒNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1284,7 +1284,7 @@
     "hint1": "Câu đố gồm 13 chữ cái: B...",
     "hint2": "Gợi ý: Bình hoa cắm chân bước đi",
     "explanation": "Bình hoa cắm chân bước đi = BÌNH HOA DI ĐỘNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1392,7 +1392,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: K...",
     "hint2": "Gợi ý: Quyển kinh + Chiếc lược chải tóc",
     "explanation": "Quyển kinh + Chiếc lược chải tóc = KINH LƯỢC",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 4,
     "mode": "word",
     "verified": true
@@ -1428,7 +1428,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Cây thông + Cân 1 tấn",
     "explanation": "Cây thông + Cân 1 tấn = THÔNG TẤN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1518,7 +1518,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: X...",
     "hint2": "Gợi ý: Mắt xem + Tướng quân cờ tướng",
     "explanation": "Mắt xem + Tướng quân cờ tướng = XEM TƯỚNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1536,7 +1536,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Con trâu + Đang mơ mộng ngủ",
     "explanation": "Con trâu + Đang mơ mộng ngủ = TRÂU MỘNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1554,7 +1554,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: C...",
     "hint2": "Gợi ý: Con công + Cây giáo mác",
     "explanation": "Con công + Cây giáo mác = CÔNG GIÁO",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1644,7 +1644,7 @@
     "hint1": "Câu đố gồm 6 chữ cái: Đ...",
     "hint2": "Gợi ý: Con đê ngăn lũ + Máy tiện",
     "explanation": "Con đê ngăn lũ + Máy tiện = ĐÊ TIỆN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1680,7 +1680,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Dấu tích xanh + Đống phân",
     "explanation": "Dấu tích xanh + Đống phân = TÍCH PHÂN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1698,7 +1698,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: K...",
     "hint2": "Gợi ý: Cây kích + Trái tim yêu thích",
     "explanation": "Cây kích + Trái tim yêu thích = KÍCH THÍCH",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1716,7 +1716,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: Đ...",
     "hint2": "Gợi ý: Chữ ĐẠI to lớn + Quân cờ Tướng",
     "explanation": "Chữ ĐẠI to lớn + Quân cờ Tướng = ĐẠI TƯỚNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1752,7 +1752,7 @@
     "hint1": "Câu đố gồm 6 chữ cái: K...",
     "hint2": "Gợi ý: Quả khổ qua (mướp đắng) + Trái tim (tâm)",
     "explanation": "Quả khổ qua (mướp đắng) + Trái tim (tâm) = KHỔ TÂM",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1772,7 +1772,7 @@
     "hint1": "Câu đố gồm 12 chữ cái: B...",
     "hint2": "Gợi ý: Số 3 chìm dưới nước + Số 7 nổi trên mặt nước",
     "explanation": "Số 3 chìm dưới nước + Số 7 nổi trên mặt nước = BA CHÌM BẢY NỔI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 4,
     "mode": "word",
     "verified": true
@@ -1790,7 +1790,7 @@
     "hint1": "Câu đố gồm 6 chữ cái: A...",
     "hint2": "Gợi ý: Quả anh đào / Anh chàng + Tiền hào",
     "explanation": "Quả anh đào / Anh chàng + Tiền hào = ANH HÀO",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -1827,7 +1827,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: M...",
     "hint2": "Gợi ý: Con ma + Củ cà rốt rồng",
     "explanation": "Con ma + Củ cà rốt rồng = MA CÀ RỒNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1845,7 +1845,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: C...",
     "hint2": "Gợi ý: Cái can đựng nước + thiệp chúc mừng",
     "explanation": "Cái can đựng nước + thiệp chúc mừng = CAN THIỆP",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1863,7 +1863,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: C...",
     "hint2": "Gợi ý: Đống cát + bức tường gạch",
     "explanation": "Đống cát + bức tường gạch = CÁT TƯỜNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1881,7 +1881,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: C...",
     "hint2": "Gợi ý: Đèn chiếu sáng + cây tre",
     "explanation": "Đèn chiếu sáng + cây tre = CHIẾU TRE",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1935,7 +1935,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: G...",
     "hint2": "Gợi ý: Con gián đi dép",
     "explanation": "Con gián đi dép = GIÁN ĐIỆP",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1953,7 +1953,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: G...",
     "hint2": "Gợi ý: Người đàn ông giang tay + cành hoa mai",
     "explanation": "Người đàn ông giang tay + cành hoa mai = GIANG MAI",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -1989,7 +1989,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: K...",
     "hint2": "Gợi ý: Củ khoai lang + chú chó lang thang",
     "explanation": "Củ khoai lang + chú chó lang thang = KHOAI LANG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2044,7 +2044,7 @@
     "hint1": "Câu đố gồm 9 chữ cái: N...",
     "hint2": "Gợi ý: Người đàn ông (nam) bán cây cầu",
     "explanation": "Người đàn ông (nam) bán cây cầu = NAM BÁN CẦU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -2080,7 +2080,7 @@
     "hint1": "Câu đố gồm 8 chữ cái: T...",
     "hint2": "Gợi ý: Số 7 (thất) + trái tim rạn vỡ (tình)",
     "explanation": "Số 7 (thất) + trái tim rạn vỡ (tình) = THẤT TÌNH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -2153,7 +2153,7 @@
     "hint1": "Câu đố gồm 10 chữ cái: V...",
     "hint2": "Gợi ý: Ông vua cầm kéo cắt rách lưới bóng đá",
     "explanation": "Ông vua cầm kéo cắt rách lưới bóng đá = VUA PHÁ LƯỚI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -2172,7 +2172,7 @@
     "hint1": "Câu đố gồm 11 chữ cái: V...",
     "hint2": "Gợi ý: Khu vườn với 100 loài muông thú",
     "explanation": "Khu vườn với 100 loài muông thú = VƯỜN BÁCH THÚ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -2233,7 +2233,7 @@
     "hint1": "Thể loại tiểu thuyết kiếm sĩ trừ gian diệt bạo kinh điển...",
     "hint2": "Bắt đầu bằng chữ K...",
     "explanation": "Thanh kiếm võ hiệp + Cuốn truyện hiệp nghĩa = KIẾM HIỆP",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2254,7 +2254,7 @@
     "hint1": "Hoạt động nghiên cứu, mổ xẻ số liệu hoặc báo cáo chuyên sâu...",
     "hint2": "Bắt đầu bằng chữ P...",
     "explanation": "Đống phân + Dấu tích chọn = PHÂN TÍCH",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2276,7 +2276,7 @@
     "hint1": "Bức tranh vẽ các loài muông thú sống chốn núi rừng hoang dã...",
     "hint2": "Bắt đầu bằng chữ S...",
     "explanation": "Bức tranh sơn mài vẽ muông thú = SƠN THÚ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -2316,7 +2316,7 @@
     "hint1": "Bãi biển xanh mát kết hợp tấm bảng đề chữ...",
     "hint2": "Bờ biển (Biển) + Tấm bảng ký hiệu (Hiệu)...",
     "explanation": "Bờ biển (Biển) + Bảng hiệu (Hiệu) = BIỂN HIỆU",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2357,7 +2357,7 @@
     "hint1": "Một chiếc máy khoan cầm tay và một đóa hoa màu hồng phấn...",
     "hint2": "Chiếc máy khoan (Khoan) + Màu hồng phấn (Hồng)...",
     "explanation": "Cái máy khoan (Khoan) + Màu hồng (Hồng) = KHOAN HỒNG",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2398,7 +2398,7 @@
     "hint1": "Một câu thành ngữ 4 chữ chỉ thái độ điềm nhiên thản nhiên như không có gì...",
     "hint2": "Chiếc bình sứ (Bình) + Cặp chân người (Chân) + Cái vại sành (Vại)...",
     "explanation": "Bình hoa có chân vững chãi như vại nước = BÌNH CHÂN NHƯ VẠI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -2438,7 +2438,7 @@
     "hint1": "Dấu tích chữ V xanh lá đặt cạnh một bầy muông thú trong rừng...",
     "hint2": "Dấu tích chọn (Thích) + Muông thú động vật (Thú)...",
     "explanation": "Dấu tích (Thích) + Động vật hoang dã (Thú) = THÍCH THÚ",
-    "durationSec": 22,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2564,7 +2564,7 @@
     "hint1": "Một người đang hớt hải chạy thục mạng mọc ra nhiều chân cẳng...",
     "hint2": "Số 3 (Ba) + Đôi chân (Chân) + Số 4 (Bốn) + Đôi cẳng (Cẳng)...",
     "explanation": "Chạy thục mạng = BA CHÂN BỐN CẲNG",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2733,7 +2733,7 @@
     "hint1": "Một chiếc bình hoa gốm sứ đặt cạnh củ hành tím thơm nồng...",
     "hint2": "Chiếc bình (Bình) + Củ hành lá hành tím (Hành)... Một hình học 4 cạnh!",
     "explanation": "Bình hoa (Bình) + Củ hành (Hành) = HÌNH BÌNH HÀNH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2860,7 +2860,7 @@
     "hint1": "Một mạng nhện chăng tơ bao quanh một chiếc diều bay bổng...",
     "hint2": "Mạng lưới / mạng nhện (Mạng) + Khả năng di chuyển di động (Di động)...",
     "explanation": "Mạng nhện (Mạng) + Di động = MẠNG DI ĐỘNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -2883,7 +2883,7 @@
     "hint1": "Người đàn ông có chiếc lưng dài thượt quấn mãi không hết cuộn vải...",
     "hint2": "Chiếc lưng dài thòng (Dài lưng) + Cuộn vải may áo đắt tiền (Tốn vải)...",
     "explanation": "Chỉ kẻ lười biếng = DÀI LƯNG TỐN VẢI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3137,7 +3137,7 @@
     "hint1": "Chiếc dao chặt thịt khổng lồ đặt cạnh một chiếc búa tạ bự chảng...",
     "hint2": "Cây dao to đùng (Dao to) + Cây búa lớn (Búa lớn)... Lời lẽ phao trương đe dọa!",
     "explanation": "Dao to + Búa lớn = DAO TO BÚA LỚN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3223,7 +3223,7 @@
     "hint1": "Số 9 (Cửu) gục ngã bên cạnh số 1 (Nhất) vừa sinh nở em bé...",
     "hint2": "Số 9 chết đi (Cửu tử) + Số 1 sống sót sinh ra (Nhất sinh)... Thoát chết trong gang tấc!",
     "explanation": "9 phần chết 1 phần sống = CỬU TỬ NHẤT SINH",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -3350,7 +3350,7 @@
     "hint1": "Bát đường mía ngọt đặt cạnh sợi dây xích sắt và một quả đào tiên...",
     "hint2": "Bát đường ăn (Đường) + Sợi xích sắt (Xích) + Quả đào tiên (Đạo)... Đường vĩ tuyến 0 độ!",
     "explanation": "Đường ăn + Xích sắt + Quả đào = ĐƯỜNG XÍCH ĐẠO",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3435,7 +3435,7 @@
     "hint1": "Một tuần lễ 7 ngày bên ánh trăng rằm và hũ mật ong vàng óng...",
     "hint2": "Một tuần lễ (Tuần) + Vầng trăng sáng (Trăng) + Hũ mật ngọt (Mật)... Kỷ nghỉ tân hôn!",
     "explanation": "Tuần + Ánh trăng + Hũ mật = TUẦN TRĂNG MẬT",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3542,7 +3542,7 @@
     "hint1": "Ba chiếc miệng đang cùng phát ra một lời nói đồng thanh...",
     "hint2": "Số 3 (Ba) + Chiếc miệng (Miệng) + Số 1 (Một) + Lời nói (Lời)... Mọi người đồng lòng!",
     "explanation": "Ba miệng + Một lời = BA MIỆNG MỘT LỜI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3606,7 +3606,7 @@
     "hint1": "Chiếc hòm gỗ có chú chim công và một vị thầy tu đức hạnh...",
     "hint2": "Chiếc hòm gỗ (Hòm) + Chim công (Công) + Chữ Đức... Thùng bỏ tiền công đức nơi chùa đền!",
     "explanation": "Hòm gỗ + Chim công + Đức độ = HÒM CÔNG ĐỨC",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3650,7 +3650,7 @@
     "hint1": "Một người đang cố vươn hai bàn tay chụp lấy hai con cá bơi lội...",
     "hint2": "Chụp bắt (Bắt) + Con cá quẫy đuôi (Cá) + Cả hai bàn tay (Hai tay)... Tham lam muốn cả hai!",
     "explanation": "Bắt cá + Hai bàn tay = BẮT CÁ HAI TAY",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3672,7 +3672,7 @@
     "hint1": "Một con ma áo trắng thắt nơ đỏ đứng cạnh một chiếc can nhựa đựng nước...",
     "hint2": "Bóng ma bay lượn (Ma) + Chiếc nơ cài cổ (Nơ) + Chiếc can nhựa (Canh)... Tượng người mẫu áo!",
     "explanation": "Con ma (Ma) + Cái nơ (Nơ) + Cái can (Canh) = MA NƠ CANH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 1,
     "mode": "word",
     "verified": true
@@ -3716,7 +3716,7 @@
     "hint1": "Một nút thắt dây thừng chằng chịt thắt chặt lấy chiếc cổ chai thủy tinh...",
     "hint2": "Nút thắt chặt (Nút thắt) + Cổ của chiếc chai lọ (Cổ chai)... Điểm nghẽn cản trở công việc!",
     "explanation": "Nút thắt + Cổ chai = NÚT THẮT CỔ CHAI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3801,7 +3801,7 @@
     "hint1": "Chiếc cân đồng hồ 100kg đặt cạnh đám mây ngũ sắc bay lơ lửng...",
     "hint2": "Chiếc cân trọng lượng (Cân) + Đám mây đám vân (Vân)... Đám mây thần của Tôn Ngộ Không!",
     "explanation": "Chiếc cân + Đẩu vân mây = CÂN ĐẨU VÂN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -3908,7 +3908,7 @@
     "hint1": "Bó lúa vàng buộc chặt lấy cả đôi bàn chân và hai cánh tay...",
     "hint2": "Bó tròn (Bó) + Bàn chân đi lại (Chân) + Bàn tay làm việc (Tay)... Bế tắc không làm gì được!",
     "explanation": "Bó lại + Chân và tay = BÓ CHÂN BÓ TAY",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -4288,7 +4288,7 @@
     "hint1": "Bóng một cánh chim bay vút trên mây, dưới nước nổi tăm bọt cá lội...",
     "hint2": "Bóng chim bay xa (Bóng chim) + Tăm bọt cá dưới nước (Tăm cá)... Mất tăm mất tích không tin tức!",
     "explanation": "Bóng chim + Tăm cá = BÓNG CHIM TĂM CÁ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -4584,7 +4584,7 @@
     "hint1": "Bàn tay cầm chiếc cân đòn thăng bằng bên cạnh chiếc bật mực thợ mộc...",
     "hint2": "Cầm chiếc cân đòn (Cầm cân) + Dụng cụ nảy mực thẳng hàng (Nảy mực)... Công bằng chính trực!",
     "explanation": "Cầm cân + Nảy mực = CẦM CÂN NẢY MỰC",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -4606,7 +4606,7 @@
     "hint1": "Các con số học bay bổng bên cạnh một nhánh hoa đào xuân khoe sắc...",
     "hint2": "Con số vận mệnh (Số) + Nhành hoa đào tươi thắm (Đào hoa)... Người có nhiều người khác giới theo đuổi!",
     "explanation": "Con số (Số) + Hoa đào (Đào hoa) = SỐ ĐÀO HOA",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -4692,7 +4692,7 @@
     "hint1": "Số 1 bị mất đi khiến số 10 gãi đầu hoài nghi ngờ vực...",
     "hint2": "Số 1 mất mát (Một mất) + Số 10 nghi ngờ (Mười ngờ)... Mất của nghi ngờ lung tung cho mọi người!",
     "explanation": "Một mất + Mười ngờ = MỘT MẤT MƯỜI NGỜ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -4735,7 +4735,7 @@
     "hint1": "Một rổ giá đỗ tươi ngon bay lơ lửng tít trên chín tầng mây...",
     "hint2": "Rổ giá đỗ xào (Giá) + Bầu trời xanh mây trắng (Trên trời)... Giá cả đắt đỏ cắt cổ vô lý!",
     "explanation": "Rổ giá đỗ (Giá) + Trên trời = GIÁ TRÊN TRỜI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -4779,7 +4779,7 @@
     "hint1": "Trận đánh giáp mặt nhau bên cạnh những tàu lá cây cà tím trĩu quả...",
     "hint2": "Hành động đánh nhau (Đánh giáp) + Tàu lá của cây cà (Lá cà)... Đánh giáp mặt cự ly gần!",
     "explanation": "Đánh giáp + Cây lá cà = ĐÁNH GIÁP LÁ CÀ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -5096,7 +5096,7 @@
     "hint1": "Bàn tay cầm kéo cắt hình chú chim công lộng lẫy bên cạnh tấm bản đồ nước Mỹ...",
     "hint2": "Bàn tay chữ Hán là Thủ + Chim công (Công) + Nước Mỹ (Mỹ)... Nghề làm đồ mỹ nghệ thủ công tinh xảo!",
     "explanation": "Thủ (Bàn tay) + Công + Mỹ + Nghệ = THỦ CÔNG MỸ NGHỆ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -5140,7 +5140,7 @@
     "hint1": "Lọ thuốc độc cắm số 1 (Nhất) đứng cạnh số 0 (Vô) và số 2 (Nhị)...",
     "hint2": "Lọ thuốc độc (Độc) + Số 1 (Nhất) + Không có chữ Hán là Vô + Số 2 (Nhị)... Duy nhất có một trên đời!",
     "explanation": "Độc + Nhất + Vô + Nhị = ĐỘC NHẤT VÔ NHỊ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -5247,7 +5247,7 @@
     "hint1": "Dòng nước suối đục ngầu cuộn sóng có chú cò trắng béo múp đang rình bắt cá...",
     "hint2": "Nước sông vẩn đục (Đục nước) + Chú cò ăn no béo múp (Béo cò)... Lợi dụng lúc hỗn loạn để trục lợi!",
     "explanation": "Đục nước + Béo cò = ĐỤC NƯỚC BÉO CÒ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -5374,7 +5374,7 @@
     "hint1": "Ống hút nước cắm vào chiếc chân người lơ lửng trong không trung rỗng tuếch...",
     "hint2": "Động tác hút khí (Hút) + Đôi chân đi lại (Chân) + Khoảng không rỗng (Không)... Đóng gói bảo quản thực phẩm!",
     "explanation": "Hút vào + Bàn chân + Không trung = HÚT CHÂN KHÔNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -5564,7 +5564,7 @@
     "hint1": "Chiếc bánh đại khổng lồ bên bức thư sứ giả và quán nước chè...",
     "hint2": "Kích thước to lớn đại (Đại) + Sứ giả đưa tin (Sứ) + Quán hàng ven đường (Quán)... Trụ sở ngoại giao quốc tế!",
     "explanation": "To lớn (Đại) + Sứ giả + Quán nước = ĐẠI SỨ QUÁN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -5734,7 +5734,7 @@
     "hint1": "Một lá gan khổng lồ to đùng đặt cạnh túi mật căng phồng...",
     "hint2": "Lá gan to tướng (To gan) + Túi mật lớn đùng (Lớn mật)... Kẻ liều lĩnh táo bạo không biết sợ ai!",
     "explanation": "To gan + Lớn mật = TO GAN LỚN MẬT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -5777,7 +5777,7 @@
     "hint1": "Cơn mưa rào trút hạt bên dưới bóng một đám mây trôi giữa trời nắng...",
     "hint2": "Mưa rơi lất phất (Mưa) + Bóng râm mát (Bóng) + Đám mây trắng (Mây)... Cơn mưa bóng mây chợt đến chợt đi!",
     "explanation": "Mưa rơi + Quả bóng + Đám mây = MƯA BÓNG MÂY",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -5967,7 +5967,7 @@
     "hint1": "Một ngôi nhà cao vút có ngọn tháp nhọn hoắt chọc thẳng lên bầu trời mây...",
     "hint2": "Ngôi nhà cao tầng (Nhà) + Động tác chọc xiên (Chọc) + Bầu trời xanh (Trời)... Tòa cao ốc đồ sộ trăm tầng!",
     "explanation": "Ngôi nhà + Chọc thủng + Bầu trời = NHÀ CHỌC TRỜI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -6074,7 +6074,7 @@
     "hint1": "Con chó bị treo thức ăn lên cao, con mèo bị đậy lồng bàn kín mít...",
     "hint2": "Thức ăn tránh chó phải treo (Chó treo) + Tránh mèo ăn vụng phải đậy (Mèo đậy)... Kinh nghiệm cất giữ đồ ăn cẩn thận!",
     "explanation": "Chó treo + Mèo đậy = CHÓ TREO MÈO ĐẬY",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -6180,7 +6180,7 @@
     "hint1": "Chiếc vòi voi phun nước xối xả vào một đóa hoa sen hồng ngát hương...",
     "hint2": "Chiếc vòi voi dài (Vòi) + Bông hoa sen trong đầm (Hoa sen)... Thiết bị phun tia nước tắm mát trong phòng tắm!",
     "explanation": "Vòi voi (Vòi) + Hoa sen = VÒI HOA SEN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -6203,7 +6203,7 @@
     "hint1": "Một cánh chim trời bỗng sà xuống, dưới hồ con cá lặn mất tăm...",
     "hint2": "Chim bay sà xuống (Chim sa) + Cá lặn xuống đáy nước (Cá lặn)... Vẻ đẹp nghiêng nước nghiêng thành của mỹ nhân!",
     "explanation": "Chim sa + Cá lặn = CHIM SA CÁ LẶN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -6246,7 +6246,7 @@
     "hint1": "Một chú chim đậu bên thùng sơn quét nhà và chiếc ca uống nước...",
     "hint2": "Loài chim có cánh (Chim) + Thùng sơn quét tường (Sơn) + Chiếc ca nhôm (Ca)... Loài chim hót véo von!",
     "explanation": "Chim + Thùng sơn + Chiếc ca = CHIM SƠN CA",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -6353,7 +6353,7 @@
     "hint1": "Chiếc miệng phun ra con rắn độc, nhưng trong lòng lại tỏa tượng Phật từ bi...",
     "hint2": "Cái miệng nói rắn độc (Khẩu xà) + Trái tim từ bi cửa Phật (Tâm Phật)... Miệng nói cay độc nhưng lòng dạ tốt bụng hiền lành!",
     "explanation": "Khẩu xà + Tâm Phật = KHẨU XÀ TÂM PHẬT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -6439,7 +6439,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'K'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: KÉO CƯA LỪA XẺ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -6629,7 +6629,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHÀ PHÂN LÔ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -6652,7 +6652,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐỜN CA TÀI TỬ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -6779,7 +6779,7 @@
     "hint1": "Gợi ý hình ảnh: Mộ từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'L'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: LÍNH LIÊN LẠC",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -6843,7 +6843,7 @@
     "hint1": "Gợi ý hình ảnh: Mộ từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỔNG BÍ THƯ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -6886,7 +6886,7 @@
     "hint1": "Gợi ý hình ảnh: Cao đẳng -> Đại học",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỌC LIÊN THÔNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -7013,7 +7013,7 @@
     "hint1": "Gợi ý hình ảnh: Quân đoàn",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỔNG TƯ LỆNH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -7199,7 +7199,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRANH SƠN DẦU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -7261,7 +7261,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỔ QUÂN BÁO",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -7492,7 +7492,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'L'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: LÒNG LANG DẠ THÚ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -7556,7 +7556,7 @@
     "hint1": "Gợi ý hình ảnh: Mộ từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỒ LY TINH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -7703,7 +7703,7 @@
     "hint1": "Gợi ý hình ảnh: Còn ta không còn nhà ngươi",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MỘT MẤT MỘT CÒN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -7809,7 +7809,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRANH CỔ ĐỘNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -7958,7 +7958,7 @@
     "hint1": "Gợi ý hình ảnh: Ngồi nhiều nè!",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRĨ NỘI TRĨ NGOẠI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -7980,7 +7980,7 @@
     "hint1": "Gợi ý hình ảnh: Một đồ vật",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GƯƠNG CHIẾU HẬU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -8276,7 +8276,7 @@
     "hint1": "Gợi ý hình ảnh: Người đóng góp cho công chúng",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGHỆ SĨ NHÂN DÂN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -8445,7 +8445,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GIẤY THÔNG HÀNH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -9328,7 +9328,7 @@
     "hint1": "Gợi ý hình ảnh: Một loại đồ vật",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MŨ CÁNH CHUỒN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -9749,7 +9749,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHẢY LÒ CÒ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -9771,7 +9771,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GIỜ CAO SU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -9793,7 +9793,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRUNG BÌNH TẤN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -9984,7 +9984,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TAN ĐÀN XẺ NGHÉ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -10279,7 +10279,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TỐI HẬU THƯ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -10743,7 +10743,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CÃI CHÀY CÃI CỐI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -10766,7 +10766,7 @@
     "hint1": "Gợi ý hình ảnh: Cứ làm đi đã, tính sau",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TIỀN TRẢM HẬU TẤU",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -10830,7 +10830,7 @@
     "hint1": "Gợi ý hình ảnh: Ngày 6 tháng 9 năm 1969...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'S'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: SỔ NHẬT KÝ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -10979,7 +10979,7 @@
     "hint1": "Gợi ý hình ảnh: Thanh niên thời nay",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Ă'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĂN CƠM TRƯỚC KẺNG",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -11317,7 +11317,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TAM CUNG LỤC VIỆN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -11340,7 +11340,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MÈO MẢ GÀ ĐỒNG",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -11446,7 +11446,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐẠI HẠ GIÁ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -11511,7 +11511,7 @@
     "hint1": "Gợi ý hình ảnh: Chiến tranh",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHẤT ĐỘC DA CAM",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -11597,7 +11597,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÁN SỐNG BÁN CHẾT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -11683,7 +11683,7 @@
     "hint1": "Gợi ý hình ảnh: 18+",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐỦ LÔNG ĐỦ CÁNH",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -11768,7 +11768,7 @@
     "hint1": "Gợi ý hình ảnh: Một loài vật",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'L'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: LỢN CẮP NÁCH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -11937,7 +11937,7 @@
     "hint1": "Gợi ý hình ảnh: Phương châm, triết lý hành động",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'K'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: KIM CHỈ NAM",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12148,7 +12148,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GA TRẢI GIƯỜNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12171,7 +12171,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRỜI SÂU ĐẤT THẲM",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12214,7 +12214,7 @@
     "hint1": "Gợi ý hình ảnh: \"Đàn lợn\"",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRANH ĐÔNG HỒ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12236,7 +12236,7 @@
     "hint1": "Gợi ý hình ảnh: Biore",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'S'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: SỬA RỬA MẶT",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12258,7 +12258,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CÂY MÂM XÔI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12407,7 +12407,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MÔI HỞ RĂNG LẠNH",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12430,7 +12430,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐẦU TRÂU MẶT NGỰA",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12473,7 +12473,7 @@
     "hint1": "Gợi ý hình ảnh: Coca, fanta",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CÁ NƯỚC NGỌT",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12579,7 +12579,7 @@
     "hint1": "Gợi ý hình ảnh: Ăn to nói lớn",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HÉT RA LỬA",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12604,7 +12604,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 6 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHÓ ĂN ĐÁ GÀ ĂN SỎI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12689,7 +12689,7 @@
     "hint1": "Gợi ý hình ảnh: Đi mã mà không đến",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐƯỜNG CHÂN TRỜI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12712,7 +12712,7 @@
     "hint1": "Gợi ý hình ảnh: Ma mới",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHÂN ƯỚT CHÂN RÁO",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12734,7 +12734,7 @@
     "hint1": "Gợi ý hình ảnh: Từ bé",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÀN NỘI TRỢ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12799,7 +12799,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'V'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: VÙI HOA DẬP LIỄU",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12821,7 +12821,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'X'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: XƯƠNG QUAI XANH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -12844,7 +12844,7 @@
     "hint1": "Gợi ý hình ảnh: Luyện công",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TẨU HỎA NHẬP MA",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12867,7 +12867,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MŨ CAO ÁO DÀI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12911,7 +12911,7 @@
     "hint1": "Gợi ý hình ảnh: Đan Trường",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGÔI SAO CA NHẠC",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -12997,7 +12997,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÚT SA GÀ CHẾT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13041,7 +13041,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TÚM NĂM TỤM BA",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13127,7 +13127,7 @@
     "hint1": "Gợi ý hình ảnh: Một ngày lễ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Ô'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ÔNG CÔNG ÔNG TÁO",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13233,7 +13233,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'S'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: SƯ TỬ BIỂN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -13297,7 +13297,7 @@
     "hint1": "Gợi ý hình ảnh: SPF, PA++",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'K'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: KEM CHỐNG NẮNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -13383,7 +13383,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Ă'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĂN CHÁO ĐÁ BÁT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13427,7 +13427,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CHIA NĂM XẺ BẢY",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13534,7 +13534,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NÃO RUỘT NÃO GAN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13662,7 +13662,7 @@
     "hint1": "Gợi ý hình ảnh: Baby",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MẶT BÚNG RA SỮA",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -13810,7 +13810,7 @@
     "hint1": "Gợi ý hình ảnh: Ghê quá",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NỔI GAI ỐC",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -13832,7 +13832,7 @@
     "hint1": "Gợi ý hình ảnh: VTV",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐÀI TRUYỀN HÌNH",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -13917,7 +13917,7 @@
     "hint1": "Gợi ý hình ảnh: Thốn",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'D'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: DÍNH QUẢ LỪA",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14066,7 +14066,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHÀ CAO CỬA RỘNG",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14088,7 +14088,7 @@
     "hint1": "Gợi ý hình ảnh: Miền Trung",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Á'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ÁO BÀ BA",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14111,7 +14111,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NẰM GAI NẾM MẬT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14155,7 +14155,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: THÂM CUNG BÍ SỬ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14198,7 +14198,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CỔ LỖ SĨ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14241,7 +14241,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TRÁI CHÍN CÂY",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14305,7 +14305,7 @@
     "hint1": "Gợi ý hình ảnh: Truyền thông",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐA PHƯƠNG TIỆN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14433,7 +14433,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐA SẦU ĐA CẢM",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14455,7 +14455,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐÈN KÉO QUÂN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14561,7 +14561,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÁNH MÌ GỐI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14647,7 +14647,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BA QUE XỎ LÁ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14691,7 +14691,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MÈO GIÀ HÓA CÁO",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14714,7 +14714,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GIÁ ÁO TÚI CƠM",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -14862,7 +14862,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Ă'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĂN HOA HỒNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -14990,7 +14990,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỎI GÀ ĐÁP VỊT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -15117,7 +15117,7 @@
     "hint1": "Gợi ý hình ảnh: Tổ chức",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CÂU LẠC BỘ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15140,7 +15140,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'L'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: LẤY THỊT ĐÈ NGƯỜI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -15204,7 +15204,7 @@
     "hint1": "Gợi ý hình ảnh: Một từ ghép",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MẸ ĐỠ ĐẦU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15310,7 +15310,7 @@
     "hint1": "Gợi ý hình ảnh: Một món ăn",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐẬU LƯỚT VÁN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15332,7 +15332,7 @@
     "hint1": "Gợi ý hình ảnh: 3 con sói",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BAO CAO SU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15606,7 +15606,7 @@
     "hint1": "Gợi ý hình ảnh: Dễ vỡ",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MỐI TÌNH ĐẦU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15649,7 +15649,7 @@
     "hint1": "Gợi ý hình ảnh: Hiện tượng",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỐ TỬ THẦN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15671,7 +15671,7 @@
     "hint1": "Gợi ý hình ảnh: Nguye hiểm",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'X'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: XE MẤT LÁI",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15694,7 +15694,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'R'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: RỒNG CUỐN HỔ NGỒI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -15737,7 +15737,7 @@
     "hint1": "Gợi ý hình ảnh: Một trò chơi",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'Ô'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: Ô ĂN QUAN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15802,7 +15802,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TAI TO MẶT LỚN",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -15866,7 +15866,7 @@
     "hint1": "Gợi ý hình ảnh: 15-8",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÁNH TRUNG THU",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15909,7 +15909,7 @@
     "hint1": "Gợi ý hình ảnh: Một loại nhạc",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHẠC THÍNH PHÒNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -15995,7 +15995,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'L'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: LÊN VOI XUỐNG CHÓ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -16081,7 +16081,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Q'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: QUỶ THA MA BẮT",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -16125,7 +16125,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MIỆNG ĂN NÚI LỞ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -16295,7 +16295,7 @@
     "hint1": "Gợi ý hình ảnh: Một câu tục ngữ",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'C'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: CẦM KỲ THI HỌA",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -16527,7 +16527,7 @@
     "hint1": "Gợi ý hình ảnh: Vui vẻ",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHẢY CHÂN SÁO",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -16549,7 +16549,7 @@
     "hint1": "Gợi ý hình ảnh: Ipod",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MÁY NGHE NHẠC",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -16634,7 +16634,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BÁN VÉ SỐ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -16677,7 +16677,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BẤT ĐỘNG SẢN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -16699,7 +16699,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BA LÔ NGƯỢC",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -16763,7 +16763,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BỒ CÂU TRẮNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -16785,7 +16785,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'B'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: BỘ SƯU TẬP",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -17123,7 +17123,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 4 từ...",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'Đ'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: ĐỊA ĐẠO CỦ CHI",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -17313,7 +17313,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GIỌNG HÁT VIỆT",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -17335,7 +17335,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'G'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: GÓI BÁNH CHƯNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -17525,7 +17525,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'H'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: HỦ TIẾU GÕ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -17778,7 +17778,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MÂM NGŨ QUẢ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -17863,7 +17863,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'M'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: MÁY TÍNH BẢNG",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -17970,7 +17970,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 4 từ...",
     "hint2": "Đáp án gồm 4 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NGHĨA VỤ QUÂN SỰ",
-    "durationSec": 30,
+    "durationSec": 20,
     "difficulty": 3,
     "mode": "word",
     "verified": true
@@ -17992,7 +17992,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NHIẾP ẢNH GIA",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -18014,7 +18014,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'N'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: NỒI CƠM ĐIỆN",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true
@@ -18414,7 +18414,7 @@
     "hint1": "Nhìn kỹ từng chi tiết ẩn dụ trong tranh vẽ để ghép thành 3 từ...",
     "hint2": "Đáp án gồm 3 từ, chữ cái đầu tiên là 'T'...",
     "explanation": "Hình ảnh ẩn dụ chơi chữ tạo nên đáp án: TÌNH MẪU TỬ",
-    "durationSec": 25,
+    "durationSec": 20,
     "difficulty": 2,
     "mode": "word",
     "verified": true

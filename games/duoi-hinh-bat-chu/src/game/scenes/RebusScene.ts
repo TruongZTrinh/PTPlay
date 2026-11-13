@@ -336,8 +336,9 @@ export class RebusScene extends Phaser.Scene {
 
       onSeatRebalance: (onComplete) => {
         const allPlayers = this.studentRoster.getAllPlayers();
+        // Active players in Top 5 must have score > 0 and not be inactive for > 10 rounds
         const rankedIds = [...allPlayers]
-          .filter((p) => p.score > 0)
+          .filter((p) => p.score > 0 && (p.roundsWithoutAnswer || 0) <= 10)
           .sort((a, b) => b.score - a.score || b.correctCount - a.correctCount)
           .map((p) => p.userId);
 
@@ -377,7 +378,8 @@ export class RebusScene extends Phaser.Scene {
               challenger.nickname
             );
           }
-          return 2050;
+          // Do not block next round; let kick animation play concurrently in background
+          return 0;
         }
 
         if (top5Takeovers.length > 0) {
@@ -394,27 +396,11 @@ export class RebusScene extends Phaser.Scene {
               ? `🎉 YEAH! Đá bay ${displaced.nickname} để chiếm ghế Top #${lead.rank}!`
               : `🎉 YEAH! Nhảy thẳng lên ghế VIP Top #${lead.rank}!`;
             this.scoreboard.setChatTicker(msg, challenger.nickname);
-
-            let animDone = false;
-            let ttsDone = false;
-            const tryFinish = () => {
-              if (animDone && ttsDone) {
-                onComplete?.();
-              }
-            };
-            this.time.delayedCall(2100, () => {
-              animDone = true;
-              tryFinish();
-            });
-            this.ttsController.announceTop5Takeover(challenger.nickname, lead.rank, displaced?.nickname, () => {
-              ttsDone = true;
-              tryFinish();
-            });
-            return 'async';
+            return 0;
           }
-          return 1800;
+          return 0;
         }
-        return 800;
+        return 0;
       },
 
       onTestSleepKick: (userId, nickname) => {

@@ -14,6 +14,9 @@ export class TTSController {
   private selectedVoice: SpeechSynthesisVoice | null = null;
   private queue: TTSQueueItem[] = [];
   private isSpeaking: boolean = false;
+  private currentHttpAudio: HTMLAudioElement | null = null;
+  private currentSessionId: number = 0;
+  private queueTimer?: any;
   private lastSpeakTime: number = 0;
   private cooldownMs: number = 600;
   private recentKeys = new Map<string, number>();
@@ -198,31 +201,44 @@ export class TTSController {
     }
 
     if (priority) {
-      try {
-        window.speechSynthesis.cancel();
-      } catch {}
+      this.cancel();
       this.queue = [{ text: cleanText, priority: true, createdAt: now, onEnd }];
       this.isSpeaking = false;
-      // Allow 60ms for Chromium audio engine to reset cleanly before firing new utterance
-      setTimeout(() => this.processQueue(), 60);
+      this.scheduleProcessQueue(40);
       return;
     }
 
-    if (this.queue.length >= 3) {
+    if (this.queue.length >= 2) {
       this.queue.shift();
     }
     this.queue.push({ text: cleanText, priority: false, createdAt: now, onEnd });
 
-    this.processQueue();
+    this.scheduleProcessQueue(0);
+  }
+
+  private scheduleProcessQueue(delayMs: number = 0): void {
+    if (this.queueTimer) {
+      clearTimeout(this.queueTimer);
+      this.queueTimer = undefined;
+    }
+    if (delayMs <= 0) {
+      this.processQueue();
+    } else {
+      this.queueTimer = setTimeout(() => {
+        this.queueTimer = undefined;
+        this.processQueue();
+      }, delayMs);
+    }
   }
 
   private processQueue(): void {
-    if (this.isSpeaking || this.queue.length === 0) return;
+    if (!this.isEnabled || this.isSpeaking || this.currentHttpAudio !== null || this.queue.length === 0) return;
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
     const now = Date.now();
-    if (now - this.lastSpeakTime < this.cooldownMs) {
-      setTimeout(() => this.processQueue(), this.cooldownMs - (now - this.lastSpeakTime));
+    const elapsed = now - this.lastSpeakTime;
+    if (elapsed < this.cooldownMs) {
+      this.scheduleProcessQueue(this.cooldownMs - elapsed);
       return;
     }
 
@@ -231,10 +247,11 @@ export class TTSController {
 
     this.isSpeaking = true;
     this.audioEngine.setDucking(true);
+    const sessionId = ++this.currentSessionId;
 
     let finished = false;
     const cleanup = () => {
-      if (finished) return;
+      if (finished || sessionId !== this.currentSessionId) return;
       finished = true;
       if (this.watchdogTimer) {
         clearTimeout(this.watchdogTimer);
@@ -243,12 +260,14 @@ export class TTSController {
       this.isSpeaking = false;
       this.lastSpeakTime = Date.now();
       this.audioEngine.setDucking(false);
-      item.onEnd?.();
-      setTimeout(() => this.processQueue(), 250);
+      try {
+        item.onEnd?.();
+      } catch {}
+      this.scheduleProcessQueue(250);
     };
 
     if (VietnameseVoiceHelper.isServerAudioVoice(this.savedVoiceName)) {
-      this.playHttpTts(item.text, cleanup);
+      this.playHttpTts(item.text, cleanup, sessionId);
       return;
     }
 
@@ -260,9 +279,7 @@ export class TTSController {
     });
 
     if (!utterance) {
-      this.isSpeaking = false;
-      this.audioEngine.setDucking(false);
-      item.onEnd?.();
+      cleanup();
       return;
     }
 
@@ -274,7 +291,7 @@ export class TTSController {
 
     // Safety watchdog: Chromium speech synthesis can sometimes hang or fail to emit onend
     this.watchdogTimer = setTimeout(() => {
-      if (this.isSpeaking) {
+      if (this.isSpeaking && sessionId === this.currentSessionId) {
         cleanup();
       }
     }, 12000);
@@ -290,8 +307,20 @@ export class TTSController {
     }
   }
 
-  private playHttpTts(text: string, onEnd: () => void): void {
+  private playHttpTts(text: string, onEnd: () => void, sessionId: number): void {
     try {
+      if (this.currentHttpAudio) {
+        const prev = this.currentHttpAudio;
+        this.currentHttpAudio = null;
+        prev.onended = null;
+        prev.onerror = null;
+        try {
+          prev.pause();
+          prev.currentTime = 0;
+          prev.src = '';
+        } catch {}
+      }
+
       const url = VietnameseVoiceHelper.buildServerTtsUrl(text, {
         voiceName: this.savedVoiceName,
         lang: 'vi',
@@ -299,22 +328,41 @@ export class TTSController {
         pitch: this.pitch,
       });
       const audio = new Audio(url);
+      this.currentHttpAudio = audio;
       audio.volume = Math.max(0, Math.min(1.0, this.volume));
-      this.watchdogTimer = setTimeout(onEnd, 15000);
-      audio.onended = onEnd;
+
+      const handleEnd = () => {
+        if (sessionId !== this.currentSessionId) return;
+        if (this.currentHttpAudio === audio) {
+          this.currentHttpAudio = null;
+        }
+        audio.onended = null;
+        audio.onerror = null;
+        onEnd();
+      };
+
+      this.watchdogTimer = setTimeout(handleEnd, 15000);
+      audio.onended = handleEnd;
       audio.onerror = () => {
         console.warn('[Rebus TTS] Server HTTP audio error');
-        onEnd();
+        handleEnd();
       };
       const p = audio.play();
       if (p !== undefined) {
         p.catch((err) => {
-          console.warn('[Rebus TTS] Audio play blocked:', err);
-          onEnd();
+          if (sessionId === this.currentSessionId) {
+            console.warn('[Rebus TTS] Audio play blocked or interrupted:', err);
+            handleEnd();
+          }
         });
       }
     } catch {
-      onEnd();
+      if (sessionId === this.currentSessionId) {
+        if (this.currentHttpAudio) {
+          this.currentHttpAudio = null;
+        }
+        onEnd();
+      }
     }
   }
 
@@ -329,12 +377,14 @@ export class TTSController {
   }
 
   public announceRoundStart(roundNumber: number, difficulty: number = 1): void {
+    // Nếu MC đang bận nói hoặc có câu trong hàng đợi, bỏ qua câu giới thiệu round để tránh dồn câu
+    if (this.isSpeaking || this.currentHttpAudio !== null || this.queue.length > 0) return;
     if (difficulty >= 4) {
-      this.speak(`Câu ${roundNumber}! Siêu khó nha, tặng hoa để mở chữ đầu nào!`, false);
+      this.speak(`Câu ${roundNumber}! Siêu khó nha, tặng hoa để mở chữ đầu nào!`, false, `round_${roundNumber}`);
     } else if (difficulty === 3) {
-      this.speak(`Câu ${roundNumber}! Câu này khó nha, ai giải được không?`, false);
+      this.speak(`Câu ${roundNumber}! Câu này khó nha, ai giải được không?`, false, `round_${roundNumber}`);
     } else {
-      this.speak(`Câu ${roundNumber}! Nhìn hình đoán nhanh nào!`, false);
+      this.speak(`Câu ${roundNumber}! Nhìn hình đoán nhanh nào!`, false, `round_${roundNumber}`);
     }
   }
 
@@ -344,18 +394,18 @@ export class TTSController {
       if (cleanSponsor.toLowerCase().includes('tim')) {
         this.speak(`Cả phòng đã thả đủ tim! Đã cộng thêm ${seconds} giây suy nghĩ!`, true);
       } else {
-        this.speak(`Cảm ơn ${cleanSponsor} tặng Hoa Hồng! Đã cộng thêm ${seconds} giây!`, false);
+        this.speak(`Cảm ơn ${cleanSponsor} tặng Hoa Hồng! Đã cộng thêm ${seconds} giây!`, true);
       }
     } else {
       this.speak(`Cả lớp được cộng thêm ${seconds} giây!`, false);
     }
   }
 
-  public announceLikeBonus(likesCount: number = 20, seconds: number = 5): void {
+  public announceLikeBonus(likesCount: number = 20, _unusedCount: number = 1): void {
     const phrases = [
-      `Cả phòng đã thả đủ ${likesCount} tim! Tặng thêm ${seconds} giây suy nghĩ cho cả lớp nhé!`,
-      `Tuyệt vời! Đạt mốc ${likesCount} tim rồi, cộng thêm ${seconds} giây suy nghĩ, nhanh tay gõ đáp án nào!`,
-      `Cảm ơn cả lớp đã thả đủ ${likesCount} tim! Đã cộng thêm ${seconds} giây suy nghĩ!`,
+      `Cả phòng đã thả đủ ${likesCount} tim! Mở một chữ cái gợi ý cho cả lớp nhé!`,
+      `Tuyệt vời! Đạt mốc ${likesCount} tim rồi, mở một ký tự gợi ý, nhanh tay gõ đáp án nào!`,
+      `Cảm ơn cả lớp đã thả đủ ${likesCount} tim! Đã mở thêm một chữ cái trên ô chữ!`,
     ];
     const picked = phrases[Math.floor(Math.random() * phrases.length)];
     this.speak(picked, true, 'like_bonus');
@@ -371,7 +421,7 @@ export class TTSController {
     if (sponsorName) {
       const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn');
       const action = reason === 'follow' ? 'đã Follow' : 'tặng quà';
-      this.speak(`Cảm ơn ${cleanSponsor} ${action}! Gợi ý: ${cleanHint}!`, false);
+      this.speak(`Cảm ơn ${cleanSponsor} ${action}! Gợi ý: ${cleanHint}!`, true);
     } else {
       this.speak(`Gợi ý: ${cleanHint}!`, false);
     }
@@ -380,19 +430,23 @@ export class TTSController {
   public announceFirstChar(firstChar: string, sponsorName?: string, reason: 'rose' | 'follow' = 'rose', addedSeconds?: number): void {
     if (sponsorName) {
       const cleanSponsor = VietnameseVoiceHelper.formatNicknameForSpeech(sponsorName, 'bạn');
-      const timePart = addedSeconds ? ` và thêm ${addedSeconds} giây` : '';
+      const timePart = addedSeconds ? ` và cộng thêm ${addedSeconds} giây` : '';
       if (reason === 'rose') {
-        this.speak(`Cảm ơn ${cleanSponsor} tặng Hoa Hồng! Mở chữ đầu là: ${firstChar}${timePart}!`, true);
+        if (firstChar) {
+          this.speak(`Cảm ơn ${cleanSponsor} tặng Hoa Hồng! Mở chữ cái: ${firstChar}${timePart}!`, true);
+        } else {
+          this.speak(`Cảm ơn ${cleanSponsor} tặng Hoa Hồng! Mở thêm chữ cái${timePart}!`, true);
+        }
       } else {
-        this.speak(`Cảm ơn ${cleanSponsor} đã Follow! Chữ cái đầu là: ${firstChar}!`, false);
+        this.speak(`Cảm ơn ${cleanSponsor} đã Follow! Mở chữ cái đầu là chữ: ${firstChar}!`, true);
       }
     } else {
-      this.speak(`Gợi ý chữ cái đầu là chữ: ${firstChar}!`, false);
+      this.speak(`Gợi ý chữ cái đầu là chữ: ${firstChar}!`, true);
     }
   }
 
   public announceTimeWarning(isHard: boolean = false): void {
-    if (this.isSpeaking || this.queue.length > 0) return;
+    if (this.isSpeaking || this.queue.length > 0 || this.currentHttpAudio) return;
     if (isHard) {
       this.speak('Còn 5 giây! Tặng Hoa Hồng để mở chữ đầu cứu cả lớp nào!', false, 'time_warning');
     } else {
@@ -478,8 +532,30 @@ export class TTSController {
   }
 
   public cancel(): void {
+    this.currentSessionId++;
+    if (this.queueTimer) {
+      clearTimeout(this.queueTimer);
+      this.queueTimer = undefined;
+    }
+    if (this.watchdogTimer) {
+      clearTimeout(this.watchdogTimer);
+      this.watchdogTimer = undefined;
+    }
+    if (this.currentHttpAudio) {
+      const a = this.currentHttpAudio;
+      this.currentHttpAudio = null;
+      a.onended = null;
+      a.onerror = null;
+      try {
+        a.pause();
+        a.currentTime = 0;
+        a.src = '';
+      } catch {}
+    }
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
+      try {
+        window.speechSynthesis.cancel();
+      } catch {}
     }
     this.queue = [];
     this.isSpeaking = false;

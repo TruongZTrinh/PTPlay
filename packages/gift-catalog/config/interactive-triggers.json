@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "updatedAt": "2026-11-10T13:32:32.544Z",
+  "updatedAt": "2026-11-10T15:09:39.143Z",
   "triggers": {
     "quiz-show": {
       "gameType": "quiz-show",
@@ -20,11 +20,11 @@
       "likeGoal": {
         "enabled": true,
         "targetCount": 20,
-        "action": "rebus.add_time",
-        "actionLabel": "Cộng 5s thời gian suy nghĩ (1 lần/câu)",
+        "action": "rebus.reveal_letter",
+        "actionLabel": "Mở 1 ký tự gợi ý ô chữ (1 lần/câu)",
         "resetMode": "per_round",
-        "ttsAnnouncement": "Cả phòng đã thả đủ {count} tim! Tặng thêm 5 giây suy nghĩ cho cả lớp!",
-        "description": "Khi khán giả tap màn hình đạt 20 tim, tự động cộng thêm 5s thời gian suy nghĩ (tối đa 1 lần mỗi câu đố)."
+        "ttsAnnouncement": "Cả phòng đã thả đủ {count} tim! Mở một chữ cái gợi ý cho cả lớp!",
+        "description": "Khi khán giả tap màn hình đạt 20 tim, tự động mở 1 ký tự gợi ý trên ô chữ (tối đa 1 lần mỗi câu đố, sau đó dừng đếm trong câu đó)."
       }
     },
     "english-class": {

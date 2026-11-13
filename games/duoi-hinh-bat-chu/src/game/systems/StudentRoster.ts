@@ -114,6 +114,14 @@ export class StudentRoster {
       slotChanged = true;
     } else {
       player.lastActiveTime = Date.now();
+      // Upgrade nickname if previously registered with uniqueId/fallback username (e.g. p_01023 -> Lê Minh Chuchoa)
+      if (nickname && nickname !== 'Khán giả' && nickname !== player.userId) {
+        const clean = TextNormalizer.sanitizeNickname(nickname);
+        if (clean && clean !== player.nickname && (player.nickname === player.uniqueId || player.nickname.startsWith('user_') || player.nickname.startsWith('p_') || player.nickname === 'Khán giả')) {
+          player.nickname = clean;
+          slotChanged = true;
+        }
+      }
       if (avatarUrl && !player.avatarUrl) {
         player.avatarUrl = avatarUrl;
       }
@@ -177,9 +185,7 @@ export class StudentRoster {
 
   public advanceInactiveCounters(): void {
     this.players.forEach((p) => {
-      if (this.seatAllocator.getAssignedSeat(p.userId)) {
-        p.roundsWithoutAnswer = p.guessesInCurrentRound === 0 ? (p.roundsWithoutAnswer || 0) + 1 : 0;
-      }
+      p.roundsWithoutAnswer = p.guessesInCurrentRound === 0 ? (p.roundsWithoutAnswer || 0) + 1 : 0;
     });
   }
 

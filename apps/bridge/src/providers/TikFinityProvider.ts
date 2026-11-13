@@ -273,13 +273,20 @@ export class TikFinityProvider extends LiveEventProvider {
 
   public normalizeEvent(msg: TikFinityRawMessage): NormalizedLiveEvent | null {
     const data = msg.data || {};
-    const userId = String(data.userId || data.user_id || `anon_${Date.now()}`);
-    const uniqueId = String(data.uniqueId || data.username || userId);
-    const nickname = String(data.nickname || data.displayName || uniqueId);
-    const userObj = data.user as Record<string, any> | undefined;
+    const userObj = (data.user as Record<string, any>) || {};
+    const userId = String(data.userId || data.user_id || userObj.userId || userObj.id || `anon_${Date.now()}`);
+    const uniqueId = String(data.uniqueId || data.username || userObj.uniqueId || userObj.username || userId);
+    // Prioritize display nickname over username / uniqueId
+    const nickname = String(
+      data.nickname ||
+      data.displayName ||
+      userObj.nickname ||
+      userObj.displayName ||
+      uniqueId
+    );
     const rawAvatar = data.profilePictureUrl || data.profilePicturUrl || data.profile_picture_url ||
       data.avatarUrl || data.avatar_url || data.profile_image_url ||
-      (userObj && (userObj.profilePictureUrl || userObj.profilePicturUrl || userObj.avatarUrl));
+      userObj.profilePictureUrl || userObj.profilePicturUrl || userObj.avatarUrl;
     const profilePictureUrl = rawAvatar ? String(rawAvatar) : undefined;
     const eventId = `tikfinity_${Date.now()}_${this.idCounter++}`;
 
@@ -337,6 +344,7 @@ export class TikFinityProvider extends LiveEventProvider {
           provider: 'tikfinity',
           userId,
           uniqueId,
+          nickname,
           likeCount,
           totalLikeCount,
           timestamp: Date.now(),

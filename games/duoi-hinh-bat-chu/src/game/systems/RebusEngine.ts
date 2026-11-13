@@ -68,10 +68,10 @@ export class RebusEngine {
     }
 
     this.config = {
-      introDurationMs: 2500,
+      introDurationMs: 1800,
       guessingDurationMs: 20000,
-      revealDurationMs: 3500,
-      celebrateDurationMs: 2500,
+      revealDurationMs: 1800,
+      celebrateDurationMs: 1200,
       basePoints: 15,
       maxSpeedBonus: 8,
       maxStreakBonus: 8,
@@ -312,9 +312,10 @@ export class RebusEngine {
     return added;
   }
 
-  public triggerFirstCharHint(sponsorName?: string, addedSeconds?: number): boolean {
+  public triggerFirstCharHint(sponsorName?: string, addedSeconds: number = 10): boolean {
     if (this.currentState !== 'guessing' || !this.currentPuzzle) return false;
     this.triggerHint2(sponsorName, 'rose', addedSeconds);
+    this.addTime(addedSeconds, sponsorName, true);
     return true;
   }
 

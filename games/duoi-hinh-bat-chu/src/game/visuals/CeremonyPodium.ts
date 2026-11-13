@@ -159,12 +159,12 @@ export class CeremonyPodium {
           }
         }));
       };
-      for (const [delay, x, color] of [[3020, -175, 0xffc84e], [3370, 175, 0xe58aaa],
-        [6200, -175, 0x4bb89b], [8800, 175, 0xe58aaa], [10900, -175, 0xffc84e],
-        [11220, 175, 0xe58aaa], [11540, -160, 0x4bb89b], [11920, 160, 0xffc84e]]) {
+      for (const [delay, x, color] of [[2450, -175, 0xffc84e], [2750, 175, 0xe58aaa],
+        [4800, -175, 0x4bb89b], [6500, 175, 0xe58aaa], [7800, -175, 0xffc84e],
+        [8100, 175, 0xe58aaa], [8400, -160, 0x4bb89b], [8700, 160, 0xffc84e]]) {
         this.timers.push(this.scene.time.delayedCall(delay, () => launch(x, color)));
       }
-      this.timers.push(this.scene.time.delayedCall(10400, () => this.audio?.playApplause()));
+      this.timers.push(this.scene.time.delayedCall(7600, () => this.audio?.playApplause()));
     }
     this.timers.push(this.scene.time.delayedCall(CEREMONY_DURATION_MS - 450, () => {
       this.animate({ targets: overlay, alpha: 0, duration: 400, onComplete: () => this.hide() });

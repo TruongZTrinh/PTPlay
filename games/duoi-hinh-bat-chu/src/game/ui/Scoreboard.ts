@@ -38,9 +38,9 @@ export class Scoreboard extends Phaser.GameObjects.Container {
       fontFamily: 'system-ui, sans-serif', fontSize: '9px', color: '#98602c', fontStyle: 'bold',
     }).setOrigin(0.5));
     const interactionRules = [
-      { y: 459, label: '🎁 Quà 1 Xu+: +20đ, Mở 1 chữ/quà', color: '#fff0bf' },
-      { y: 474, label: '➕ Follow: Mở gợi ý 1', color: '#e0efdc' },
-      { y: 489, label: '❤️ 20 Tim: Cộng +5 giây', color: '#ffd6e0' },
+      { y: 459, label: '➕ Follow: Mở chữ cái đầu tiên', color: '#e0efdc' },
+      { y: 474, label: '🎁 Quà 1 Xu+: +10s & Mở thêm 1 chữ', color: '#fff0bf' },
+      { y: 489, label: '❤️ 20 Tim: Mở 1 chữ gợi ý', color: '#ffd6e0' },
       { y: 504, label: '💥 Quà 1 Xu+: Đá người ngủ vào bàn', color: '#fde68a' },
     ];
     for (const rule of interactionRules) {
@@ -119,7 +119,8 @@ export class Scoreboard extends Phaser.GameObjects.Container {
   }
 
   public updateLeaderboard(players: RebusPlayerRecord[]): void {
-    const scored = [...players].filter(p => p.score > 0)
+    // Only display active contestants (score > 0 and not inactive for > 10 unanswered rounds) on Top 5 board
+    const scored = [...players].filter(p => p.score > 0 && (p.roundsWithoutAnswer || 0) <= 10)
       .sort((a, b) => b.score - a.score || b.correctCount - a.correctCount);
     this.classCount.setText(String(players.length));
     this.activeCount.setText(String(scored.length));

@@ -305,8 +305,8 @@ async function runTests() {
     engine.destroy();
   });
 
-  // 10. 20 LIKES MECHANIC (+5S ONCE PER PUZZLE & RESETS NEXT ROUND)
-  test('10. Like Mechanic: 20 likes adds +5s once per puzzle, stops in current round, and resets on next puzzle', () => {
+  // 10. 20 LIKES MECHANIC (REVEALS 1 LETTER ONCE PER PUZZLE & RESETS NEXT ROUND)
+  test('10. Like Mechanic: 20 likes reveals 1 letter once per puzzle, stops in current round, and resets on next puzzle', () => {
     const alloc = new SeatAllocator();
     const roster = new StudentRoster(alloc);
     const audio = new AudioEngine();
@@ -314,16 +314,16 @@ async function runTests() {
 
     let ttsSpokeLikeBonus = false;
     tts.speak = (text: string) => {
-      if (text.includes('20 tim') || text.includes('5 giây')) {
+      if (text.includes('20 tim') || text.includes('chữ')) {
         ttsSpokeLikeBonus = true;
       }
     };
 
-    let timeAddedSeconds = 0;
+    let lettersRevealedCount = 0;
     const engine = new RebusEngine(roster, audio, tts);
     engine.setEvents({
-      onTimeAdded: (sec) => {
-        timeAddedSeconds += sec;
+      onLettersRevealed: (revCount) => {
+        lettersRevealedCount = revCount;
       },
     });
 
@@ -344,6 +344,7 @@ async function runTests() {
     );
 
     // Simulate Round 1 starting
+    engine.startShow();
     engine.currentState = 'guessing';
     engine.remainingTimeMs = 20000;
     router.onPuzzleStarted();
@@ -356,38 +357,35 @@ async function runTests() {
     router.simulateLikes(10, 'ViewerA');
     assert.strictEqual(router.getLikeStats().current, 10);
     assert.strictEqual(router.getLikeStats().claimed, false);
-    assert.strictEqual(timeAddedSeconds, 0);
-    assert.strictEqual(engine.remainingTimeMs, 20000);
+    assert.strictEqual(lettersRevealedCount, 0);
 
     // Step 2: ViewerB sends 10 more likes (total 20) -> Bonus triggered!
     router.simulateLikes(10, 'ViewerB');
     assert.strictEqual(router.getLikeStats().current, 20);
     assert.strictEqual(router.getLikeStats().claimed, true);
-    assert.strictEqual(timeAddedSeconds, 5, 'Should have added +5s');
-    assert.strictEqual(engine.remainingTimeMs, 25000, 'Remaining time should increase by 5000ms');
+    assert.strictEqual(lettersRevealedCount, 1, 'Should have revealed 1 letter');
     assert.strictEqual(ttsSpokeLikeBonus, true, 'TTS should announce 20 likes bonus');
 
-    // Step 3: ViewerC sends 50 more likes in same puzzle -> Must NOT add more time!
+    // Step 3: ViewerC sends 50 more likes in same puzzle -> Must NOT count or reveal more letters!
     router.simulateLikes(50, 'ViewerC');
-    assert.strictEqual(router.getLikeStats().current, 70);
+    assert.strictEqual(router.getLikeStats().current, 20, 'Should not increase after goal reached in this puzzle');
     assert.strictEqual(router.getLikeStats().claimed, true);
-    assert.strictEqual(timeAddedSeconds, 5, 'Must remain capped at 5s added from likes for this puzzle');
-    assert.strictEqual(engine.remainingTimeMs, 25000);
+    assert.strictEqual(lettersRevealedCount, 1, 'Must remain capped at 1 letter revealed from likes for this puzzle');
 
     // Step 4: Next puzzle starts (Round 2) -> Resets counter & claimed flag
-    timeAddedSeconds = 0;
+    lettersRevealedCount = 0;
     ttsSpokeLikeBonus = false;
+    engine.nextRound();
+    engine.currentState = 'guessing';
     router.onPuzzleStarted();
-    engine.remainingTimeMs = 20000;
 
     assert.strictEqual(router.getLikeStats().current, 0);
     assert.strictEqual(router.getLikeStats().claimed, false);
 
-    // Step 5: In Round 2, sending 20 likes awards +5s again cleanly
+    // Step 5: In Round 2, sending 20 likes awards 1 letter again cleanly
     router.simulateLikes(20, 'ViewerD');
     assert.strictEqual(router.getLikeStats().claimed, true);
-    assert.strictEqual(timeAddedSeconds, 5);
-    assert.strictEqual(engine.remainingTimeMs, 25000);
+    assert.strictEqual(lettersRevealedCount, 1);
     assert.strictEqual(ttsSpokeLikeBonus, true);
 
     router.stop();

@@ -90,8 +90,8 @@ export class SeatAllocator {
   }
 
   private initWaitingSpots(): void {
-    // 6 rows x 2 staggered columns = 12 waiting spots below the ĐANG CHỜ pill.
-    const rowYs = [664, 708, 752, 796, 840, 882];
+    // 5 rows x 2 staggered columns = 10 waiting spots below the ĐANG CHỜ pill.
+    const rowYs = [668, 714, 760, 806, 852];
     const colXs = [450, 493];
     this.waitingSpots = [];
     let index = 0;
@@ -141,6 +141,13 @@ export class SeatAllocator {
     if (emptyWait) {
       emptyWait.assignedUserId = userId;
       return { ...emptyWait, isWaiting: true };
+    }
+
+    // When full, real viewers (non-npc) replace NPC / mock accounts first
+    const npcSpot = this.waitingSpots.find((w) => w.assignedUserId && w.assignedUserId.startsWith('npc_'));
+    if (npcSpot && !userId.startsWith('npc_')) {
+      npcSpot.assignedUserId = userId;
+      return { ...npcSpot, isWaiting: true };
     }
 
     const rotateIndex = Math.floor(Math.random() * this.waitingSpots.length);
